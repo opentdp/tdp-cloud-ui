@@ -16,6 +16,7 @@ export default {
     ],
     resolve: {
         alias: {
+            '~': '/node_modules',
             '@': '/src'
         }
     },

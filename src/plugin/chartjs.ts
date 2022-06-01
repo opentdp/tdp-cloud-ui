@@ -3,6 +3,10 @@ Chart.register(...registerables);
 
 export * from 'vue-chartjs'
 
+/**
+ * 常用色值
+ */
+
 export const Colors = [
   '#FFC367', '#5793F3', '#DA9CFF', '#27727B', '#F4E001',
   '#C1232B', '#B5C334', '#FCCE10', '#E87C25', '#FE8463',

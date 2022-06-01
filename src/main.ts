@@ -5,8 +5,10 @@ import App from '@/App.vue'
 import store from '@/helper/store'
 import router from '@/helper/router'
 
-import '@/plugin/chartjs'
-import useElementPlus from '@/plugin/element'
+import useElement from '@/plugin/element'
 
-useElementPlus(createApp(App))
-    .use(store).use(router).mount('#app')
+const app = createApp(App)
+
+useElement(app)
+
+app.use(store).use(router).mount('#app')
