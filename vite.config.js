@@ -3,6 +3,11 @@ import ElementPlus from 'unplugin-element-plus/vite'
 
 export default {
     base: './',
+    build: {
+        outDir: 'build',
+        assetsDir: 'assets',
+        manifest: false
+    },
     plugins: [
         vue(),
         ElementPlus({
