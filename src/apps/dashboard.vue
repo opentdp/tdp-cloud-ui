@@ -42,8 +42,8 @@
                                     <UserFilled />
                                 </el-icon>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">1234</div>
-                                    <div>用户访问量</div>
+                                    <div class="grid-num">{{ accountSummary.User }}</div>
+                                    <div>子账户数</div>
                                 </div>
                             </div>
                         </el-card>
@@ -55,8 +55,8 @@
                                     <Message />
                                 </el-icon>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">321</div>
-                                    <div>系统消息</div>
+                                    <div class="grid-num">{{ domainDescribe.DomainCountInfo?.DomainTotal || 0 }}</div>
+                                    <div>域名数量</div>
                                 </div>
                             </div>
                         </el-card>
@@ -68,8 +68,8 @@
                                     <Goods />
                                 </el-icon>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">5000</div>
-                                    <div>数量</div>
+                                    <div class="grid-num">{{ lighthouseInstances.TotalCount }}</div>
+                                    <div>轻量实例</div>
                                 </div>
                             </div>
                         </el-card>
@@ -78,33 +78,33 @@
                 <el-card shadow="hover" style="height: 403px">
                     <template #header>
                         <div class="clearfix">
-                            <span>待办事项</span>
-                            <el-button style="float: right; padding: 3px 10px 0" link>添加</el-button>
+                            <span>域名列表</span>
                         </div>
                     </template>
-                    <el-table :show-header="false" :data="todoList" style="width: 100%">
-                        <el-table-column width="40">
-                            <template #default="scope">
-                                <el-checkbox v-model="scope.row.status"></el-checkbox>
-                            </template>
-                        </el-table-column>
-                        <el-table-column>
-                            <template #default="scope">
-                                <div class="todo-item" :class="{ 'todo-item-del': scope.row.status, }">
-                                    {{ scope.row.title }}
-                                </div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column width="40">
-                            <el-icon>
-                                <Edit />
-                            </el-icon>
-                        </el-table-column>
-                        <el-table-column width="40">
-                            <el-icon>
-                                <Delete />
-                            </el-icon>
-                        </el-table-column>
+                    <el-table :data="domainDescribe.DomainList" style="width: 100%">
+                        <el-table-column prop="Name" label="域名"></el-table-column>
+                        <el-table-column prop="GradeTitle" label="套餐" width="100"></el-table-column>
+                        <el-table-column prop="VipEndAt" label="套餐到期"></el-table-column>
+                    </el-table>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="24">
+                <el-card shadow="hover" style="height: 403px">
+                    <template #header>
+                        <div class="clearfix">
+                            <span>轻量实例</span>
+                        </div>
+                    </template>
+                    <el-table :data="lighthouseInstances.InstanceSet" style="width: 100%">
+                        <el-table-column prop="InstanceName" label="实列名"></el-table-column>
+                        <el-table-column prop="Zone" label="地域"></el-table-column>
+                        <el-table-column prop="CPU" label="vCPU"></el-table-column>
+                        <el-table-column prop="Memory" label="内存(GiB)" ></el-table-column>
+                        <el-table-column prop="PrivateAddresses" label="内网 IP" ></el-table-column>
+                        <el-table-column prop="PublicAddresses" label="外网 IP"></el-table-column>
+                        <el-table-column prop="ExpiredTime" label="到期时间" width="200"></el-table-column>
                     </el-table>
                 </el-card>
             </el-col>
@@ -112,12 +112,12 @@
         <el-row :gutter="20">
             <el-col :span="12">
                 <el-card shadow="hover">
-                    <Bar :chart-data="chart1.data" :chart-options="chart1.options" />
+                    <Bar :height="300" :chart-data="chart1.data" :chart-options="chart1.options" />
                 </el-card>
             </el-col>
             <el-col :span="12">
                 <el-card shadow="hover">
-                    <Line :chart-data="chart2.data" :chart-options="chart2.options" />
+                    <Line :height="300" :chart-data="chart2.data" :chart-options="chart2.options" />
                 </el-card>
             </el-col>
         </el-row>
@@ -125,7 +125,9 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { ref } from 'vue'
+
+import * as Api from '@/api'
 
 import { Bar, Line, Colors } from '@/plugin/chartjs'
 
@@ -136,33 +138,34 @@ export default {
     name: 'dashboard',
     setup() {
         const nickname = localStorage.getItem('vt_nickname')
-        const role = name === 'Admin' ? '超级管理员' : '普通用户'
-        const todoList = reactive([
-            {
-                title: '今天要修复100个bug',
-                status: false,
-            },
-            {
-                title: '今天要修复100个bug',
-                status: false,
-            },
-            {
-                title: '今天要写100行代码加几个bug吧',
-                status: false,
-            },
-            {
-                title: '今天要修复100个bug',
-                status: false,
-            },
-            {
-                title: '今天要修复100个bug',
-                status: true,
-            },
-            {
-                title: '今天要写100行代码加几个bug吧',
-                status: true,
-            },
-        ])
+        const role = nickname === 'Admin' ? '超级管理员' : '普通用户'
+
+        const accountSummary = ref({})
+        Api.cam.getAccountSummary().then(res => {
+            accountSummary.value = res.Payload
+        })
+
+        const domainDescribe = ref({})
+        Api.dnspod.describeDomainList().then(res => {
+            domainDescribe.value = res.Payload
+        })
+
+        const lighthouseRegions = ref({})
+        const lighthouseInstances = ref({ TotalCount: 0, InstanceSet: [] })
+        Api.lighthouse.describeRegions().then(res => {
+            lighthouseRegions.value = res.Payload
+            res.Payload.RegionSet.forEach((region, idx) => {
+                setTimeout(async () => {
+                    const res2 = await Api.lighthouse.describeInstances(region.Region)
+                    if (res2.Payload.TotalCount > 0) {
+                        lighthouseInstances.value.TotalCount += res2.Payload.TotalCount
+                        lighthouseInstances.value.InstanceSet = lighthouseInstances.value.InstanceSet.concat(res2.Payload.InstanceSet)
+                    }
+                    console.log(lighthouseInstances.value.InstanceSet)
+                }, idx * 200)
+            })
+        })
+
         const chart1 = {
             type: 'bar',
             data: {
@@ -233,11 +236,14 @@ export default {
             },
         }
         return {
+            role,
             nickname,
             chart1,
             chart2,
-            todoList,
-            role,
+            accountSummary,
+            domainDescribe,
+            lighthouseRegions,
+            lighthouseInstances
         }
     },
 }
@@ -337,14 +343,5 @@ export default {
 
 .mgb20 {
     margin-bottom: 20px;
-}
-
-.todo-item {
-    font-size: 14px;
-}
-
-.todo-item-del {
-    text-decoration: line-through;
-    color: #999;
 }
 </style>
