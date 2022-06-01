@@ -27,7 +27,7 @@
         <!-- 用户名下拉菜单 -->
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
           <span class="el-dropdown-link">
-            &nbsp;{{ username }}&nbsp;
+            &nbsp;{{ nickname }}&nbsp;
             <el-icon>
               <CaretBottom />
             </el-icon>
@@ -54,7 +54,7 @@ import { useRouter } from 'vue-router'
 
 export default {
   setup() {
-    const username = 'Admin'
+    const nickname = localStorage.getItem('vt_nickname')
     const message = 2
 
     const store = useStore()
@@ -75,6 +75,7 @@ export default {
     const router = useRouter()
     const handleCommand = (command) => {
       if (command == 'loginout') {
+        localStorage.removeItem('vt_nickname')
         localStorage.removeItem('vt_username')
         localStorage.removeItem('vt_password')
         router.push('/login')
@@ -84,7 +85,7 @@ export default {
     }
 
     return {
-      username,
+      nickname,
       message,
       collapse,
       collapseChage,

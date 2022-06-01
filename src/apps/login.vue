@@ -68,6 +68,7 @@ export default {
           ElMessage.error('登录失败')
           return false
         }
+        localStorage.setItem('vt_nickname', 'Admin')
         localStorage.setItem('vt_username', param.username)
         localStorage.setItem('vt_password', param.password)
         cam.getAccountSummary().then(

@@ -6,7 +6,7 @@
                     <div class="user-info">
                         <img src="@/assets/img/avatar.jpg" class="user-avator" />
                         <div class="user-info-cont">
-                            <div class="user-info-name">{{ name }}</div>
+                            <div class="user-info-name">{{ nickname }}</div>
                             <div>{{ role }}</div>
                         </div>
                     </div>
@@ -135,8 +135,8 @@ export default {
     },
     name: 'dashboard',
     setup() {
-        const name = localStorage.getItem('vt_username')
-        const role = name === 'admin' ? '超级管理员' : '普通用户'
+        const nickname = localStorage.getItem('vt_nickname')
+        const role = name === 'Admin' ? '超级管理员' : '普通用户'
         const todoList = reactive([
             {
                 title: '今天要修复100个bug',
@@ -233,7 +233,7 @@ export default {
             },
         }
         return {
-            name,
+            nickname,
             chart1,
             chart2,
             todoList,
