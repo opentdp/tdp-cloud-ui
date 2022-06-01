@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 
 export default {
   name: 'user',

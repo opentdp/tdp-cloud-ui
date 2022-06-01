@@ -1,12 +1,14 @@
 import axios from 'axios'
 
 const service = axios.create({
-  baseURL: '/api/',
-  timeout: 5000,
+  baseURL: '/api',
+  timeout: 5000
 })
 
 service.interceptors.request.use(
   (config) => {
+    config.headers['secretId'] = localStorage.getItem('vt_username')
+    config.headers['secretKey'] = localStorage.getItem('vt_password')
     return config
   },
   (error) => {

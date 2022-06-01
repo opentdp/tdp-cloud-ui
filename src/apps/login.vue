@@ -4,7 +4,7 @@
       <div class="vt-title">TDP Cloud</div>
       <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="vt-content">
         <el-form-item prop="username">
-          <el-input v-model="param.username" placeholder="username">
+          <el-input placeholder="SecretId" v-model="param.username">
             <template #prepend>
               <el-button>
                 <el-icon>
@@ -15,7 +15,7 @@
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input type="password" placeholder="password" v-model="param.password" @keyup.enter="submitForm()">
+          <el-input type="password" placeholder="SecretKey" v-model="param.password" @keyup.enter="submitForm()">
             <template #prepend>
               <el-button>
                 <el-icon>
@@ -39,37 +39,46 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
+import cam from '@/api/cam';
+
 export default {
   setup() {
     const store = useStore()
     const router = useRouter()
 
     const param = reactive({
-      username: 'admin',
-      password: '123456',
+      username: '',
+      password: '',
     })
 
     const rules = {
       username: [
-        { required: true, message: '请输入用户名', trigger: 'blur' }
+        { required: true, message: '请输入 SecretId', trigger: 'blur' }
       ],
       password: [
-        { required: true, message: '请输入密码', trigger: 'blur' }
+        { required: true, message: '请输入 SecretKey', trigger: 'blur' }
       ],
     }
 
     const login = ref(null)
 
     const submitForm = () => {
-      login.value.validate((valid) => {
-        if (valid) {
-          ElMessage.success('登录成功')
-          localStorage.setItem('vt_username', param.username)
-          router.push('/')
-        } else {
-          ElMessage.error('登录成功')
+      login.value.validate(valid => {
+        if (!valid) {
+          ElMessage.error('登录失败')
           return false
         }
+        localStorage.setItem('vt_username', param.username)
+        localStorage.setItem('vt_password', param.password)
+        cam.getAccountSummary().then(
+          res => {
+            ElMessage.success('登录成功')
+            router.push('/')
+          },
+          err => {
+            ElMessage.error('登录失败')
+          }
+        )
       })
     }
 

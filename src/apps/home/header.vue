@@ -12,7 +12,7 @@
         <!-- 消息中心 -->
         <div class="btn-bell">
           <el-tooltip effect="dark" :content="message ? `有 ${message} 条未读消息` : `消息中心`" placement="bottom">
-            <router-link to="/tabs">
+            <router-link to="/user">
               <el-icon :size=30>
                 <Bell />
               </el-icon>
@@ -54,7 +54,7 @@ import { useRouter } from 'vue-router'
 
 export default {
   setup() {
-    const username = localStorage.getItem('vt_username')
+    const username = 'Admin'
     const message = 2
 
     const store = useStore()
@@ -76,6 +76,7 @@ export default {
     const handleCommand = (command) => {
       if (command == 'loginout') {
         localStorage.removeItem('vt_username')
+        localStorage.removeItem('vt_password')
         router.push('/login')
       } else if (command == 'user') {
         router.push('/user')
