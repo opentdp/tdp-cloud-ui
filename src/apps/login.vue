@@ -39,7 +39,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
-import cam from '@/api/cam';
+import * as Api from '@/api';
 
 export default {
   setup() {
@@ -71,7 +71,7 @@ export default {
         localStorage.setItem('vt_nickname', 'Admin')
         localStorage.setItem('vt_username', param.username)
         localStorage.setItem('vt_password', param.password)
-        cam.getAccountSummary().then(
+        Api.cam.getAccountSummary().then(
           res => {
             ElMessage.success('登录成功')
             router.push('/')
