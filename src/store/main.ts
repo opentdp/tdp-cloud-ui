@@ -5,38 +5,36 @@ export default defineStore({
 
     state() {
         return {
-            tagsList: [],
+            tabsList: [],
             collapse: false,
         };
     },
 
-    getters: {},
-
     actions: {
-        delTagsItem(data) {
-            this.tagsList.splice(data.index, 1);
+        setTabsItem(data) {
+            this.tabsList.push(data);
         },
-        setTagsItem(data) {
-            this.tagsList.push(data);
+        delTabsItem(data) {
+            this.tabsList.splice(data.index, 1);
         },
-        clearTags() {
-            this.tagsList = [];
+        clearTabs() {
+            this.tabsList = [];
         },
-        closeTagsOther(data) {
-            this.tagsList = data;
+        closeTabsOther(data) {
+            this.tabsList = data;
         },
         closeCurrentTag(data) {
-            for (let i = 0, len = this.tagsList.length; i < len; i++) {
-                const item = this.tagsList[i];
+            for (let i = 0, len = this.tabsList.length; i < len; i++) {
+                const item = this.tabsList[i];
                 if (item.path === data.$route.fullPath) {
                     if (i < len - 1) {
-                        data.$router.push(this.tagsList[i + 1].path);
+                        data.$router.push(this.tabsList[i + 1].path);
                     } else if (i > 0) {
-                        data.$router.push(this.tagsList[i - 1].path);
+                        data.$router.push(this.tabsList[i - 1].path);
                     } else {
                         data.$router.push('/');
                     }
-                    this.tagsList.splice(i, 1);
+                    this.tabsList.splice(i, 1);
                     break;
                 }
             }

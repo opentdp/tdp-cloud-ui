@@ -2,11 +2,11 @@
     <v-navbar />
     <v-sidebar />
     <div class="content-box" :class="{ 'content-collapse': collapse }">
-        <v-tags></v-tags>
+        <v-tabs />
         <div class="content">
             <router-view v-slot="{ Component }">
                 <transition name="move" mode="out-in">
-                    <keep-alive :include="tagsList">
+                    <keep-alive :include="tabsList">
                         <component :is="Component" />
                     </keep-alive>
                 </transition>
@@ -22,10 +22,10 @@ import useStore from '@/store/main';
 
 import vNavbar from './navbar.vue';
 import vSidebar from './sidebar.vue';
-import vTags from './tags.vue';
+import vTabs from './tabs.vue';
 
 const store = useStore();
-const tagsList = computed(() => store.tagsList.map(item => item.name));
+const tabsList = computed(() => store.tabsList.map(item => item.name));
 const collapse = computed(() => store.collapse);
 </script>
 

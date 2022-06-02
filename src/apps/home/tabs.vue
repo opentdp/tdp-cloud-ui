@@ -1,17 +1,17 @@
 <template>
-    <div v-if="showTags" class="tags">
+    <div v-if="showTabs" class="tabs">
         <ul>
-            <li v-for="(item, index) in tagsList" :key="index" class="tags-li" :class="{ active: isActive(item.path) }">
-                <router-link :to="item.path" class="tags-li-title">{{ item.title }}</router-link>
-                <span class="tags-li-icon" @click="closeTags(index)">
+            <li v-for="(item, index) in tabsList" :key="index" class="tabs-li" :class="{ active: isActive(item.path) }">
+                <router-link :to="item.path" class="tabs-li-title">{{ item.title }}</router-link>
+                <span class="tabs-li-icon" @click="closeTabs(index)">
                     <el-icon>
                         <Close />
                     </el-icon>
                 </span>
             </li>
         </ul>
-        <div class="tags-close-box">
-            <el-dropdown @command="handleTags">
+        <div class="tabs-close-box">
+            <el-dropdown @command="handleTabs">
                 <el-button size="small" type="primary">
                     标签选项
                     <el-icon>
@@ -43,14 +43,14 @@ const isActive = path => {
     return path === route.fullPath;
 };
 
-const tagsList = computed(() => store.tagsList);
-const showTags = computed(() => tagsList.value.length > 0);
+const tabsList = computed(() => store.tabsList);
+const showTabs = computed(() => tabsList.value.length > 0);
 
 // 关闭单个标签
-const closeTags = index => {
-    const delItem = tagsList.value[index];
-    store.delTagsItem({ index }); // 不能换位置
-    const item = tagsList.value[index] ? tagsList.value[index] : tagsList.value[index - 1];
+const closeTabs = index => {
+    const delItem = tabsList.value[index];
+    store.delTabsItem({ index }); // 不能换位置
+    const item = tabsList.value[index] ? tabsList.value[index] : tabsList.value[index - 1];
     if (item) {
         delItem.path === route.fullPath && router.push(item.path);
     } else {
@@ -59,15 +59,15 @@ const closeTags = index => {
 };
 
 // 设置标签
-const setTags = route => {
-    const isExist = tagsList.value.some(item => {
+const setTabs = route => {
+    const isExist = tabsList.value.some(item => {
         return item.path === route.fullPath;
     });
     if (!isExist) {
-        if (tagsList.value.length >= 8) {
-            store.delTagsItem({ index: 0 });
+        if (tabsList.value.length >= 8) {
+            store.delTabsItem({ index: 0 });
         }
-        store.setTagsItem({
+        store.setTabsItem({
             name: route.name,
             title: route.meta.title,
             path: route.fullPath,
@@ -75,24 +75,24 @@ const setTags = route => {
     }
 };
 
-setTags(route);
-onBeforeRouteUpdate(to => setTags(to));
+setTabs(route);
+onBeforeRouteUpdate(to => setTabs(to));
 
 // 关闭全部标签
 const closeAll = () => {
-    store.clearTags();
+    store.clearTabs();
     router.push('/');
 };
 
 // 关闭其他标签
 const closeOther = () => {
-    const curItem = tagsList.value.filter(item => {
+    const curItem = tabsList.value.filter(item => {
         return item.path === route.fullPath;
     });
-    store.closeTagsOther(curItem);
+    store.closeTabsOther(curItem);
 };
 
-const handleTags = command => {
+const handleTabs = command => {
     command === 'other' ? closeOther() : closeAll();
 };
 
@@ -104,7 +104,7 @@ const handleTags = command => {
 </script>
 
 <style lang="scss" scoped>
-.tags {
+.tabs {
     position: relative;
     height: 50px;
     overflow: hidden;
@@ -113,13 +113,13 @@ const handleTags = command => {
     box-shadow: 0 5px 10px #ddd;
 }
 
-.tags ul {
+.tabs ul {
     width: 100%;
     height: 100%;
     padding: 10px 5px;
 }
 
-.tags-li {
+.tabs-li {
     float: left;
     margin: 0 5px;
     border-radius: 3px;
@@ -136,17 +136,17 @@ const handleTags = command => {
     transition: all 0.3s ease-in;
 }
 
-.tags-li:not(.active):hover {
+.tabs-li:not(.active):hover {
     background: #f8f8f8;
 }
 
-.tags-li.active {
+.tabs-li.active {
     border: 1px solid #409eff;
     background-color: #409eff;
     color: #fff;
 }
 
-.tags-li-title {
+.tabs-li-title {
     float: left;
     max-width: 80px;
     overflow: hidden;
@@ -156,11 +156,11 @@ const handleTags = command => {
     color: #666;
 }
 
-.tags-li.active .tags-li-title {
+.tabs-li.active .tabs-li-title {
     color: #fff;
 }
 
-.tags-close-box {
+.tabs-close-box {
     position: absolute;
     right: 10px;
     top: 10px;
@@ -168,7 +168,7 @@ const handleTags = command => {
     z-index: 10;
 }
 
-.tags-close-box .el-button {
+.tabs-close-box .el-button {
     height: 30px;
 }
 </style>

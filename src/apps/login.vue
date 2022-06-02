@@ -77,7 +77,7 @@ const submitForm = () => {
     });
 };
 
-store.clearTags();
+store.clearTabs();
 </script>
 
 <style lang="scss" scoped>
