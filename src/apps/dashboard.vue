@@ -68,7 +68,7 @@
                                     <Goods />
                                 </el-icon>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">{{ lighthouseInstances.TotalCount }}</div>
+                                    <div class="grid-num">{{ lighthouseInstances.length }}</div>
                                     <div>轻量实例</div>
                                 </div>
                             </div>
@@ -97,12 +97,12 @@
                             <span>轻量实例</span>
                         </div>
                     </template>
-                    <el-table :data="lighthouseInstances.InstanceSet" style="width: 100%">
+                    <el-table :data="lighthouseInstances" style="width: 100%">
                         <el-table-column prop="InstanceName" label="实列名"></el-table-column>
                         <el-table-column prop="Zone" label="地域"></el-table-column>
                         <el-table-column prop="CPU" label="vCPU"></el-table-column>
-                        <el-table-column prop="Memory" label="内存(GiB)" ></el-table-column>
-                        <el-table-column prop="PrivateAddresses" label="内网 IP" ></el-table-column>
+                        <el-table-column prop="Memory" label="内存(GiB)"></el-table-column>
+                        <el-table-column prop="PrivateAddresses" label="内网 IP"></el-table-column>
                         <el-table-column prop="PublicAddresses" label="外网 IP"></el-table-column>
                         <el-table-column prop="ExpiredTime" label="到期时间" width="200"></el-table-column>
                     </el-table>
@@ -150,20 +150,11 @@ export default {
             domainDescribe.value = res.Payload
         })
 
-        const lighthouseRegions = ref({})
-        const lighthouseInstances = ref({ TotalCount: 0, InstanceSet: [] })
-        Api.lighthouse.describeRegions().then(res => {
-            lighthouseRegions.value = res.Payload
-            res.Payload.RegionSet.forEach((region, idx) => {
-                setTimeout(async () => {
-                    const res2 = await Api.lighthouse.describeInstances(region.Region)
-                    if (res2.Payload.TotalCount > 0) {
-                        lighthouseInstances.value.TotalCount += res2.Payload.TotalCount
-                        lighthouseInstances.value.InstanceSet = lighthouseInstances.value.InstanceSet.concat(res2.Payload.InstanceSet)
-                    }
-                    console.log(lighthouseInstances.value.InstanceSet)
-                }, idx * 200)
-            })
+        const lighthouseRegions = ref([])
+        const lighthouseInstances = ref([])
+        Api.lighthouse.getAllRegionsInstances().then(res => {
+            lighthouseRegions.value = res.Payload.RegionSet
+            lighthouseInstances.value = res.Payload.InstanceSet
         })
 
         const chart1 = {
