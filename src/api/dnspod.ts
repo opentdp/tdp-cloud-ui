@@ -1,8 +1,7 @@
-import request from '@/helper/request'
+import { HttpClient } from './common/http';
 
-export const describeDomainList = () => {
-    return request({
-        method: 'get',
-        url: '/dnspod/describeDomainList'
-    })
+export class DnspodClient extends HttpClient {
+    public describeDomainList() {
+        return this.get('/dnspod/describeDomainList');
+    }
 }

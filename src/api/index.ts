@@ -1,3 +1,9 @@
-export * as cam from './cam'
-export * as dnspod from './dnspod'
-export * as lighthouse from './lighthouse'
+import { CamClient } from './cam';
+import { DnspodClient } from './dnspod';
+import { LighthouseClient } from './lighthouse';
+
+export default {
+    cam: new CamClient(),
+    dnspod: new DnspodClient(),
+    lighthouse: new LighthouseClient(),
+};

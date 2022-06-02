@@ -1,29 +1,11 @@
-import request from '@/helper/request'
+import { HttpClient } from './common/http';
 
-export const describeRegions = () => {
-    return request({
-        method: 'get',
-        url: '/lighthouse/describeRegions'
-    })
-}
+export class LighthouseClient extends HttpClient {
+    public describeInstancesTrafficPackages(region: string) {
+        return this.get('/lighthouse/describeInstancesTrafficPackages/' + region);
+    }
 
-export const describeInstances = (region: string) => {
-    return request({
-        method: 'get',
-        url: '/lighthouse/describeInstances/' + region
-    })
-}
-
-export const describeInstancesTrafficPackages = (region: string) => {
-    return request({
-        method: 'get',
-        url: '/lighthouse/describeInstancesTrafficPackages/' + region
-    })
-}
-
-export const getAllRegionsInstances = () => {
-    return request({
-        method: 'get',
-        url: '/lighthouse/getAllRegionsInstances'
-    })
+    public getAllRegionsInstances() {
+        return this.get('/lighthouse/getAllRegionsInstances');
+    }
 }

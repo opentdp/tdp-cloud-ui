@@ -1,16 +1,15 @@
-import ElementPlus from 'element-plus'
+import { App } from 'vue';
+import ElementPlus from 'element-plus';
 
-import * as Icons from '@element-plus/icons-vue'
-import zhCn from 'element-plus/lib/locale/lang/zh-cn'
+import * as Icons from '@element-plus/icons-vue';
+import zhCn from 'element-plus/lib/locale/lang/zh-cn';
 
-export default (app) => {
+export default (app: App<Element>) => {
+    for (const icon of Object.entries(Icons)) {
+        app.component(...icon);
+    }
 
-  for (const Icon of Object.entries(Icons)) {
-    app.component(...Icon)
-  }
+    app.use(ElementPlus, { locale: zhCn });
 
-  app.use(ElementPlus, { locale: zhCn })
-
-  return app
-
-}
+    return app;
+};

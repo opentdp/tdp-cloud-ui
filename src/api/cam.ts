@@ -1,8 +1,7 @@
-import request from '@/helper/request'
+import { HttpClient } from './common/http';
 
-export const getAccountSummary = () => {
-    return request({
-        method: 'get',
-        url: '/cam/getAccountSummary'
-    })
+export class CamClient extends HttpClient {
+    public getAccountSummary() {
+        return this.get('/cam/getAccountSummary');
+    }
 }
