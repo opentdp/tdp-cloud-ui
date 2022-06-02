@@ -4,15 +4,11 @@
 
 ## 运行开发服务
 
-```shell
-npm run dev
-```
+在项目目录运行  `serve.bat` 或 `./serve.sh`
 
-## 编译为发布版
+## 编译为二进制
 
-```shell
-npm run build
-```
+在项目目录运行  `build.bat` 或 `./build.sh`
 
 # License
 
