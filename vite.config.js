@@ -21,9 +21,10 @@ export default {
         }
     },
     server: {
+        port: 7900,
         proxy: {
             '/api': {
-                target: 'http://127.0.0.1:8080',
+                target: 'http://127.0.0.1:7800',
                 changeOrgin: true,
             }
         }
