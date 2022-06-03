@@ -125,7 +125,7 @@ import { ref } from 'vue';
 
 import Api from '@/api';
 
-import { Bar, Line, Colors } from '@/plugin/chartjs';
+import { Bar, Line, Colors } from '@/helper/chartjs';
 
 const nickname = localStorage.getItem('vt_nickname');
 const role = nickname === 'Admin' ? '超级管理员' : '普通用户';

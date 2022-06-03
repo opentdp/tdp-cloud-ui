@@ -3,7 +3,7 @@ import { createApp } from 'vue';
 import App from '@/app.vue';
 import '@/assets/style.scss';
 
-import setupElement from '@/plugin/element';
+import setupElement from '@/helper/element';
 import setupStore from '@/store/index';
 import router from '@/router/index';
 
