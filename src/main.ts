@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 
-import App from '@/App.vue';
+import App from '@/app.vue';
 import '@/assets/style.scss';
 
 import setupElement from '@/plugin/element';
