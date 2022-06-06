@@ -10,11 +10,10 @@
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 密钥管理 -->
-                <el-icon :size="30">
+                <el-icon v-if="secretList.length > 0" :size="30">
                     <Key />
                 </el-icon>
-                <!-- 密钥下拉菜单 -->
-                <el-dropdown class="user-name" trigger="click" @command="secretDropdown">
+                <el-dropdown v-if="secretList.length > 0" class="user-name" trigger="click" @command="secretDropdown">
                     <span class="el-dropdown-link">
                         &nbsp;{{ secretName || '默认' }}&nbsp;
                         <el-icon>
@@ -97,23 +96,28 @@ const userDropdown = command => {
 
 // 密钥列表
 const secretName = ref('');
-const secretList = ref([]);
+const secretList = computed(() => store.secretList);
 Api.user.fetchSecrets().then(res => {
-    secretList.value = res;
-    const keyid = localStorage.getItem('vt_keyid');
-    for (const item of res) {
-        if (item.ID === +keyid) {
-            secretName.value = item.Describe;
-            break;
-        }
-    }
+    store.setSecrets(res);
+    updateSecretName();
 });
 
 // 密钥下拉菜单选择事件
 const secretDropdown = command => {
-    secretName.value = command.Describe;
     localStorage.setItem('vt_keyid', command.ID);
     location.reload();
+};
+
+// 更新密钥别名
+const updateSecretName = () => {
+    const keyid = localStorage.getItem('vt_keyid');
+    for (const item of secretList.value) {
+        if (item.ID === +keyid) {
+            secretName.value = item.Describe;
+            return item.Describe;
+        }
+    }
+    return '错误';
 };
 </script>
 

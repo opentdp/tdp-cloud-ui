@@ -48,18 +48,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { computed, reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 import Api from '@/api';
+import useStore from '@/store/main';
+
+const store = useStore();
 
 // 密钥列表
 
-const secretList = ref([]);
-
+const secretList = computed(() => store.secretList);
 const fetchSecrets = () => {
     Api.user.fetchSecrets().then(res => {
-        secretList.value = res;
+        store.setSecrets(res);
     });
 };
 
@@ -74,9 +76,6 @@ const param = reactive({
 const createSecret = () => {
     Api.user.createSecret(param).then(data => {
         ElMessage.success(data.result);
-        param.describe = '';
-        param.secretId = '';
-        param.secretKey = '';
         fetchSecrets();
     });
 };

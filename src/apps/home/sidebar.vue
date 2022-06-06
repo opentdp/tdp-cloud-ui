@@ -51,6 +51,12 @@ import { useRoute } from 'vue-router';
 
 import useStore from '@/store/main';
 
+const route = useRoute();
+const store = useStore();
+
+const onRoutes = computed(() => route.path);
+const collapse = computed(() => store.collapse);
+
 const items = [
     {
         icon: 'HomeFilled',
@@ -78,13 +84,6 @@ const items = [
         ],
     },
 ];
-
-const route = useRoute();
-
-const onRoutes = computed(() => route.path);
-
-const store = useStore();
-const collapse = computed(() => store.collapse);
 </script>
 
 <style lang="scss" scoped>

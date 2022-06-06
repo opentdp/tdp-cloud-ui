@@ -7,10 +7,12 @@ export default defineStore({
         return {
             tabsList: [],
             collapse: false,
+            secretList: [],
         };
     },
 
     actions: {
+        // 多窗口操作
         setTabsItem(data) {
             this.tabsList.push(data);
         },
@@ -42,6 +44,10 @@ export default defineStore({
         // 侧边栏折叠
         handleCollapse(data) {
             this.collapse = data;
+        },
+        // 密钥列表更新
+        setSecrets(data) {
+            this.secretList = data;
         },
     },
 });
