@@ -1,8 +1,8 @@
 <template>
-    <div class="login-wrap">
-        <div class="vt-login">
+    <div class="register-wrap">
+        <div class="vt-register">
             <div class="vt-title">TDP Cloud</div>
-            <el-form ref="login" :model="param" :rules="rules" label-width="0px" class="vt-content">
+            <el-form ref="register" :model="param" :rules="rules" label-width="0px" class="vt-content">
                 <el-form-item prop="username">
                     <el-input v-model="param.username" placeholder="用户名">
                         <template #prepend>
@@ -15,7 +15,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="param.password" type="password" placeholder="密码" @keyup.enter="submitForm()">
+                    <el-input v-model="param.password" type="password" placeholder="密码">
                         <template #prepend>
                             <el-button>
                                 <el-icon>
@@ -25,12 +25,23 @@
                         </template>
                     </el-input>
                 </el-form-item>
-                <div class="login-btn">
-                    <el-button type="primary" @click="submitForm()">登录</el-button>
+                <el-form-item prop="password2">
+                    <el-input v-model="param.password2" type="password" placeholder="确认密码" @keyup.enter="submitForm()">
+                        <template #prepend>
+                            <el-button>
+                                <el-icon>
+                                    <Lock />
+                                </el-icon>
+                            </el-button>
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <div class="register-btn">
+                    <el-button type="primary" @click="submitForm()">注册</el-button>
                 </div>
-                <div class="login-btn">
-                    <router-link to="/user/register">
-                        <el-button>注册</el-button>
+                <div class="register-btn">
+                    <router-link to="/user/login">
+                        <el-button>登录</el-button>
                     </router-link>
                 </div>
             </el-form>
@@ -50,33 +61,28 @@ const store = useStore();
 const router = useRouter();
 
 const param = reactive({
-    username: import.meta.env.VITE_USERNAME || '',
-    password: import.meta.env.VITE_PASSWORD || '',
+    username: '',
+    password: '',
+    password2: '',
 });
 
 const rules = {
     username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+    password2: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 };
 
-const login = ref(null);
+const register = ref(null);
 
 const submitForm = () => {
-    login.value.validate(valid => {
+    register.value.validate(valid => {
         if (!valid) {
-            ElMessage.error('登录失败');
+            ElMessage.error('注册失败');
             return false;
         }
-        Api.user.login(param).then(data => {
-            ElMessage.success('登录成功');
-            localStorage.setItem('vt_username', param.username);
-            localStorage.setItem('vt_token', data.token);
-            if (data.keyid > 0) {
-                localStorage.setItem('vt_keyid', data.keyid);
-                router.push('/');
-            } else {
-                router.push('/user/secret');
-            }
+        Api.user.register(param).then(() => {
+            ElMessage.success('注册成功');
+            router.push('/user/login');
         });
     });
 };
@@ -85,12 +91,12 @@ store.clearTabs();
 </script>
 
 <style lang="scss" scoped>
-.login-wrap {
+.register-wrap {
     position: relative;
     width: 100%;
     height: 100%;
     background: #324157;
-    background-image: url(@/assets/img/login-bg.jpg);
+    background-image: url(@/assets/img/register-bg.jpg);
     background-size: cover;
 }
 
@@ -103,7 +109,7 @@ store.clearTabs();
     border-bottom: 1px solid #ddd;
 }
 
-.vt-login {
+.vt-register {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -118,11 +124,11 @@ store.clearTabs();
     padding: 30px 30px;
 }
 
-.login-btn {
+.register-btn {
     text-align: center;
 }
 
-.login-btn button {
+.register-btn button {
     width: 100%;
     height: 36px;
     margin-bottom: 10px;

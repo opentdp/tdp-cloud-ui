@@ -62,6 +62,14 @@ const routes: RouteRecordRaw[] = [
         },
         component: () => import('@/apps/user/login.vue'),
     },
+    {
+        path: '/user/register',
+        name: 'user-register',
+        meta: {
+            title: '注册',
+        },
+        component: () => import('@/apps/user/register.vue'),
+    },
 ];
 
 const router = createRouter({
