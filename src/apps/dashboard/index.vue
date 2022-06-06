@@ -308,8 +308,4 @@ const chart2 = {
 .user-info-list span {
     margin-left: 70px;
 }
-
-.mgb20 {
-    margin-bottom: 20px;
-}
 </style>

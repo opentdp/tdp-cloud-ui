@@ -21,6 +21,7 @@ export class HttpClient {
     protected async delete(url: string) {
         const body = await fetch('/api' + url, {
             method: 'DELETE',
+            headers: this.buildHeader(),
         });
         return this.parseResponse(body);
     }

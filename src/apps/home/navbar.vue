@@ -9,23 +9,32 @@
         <div class="logo">TDP Cloud</div>
         <div class="header-right">
             <div class="header-user-con">
-                <!-- 消息中心 -->
-                <div class="btn-bell">
-                    <el-tooltip effect="dark" :content="message ? `有 ${message} 条未读消息` : `消息中心`" placement="bottom">
-                        <router-link to="/user/info">
-                            <el-icon :size="30">
-                                <Bell />
-                            </el-icon>
-                        </router-link>
-                    </el-tooltip>
-                    <span v-if="message" class="btn-bell-badge"></span>
-                </div>
+                <!-- 密钥管理 -->
+                <el-icon :size="30">
+                    <Key />
+                </el-icon>
+                <!-- 密钥下拉菜单 -->
+                <el-dropdown class="user-name" trigger="click" @command="secretDropdown">
+                    <span class="el-dropdown-link">
+                        &nbsp;{{ secretName || '默认' }}&nbsp;
+                        <el-icon>
+                            <CaretBottom />
+                        </el-icon>
+                    </span>
+                    <template #dropdown>
+                        <el-dropdown-menu>
+                            <el-dropdown-item v-for="item in secretList" :key="item.ID" :command="item">
+                                {{ item.Describe }}
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </template>
+                </el-dropdown>
                 <!-- 用户头像 -->
                 <div class="user-avator">
                     <img src="@/assets/img/avatar.jpg" />
                 </div>
                 <!-- 用户名下拉菜单 -->
-                <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+                <el-dropdown class="user-name" trigger="click" @command="userDropdown">
                     <span class="el-dropdown-link">
                         &nbsp;{{ username }}&nbsp;
                         <el-icon>
@@ -48,15 +57,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
+import Api from '@/api';
 import useStore from '@/store/main';
 
-const username = localStorage.getItem('vt_username');
-const message = 2;
-
 const store = useStore();
+const router = useRouter();
+
+const username = localStorage.getItem('vt_username');
 
 // 侧边栏折叠
 const collapse = computed(() => store.collapse);
@@ -64,15 +74,15 @@ const collapseChage = () => {
     store.handleCollapse(!collapse.value);
 };
 
+// 小屏自动折叠
 onMounted(() => {
-    if (document.body.clientWidth < 1200) {
+    if (document.body.clientWidth < 1000) {
         collapseChage();
     }
 });
 
 // 用户名下拉菜单选择事件
-const router = useRouter();
-const handleCommand = command => {
+const userDropdown = command => {
     switch (command) {
         case 'loginout':
             localStorage.removeItem('vt_username');
@@ -83,6 +93,27 @@ const handleCommand = command => {
             router.push('/user/info');
             break;
     }
+};
+
+// 密钥列表
+const secretName = ref('');
+const secretList = ref([]);
+Api.user.fetchSecrets().then(res => {
+    secretList.value = res;
+    const keyid = localStorage.getItem('vt_keyid');
+    for (const item of res) {
+        if (item.ID === +keyid) {
+            secretName.value = item.Describe;
+            break;
+        }
+    }
+});
+
+// 密钥下拉菜单选择事件
+const secretDropdown = command => {
+    secretName.value = command.Describe;
+    localStorage.setItem('vt_keyid', command.ID);
+    location.reload();
 };
 </script>
 
@@ -119,30 +150,6 @@ const handleCommand = command => {
     display: flex;
     height: 70px;
     align-items: center;
-}
-
-.btn-bell {
-    position: relative;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    border-radius: 15px;
-    cursor: pointer;
-}
-
-.btn-bell-badge {
-    position: absolute;
-    right: 0;
-    top: -2px;
-    width: 8px;
-    height: 8px;
-    border-radius: 4px;
-    background: #f56c6c;
-    color: #fff;
-}
-
-.btn-bell .el-icon {
-    color: #fff;
 }
 
 .user-name {
