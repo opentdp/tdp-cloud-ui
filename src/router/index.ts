@@ -18,7 +18,7 @@ const routes: RouteRecordRaw[] = [
                 meta: {
                     title: '系统首页',
                 },
-                component: () => import('@/apps/dashboard.vue'),
+                component: () => import('@/apps/dashboard/index.vue'),
             },
             {
                 path: '/user/info',
@@ -27,6 +27,14 @@ const routes: RouteRecordRaw[] = [
                     title: '个人中心',
                 },
                 component: () => import('@/apps/user/info.vue'),
+            },
+            {
+                path: '/user/secret',
+                name: 'user-secret',
+                meta: {
+                    title: '密钥管理',
+                },
+                component: () => import('@/apps/user/secret.vue'),
             },
             {
                 path: '/error/403',
@@ -65,13 +73,19 @@ router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} - TDP Cloud`;
 
     const token = localStorage.getItem('vt_token');
-    const keyid = localStorage.getItem('vt_keyid');
+    const keyid = +localStorage.getItem('vt_keyid');
 
-    if ((!token || !keyid) && to.path !== '/user/login') {
+    if (!token && to.path !== '/user/login') {
         next('/user/login');
-    } else {
-        next();
+        return;
     }
+
+    if (token && keyid < 1 && to.path !== '/user/secret') {
+        next('/user/secret');
+        return;
+    }
+
+    next();
 });
 
 export default router;

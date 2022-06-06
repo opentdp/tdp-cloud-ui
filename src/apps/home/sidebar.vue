@@ -58,6 +58,11 @@ const items = [
         title: '系统首页',
     },
     {
+        icon: 'Key',
+        index: '/user/secret',
+        title: '密钥管理',
+    },
+    {
         icon: 'Warning',
         index: '7',
         title: '错误处理',

@@ -62,18 +62,17 @@ const submitForm = () => {
             ElMessage.error('登录失败');
             return false;
         }
-        Api.user.login(param).then(
-            data => {
-                ElMessage.success('登录成功');
-                localStorage.setItem('vt_username', param.username);
-                localStorage.setItem('vt_token', data.token);
+        Api.user.login(param).then(data => {
+            ElMessage.success('登录成功');
+            localStorage.setItem('vt_username', param.username);
+            localStorage.setItem('vt_token', data.token);
+            if (data.keyid > 0) {
                 localStorage.setItem('vt_keyid', data.keyid);
                 router.push('/');
-            },
-            () => {
-                ElMessage.error('登录失败');
+            } else {
+                router.push('/user/secret');
             }
-        );
+        });
     });
 };
 
