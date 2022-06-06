@@ -5,13 +5,17 @@ export default defineStore({
 
     state() {
         return {
-            tabsList: [],
             collapse: false,
+            tabsList: [],
             secretList: [],
         };
     },
 
     actions: {
+        // 侧边栏折叠
+        handleCollapse(data) {
+            this.collapse = data;
+        },
         // 多窗口操作
         setTabsItem(data) {
             this.tabsList.push(data);
@@ -41,13 +45,12 @@ export default defineStore({
                 }
             }
         },
-        // 侧边栏折叠
-        handleCollapse(data) {
-            this.collapse = data;
-        },
         // 密钥列表更新
-        setSecrets(data) {
+        setSecrets(data: any[]) {
             this.secretList = data;
+            if (data.length > 0 && +localStorage.getItem('vt_keyid') < 1) {
+                localStorage.setItem('vt_keyid', data[0].ID);
+            }
         },
     },
 });

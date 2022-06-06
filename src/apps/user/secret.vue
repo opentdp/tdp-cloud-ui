@@ -76,6 +76,9 @@ const param = reactive({
 const createSecret = () => {
     Api.user.createSecret(param).then(data => {
         ElMessage.success(data.result);
+        param.describe = '';
+        param.secretId = '';
+        param.secretKey = '';
         fetchSecrets();
     });
 };
