@@ -16,6 +16,8 @@ const routes: RouteRecordRaw[] = [
                 path: '/dashboard',
                 name: 'dashboard',
                 meta: {
+                    login: true,
+                    secret: true,
                     title: '系统首页',
                 },
                 component: () => import('@/apps/dashboard/index.vue'),
@@ -24,6 +26,8 @@ const routes: RouteRecordRaw[] = [
                 path: '/user/info',
                 name: 'user-info',
                 meta: {
+                    login: true,
+                    secret: true,
                     title: '个人中心',
                 },
                 component: () => import('@/apps/user/info.vue'),
@@ -32,6 +36,7 @@ const routes: RouteRecordRaw[] = [
                 path: '/user/secret',
                 name: 'user-secret',
                 meta: {
+                    login: true,
                     title: '密钥管理',
                 },
                 component: () => import('@/apps/user/secret.vue'),
@@ -40,6 +45,7 @@ const routes: RouteRecordRaw[] = [
                 path: '/error/403',
                 name: 'error-403',
                 meta: {
+                    login: true,
                     title: '没有权限',
                 },
                 component: () => import('@/apps/error/403.vue'),
@@ -48,6 +54,7 @@ const routes: RouteRecordRaw[] = [
                 path: '/error/404',
                 name: 'error-404',
                 meta: {
+                    login: true,
                     title: '找不到页面',
                 },
                 component: () => import('@/apps/error/404.vue'),
@@ -83,12 +90,12 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('vt_token');
     const keyid = +localStorage.getItem('vt_keyid');
 
-    if (!token && to.path !== '/user/login') {
+    if (!token && to.meta.login) {
         next('/user/login');
         return;
     }
 
-    if (token && keyid < 1 && to.path !== '/user/secret') {
+    if (keyid < 1 && to.meta.secret) {
         next('/user/secret');
         return;
     }
