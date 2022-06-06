@@ -27,7 +27,6 @@ const routes: RouteRecordRaw[] = [
                 name: 'user-info',
                 meta: {
                     login: true,
-                    secret: true,
                     title: '个人中心',
                 },
                 component: () => import('@/apps/user/info.vue'),
@@ -87,15 +86,15 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} - TDP Cloud`;
 
-    const token = localStorage.getItem('vt_token');
-    const keyid = +localStorage.getItem('vt_keyid');
+    const isLogin = !!localStorage.getItem('vt_token');
+    const isSecret = +localStorage.getItem('vt_keyid') > 0;
 
-    if (!token && to.meta.login) {
+    if (to.meta.login && !isLogin) {
         next('/user/login');
         return;
     }
 
-    if (keyid < 1 && to.meta.secret) {
+    if (to.meta.secret && !isSecret) {
         next('/user/secret');
         return;
     }
