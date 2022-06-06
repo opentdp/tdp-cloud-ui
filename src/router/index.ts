@@ -1,8 +1,8 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
 import vHome from '@/apps/home/index.vue';
 
-const routes = [
+const routes: RouteRecordRaw[] = [
     {
         path: '/',
         redirect: '/dashboard',
@@ -21,24 +21,24 @@ const routes = [
                 component: () => import('@/apps/dashboard.vue'),
             },
             {
-                path: '/user',
-                name: 'user',
+                path: '/user/info',
+                name: 'user-info',
                 meta: {
                     title: '个人中心',
                 },
-                component: () => import('@/apps/user.vue'),
+                component: () => import('@/apps/user/info.vue'),
             },
             {
-                path: '/403',
-                name: '403',
+                path: '/error/403',
+                name: 'error-403',
                 meta: {
                     title: '没有权限',
                 },
                 component: () => import('@/apps/error/403.vue'),
             },
             {
-                path: '/404',
-                name: '404',
+                path: '/error/404',
+                name: 'error-404',
                 meta: {
                     title: '找不到页面',
                 },
@@ -47,12 +47,12 @@ const routes = [
         ],
     },
     {
-        path: '/login',
-        name: 'login',
+        path: '/user/login',
+        name: 'user-login',
         meta: {
             title: '登录',
         },
-        component: () => import('@/apps/login.vue'),
+        component: () => import('@/apps/user/login.vue'),
     },
 ];
 
@@ -63,10 +63,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} - TDP Cloud`;
-    const username = localStorage.getItem('vt_username');
-    const password = localStorage.getItem('vt_password');
-    if (!username && !password && to.path !== '/login') {
-        next('/login');
+
+    const token = localStorage.getItem('vt_token');
+    const keyid = localStorage.getItem('vt_keyid');
+
+    if ((!token || !keyid) && to.path !== '/user/login') {
+        next('/user/login');
     } else {
         next();
     }

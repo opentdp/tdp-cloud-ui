@@ -12,7 +12,7 @@
                 <!-- 消息中心 -->
                 <div class="btn-bell">
                     <el-tooltip effect="dark" :content="message ? `有 ${message} 条未读消息` : `消息中心`" placement="bottom">
-                        <router-link to="/user">
+                        <router-link to="/user/info">
                             <el-icon :size="30">
                                 <Bell />
                             </el-icon>
@@ -27,7 +27,7 @@
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="handleCommand">
                     <span class="el-dropdown-link">
-                        &nbsp;{{ nickname }}&nbsp;
+                        &nbsp;{{ username }}&nbsp;
                         <el-icon>
                             <CaretBottom />
                         </el-icon>
@@ -53,7 +53,7 @@ import { useRouter } from 'vue-router';
 
 import useStore from '@/store/main';
 
-const nickname = localStorage.getItem('vt_nickname');
+const username = localStorage.getItem('vt_username');
 const message = 2;
 
 const store = useStore();
@@ -73,13 +73,15 @@ onMounted(() => {
 // 用户名下拉菜单选择事件
 const router = useRouter();
 const handleCommand = command => {
-    if (command == 'loginout') {
-        localStorage.removeItem('vt_nickname');
-        localStorage.removeItem('vt_username');
-        localStorage.removeItem('vt_password');
-        router.push('/login');
-    } else if (command == 'user') {
-        router.push('/user');
+    switch (command) {
+        case 'loginout':
+            localStorage.removeItem('vt_username');
+            localStorage.removeItem('vt_password');
+            router.push('/user/login');
+            break;
+        case 'user':
+            router.push('/user/info');
+            break;
     }
 };
 </script>

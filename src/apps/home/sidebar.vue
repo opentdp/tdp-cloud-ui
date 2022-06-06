@@ -63,11 +63,11 @@ const items = [
         title: '错误处理',
         subs: [
             {
-                index: '/403',
+                index: '/error/403',
                 title: '403页面',
             },
             {
-                index: '/404',
+                index: '/error/404',
                 title: '404页面',
             },
         ],

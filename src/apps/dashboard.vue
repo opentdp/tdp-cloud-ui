@@ -6,7 +6,7 @@
                     <div class="user-info">
                         <img src="@/assets/img/avatar.jpg" class="user-avator" />
                         <div class="user-info-cont">
-                            <div class="user-info-name">{{ nickname }}</div>
+                            <div class="user-info-name">{{ username }}</div>
                             <div>{{ role }}</div>
                         </div>
                     </div>
@@ -127,24 +127,24 @@ import Api from '@/api';
 
 import { Bar, Line, Colors } from '@/helper/chartjs';
 
-const nickname = localStorage.getItem('vt_nickname');
-const role = nickname === 'Admin' ? '超级管理员' : '普通用户';
+const role = '超级管理员';
+const username = localStorage.getItem('vt_username');
 
 const accountSummary = ref({});
 Api.cam.getAccountSummary().then(res => {
-    accountSummary.value = res.Payload;
+    accountSummary.value = res;
 });
 
 const domainDescribe = ref({});
 Api.dnspod.describeDomainList().then(res => {
-    domainDescribe.value = res.Payload;
+    domainDescribe.value = res;
 });
 
 const lighthouseRegions = ref([]);
 const lighthouseInstances = ref([]);
-Api.lighthouse.getAllRegionsInstances().then(res => {
-    lighthouseRegions.value = res.Payload.RegionSet;
-    lighthouseInstances.value = res.Payload.InstanceSet;
+Api.lighthouse.describeRegionsInstances().then(res => {
+    lighthouseRegions.value = res.RegionSet;
+    lighthouseInstances.value = res.InstanceSet;
 });
 
 const chart1 = {

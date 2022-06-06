@@ -4,7 +4,7 @@
             <div class="vt-title">TDP Cloud</div>
             <el-form ref="login" :model="param" :rules="rules" label-width="0px" class="vt-content">
                 <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="SecretId">
+                    <el-input v-model="param.username" placeholder="用户名">
                         <template #prepend>
                             <el-button>
                                 <el-icon>
@@ -15,7 +15,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="param.password" type="password" placeholder="SecretKey" @keyup.enter="submitForm()">
+                    <el-input v-model="param.password" type="password" placeholder="密码" @keyup.enter="submitForm()">
                         <template #prepend>
                             <el-button>
                                 <el-icon>
@@ -45,13 +45,13 @@ const store = useStore();
 const router = useRouter();
 
 const param = reactive({
-    username: import.meta.env.VITE_SECRET_ID || '',
-    password: import.meta.env.VITE_SECRET_KEY || '',
+    username: import.meta.env.VITE_USERNAME || '',
+    password: import.meta.env.VITE_PASSWORD || '',
 });
 
 const rules = {
-    username: [{ required: true, message: '请输入 SecretId', trigger: 'blur' }],
-    password: [{ required: true, message: '请输入 SecretKey', trigger: 'blur' }],
+    username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
 };
 
 const login = ref(null);
@@ -62,12 +62,12 @@ const submitForm = () => {
             ElMessage.error('登录失败');
             return false;
         }
-        localStorage.setItem('vt_nickname', 'Admin');
-        localStorage.setItem('vt_username', param.username);
-        localStorage.setItem('vt_password', param.password);
-        Api.cam.getAccountSummary().then(
-            () => {
+        Api.user.login(param).then(
+            data => {
                 ElMessage.success('登录成功');
+                localStorage.setItem('vt_username', param.username);
+                localStorage.setItem('vt_token', data.token);
+                localStorage.setItem('vt_keyid', data.keyid);
                 router.push('/');
             },
             () => {

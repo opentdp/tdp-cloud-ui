@@ -12,7 +12,7 @@
                         <div class="info-image">
                             <img src="@/assets/img/avatar.jpg" />
                         </div>
-                        <div class="info-name">{{ nickname }}</div>
+                        <div class="info-name">{{ username }}</div>
                         <div class="info-desc">不可能！我的代码怎么可能会有bug！</div>
                     </div>
                 </el-card>
@@ -25,7 +25,7 @@
                         </div>
                     </template>
                     <el-form label-width="90px">
-                        <el-form-item label="用户名："> {{ nickname }} </el-form-item>
+                        <el-form-item label="用户名："> {{ username }} </el-form-item>
                         <el-form-item label="旧密码：">
                             <el-input v-model="form.old" type="password"></el-input>
                         </el-form-item>
@@ -48,7 +48,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 
-const nickname = localStorage.getItem('vt_nickname');
+const username = localStorage.getItem('vt_username');
 const form = reactive({
     old: '',
     new: '',
