@@ -96,7 +96,7 @@ store.clearTabs();
     width: 100%;
     height: 100%;
     background: #324157;
-    background-image: url(@/assets/img/register-bg.jpg);
+    background-image: url(@/assets/img/bg01.jpg);
     background-size: cover;
 }
 

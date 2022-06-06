@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "dev": "vite --open --mode development",
-        "build": "vue-tsc --noEmit && vite build --mode release",
+        "build": "vite build --mode release",
         "preview": "vite preview",
         "lint": "eslint --ext ts --ext js --ext vue src/"
     },
