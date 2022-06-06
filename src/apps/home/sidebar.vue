@@ -64,12 +64,12 @@ const items = [
         title: '系统首页',
     },
     {
-        icon: 'Key',
+        icon: 'WindPower',
         index: '/dnspod/index',
         title: '域名解析',
     },
     {
-        icon: 'Key',
+        icon: 'Monitor',
         index: '/lighthouse/index',
         title: '轻量服务器',
     },
