@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-card shadow="hover" class="mgb20">
+        <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="clearfix">
                     <span>密钥列表</span>

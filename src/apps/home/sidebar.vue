@@ -65,24 +65,34 @@ const items = [
     },
     {
         icon: 'Key',
+        index: '/dnspod/index',
+        title: '域名解析',
+    },
+    {
+        icon: 'Key',
+        index: '/lighthouse/index',
+        title: '轻量服务器',
+    },
+    {
+        icon: 'Key',
         index: '/user/secret',
         title: '密钥管理',
     },
-    {
-        icon: 'Warning',
-        index: '7',
-        title: '错误处理',
-        subs: [
-            {
-                index: '/error/403',
-                title: '403页面',
-            },
-            {
-                index: '/error/404',
-                title: '404页面',
-            },
-        ],
-    },
+    // {
+    //     icon: 'Warning',
+    //     index: '7',
+    //     title: '错误处理',
+    //     subs: [
+    //         {
+    //             index: '/error/403',
+    //             title: '403页面',
+    //         },
+    //         {
+    //             index: '/error/404',
+    //             title: '404页面',
+    //         },
+    //     ],
+    // },
 ];
 </script>
 

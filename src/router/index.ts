@@ -23,6 +23,26 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('@/apps/dashboard/index.vue'),
             },
             {
+                path: '/dnspod/index',
+                name: 'dnspod-index',
+                meta: {
+                    login: true,
+                    secret: true,
+                    title: '域名解析',
+                },
+                component: () => import('@/apps/dnspod/index.vue'),
+            },
+            {
+                path: '/lighthouse/index',
+                name: 'lighthouse-index',
+                meta: {
+                    login: true,
+                    secret: true,
+                    title: '轻量服务器',
+                },
+                component: () => import('@/apps/lighthouse/index.vue'),
+            },
+            {
                 path: '/user/info',
                 name: 'user-info',
                 meta: {
