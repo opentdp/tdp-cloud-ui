@@ -46,18 +46,6 @@ const isActive = path => {
 const tabsList = computed(() => store.tabsList);
 const showTabs = computed(() => tabsList.value.length > 0);
 
-// 关闭单个标签
-const closeTabs = index => {
-    const delItem = tabsList.value[index];
-    store.delTabsItem({ index }); // 不能换位置
-    const item = tabsList.value[index] ? tabsList.value[index] : tabsList.value[index - 1];
-    if (item) {
-        delItem.path === route.fullPath && router.push(item.path);
-    } else {
-        router.push('/');
-    }
-};
-
 // 设置标签
 const setTabs = route => {
     const isExist = tabsList.value.some(item => {
@@ -78,6 +66,18 @@ const setTabs = route => {
 setTabs(route);
 onBeforeRouteUpdate(to => setTabs(to));
 
+// 关闭单个标签
+const closeTabs = index => {
+    const delItem = tabsList.value[index];
+    store.delTabsItem({ index }); // 不能换位置
+    const item = tabsList.value[index] ? tabsList.value[index] : tabsList.value[index - 1];
+    if (item) {
+        delItem.path === route.fullPath && router.push(item.path);
+    } else {
+        router.push('/');
+    }
+};
+
 // 关闭全部标签
 const closeAll = () => {
     store.clearTabs();
@@ -92,12 +92,13 @@ const closeOther = () => {
     store.closeTabsOther(curItem);
 };
 
+// 处理下拉菜单事件
 const handleTabs = command => {
     command === 'other' ? closeOther() : closeAll();
 };
 
 // 关闭当前页面的标签页
-// store.commit("closeCurrentTag", {
+// store.closeCurrentTag({
 //     $router: router,
 //     $route: route
 // });

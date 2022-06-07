@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 
-import vHome from '@/apps/home/index.vue';
+import layout from '@/apps/layout/index.vue';
 
 const routes: RouteRecordRaw[] = [
     {
@@ -10,15 +10,15 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'home',
-        component: vHome,
+        component: layout,
         children: [
             {
                 path: '/dashboard',
                 name: 'dashboard',
                 meta: {
+                    title: '系统首页',
                     login: true,
                     secret: true,
-                    title: '系统首页',
                 },
                 component: () => import('@/apps/dashboard/index.vue'),
             },
@@ -26,9 +26,9 @@ const routes: RouteRecordRaw[] = [
                 path: '/dnspod/index',
                 name: 'dnspod-index',
                 meta: {
+                    title: '域名解析',
                     login: true,
                     secret: true,
-                    title: '域名解析',
                 },
                 component: () => import('@/apps/dnspod/index.vue'),
             },
@@ -36,9 +36,9 @@ const routes: RouteRecordRaw[] = [
                 path: '/lighthouse/index',
                 name: 'lighthouse-index',
                 meta: {
+                    title: '轻量服务器',
                     login: true,
                     secret: true,
-                    title: '轻量服务器',
                 },
                 component: () => import('@/apps/lighthouse/index.vue'),
             },
@@ -46,8 +46,8 @@ const routes: RouteRecordRaw[] = [
                 path: '/user/info',
                 name: 'user-info',
                 meta: {
-                    login: true,
                     title: '个人中心',
+                    login: true,
                 },
                 component: () => import('@/apps/user/info.vue'),
             },
@@ -55,8 +55,8 @@ const routes: RouteRecordRaw[] = [
                 path: '/user/secret',
                 name: 'user-secret',
                 meta: {
-                    login: true,
                     title: '密钥管理',
+                    login: true,
                 },
                 component: () => import('@/apps/user/secret.vue'),
             },
@@ -64,8 +64,8 @@ const routes: RouteRecordRaw[] = [
                 path: '/error/403',
                 name: 'error-403',
                 meta: {
-                    login: true,
                     title: '没有权限',
+                    login: true,
                 },
                 component: () => import('@/apps/error/403.vue'),
             },
@@ -73,8 +73,8 @@ const routes: RouteRecordRaw[] = [
                 path: '/error/404',
                 name: 'error-404',
                 meta: {
-                    login: true,
                     title: '找不到页面',
+                    login: true,
                 },
                 component: () => import('@/apps/error/404.vue'),
             },

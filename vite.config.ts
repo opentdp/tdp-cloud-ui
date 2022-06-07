@@ -1,6 +1,5 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 import createVuePlugin from '@vitejs/plugin-vue';
-
 
 export default defineConfig({
     base: './',
@@ -18,9 +17,10 @@ export default defineConfig({
     },
     server: {
         port: 7900,
+        open: false,
         proxy: {
             '/api': {
-                target: 'http://127.0.0.1:7800'
+                target: 'http://127.0.0.1:7800',
             },
         },
     },

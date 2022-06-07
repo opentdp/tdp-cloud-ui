@@ -49,6 +49,7 @@
 import { reactive } from 'vue';
 
 const username = localStorage.getItem('vt_username');
+
 const form = reactive({
     old: '',
     new: '',

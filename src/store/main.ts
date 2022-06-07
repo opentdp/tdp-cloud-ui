@@ -29,7 +29,7 @@ export default defineStore({
         closeTabsOther(data) {
             this.tabsList = data;
         },
-        closeCurrentTag(data) {
+        closeCurrentTab(data) {
             for (let i = 0, len = this.tabsList.length; i < len; i++) {
                 const item = this.tabsList[i];
                 if (item.path === data.$route.fullPath) {
