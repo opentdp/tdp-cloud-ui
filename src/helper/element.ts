@@ -1,3 +1,5 @@
+// https://element-plus.org/zh-CN/
+
 import { App } from 'vue';
 import ElementPlus from 'element-plus';
 
@@ -8,8 +10,5 @@ export default (app: App<Element>) => {
     for (const icon of Object.entries(Icons)) {
         app.component(...icon);
     }
-
     app.use(ElementPlus, { locale: zhCn });
-
-    return app;
 };

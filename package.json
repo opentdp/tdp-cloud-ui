@@ -9,20 +9,20 @@
         "lint": "eslint --ext ts --ext js --ext vue src/"
     },
     "dependencies": {
-        "@element-plus/icons-vue": "^2.0.1",
-        "chart.js": "3.8.0",
-        "element-plus": "2.2.2",
+        "@element-plus/icons-vue": "^2.0.4",
+        "echarts": "5.3.2",
+        "element-plus": "2.2.4",
         "pinia": "^2.0.14",
-        "vue": "^3.2.36",
-        "vue-chartjs": "^4.1.1",
+        "vue": "^3.2.37",
+        "vue-echarts": "^6.0.3",
         "vue-router": "^4.0.15"
     },
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^5.27.0",
-        "@typescript-eslint/parser": "^5.27.0",
+        "@typescript-eslint/eslint-plugin": "^5.27.1",
+        "@typescript-eslint/parser": "^5.27.1",
         "@vitejs/plugin-vue": "^2.3.3",
-        "@vue/compiler-sfc": "^3.2.36",
-        "eslint": "^8.16.0",
+        "@vue/compiler-sfc": "^3.2.37",
+        "eslint": "^8.17.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-prettier": "^4.0.0",
@@ -30,8 +30,8 @@
         "eslint-plugin-vue-scoped-css": "^2.2.0",
         "prettier": "^2.6.2",
         "sass": "^1.52.2",
-        "typescript": "^4.7.2",
-        "vite": "^2.9.9",
-        "vue-tsc": "^0.36.0"
+        "typescript": "^4.7.3",
+        "vite": "^2.9.10",
+        "vue-tsc": "^0.37.1"
     }
 }

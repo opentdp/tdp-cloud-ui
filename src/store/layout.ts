@@ -14,33 +14,17 @@ export default defineStore('layout', {
             this.collapse = data;
         },
         // 多窗口操作
-        setTabsItem(data) {
-            this.tabsList.push(data);
-        },
-        delTabsItem(data) {
-            this.tabsList.splice(data.index, 1);
-        },
         clearTabs() {
             this.tabsList = [];
         },
+        openTabsItem(data) {
+            this.tabsList.push(data);
+        },
+        closeTabsItem(data) {
+            this.tabsList.splice(data.index, 1);
+        },
         closeTabsOther(data) {
             this.tabsList = data;
-        },
-        closeCurrentTab(data) {
-            for (let i = 0, len = this.tabsList.length; i < len; i++) {
-                const item = this.tabsList[i];
-                if (item.path === data.$route.fullPath) {
-                    if (i < len - 1) {
-                        data.$router.push(this.tabsList[i + 1].path);
-                    } else if (i > 0) {
-                        data.$router.push(this.tabsList[i - 1].path);
-                    } else {
-                        data.$router.push('/');
-                    }
-                    this.tabsList.splice(i, 1);
-                    break;
-                }
-            }
         },
         // 密钥列表更新
         setSecrets(data: any[]) {
