@@ -25,8 +25,9 @@
         </el-card>
         <el-card shadow="hover">
             <template #header>
-                <div class="clearfix">
+                <div class="card-header">
                     <span>添加密钥</span>
+                    <el-button class="button" text @click="gotoQCloudCAM"> 腾讯云 CAM </el-button>
                 </div>
             </template>
             <el-form label-width="90px">
@@ -97,5 +98,18 @@ const deleteSecret = idx => {
     });
 };
 
+// 腾讯云CAM
+const gotoQCloudCAM = () => {
+    window.open('https://console.cloud.tencent.com/cam', '_blank');
+};
+
 fetchSecrets();
 </script>
+
+<style lang="scss" scoped>
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>
