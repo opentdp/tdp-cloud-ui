@@ -84,8 +84,9 @@ onMounted(() => {
 const userDropdown = command => {
     switch (command) {
         case 'loginout':
+            localStorage.removeItem('vt_keyid');
+            localStorage.removeItem('vt_token');
             localStorage.removeItem('vt_username');
-            localStorage.removeItem('vt_password');
             router.push('/user/login');
             break;
         case 'user':
