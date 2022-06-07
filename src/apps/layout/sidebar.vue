@@ -49,7 +49,7 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-import useStore from '@/store/main';
+import useStore from '@/store/layout';
 
 const route = useRoute();
 const store = useStore();

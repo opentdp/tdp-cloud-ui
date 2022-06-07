@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import useStore from '@/store/main';
+import useStore from '@/store/layout';
 
 import vNavbar from './navbar.vue';
 import vSidebar from './sidebar.vue';

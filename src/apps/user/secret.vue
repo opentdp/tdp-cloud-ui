@@ -52,7 +52,7 @@ import { computed, reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 import Api from '@/api';
-import useStore from '@/store/main';
+import useStore from '@/store/layout';
 
 const store = useStore();
 

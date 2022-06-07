@@ -33,7 +33,7 @@
 import { computed } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 
-import useStore from '@/store/main';
+import useStore from '@/store/layout';
 
 const store = useStore();
 const route = useRoute();

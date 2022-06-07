@@ -60,7 +60,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Api from '@/api';
-import useStore from '@/store/main';
+import useStore from '@/store/layout';
 
 const store = useStore();
 const router = useRouter();

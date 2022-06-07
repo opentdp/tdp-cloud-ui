@@ -44,7 +44,7 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 
 import Api from '@/api';
-import useStore from '@/store/main';
+import useStore from '@/store/layout';
 
 const store = useStore();
 const router = useRouter();
