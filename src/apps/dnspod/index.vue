@@ -13,7 +13,7 @@
                         {{ statusMap[scope.row.Status] }}
                     </template>
                 </el-table-column>
-                <el-table-column label="NS 状态" width="100">
+                <el-table-column label="NS 设置" width="100">
                     <template #default="scope">
                         {{ scope.row.DNSStatus ? '错误' : '正常' }}
                     </template>
