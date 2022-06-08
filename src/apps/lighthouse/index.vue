@@ -7,7 +7,7 @@
                 </div>
             </template>
             <el-table :data="instances" style="width: 100%">
-                <el-table-column fixed prop="InstanceName" label="实列名" width="150"></el-table-column>
+                <el-table-column fixed prop="InstanceName" label="实列名"></el-table-column>
                 <el-table-column label="地域" width="150">
                     <template #default="scope">
                         {{ showRegion(scope.row.Zone) }}
