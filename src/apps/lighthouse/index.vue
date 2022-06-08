@@ -1,28 +1,28 @@
 <template>
     <div>
-        <el-card shadow="hover" style="height: 403px">
+        <el-card shadow="hover">
             <template #header>
                 <div class="clearfix">
                     <span>轻量实例</span>
                 </div>
             </template>
-            <el-table :data="instances" style="width: 100%">
-                <el-table-column fixed prop="InstanceName" label="实列名"></el-table-column>
-                <el-table-column label="地域" width="150">
+            <el-table :data="instances" table-layout="fixed">
+                <el-table-column fixed prop="InstanceName" label="实列名" min-width="150"></el-table-column>
+                <el-table-column label="地域" min-width="150">
                     <template #default="scope">
                         {{ showRegion(scope.row.Zone) }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="CPU" label="vCPU" width="100"></el-table-column>
-                <el-table-column prop="Memory" label="内存(GiB)" width="100"></el-table-column>
-                <el-table-column label="流量(已用/总量)" width="180">
+                <el-table-column prop="CPU" label="vCPU" min-width="100"></el-table-column>
+                <el-table-column prop="Memory" label="内存(GiB)" min-width="100"></el-table-column>
+                <el-table-column label="流量(已用/总量)" min-width="180">
                     <template #default="scope">
                         {{ showTraffic(scope.row.InstanceId) }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="PrivateAddresses" label="内网 IP" width="150"></el-table-column>
-                <el-table-column prop="PublicAddresses" label="外网 IP" width="150"></el-table-column>
-                <el-table-column label="到期时间" width="180">
+                <el-table-column prop="PrivateAddresses" label="内网 IP" min-width="150"></el-table-column>
+                <el-table-column prop="PublicAddresses" label="外网 IP" min-width="150"></el-table-column>
+                <el-table-column label="到期时间" min-width="180">
                     <template #default="scope">
                         {{ dateFormat(scope.row.ExpiredTime, 'yyyy-MM-dd hh:mm:ss') }}
                     </template>
