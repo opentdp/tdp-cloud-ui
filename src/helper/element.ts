@@ -1,4 +1,8 @@
-// https://element-plus.org/zh-CN/
+/**
+ * 中后台组件库
+ * https://element-plus.org/zh-CN
+ * https://github.com/rehiy/vue-admin-template
+ */
 
 import { App } from 'vue';
 import ElementPlus from 'element-plus';

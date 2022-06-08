@@ -22,7 +22,11 @@
                 </el-table-column>
                 <el-table-column prop="PrivateAddresses" label="内网 IP" width="150"></el-table-column>
                 <el-table-column prop="PublicAddresses" label="外网 IP" width="150"></el-table-column>
-                <el-table-column prop="ExpiredTime" label="到期时间" width="180"></el-table-column>
+                <el-table-column label="到期时间" width="180">
+                    <template #default="scope">
+                        {{ dateFormat(scope.row.ExpiredTime, 'yyyy-MM-dd hh:mm:ss') }}
+                    </template>
+                </el-table-column>
             </el-table>
         </el-card>
     </div>
@@ -32,7 +36,7 @@
 import { ref, reactive } from 'vue';
 
 import Api from '@/api';
-import { bytesToSize } from '@/helper/utils';
+import { bytesToSize, dateFormat } from '@/helper/utils';
 
 const instances = ref([]);
 
