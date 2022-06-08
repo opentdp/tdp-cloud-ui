@@ -4,7 +4,7 @@
             <el-card v-if="region.InstanceCount > 0" shadow="hover" class="mgb10">
                 <template #header>
                     <div class="clearfix">
-                        <span>轻量实例 - {{ region.RegionName }}</span>
+                        <span>{{ region.RegionName }}</span>
                     </div>
                 </template>
                 <el-table :data="region.InstanceSet" table-layout="fixed">
