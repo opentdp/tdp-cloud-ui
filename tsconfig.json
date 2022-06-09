@@ -11,6 +11,9 @@
             "esnext",
             "dom"
         ],
+        "types": [
+            "pinia-plugin-persist"
+        ],
         "noEmit": true,
         "baseUrl": "./",
         "paths": {

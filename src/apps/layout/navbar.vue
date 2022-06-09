@@ -60,17 +60,19 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Api from '@/api';
-import useStore from '@/store/layout';
+import layoutStore from '@/store/layout';
+import sessionStore from '@/store/session';
 
-const store = useStore();
 const router = useRouter();
+const layout = layoutStore();
+const session = sessionStore();
 
 const username = localStorage.getItem('vt_username');
 
 // 侧边栏折叠
-const collapse = computed(() => store.collapse);
+const collapse = computed(() => layout.collapse);
 const collapseChage = () => {
-    store.handleCollapse(!collapse.value);
+    layout.setCollapse(!collapse.value);
 };
 
 // 小屏自动折叠
@@ -79,6 +81,32 @@ onMounted(() => {
         collapseChage();
     }
 });
+
+// 密钥列表
+const secretList = computed(() => session.secretList);
+Api.user.fetchSecrets().then(res => {
+    session.setSecrets(res);
+    updateSecretName();
+});
+
+// 更新密钥别名
+const secretName = ref('');
+const updateSecretName = () => {
+    const keyid = localStorage.getItem('vt_keyid');
+    for (const item of secretList.value) {
+        if (item.Id === +keyid) {
+            secretName.value = item.Description;
+            return item.Description;
+        }
+    }
+    return '错误';
+};
+
+// 密钥下拉菜单选择事件
+const secretDropdown = command => {
+    localStorage.setItem('vt_keyid', command.Id);
+    location.reload();
+};
 
 // 用户名下拉菜单选择事件
 const userDropdown = command => {
@@ -93,32 +121,6 @@ const userDropdown = command => {
             router.push('/user/info');
             break;
     }
-};
-
-// 密钥列表
-const secretName = ref('');
-const secretList = computed(() => store.secretList);
-Api.user.fetchSecrets().then(res => {
-    store.setSecrets(res);
-    updateSecretName();
-});
-
-// 密钥下拉菜单选择事件
-const secretDropdown = command => {
-    localStorage.setItem('vt_keyid', command.Id);
-    location.reload();
-};
-
-// 更新密钥别名
-const updateSecretName = () => {
-    const keyid = localStorage.getItem('vt_keyid');
-    for (const item of secretList.value) {
-        if (item.Id === +keyid) {
-            secretName.value = item.Description;
-            return item.Description;
-        }
-    }
-    return '错误';
 };
 </script>
 

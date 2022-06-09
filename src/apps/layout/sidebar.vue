@@ -49,13 +49,13 @@
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-import useStore from '@/store/layout';
+import layoutStore from '@/store/layout';
 
 const route = useRoute();
-const store = useStore();
+const layout = layoutStore();
 
 const onRoutes = computed(() => route.path);
-const collapse = computed(() => store.collapse);
+const collapse = computed(() => layout.collapse);
 
 const items = [
     {

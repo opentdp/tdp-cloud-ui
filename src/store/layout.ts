@@ -5,12 +5,11 @@ export default defineStore('layout', {
         return {
             collapse: false,
             tabsList: [],
-            secretList: [],
         };
     },
     actions: {
         // 侧边栏折叠
-        handleCollapse(data) {
+        setCollapse(data: boolean) {
             this.collapse = data;
         },
         // 多窗口操作
@@ -25,13 +24,6 @@ export default defineStore('layout', {
         },
         closeTabsOther(data) {
             this.tabsList = data;
-        },
-        // 密钥列表更新
-        setSecrets(data: any[]) {
-            this.secretList = data;
-            if (data.length > 0 && +localStorage.getItem('vt_keyid') < 1) {
-                localStorage.setItem('vt_keyid', data[0].Id);
-            }
         },
     },
 });

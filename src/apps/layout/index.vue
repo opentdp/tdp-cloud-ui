@@ -18,15 +18,16 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 
-import useStore from '@/store/layout';
+import layoutStore from '@/store/layout';
 
 import vNavbar from './navbar.vue';
 import vSidebar from './sidebar.vue';
 import vTabs from './tabs.vue';
 
-const store = useStore();
-const tabsList = computed(() => store.tabsList.map(item => item.name));
-const collapse = computed(() => store.collapse);
+const layout = layoutStore();
+
+const collapse = computed(() => layout.collapse);
+const tabsList = computed(() => layout.tabsList.map(item => item.name));
 </script>
 
 <style lang="scss" scoped>

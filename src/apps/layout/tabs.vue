@@ -28,17 +28,17 @@
 import { computed } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 
-import useStore from '@/store/layout';
+import layoutStore from '@/store/layout';
 
-const store = useStore();
 const route = useRoute();
 const router = useRouter();
+const layout = layoutStore();
 
 const isActive = path => {
     return path === route.fullPath;
 };
 
-const tabsList = computed(() => store.tabsList);
+const tabsList = computed(() => layout.tabsList);
 const showTabs = computed(() => tabsList.value.length > 0);
 
 // 更新标签
@@ -48,9 +48,9 @@ const updateTabs = route => {
     });
     if (!isExist) {
         if (tabsList.value.length >= 8) {
-            store.closeTabsItem({ index: 0 });
+            layout.closeTabsItem({ index: 0 });
         }
-        store.openTabsItem({
+        layout.openTabsItem({
             name: route.name,
             title: route.meta.title,
             path: route.fullPath,
@@ -64,7 +64,7 @@ onBeforeRouteUpdate(to => updateTabs(to));
 // 关闭单个标签
 const closeTabs = index => {
     const last = tabsList.value[index];
-    store.closeTabsItem({ index }); // 不能换位置
+    layout.closeTabsItem({ index }); // 不能换位置
     const item = tabsList.value[index] ? tabsList.value[index] : tabsList.value[index - 1];
     if (item) {
         last.path === route.fullPath && router.push(item.path);
@@ -78,12 +78,12 @@ const closeOther = () => {
     const cur = tabsList.value.filter(item => {
         return item.path === route.fullPath;
     });
-    store.closeTabsOther(cur);
+    layout.closeTabsOther(cur);
 };
 
 // 关闭全部标签
 const closeAll = () => {
-    store.clearTabs();
+    layout.clearTabs();
     router.push('/');
 };
 

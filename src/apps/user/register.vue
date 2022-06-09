@@ -55,10 +55,10 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 
 import Api from '@/api';
-import useStore from '@/store/layout';
+import layoutStore from '@/store/layout';
 
-const store = useStore();
 const router = useRouter();
+const layout = layoutStore();
 
 const param = reactive({
     username: '',
@@ -87,7 +87,7 @@ const submitForm = () => {
     });
 };
 
-store.clearTabs();
+layout.clearTabs();
 </script>
 
 <style lang="scss" scoped>

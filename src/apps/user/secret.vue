@@ -53,16 +53,16 @@ import { computed, reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 import Api from '@/api';
-import useStore from '@/store/layout';
+import sessionStore from '@/store/session';
 
-const store = useStore();
+const session = sessionStore();
 
 // 密钥列表
 
-const secretList = computed(() => store.secretList);
+const secretList = computed(() => session.secretList);
 const fetchSecrets = () => {
     Api.user.fetchSecrets().then(res => {
-        store.setSecrets(res);
+        session.setSecrets(res);
     });
 };
 
