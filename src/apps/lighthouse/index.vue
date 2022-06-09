@@ -16,7 +16,16 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="CPU" label="vCPU" min-width="100"></el-table-column>
-                    <el-table-column prop="Memory" label="内存(GiB)" min-width="100"></el-table-column>
+                    <el-table-column label="内存" min-width="100">
+                        <template #default="scope">
+                            {{ scope.row.Memory + ' GiB' }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="系统盘" min-width="150">
+                        <template #default="scope">
+                            {{ scope.row.SystemDisk.DiskSize + ' GiB' }}
+                        </template>
+                    </el-table-column>
                     <el-table-column label="流量(已用/总量)" min-width="180">
                         <template #default="scope">
                             {{ showTraffic(scope.row.InstanceId) }}

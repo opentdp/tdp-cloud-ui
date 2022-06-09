@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <div class="collapse-btn" @click="collapseChage">
+        <div class="collapse-btn" @click="collapseChange">
             <el-icon :size="30">
                 <Fold v-if="!collapse" />
                 <Expand v-else />
@@ -15,7 +15,7 @@
                 </el-icon>
                 <el-dropdown v-if="secretList.length > 0" class="user-name" trigger="click" @command="secretDropdown">
                     <span class="el-dropdown-link">
-                        &nbsp;{{ secretName || '默认' }}&nbsp;
+                        &nbsp;{{ keyName || '请选择' }}&nbsp;
                         <el-icon>
                             <CaretBottom />
                         </el-icon>
@@ -71,50 +71,37 @@ const username = session.username;
 
 // 侧边栏折叠
 const collapse = computed(() => layout.collapse);
-const collapseChage = () => {
+const collapseChange = () => {
     layout.setCollapse(!collapse.value);
 };
 
 // 小屏自动折叠
 onMounted(() => {
     if (document.body.clientWidth < 1000) {
-        collapseChage();
+        collapseChange();
     }
 });
 
 // 密钥列表
+const keyName = computed(() => session.keyname);
 const secretList = computed(() => session.secretList);
 Api.user.fetchSecrets().then(res => {
     session.setSecrets(res);
-    updateSecretName();
 });
 
-// 更新密钥别名
-const secretName = ref('');
-const updateSecretName = () => {
-    const keyid = session.keyid;
-    for (const item of secretList.value) {
-        if (item.Id === +keyid) {
-            secretName.value = item.Description;
-            return item.Description;
-        }
-    }
-    return '错误';
-};
-
 // 密钥下拉菜单选择事件
-const secretDropdown = command => {
-    session.keyid = command.Id;
+const secretDropdown = data => {
+    session.keyname = data.Description;
+    session.keyid = data.Id;
     location.reload();
 };
 
 // 用户名下拉菜单选择事件
-const userDropdown = command => {
-    switch (command) {
+const userDropdown = data => {
+    switch (data) {
         case 'loginout':
-            session.keyid = 0;
-            session.token = '';
-            session.username = '';
+            layout.$reset();
+            session.$reset();
             router.push('/user/login');
             break;
         case 'user':
