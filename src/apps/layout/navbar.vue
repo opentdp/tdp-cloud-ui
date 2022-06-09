@@ -67,7 +67,7 @@ const router = useRouter();
 const layout = layoutStore();
 const session = sessionStore();
 
-const username = localStorage.getItem('vt_username');
+const username = session.username;
 
 // 侧边栏折叠
 const collapse = computed(() => layout.collapse);
@@ -92,7 +92,7 @@ Api.user.fetchSecrets().then(res => {
 // 更新密钥别名
 const secretName = ref('');
 const updateSecretName = () => {
-    const keyid = localStorage.getItem('vt_keyid');
+    const keyid = session.keyid;
     for (const item of secretList.value) {
         if (item.Id === +keyid) {
             secretName.value = item.Description;
@@ -104,7 +104,7 @@ const updateSecretName = () => {
 
 // 密钥下拉菜单选择事件
 const secretDropdown = command => {
-    localStorage.setItem('vt_keyid', command.Id);
+    session.keyid = command.Id;
     location.reload();
 };
 
@@ -112,9 +112,9 @@ const secretDropdown = command => {
 const userDropdown = command => {
     switch (command) {
         case 'loginout':
-            localStorage.removeItem('vt_keyid');
-            localStorage.removeItem('vt_token');
-            localStorage.removeItem('vt_username');
+            session.keyid = 0;
+            session.token = '';
+            session.username = '';
             router.push('/user/login');
             break;
         case 'user':

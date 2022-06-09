@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
+import sessionStore from '@/store/session';
+
 import { routes } from './routes';
 
 const router = createRouter({
@@ -10,8 +12,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} - TDP Cloud`;
 
-    const isLogin = !!localStorage.getItem('vt_token');
-    const isSecret = +localStorage.getItem('vt_keyid') > 0;
+    const session = sessionStore();
+
+    const isLogin = !!session.token;
+    const isSecret = session.keyid > 0;
 
     if (to.meta.login && !isLogin) {
         next('/user/login');

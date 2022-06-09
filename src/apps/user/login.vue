@@ -45,9 +45,11 @@ import { ElMessage } from 'element-plus';
 
 import Api from '@/api';
 import layoutStore from '@/store/layout';
+import sessionStore from '@/store/session';
 
 const router = useRouter();
 const layout = layoutStore();
+const session = sessionStore();
 
 const param = reactive({
     username: import.meta.env.VITE_USERNAME || '',
@@ -69,10 +71,10 @@ const submitForm = () => {
         }
         Api.user.login(param).then(data => {
             ElMessage.success('登录成功');
-            localStorage.setItem('vt_username', param.username);
-            localStorage.setItem('vt_token', data.token);
+            session.username = param.username;
+            session.token = data.token;
             if (data.keyid > 0) {
-                localStorage.setItem('vt_keyid', data.keyid);
+                session.keyid = data.keyid;
                 router.push('/');
             } else {
                 router.push('/user/secret');

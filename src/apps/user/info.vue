@@ -48,7 +48,11 @@
 <script lang="ts" setup>
 import { reactive } from 'vue';
 
-const username = localStorage.getItem('vt_username');
+import sessionStore from '@/store/session';
+
+const session = sessionStore();
+
+const username = session.username;
 
 const form = reactive({
     old: '',
