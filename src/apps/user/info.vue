@@ -4,7 +4,7 @@
             <el-col :span="12">
                 <el-card shadow="hover">
                     <template #header>
-                        <div class="clearfix">
+                        <div class="card-header">
                             <span>基础信息</span>
                         </div>
                     </template>
@@ -20,7 +20,7 @@
             <el-col :span="12">
                 <el-card shadow="hover">
                     <template #header>
-                        <div class="clearfix">
+                        <div class="card-header">
                             <span>账户编辑</span>
                         </div>
                     </template>

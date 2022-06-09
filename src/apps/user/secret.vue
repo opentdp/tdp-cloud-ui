@@ -2,7 +2,7 @@
     <div>
         <el-card shadow="hover" class="mgb10">
             <template #header>
-                <div class="clearfix">
+                <div class="card-header">
                     <span>密钥列表</span>
                 </div>
             </template>

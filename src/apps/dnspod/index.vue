@@ -2,8 +2,9 @@
     <div>
         <el-card shadow="hover">
             <template #header>
-                <div class="clearfix">
-                    <span>域名列表</span>
+                <div class="card-header">
+                    <span>域名列表</span> &nbsp;
+                    <small>所有域名数量: {{ domainDescribe.DomainCountInfo?.AllTotal }}</small>
                 </div>
             </template>
             <el-table :data="domainDescribe.DomainList" table-layout="fixed">
@@ -43,3 +44,11 @@ Api.dnspod.describeDomainList().then(res => {
     domainDescribe.value = res;
 });
 </script>
+
+<style lang="scss" scoped>
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>

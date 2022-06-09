@@ -3,8 +3,9 @@
         <template v-for="region in regions" :key="region.Region">
             <el-card v-if="region.InstanceCount > 0" shadow="hover" class="mgb10">
                 <template #header>
-                    <div class="clearfix">
-                        <span>{{ region.RegionName }}</span>
+                    <div class="card-header">
+                        <b>{{ region.RegionName }}</b> &nbsp;
+                        <small>实例总数: {{ region.InstanceCount }}</small>
                     </div>
                 </template>
                 <el-table :data="region.InstanceSet" table-layout="fixed">
@@ -93,3 +94,11 @@ const showRegion = (zone: string) => {
 
 geteRegions();
 </script>
+
+<style lang="scss" scoped>
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>
