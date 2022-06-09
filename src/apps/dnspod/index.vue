@@ -1,10 +1,10 @@
 <template>
     <div>
-        <el-card shadow="hover">
+        <el-card v-if="domainDescribe.DomainCountInfo" shadow="hover">
             <template #header>
                 <div class="card-header">
                     <span>域名列表</span> &nbsp;
-                    <small>所有域名数量: {{ domainDescribe.DomainCountInfo?.AllTotal }}</small>
+                    <small>域名总数: {{ domainDescribe.DomainCountInfo.AllTotal }}</small>
                 </div>
             </template>
             <el-table :data="domainDescribe.DomainList" table-layout="fixed">

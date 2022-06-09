@@ -4,6 +4,8 @@ import { LighthouseClient } from './cloud/lighthouse';
 
 import { UserClient } from './local/user';
 
+export * from './cloud/typings.d';
+
 export default {
     cam: new CamClient(),
     dnspod: new DnspodClient(),

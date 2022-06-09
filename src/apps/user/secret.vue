@@ -8,7 +8,7 @@
             </template>
             <el-table :data="secretList" style="width: 100%">
                 <el-table-column prop="Id" label="序号" width="80"></el-table-column>
-                <el-table-column prop="Describe" label="别名" width="160"></el-table-column>
+                <el-table-column prop="Description" label="别名" width="160"></el-table-column>
                 <el-table-column prop="SecretId" label="Secret Id"></el-table-column>
                 <el-table-column prop="SecretKey" label="Secret Key"></el-table-column>
                 <el-table-column label="操作" width="180" align="center">
@@ -32,7 +32,7 @@
             </template>
             <el-form label-width="90px">
                 <el-form-item label="别名">
-                    <el-input v-model="param.describe"></el-input>
+                    <el-input v-model="param.description"></el-input>
                 </el-form-item>
                 <el-form-item label="SecretId">
                     <el-input v-model="param.secretId"></el-input>
@@ -69,17 +69,17 @@ const fetchSecrets = () => {
 // 添加密钥
 
 const param = reactive({
-    describe: '',
     secretId: '',
     secretKey: '',
+    description: '',
 });
 
 const createSecret = () => {
     Api.user.createSecret(param).then(data => {
         ElMessage.success(data.result);
-        param.describe = '';
         param.secretId = '';
         param.secretKey = '';
+        param.description = '';
         fetchSecrets();
     });
 };

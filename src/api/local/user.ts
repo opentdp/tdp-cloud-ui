@@ -25,7 +25,7 @@ interface UserInput {
 }
 
 interface SecretInput {
-    describe: string;
     secretId: string;
     secretKey: string;
+    description: string;
 }

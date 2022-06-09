@@ -1,9 +1,9 @@
 import { ElMessage } from 'element-plus';
 
 export class HttpClient {
-    protected async get(url: string, param?: Record<string | number, any>) {
-        if (param) {
-            url += '?' + this.buildQuery(param);
+    protected async get(url: string, query?: Record<string | number, any>) {
+        if (query) {
+            url += '?' + this.buildQuery(query);
         }
         const body = await fetch('/api' + url, {
             method: 'GET',
@@ -12,18 +12,18 @@ export class HttpClient {
         return this.parseResponse(body);
     }
 
-    protected async post(url: string, param: Record<string | number, any>) {
+    protected async post(url: string, query: Record<string | number, any>) {
         const body = await fetch('/api' + url, {
             method: 'POST',
             headers: this.buildHeader('json'),
-            body: JSON.stringify(param),
+            body: JSON.stringify(query),
         });
         return this.parseResponse(body);
     }
 
-    protected async delete(url: string, param?: Record<string | number, any>) {
-        if (param) {
-            url += '?' + this.buildQuery(param);
+    protected async delete(url: string, query?: Record<string | number, any>) {
+        if (query) {
+            url += '?' + this.buildQuery(query);
         }
         const body = await fetch('/api' + url, {
             method: 'DELETE',

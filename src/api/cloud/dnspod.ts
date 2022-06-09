@@ -1,7 +1,9 @@
 import { HttpClient } from '../basic/http';
 
+import { Dnspod } from './typings';
+
 export class DnspodClient extends HttpClient {
-    public describeDomainList() {
-        return this.get('/cloud/dnspod/describeDomainList');
+    public describeDomainList(query?: Dnspod.DescribeDomainListRequest): Promise<Dnspod.DescribeDomainListResponse> {
+        return this.get('/cloud/dnspod/describeDomainList', query);
     }
 }

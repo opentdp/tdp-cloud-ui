@@ -23,7 +23,7 @@
                     <template #dropdown>
                         <el-dropdown-menu>
                             <el-dropdown-item v-for="item in secretList" :key="item.Id" :command="item">
-                                {{ item.Describe }}
+                                {{ item.Description }}
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
@@ -114,8 +114,8 @@ const updateSecretName = () => {
     const keyid = localStorage.getItem('vt_keyid');
     for (const item of secretList.value) {
         if (item.Id === +keyid) {
-            secretName.value = item.Describe;
-            return item.Describe;
+            secretName.value = item.Description;
+            return item.Description;
         }
     }
     return '错误';
