@@ -30,7 +30,7 @@ export default defineStore('layout', {
         setSecrets(data: any[]) {
             this.secretList = data;
             if (data.length > 0 && +localStorage.getItem('vt_keyid') < 1) {
-                localStorage.setItem('vt_keyid', data[0].ID);
+                localStorage.setItem('vt_keyid', data[0].Id);
             }
         },
     },

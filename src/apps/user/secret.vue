@@ -91,7 +91,7 @@ const deleteSecret = idx => {
         type: 'warning',
     }).then(() => {
         const item = secretList.value[idx];
-        Api.user.deleteSecret(item.ID).then(data => {
+        Api.user.deleteSecret(item.Id).then(data => {
             secretList.value.splice(idx, 1);
             ElMessage.success(data.result);
         });

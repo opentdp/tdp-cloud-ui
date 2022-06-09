@@ -22,7 +22,7 @@
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item v-for="item in secretList" :key="item.ID" :command="item">
+                            <el-dropdown-item v-for="item in secretList" :key="item.Id" :command="item">
                                 {{ item.Describe }}
                             </el-dropdown-item>
                         </el-dropdown-menu>
@@ -105,7 +105,7 @@ Api.user.fetchSecrets().then(res => {
 
 // 密钥下拉菜单选择事件
 const secretDropdown = command => {
-    localStorage.setItem('vt_keyid', command.ID);
+    localStorage.setItem('vt_keyid', command.Id);
     location.reload();
 };
 
@@ -113,7 +113,7 @@ const secretDropdown = command => {
 const updateSecretName = () => {
     const keyid = localStorage.getItem('vt_keyid');
     for (const item of secretList.value) {
-        if (item.ID === +keyid) {
+        if (item.Id === +keyid) {
             secretName.value = item.Describe;
             return item.Describe;
         }
