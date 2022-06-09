@@ -8,6 +8,7 @@ export class LighthouseClient extends HttpClient {
     }
 
     public describeInstances(region: string, query?: Lighthouse.DescribeInstancesRequest): Promise<Lighthouse.DescribeInstancesResponse> {
+        query = Object.assign({ Limit: 100 }, query);
         return this.get('/cloud/lighthouse/describeInstances/' + region, query);
     }
 
@@ -15,6 +16,7 @@ export class LighthouseClient extends HttpClient {
         region: string,
         query?: Lighthouse.DescribeInstancesRequest
     ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
+        query = Object.assign({ Limit: 100 }, query);
         return this.get('/cloud/lighthouse/describeInstancesTrafficPackages/' + region, query);
     }
 }
