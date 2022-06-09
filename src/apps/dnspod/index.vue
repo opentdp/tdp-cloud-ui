@@ -14,7 +14,7 @@
                         {{ statusMap[scope.row.Status] }}
                     </template>
                 </el-table-column>
-                <el-table-column fixed prop="RecordCount" label="记录数" min-width="100"></el-table-column>
+                <el-table-column prop="RecordCount" label="记录数" min-width="100"></el-table-column>
                 <el-table-column prop="EffectiveDNS" label="NS 服务器" min-width="250"></el-table-column>
                 <el-table-column label="NS 记录" min-width="100">
                     <template #default="scope">
