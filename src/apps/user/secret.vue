@@ -7,7 +7,7 @@
                 </div>
             </template>
             <el-table :data="secretList" style="width: 100%">
-                <el-table-column prop="ID" label="序号" width="80"></el-table-column>
+                <el-table-column prop="Id" label="序号" width="80"></el-table-column>
                 <el-table-column prop="Describe" label="别名" width="160"></el-table-column>
                 <el-table-column prop="SecretId" label="Secret Id"></el-table-column>
                 <el-table-column prop="SecretKey" label="Secret Key"></el-table-column>
