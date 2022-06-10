@@ -6,22 +6,18 @@
                 <el-form-item prop="username">
                     <el-input v-model="param.username" placeholder="用户名">
                         <template #prepend>
-                            <el-button>
-                                <el-icon>
-                                    <User />
-                                </el-icon>
-                            </el-button>
+                            <el-icon>
+                                <User />
+                            </el-icon>
                         </template>
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
                     <el-input v-model="param.password" type="password" placeholder="密码" @keyup.enter="submitForm()">
                         <template #prepend>
-                            <el-button>
-                                <el-icon>
-                                    <Lock />
-                                </el-icon>
-                            </el-button>
+                            <el-icon>
+                                <Lock />
+                            </el-icon>
                         </template>
                     </el-input>
                 </el-form-item>
