@@ -3,6 +3,13 @@ import { ElMessage } from 'element-plus';
 import sessionStore from '@/store/session';
 
 export class HttpClient {
+    protected cache: any = {};
+
+    private _session: any;
+    protected get session() {
+        return this._session || (this._session = sessionStore());
+    }
+
     protected async get(url: string, query?: Record<string | number, any>) {
         if (query) {
             url += '?' + this.buildQuery(query);
@@ -50,10 +57,9 @@ export class HttpClient {
 
     protected buildHeader(type = '') {
         const headers: HeadersInit = {};
-        const session = sessionStore();
 
-        const keyid = session.keyid || 0;
-        const token = session.token || '';
+        const keyid = this.session.keyid || 0;
+        const token = this.session.token || '';
 
         if (token) {
             headers.Authorization = keyid + ':' + token;

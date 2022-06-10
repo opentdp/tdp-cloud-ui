@@ -20,13 +20,13 @@ export class LighthouseClient extends HttpClient {
         return this.get('/cloud/lighthouse/describeInstancesTrafficPackages/' + region, query);
     }
 
-    public describeSnapshots(region: string, query?: Lighthouse.DescribeSnapshotsRequest): Promise<Lighthouse.DescribeSnapshotsResponse> {
+    public describeSnapshots(region: string, query: Lighthouse.DescribeSnapshotsRequest): Promise<Lighthouse.DescribeSnapshotsResponse> {
         query = Object.assign({ Limit: 100 }, query);
-        return this.get('/cloud/lighthouse/describeInstancesTrafficPackages/' + region, query);
+        return this.get('/cloud/lighthouse/describeSnapshots/' + region, query);
     }
 
-    public describeFirewallRules(region: string, query?: Lighthouse.DescribeFirewallRulesRequest): Promise<Lighthouse.DescribeFirewallRulesResponse> {
+    public describeFirewallRules(region: string, query: Lighthouse.DescribeFirewallRulesRequest): Promise<Lighthouse.DescribeFirewallRulesResponse> {
         query = Object.assign({ Limit: 100 }, query);
-        return this.get('/cloud/lighthouse/describeInstancesTrafficPackages/' + region, query);
+        return this.get('/cloud/lighthouse/describeFirewallRules/' + region, query);
     }
 }
