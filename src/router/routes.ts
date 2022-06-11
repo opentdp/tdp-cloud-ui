@@ -43,7 +43,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import('@/apps/lighthouse/index.vue'),
             },
             {
-                path: '/lighthouse/detail/:zone/:id',
+                path: '/lighthouse/detail/:zone/:instanceId',
                 name: 'lighthouse-detail',
                 meta: {
                     title: '轻量服务器详情',

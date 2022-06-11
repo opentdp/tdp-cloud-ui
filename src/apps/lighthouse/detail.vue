@@ -1,6 +1,22 @@
 <template>
     <div>
-        <el-card v-if="snapshot.TotalCount > 0" shadow="hover" class="mgb10">
+        <el-card shadow="hover" class="mgb10">
+            <template #header>
+                <div class="card-header">
+                    <b>防火墙</b> &nbsp;
+                    <small>规则总数: {{ firewall.TotalCount }}</small>
+                </div>
+            </template>
+            <el-table :data="firewall.FirewallRuleSet" table-layout="fixed">
+                <el-table-column prop="AppType" label="应用类型" min-width="100"></el-table-column>
+                <el-table-column prop="CidrBlock" label="来源" min-width="150"></el-table-column>
+                <el-table-column prop="Protocol" label="协议" min-width="100"></el-table-column>
+                <el-table-column prop="Port" label="端口" min-width="120"></el-table-column>
+                <el-table-column prop="Action" label="策略" min-width="100"></el-table-column>
+                <el-table-column prop="FirewallRuleDescription" label="备注" min-width="200"></el-table-column>
+            </el-table>
+        </el-card>
+        <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">
                     <b>快照</b> &nbsp;
@@ -31,22 +47,6 @@
                 </el-table-column>
             </el-table>
         </el-card>
-        <el-card v-if="firewall.TotalCount > 0" shadow="hover" class="mgb10">
-            <template #header>
-                <div class="card-header">
-                    <b>防火墙</b> &nbsp;
-                    <small>规则总数: {{ firewall.TotalCount }}</small>
-                </div>
-            </template>
-            <el-table :data="firewall.FirewallRuleSet" table-layout="fixed">
-                <el-table-column prop="AppType" label="应用类型" min-width="100"></el-table-column>
-                <el-table-column prop="CidrBlock" label="来源" min-width="150"></el-table-column>
-                <el-table-column prop="Protocol" label="协议" min-width="100"></el-table-column>
-                <el-table-column prop="Port" label="端口" min-width="120"></el-table-column>
-                <el-table-column prop="Action" label="策略" min-width="100"></el-table-column>
-                <el-table-column prop="FirewallRuleDescription" label="备注" min-width="200"></el-table-column>
-            </el-table>
-        </el-card>
     </div>
 </template>
 
@@ -55,13 +55,13 @@ import { reactive } from 'vue';
 import { useRoute } from 'vue-router';
 
 import Api from '@/api';
-import { bytesToSize, dateFormat } from '@/helper/utils';
+import { dateFormat } from '@/helper/utils';
 
 const route = useRoute();
 
 const zone = route.params.zone as string;
 const region = zone.replace(/-\d$/, '');
-const instanceId = route.params.id as string;
+const instanceId = route.params.instanceId as string;
 
 const snapshot = reactive({} as any);
 const firewall = reactive({} as any);
