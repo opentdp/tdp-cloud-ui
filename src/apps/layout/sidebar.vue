@@ -3,7 +3,7 @@
         <el-menu
             class="sidebar-el-menu"
             :default-active="onRoutes"
-            :collapse="collapse"
+            :collapse="layout.collapse"
             background-color="#324157"
             text-color="#bfcbd9"
             active-text-color="#20a0ff"
@@ -55,7 +55,6 @@ const route = useRoute();
 const layout = layoutStore();
 
 const onRoutes = computed(() => route.path);
-const collapse = computed(() => layout.collapse);
 
 const items = [
     {

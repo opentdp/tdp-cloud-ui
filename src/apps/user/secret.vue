@@ -6,7 +6,7 @@
                     <span>密钥列表</span>
                 </div>
             </template>
-            <el-table :data="secretList" style="width: 100%">
+            <el-table :data="session.secretList" style="width: 100%">
                 <el-table-column prop="Id" label="序号" width="80"></el-table-column>
                 <el-table-column prop="Description" label="别名" width="160"></el-table-column>
                 <el-table-column prop="SecretId" label="Secret Id"></el-table-column>
@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive } from 'vue';
+import { reactive } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 
 import Api from '@/api';
@@ -54,7 +54,6 @@ const session = sessionStore();
 
 // 密钥列表
 
-const secretList = computed(() => session.secretList);
 const fetchSecrets = () => {
     Api.user.fetchSecrets().then(res => {
         session.setSecrets(res);
@@ -85,9 +84,9 @@ const deleteSecret = idx => {
     ElMessageBox.confirm('确定要删除吗？', '提示', {
         type: 'warning',
     }).then(() => {
-        const item = secretList.value[idx];
+        const item = session.secretList[idx];
         Api.user.deleteSecret(item.Id).then(data => {
-            secretList.value.splice(idx, 1);
+            session.secretList.splice(idx, 1);
             ElMessage.success(data.result);
         });
     });

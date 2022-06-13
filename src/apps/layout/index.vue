@@ -1,33 +1,22 @@
 <template>
     <v-navbar />
     <v-sidebar />
-    <div class="content-box" :class="{ 'content-collapse': collapse }">
-        <v-tabs />
-        <div class="content">
-            <router-view v-slot="{ Component }">
-                <transition name="move" mode="out-in">
-                    <keep-alive :include="tabsList">
-                        <component :is="Component" />
-                    </keep-alive>
-                </transition>
-            </router-view>
-        </div>
+    <div class="content-box" :class="{ 'content-collapse': layout.collapse }">
+        <router-view v-slot="{ Component }">
+            <transition name="move" mode="out-in">
+                <component :is="Component" />
+            </transition>
+        </router-view>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue';
-
 import layoutStore from '@/store/layout';
 
 import vNavbar from './navbar.vue';
 import vSidebar from './sidebar.vue';
-import vTabs from './tabs.vue';
 
 const layout = layoutStore();
-
-const collapse = computed(() => layout.collapse);
-const tabsList = computed(() => layout.tabsList.map(item => item.name));
 </script>
 
 <style lang="scss" scoped>
@@ -37,20 +26,14 @@ const tabsList = computed(() => layout.tabsList.map(item => item.name));
     right: 0;
     top: 70px;
     bottom: 0;
-    padding-bottom: 30px;
+    padding: 10px 10px 30px 10px;
     transition: left 0.3s ease-in-out;
     background: #f0f0f0;
+    overflow-y: scroll;
 
-    .content {
-        width: auto;
-        height: 100%;
-        padding: 10px;
-        overflow-y: scroll;
+    &.content-collapse {
+        left: 65px;
     }
-}
-
-.content-collapse {
-    left: 65px;
 }
 
 .move-enter-from,

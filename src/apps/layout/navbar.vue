@@ -2,7 +2,7 @@
     <div class="header">
         <div class="collapse-btn" @click="collapseChange">
             <el-icon :size="30">
-                <Fold v-if="!collapse" />
+                <Fold v-if="!layout.collapse" />
                 <Expand v-else />
             </el-icon>
         </div>
@@ -10,19 +10,19 @@
         <div class="header-right">
             <div class="header-user-con">
                 <!-- 密钥管理 -->
-                <el-icon v-if="secretList.length > 0" :size="30">
+                <el-icon v-if="session.secretList.length > 0" :size="30">
                     <Key />
                 </el-icon>
-                <el-dropdown v-if="secretList.length > 0" class="user-name" trigger="click" @command="secretDropdown">
+                <el-dropdown v-if="session.secretList.length > 0" class="user-name" trigger="click" @command="secretDropdown">
                     <span class="el-dropdown-link">
-                        &nbsp;{{ keyName || '请选择' }}&nbsp;
+                        &nbsp;{{ session.keyname || '请选择' }}&nbsp;
                         <el-icon>
                             <CaretBottom />
                         </el-icon>
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item v-for="item in secretList" :key="item.Id" :command="item">
+                            <el-dropdown-item v-for="item in session.secretList" :key="item.Id" :command="item">
                                 {{ item.Description }}
                             </el-dropdown-item>
                         </el-dropdown-menu>
@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 import Api from '@/api';
@@ -70,9 +70,8 @@ const session = sessionStore();
 const username = session.username;
 
 // 侧边栏折叠
-const collapse = computed(() => layout.collapse);
 const collapseChange = () => {
-    layout.setCollapse(!collapse.value);
+    layout.setCollapse(!layout.collapse);
 };
 
 // 小屏自动折叠
@@ -83,8 +82,6 @@ onMounted(() => {
 });
 
 // 密钥列表
-const keyName = computed(() => session.keyname);
-const secretList = computed(() => session.secretList);
 Api.user.fetchSecrets().then(res => {
     session.setSecrets(res);
 });
