@@ -97,7 +97,6 @@ const secretDropdown = data => {
 const userDropdown = data => {
     switch (data) {
         case 'loginout':
-            layout.$reset();
             session.$reset();
             router.push('/user/login');
             break;

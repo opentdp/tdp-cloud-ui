@@ -1,7 +1,7 @@
 <template>
     <v-navbar />
     <v-sidebar />
-    <div class="content-box" :class="{ 'content-collapse': layout.collapse }">
+    <div class="content-box" :class="{ collapse: layout.collapse }">
         <router-view v-slot="{ Component }">
             <transition name="move" mode="out-in">
                 <component :is="Component" />
@@ -31,7 +31,7 @@ const layout = layoutStore();
     background: #f0f0f0;
     overflow-y: scroll;
 
-    &.content-collapse {
+    &.collapse {
         left: 65px;
     }
 }

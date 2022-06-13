@@ -40,11 +40,9 @@ import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 
 import Api from '@/api';
-import layoutStore from '@/store/layout';
 import sessionStore from '@/store/session';
 
 const router = useRouter();
-const layout = layoutStore();
 const session = sessionStore();
 
 const param = reactive({
@@ -78,8 +76,6 @@ const submitForm = () => {
         });
     });
 };
-
-layout.clearTabs();
 </script>
 
 <style lang="scss" scoped>
