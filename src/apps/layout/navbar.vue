@@ -117,18 +117,18 @@ const userDropdown = data => {
     font-size: 22px;
     background-color: #242f42;
     color: #fff;
-}
 
-.collapse-btn {
-    height: 28px;
-    padding: 0 20px;
-    background: rgb(40, 52, 70);
-    cursor: pointer;
-}
+    .logo {
+        flex: auto;
+        width: 250px;
+    }
 
-.header .logo {
-    flex: auto;
-    width: 250px;
+    .collapse-btn {
+        height: 28px;
+        padding: 0 20px;
+        background: rgb(40, 52, 70);
+        cursor: pointer;
+    }
 }
 
 .header-right {
@@ -140,21 +140,21 @@ const userDropdown = data => {
     display: flex;
     height: 70px;
     align-items: center;
-}
 
-.user-name {
-    margin-left: 10px;
-}
+    .user-name {
+        margin-left: 10px;
+    }
 
-.user-avator {
-    margin-left: 20px;
-}
+    .user-avator {
+        margin-left: 20px;
+    }
 
-.user-avator img {
-    display: block;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    .user-avator img {
+        display: block;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
 }
 
 .el-dropdown-link {
