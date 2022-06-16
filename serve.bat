@@ -22,6 +22,6 @@ ECHO %dateline% >node_modules\update.txt
 
 CD /D %~dp0
 
-npm run dev
+CALL npm run dev
 
 IF "%1" == "" CMD /K
