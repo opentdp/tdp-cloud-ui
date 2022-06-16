@@ -1,42 +1,42 @@
 .container {
-    padding: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  padding: 30px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .crumbs {
-    margin: 5px 0 15px;
+  margin: 5px 0 15px;
 
-    .el-breadcrumb__inner {
-        display: flex;
+  .el-breadcrumb__inner {
+    display: flex;
 
-        .el-icon {
-            padding-right: 5px;
-        }
+    .el-icon {
+      padding-right: 5px;
     }
+  }
 }
 
 .plugins-tips {
-    padding: 20px 10px;
-    margin-bottom: 20px;
-    background: #eef1f6;
+  padding: 20px 10px;
+  margin-bottom: 20px;
+  background: #eef1f6;
 
-    a {
-        color: #20a0ff;
-    }
+  a {
+    color: #20a0ff;
+  }
 }
 
 .el-table {
-    th {
-        background-color: #f5f7fa !important;
-    }
+  th {
+    background-color: #f5f7fa !important;
+  }
 
-    tr:hover {
-        background: #f6faff;
-    }
+  tr:hover {
+    background: #f6faff;
+  }
 }
 
-.el-button+.el-tooltip {
-    margin-left: 10px;
+.el-button + .el-tooltip {
+  margin-left: 10px;
 }

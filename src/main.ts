@@ -1,20 +1,20 @@
-import { createApp } from 'vue';
+import { createApp } from "vue"
 
-import App from '@/app.vue';
-import '@/assets/style.scss';
+import App from "@/app.vue"
+import "@/assets/style.scss"
 
-import setupEcharts from '@/helper/echarts';
-import setupElement from '@/helper/element';
+import setupEcharts from "@/helper/echarts"
+import setupElement from "@/helper/element"
 
-import setupStore from '@/store/index';
-import setupRouter from '@/router/index';
+import setupStore from "@/store/index"
+import setupRouter from "@/router/index"
 
-const app = createApp(App);
+const app = createApp(App)
 
-setupEcharts(app);
-setupElement(app);
+setupEcharts(app)
+setupElement(app)
 
-setupStore(app);
-setupRouter(app);
+setupStore(app)
+setupRouter(app)
 
-app.mount('#app');
+app.mount("#app")

@@ -1,7 +1,0 @@
-{
-    "arrowParens": "avoid",
-    "printWidth": 150,
-    "proseWrap": "preserve",
-    "singleQuote": true,
-    "tabWidth": 4
-}

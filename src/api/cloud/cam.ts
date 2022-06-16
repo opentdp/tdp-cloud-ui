@@ -1,9 +1,9 @@
-import { HttpClient } from '../basic/http';
+import { HttpClient } from "../basic/http"
 
-import { Cam } from './typings';
+import { Cam } from "./typings"
 
 export class CamClient extends HttpClient {
-    public getAccountSummary(): Promise<Cam.GetAccountSummaryResponse> {
-        return this.get('/cloud/cam/getAccountSummary');
-    }
+  public getAccountSummary(): Promise<Cam.GetAccountSummaryResponse> {
+    return this.get("/cloud/cam/getAccountSummary")
+  }
 }
