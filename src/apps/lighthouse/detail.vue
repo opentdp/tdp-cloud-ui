@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-card shadow="hover" class="mgb10">
+    <el-card v-if="firewall" shadow="hover" class="mgb10">
       <template #header>
         <div class="card-header">
           <b>防火墙</b> &nbsp;
@@ -20,7 +20,7 @@
         />
       </el-table>
     </el-card>
-    <el-card shadow="hover" class="mgb10">
+    <el-card v-if="snapshot" shadow="hover" class="mgb10">
       <template #header>
         <div class="card-header">
           <b>快照</b> &nbsp;

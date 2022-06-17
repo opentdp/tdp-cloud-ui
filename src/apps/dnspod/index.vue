@@ -1,6 +1,9 @@
 <template>
   <div>
-    <el-card v-if="domainDescribe.DomainCountInfo" shadow="hover">
+    <el-card
+      v-if="domainDescribe && domainDescribe.DomainCountInfo"
+      shadow="hover"
+    >
       <template #header>
         <div class="card-header">
           <span>域名列表</span> &nbsp;

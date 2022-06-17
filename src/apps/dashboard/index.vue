@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <el-col :span="8">
+      <el-col v-if="accountSummary" :span="8">
         <el-card class="mgb10" shadow="hover" :body-style="{ padding: '0px' }">
           <div class="grid-content grid-con-1">
             <el-icon class="grid-con-icon">
