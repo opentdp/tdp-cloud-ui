@@ -79,7 +79,7 @@ const param = reactive({
 
 const createSecret = () => {
   Api.user.createSecret(param).then((data) => {
-    ElMessage.success(data.result)
+    ElMessage.success(data.Result)
     param.secretId = ""
     param.secretKey = ""
     param.description = ""
@@ -94,9 +94,9 @@ const deleteSecret = (idx) => {
     type: "warning",
   }).then(() => {
     const item = session.secretList[idx]
-    Api.user.deleteSecret(item.Id.toString()).then((data) => {
+    Api.user.deleteSecret(item.Id).then((data) => {
       session.secretList.splice(idx, 1)
-      ElMessage.success(data.result)
+      ElMessage.success(data.Result)
     })
   })
 }
