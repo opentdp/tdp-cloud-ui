@@ -53,7 +53,7 @@ export class HttpClient {
     const data = await body.json()
 
     if (data.Error) {
-      const msg = data.Error.Message || "未知错误"
+      const msg = data.Error || "未知错误"
       ElMessage.error(msg)
       throw new Error(msg)
     }
