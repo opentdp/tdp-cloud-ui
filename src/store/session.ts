@@ -7,6 +7,7 @@ export default defineStore("session", {
     return {
       token: "",
       username: "",
+      description: "",
       secretList: [] as SecretItem[],
       keyid: 0,
       keyname: "",

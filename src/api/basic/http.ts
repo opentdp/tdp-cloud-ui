@@ -29,6 +29,15 @@ export class HttpClient {
     return this.parseResponse(body)
   }
 
+  protected async patch(url: string, query: unknown) {
+    const body = await fetch("/api" + url, {
+      method: "PATCH",
+      headers: this.buildHeader("json"),
+      body: JSON.stringify(query),
+    })
+    return this.parseResponse(body)
+  }
+
   protected async delete(url: string, query?: unknown) {
     if (query) {
       url += "?" + this.buildQuery(query)

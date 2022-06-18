@@ -10,7 +10,7 @@ export class UserClient extends HttpClient {
   }
 
   public createSecret(data: SecretRequest): Promise<SecretResponse> {
-    return this.post("/local/user/secret", data)
+    return this.patch("/local/user/secret", data)
   }
 
   public deleteSecret(id: number): Promise<SecretResponse> {
@@ -19,6 +19,17 @@ export class UserClient extends HttpClient {
 
   public fetchSecrets(): Promise<SecretItem[]> {
     return this.get("/local/user/secret")
+  }
+
+  public updateInfo(data: { description: string }): Promise<string> {
+    return this.patch("/local/user/info", data)
+  }
+
+  public updatePassword(data: {
+    oldPassword: string
+    newPassword: string
+  }): Promise<string> {
+    return this.patch("/local/user/password", data)
   }
 }
 
@@ -39,8 +50,10 @@ interface LoginRequest {
 }
 
 interface LoginResponse {
-  keyId: number
+  keyid: number
   token: string
+  username: string
+  description: string
 }
 
 interface RegisterRequest {

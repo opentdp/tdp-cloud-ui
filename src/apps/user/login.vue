@@ -76,13 +76,14 @@ const submitForm = () => {
     }
     Api.user.login(param).then((data) => {
       ElMessage.success("登录成功")
-      session.username = param.username
+      session.username = data.username
       session.token = data.token
+      session.description = data.description
       if (data.keyid > 0) {
         session.keyid = data.keyid
         router.push("/")
       } else {
-        router.push("/user/secret")
+        router.push({ name: "user-login" })
       }
     })
   })

@@ -62,6 +62,15 @@ export const routes: RouteRecordRaw[] = [
         component: () => import("@/apps/user/info.vue"),
       },
       {
+        path: "/user/password",
+        name: "user-password",
+        meta: {
+          title: "修改密码",
+          login: true,
+        },
+        component: () => import("@/apps/user/password.vue"),
+      },
+      {
         path: "/user/secret",
         name: "user-secret",
         meta: {

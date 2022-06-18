@@ -23,7 +23,7 @@
         <el-card shadow="hover">
           <template #header>
             <div class="card-header">
-              <span>账户编辑</span>
+              <span>修改密码</span>
             </div>
           </template>
           <el-form
@@ -32,11 +32,26 @@
             :rules="formRules"
             label-width="100px"
           >
-            <el-form-item label="用户名：">
-              {{ session.username }}
+            <el-form-item label="原密码：" prop="oldpass">
+              <el-input
+                v-model="form.oldpass"
+                type="password"
+                autocomplete="off"
+              />
             </el-form-item>
-            <el-form-item label="个人简介：" prop="desc">
-              <el-input v-model="form.desc" />
+            <el-form-item label="新密码：" prop="newpass">
+              <el-input
+                v-model="form.newpass"
+                type="password"
+                autocomplete="off"
+              />
+            </el-form-item>
+            <el-form-item label="新密码：" prop="newpass2">
+              <el-input
+                v-model="form.newpass2"
+                type="password"
+                autocomplete="off"
+              />
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit"> 保存 </el-button>
@@ -60,18 +75,22 @@ const session = sessionStore()
 
 const formRef = ref<FormInstance>()
 const form = ref({
-  desc: session.description,
+  oldpass: "",
+  newpass: "",
+  newpass2: "",
 })
 const validateDesc = (rule: any, value: any, callback: any) => {
-  if (value.trim().length == 0) {
-    callback(new Error("请输入个人简介"))
+  if (form.value.newpass != form.value.newpass2) {
+    callback(new Error("两次密码不一致"))
   } else {
     callback()
   }
 }
 const formRules = ref<FormRules>({
-  desc: [
-    { required: true, message: "请输入个人简介", trigger: "blur" },
+  oldpass: [{ required: true, message: "请输入原始", trigger: "blur" }],
+  newpass: [{ required: true, message: "请输入密码", trigger: "blur" }],
+  newpass2: [
+    { required: true, message: "请输入密码", trigger: "blur" },
     { validator: validateDesc, trigger: "blur" },
   ],
 })
@@ -79,10 +98,10 @@ const formRules = ref<FormRules>({
 const onSubmit = () => {
   formRef.value.validate(async (valid) => {
     if (valid) {
-      await Api.user.updateInfo({
-        description: form.value.desc.trim(),
+      await Api.user.updatePassword({
+        oldPassword: form.value.oldpass,
+        newPassword: form.value.newpass,
       })
-      session.description = form.value.desc.trim()
       ElMessage.success("修改成功")
     }
   })

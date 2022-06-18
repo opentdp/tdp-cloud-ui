@@ -55,6 +55,7 @@
                 <el-dropdown-item>项目仓库</el-dropdown-item>
               </a>
               <el-dropdown-item command="user"> 个人中心 </el-dropdown-item>
+              <el-dropdown-item command="password"> 修改密码 </el-dropdown-item>
               <el-dropdown-item divided command="loginout">
                 退出登录
               </el-dropdown-item>
@@ -109,10 +110,13 @@ const userDropdown = (data) => {
   switch (data) {
     case "loginout":
       session.$reset()
-      router.push("/user/login")
+      router.push({ name: "user-login" })
       break
     case "user":
-      router.push("/user/info")
+      router.push({ name: "user-info" })
+      break
+    case "password":
+      router.push({ name: "user-password" })
       break
   }
 }
