@@ -6,6 +6,6 @@ export class DnspodClient extends HttpClient {
   public describeDomainList(
     query?: Dnspod.DescribeDomainListRequest
   ): Promise<Dnspod.DescribeDomainListResponse> {
-    return this.get("/cloud/dnspod/describeDomainList", query)
+    return this.post("/cloud/dnspod/describeDomainList", query)
   }
 }

@@ -4,7 +4,7 @@ import { Lighthouse } from "./typings"
 
 export class LighthouseClient extends HttpClient {
   public describeRegions(): Promise<Lighthouse.DescribeRegionsResponse> {
-    return this.get("/cloud/lighthouse/describeRegions")
+    return this.post("/cloud/lighthouse/describeRegions", {})
   }
 
   public describeInstances(
@@ -12,7 +12,7 @@ export class LighthouseClient extends HttpClient {
     query?: Lighthouse.DescribeInstancesRequest
   ): Promise<Lighthouse.DescribeInstancesResponse> {
     query = Object.assign({ Limit: 100 }, query)
-    return this.get("/cloud/lighthouse/describeInstances/" + region, query)
+    return this.post("/cloud/lighthouse/describeInstances/" + region, query)
   }
 
   public describeInstancesTrafficPackages(
@@ -20,7 +20,7 @@ export class LighthouseClient extends HttpClient {
     query?: Lighthouse.DescribeInstancesTrafficPackagesRequest
   ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
     query = Object.assign({ Limit: 100 }, query)
-    return this.get(
+    return this.post(
       "/cloud/lighthouse/describeInstancesTrafficPackages/" + region,
       query
     )
@@ -31,7 +31,7 @@ export class LighthouseClient extends HttpClient {
     query: Lighthouse.DescribeSnapshotsRequest
   ): Promise<Lighthouse.DescribeSnapshotsResponse> {
     query = Object.assign({ Limit: 100 }, query)
-    return this.get("/cloud/lighthouse/describeSnapshots/" + region, query)
+    return this.post("/cloud/lighthouse/describeSnapshots/" + region, query)
   }
 
   public describeFirewallRules(
@@ -39,6 +39,6 @@ export class LighthouseClient extends HttpClient {
     query: Lighthouse.DescribeFirewallRulesRequest
   ): Promise<Lighthouse.DescribeFirewallRulesResponse> {
     query = Object.assign({ Limit: 100 }, query)
-    return this.get("/cloud/lighthouse/describeFirewallRules/" + region, query)
+    return this.post("/cloud/lighthouse/describeFirewallRules/" + region, query)
   }
 }
