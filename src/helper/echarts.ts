@@ -9,31 +9,31 @@ import VChart from "vue-echarts"
 
 import { use } from "echarts/core"
 import {
-  GridComponent,
-  LegendComponent,
-  TitleComponent,
-  TooltipComponent,
+    GridComponent,
+    LegendComponent,
+    TitleComponent,
+    TooltipComponent,
 } from "echarts/components"
 import { BarChart, LineChart, PieChart } from "echarts/charts"
 import { LabelLayout } from "echarts/features"
 import { CanvasRenderer } from "echarts/renderers"
 
 use([
-  // Component
-  GridComponent,
-  LegendComponent,
-  TitleComponent,
-  TooltipComponent,
-  // Chart
-  BarChart,
-  LineChart,
-  PieChart,
-  // Feature
-  LabelLayout,
-  // Renderer
-  CanvasRenderer,
+    // Component
+    GridComponent,
+    LegendComponent,
+    TitleComponent,
+    TooltipComponent,
+    // Chart
+    BarChart,
+    LineChart,
+    PieChart,
+    // Feature
+    LabelLayout,
+    // Renderer
+    CanvasRenderer,
 ])
 
 export default (app: App) => {
-  app.component("VChart", VChart)
+    app.component("VChart", VChart)
 }

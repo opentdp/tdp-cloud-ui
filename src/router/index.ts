@@ -6,31 +6,31 @@ import sessionStore from "@/store/session"
 import { routes } from "./routes"
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
+    history: createWebHashHistory(),
+    routes,
 })
 
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} - TDP Cloud`
+    document.title = `${to.meta.title} - TDP Cloud`
 
-  const session = sessionStore()
+    const session = sessionStore()
 
-  const isLogin = !!session.token
-  const isSecret = session.keyid > 0
+    const isLogin = !!session.token
+    const isSecret = session.keyid > 0
 
-  if (to.meta.login && !isLogin) {
-    next("/user/login")
-    return
-  }
+    if (to.meta.login && !isLogin) {
+        next("/user/login")
+        return
+    }
 
-  if (to.meta.secret && !isSecret) {
-    next("/user/secret")
-    return
-  }
+    if (to.meta.secret && !isSecret) {
+        next("/user/secret")
+        return
+    }
 
-  next()
+    next()
 })
 
 export default (app: App) => {
-  app.use(router)
+    app.use(router)
 }

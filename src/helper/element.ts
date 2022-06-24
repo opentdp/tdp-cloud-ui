@@ -12,8 +12,8 @@ import zhCn from "element-plus/lib/locale/lang/zh-cn"
 import * as Icons from "@element-plus/icons-vue"
 
 export default (app: App) => {
-  for (const icon of Object.entries(Icons)) {
-    app.component(...icon)
-  }
-  app.use(ElementPlus, { locale: zhCn })
+    for (const icon of Object.entries(Icons)) {
+        app.component(...icon)
+    }
+    app.use(ElementPlus, { locale: zhCn })
 }

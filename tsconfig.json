@@ -1,20 +1,20 @@
 {
     "compilerOptions": {
-        "target": "esnext",
-        "module": "esnext",
-        "moduleResolution": "node",
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "strict": true,
         "jsx": "preserve",
         "sourceMap": true,
         "resolveJsonModule": true,
+        "isolatedModules": true,
         "esModuleInterop": true,
         "lib": [
-            "esnext",
-            "dom"
+            "ESNext",
+            "DOM"
         ],
-        "types": [
-            "pinia-plugin-persist"
-        ],
-        "noEmit": true,
+        "skipLibCheck": true,
         "baseUrl": "./",
         "paths": {
             "@/*": [
@@ -23,11 +23,10 @@
         }
     },
     "include": [
-        "**/*.ts",
-        "src/**/*.d.ts",
+        "*.ts",
         "src/**/*.ts",
+        "src/**/*.d.ts",
         "src/**/*.tsx",
         "src/**/*.vue"
-    ],
-    "compileOnSave": false
+    ]
 }

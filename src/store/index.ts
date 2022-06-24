@@ -7,5 +7,5 @@ const pinia = createPinia()
 pinia.use(piniaPersist)
 
 export default (app: App) => {
-  app.use(pinia)
+    app.use(pinia)
 }

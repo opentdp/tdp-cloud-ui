@@ -6,34 +6,32 @@
         "dev": "vite --open --mode development",
         "build": "vite build --mode release",
         "preview": "vite preview",
-        "lint": "eslint --ext ts --ext js --ext vue src/"
+        "lint": "eslint src/**/*.{js,ts,vue}",
+        "lint:fix": "eslint --fix src/**/*.{js,ts,vue}"
     },
     "dependencies": {
-        "@element-plus/icons-vue": "^2.0.4",
-        "echarts": "5.3.2",
-        "element-plus": "^2.2.5",
+        "@element-plus/icons-vue": "^2.0.6",
+        "echarts": "^5.3.3",
+        "element-plus": "^2.2.6",
         "pinia": "^2.0.14",
         "pinia-plugin-persist": "^1.0.0",
         "vue": "^3.2.37",
-        "vue-echarts": "^6.0.3",
-        "vue-router": "^4.0.15"
+        "vue-echarts": "^6.1.0",
+        "vue-router": "^4.0.16"
     },
     "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^5.27.1",
-        "@typescript-eslint/parser": "^5.27.1",
+        "@typescript-eslint/eslint-plugin": "^5.29.0",
+        "@typescript-eslint/parser": "^5.29.0",
         "@vitejs/plugin-vue": "^2.3.3",
         "@vue/compiler-sfc": "^3.2.37",
-        "eslint": "^8.17.0",
-        "eslint-config-prettier": "^8.5.0",
+        "eslint": "^8.18.0",
         "eslint-plugin-import": "^2.26.0",
-        "eslint-plugin-prettier": "^4.0.0",
-        "eslint-plugin-vue": "^9.1.0",
+        "eslint-plugin-vue": "^9.1.1",
         "eslint-plugin-vue-scoped-css": "^2.2.0",
-        "prettier": "^2.6.2",
-        "sass": "^1.52.3",
-        "tencentcloud-sdk-nodejs": "^4.0.357",
-        "typescript": "^4.7.3",
-        "vite": "^2.9.10",
-        "vue-tsc": "^0.37.3"
+        "sass": "^1.53.0",
+        "tencentcloud-sdk-nodejs": "^4.0.369",
+        "typescript": "^4.7.4",
+        "vite": "^2.9.12",
+        "vue-tsc": "^0.38.1"
     }
 }

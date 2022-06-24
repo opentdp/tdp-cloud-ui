@@ -9,13 +9,13 @@ export * from "./cloud/typings.d"
 
 // eslint-disable-next-line no-unused-vars
 export type APIReturnType<T extends (...args: never) => unknown> =
-  ReturnType<T> extends Promise<infer R> ? R : never
+    ReturnType<T> extends Promise<infer R> ? R : never
 
 export default {
-  cam: new CamClient(),
-  dnspod: new DnspodClient(),
-  lighthouse: new LighthouseClient(),
-  monitor: new MonitorClient(),
+    cam: new CamClient(),
+    dnspod: new DnspodClient(),
+    lighthouse: new LighthouseClient(),
+    monitor: new MonitorClient(),
 
-  user: new UserClient(),
+    user: new UserClient(),
 }
