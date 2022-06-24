@@ -10,7 +10,7 @@ export class UserClient extends HttpClient {
   }
 
   public createSecret(data: SecretRequest): Promise<SecretResponse> {
-    return this.patch("/local/user/secret", data)
+    return this.post("/local/user/secret", data)
   }
 
   public deleteSecret(id: number): Promise<SecretResponse> {

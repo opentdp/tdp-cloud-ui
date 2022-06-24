@@ -2,6 +2,8 @@ import { ElMessage } from "element-plus"
 
 import sessionStore from "@/store/session"
 
+import { Message } from "./mesg"
+
 export class HttpClient {
   private _session: ReturnType<typeof sessionStore>
 
@@ -53,9 +55,9 @@ export class HttpClient {
     const data = await body.json()
 
     if (data.Error) {
-      const msg = data.Error || "未知错误"
-      ElMessage.error(msg)
-      throw new Error(msg)
+      const err = data.Error.Message || data.Error || "UKN"
+      ElMessage.error(Message[err] || err)
+      throw new Error(err)
     }
 
     if (data.Payload) {
