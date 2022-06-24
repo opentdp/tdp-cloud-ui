@@ -26,7 +26,7 @@ export class HttpClient {
     const body = await fetch("/api" + url, {
       method: "POST",
       headers: this.buildHeader("json"),
-      body: JSON.stringify(query),
+      body: JSON.stringify(query || {}),
     })
     return this.parseResponse(body)
   }
@@ -35,7 +35,7 @@ export class HttpClient {
     const body = await fetch("/api" + url, {
       method: "PATCH",
       headers: this.buildHeader("json"),
-      body: JSON.stringify(query),
+      body: JSON.stringify(query || {}),
     })
     return this.parseResponse(body)
   }
@@ -66,7 +66,9 @@ export class HttpClient {
   }
 
   protected buildHeader(type = "") {
-    const headers: HeadersInit = {}
+    const headers: HeadersInit = {
+      Accept: "application/json",
+    }
 
     const keyid = this.session.keyid || 0
     const token = this.session.token || ""
