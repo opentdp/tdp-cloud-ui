@@ -66,9 +66,7 @@
 <script lang="ts" setup>
 import Api from "@/api"
 import sessionStore from "@/store/session"
-import { ElMessage } from "element-plus"
-import { FormRules } from "element-plus/es/tokens/form"
-import { FormInstance } from "element-plus/lib/components/form"
+import { ElMessage, FormRules, FormInstance } from "element-plus"
 import { ref } from "vue"
 
 const session = sessionStore()
