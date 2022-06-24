@@ -3,7 +3,7 @@
     <el-card shadow="hover" class="mgb10">
       <template #header>
         <div class="card-header">
-          <span>密钥列表</span>
+          <b>密钥列表</b>
         </div>
       </template>
       <el-table :data="session.secretList" style="width: 100%">
@@ -28,7 +28,7 @@
     <el-card shadow="hover">
       <template #header>
         <div class="card-header">
-          <span>添加密钥</span>
+          <b>添加密钥</b>
           <el-button class="button" text @click="gotoQCloudCAM">
             腾讯云 CAM
           </el-button>

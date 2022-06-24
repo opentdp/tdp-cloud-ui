@@ -80,7 +80,6 @@ const describeSnapshots = async () => {
   const data = await Api.lighthouse.describeSnapshots(region, {
     Filters: [{ Name: "instance-id", Values: [instanceId] }],
   })
-
   snapshot.value = data
 }
 
@@ -90,6 +89,28 @@ const describeFirewallRules = async () => {
   })
   firewall.value = data
 }
+
+// 外网平均每秒出流量
+// const getLighthouseOuttraffic = async () => {
+//   const data = await Api.monitor.getMonitorData(region, {
+//     Namespace: "QCE/LIGHTHOUSE",
+//     MetricName: "LighthouseOuttraffic",
+//     Instances: [
+//       {
+//         Dimensions: [
+//           {
+//             Name: "InstanceId",
+//             Value: instanceId,
+//           },
+//         ],
+//       },
+//     ],
+//     Period: 300,
+//     StartTime: "2022-06-20 00:00:00",
+//     EndTime: "2022-06-30 23:59:59",
+//   })
+//   firewall.value = data
+// }
 
 describeSnapshots()
 describeFirewallRules()

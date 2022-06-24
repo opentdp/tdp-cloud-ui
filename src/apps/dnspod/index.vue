@@ -6,7 +6,7 @@
     >
       <template #header>
         <div class="card-header">
-          <span>域名列表</span> &nbsp;
+          <b>域名列表</b> &nbsp;
           <small>域名总数: {{ domainDescribe.DomainCountInfo.AllTotal }}</small>
         </div>
       </template>
