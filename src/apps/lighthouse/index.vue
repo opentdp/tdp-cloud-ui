@@ -79,24 +79,20 @@
 <script lang="ts" setup>
 import { reactive } from "vue"
 
-import Api from "@/api"
+import Api, { Lighthouse } from "@/api"
 import { bytesToSize, dateFormat } from "@/helper/utils"
-import {
-  RegionInfo,
-  DescribeInstancesResponse,
-  TrafficPackage,
-} from "tencentcloud-sdk-nodejs/tencentcloud/services/lighthouse/v20200324/lighthouse_models"
 
 const regions = reactive<
   Record<
     string,
-    RegionInfo & {
+    Lighthouse.RegionInfo & {
       InstanceCount: number
-      InstanceSet: DescribeInstancesResponse["InstanceSet"]
+      InstanceSet: Lighthouse.DescribeInstancesResponse["InstanceSet"]
     }
   >
 >({})
-const trafficPackages = reactive<Record<string, TrafficPackage>>({})
+
+const trafficPackages = reactive<Record<string, Lighthouse.TrafficPackage>>({})
 
 const geteRegions = async () => {
   const data = await Api.lighthouse.describeRegions()
