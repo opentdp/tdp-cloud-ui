@@ -4,11 +4,12 @@
  * https://github.com/rehiy/vue-admin-template
  */
 
+import { App } from "vue"
+
 import ElementPlus from "element-plus"
+import zhCn from "element-plus/lib/locale/lang/zh-cn"
 
 import * as Icons from "@element-plus/icons-vue"
-import zhCn from "element-plus/lib/locale/lang/zh-cn"
-import { App } from "vue"
 
 export default (app: App) => {
   for (const icon of Object.entries(Icons)) {

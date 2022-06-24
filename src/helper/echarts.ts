@@ -4,6 +4,7 @@
  * https://echarts.apache.org/examples/zh/index.html
  */
 
+import { App } from "vue"
 import VChart from "vue-echarts"
 
 import { use } from "echarts/core"
@@ -16,7 +17,6 @@ import {
 import { BarChart, LineChart, PieChart } from "echarts/charts"
 import { LabelLayout } from "echarts/features"
 import { CanvasRenderer } from "echarts/renderers"
-import { App } from "vue"
 
 use([
   // Component

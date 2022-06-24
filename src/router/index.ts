@@ -1,9 +1,9 @@
+import { App } from "vue"
 import { createRouter, createWebHashHistory } from "vue-router"
 
 import sessionStore from "@/store/session"
 
 import { routes } from "./routes"
-import { App } from "vue"
 
 const router = createRouter({
   history: createWebHashHistory(),
