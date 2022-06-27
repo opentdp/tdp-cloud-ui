@@ -41,12 +41,4 @@ export class LighthouseClient extends HttpClient {
         query = Object.assign({ Limit: 100 }, query)
         return this.post("/cloud/lighthouse/describeFirewallRules/" + region, query)
     }
-
-    public getMonitorData(
-        region: string,
-        query: Lighthouse.DescribeFirewallRulesRequest
-    ): Promise<Lighthouse.DescribeFirewallRulesResponse> {
-        query = Object.assign({ Limit: 100 }, query)
-        return this.post("/cloud/lighthouse/getMonitorData/" + region, query)
-    }
 }
