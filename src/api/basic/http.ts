@@ -61,8 +61,13 @@ export class HttpClient {
         }
 
         if (data.Payload) {
+            if (data.Payload.Message) {
+                ElMessage.success(data.Payload.Message)
+            }
             return data.Payload
         }
+
+        return data
     }
 
     protected buildHeader(type = "") {

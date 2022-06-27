@@ -51,7 +51,7 @@
 
 <script lang="ts" setup>
 import { reactive } from "vue"
-import { ElMessage, ElMessageBox } from "element-plus"
+import { ElMessageBox } from "element-plus"
 
 import Api from "@/api"
 import sessionStore from "@/store/session"
@@ -75,8 +75,7 @@ const param = reactive({
 })
 
 const createSecret = () => {
-    Api.user.createSecret(param).then((data) => {
-        ElMessage.success(data.Result)
+    Api.user.createSecret(param).then(() => {
         param.secretId = ""
         param.secretKey = ""
         param.description = ""
@@ -86,14 +85,13 @@ const createSecret = () => {
 
 // 删除密钥
 
-const deleteSecret = (idx) => {
+const deleteSecret = (idx: number) => {
     ElMessageBox.confirm("确定要删除吗？", "提示", {
         type: "warning",
     }).then(() => {
         const item = session.secretList[idx]
-        Api.user.deleteSecret(item.Id).then((data) => {
+        Api.user.deleteSecret(item.Id).then(() => {
             session.secretList.splice(idx, 1)
-            ElMessage.success(data.Result)
         })
     })
 }

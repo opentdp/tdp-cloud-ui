@@ -62,7 +62,7 @@ interface RegisterRequest {
 }
 
 interface RegisterResponse {
-    Result: string
+    Message: string
 }
 
 interface SecretRequest {
@@ -72,5 +72,5 @@ interface SecretRequest {
 }
 
 interface SecretResponse {
-    Result: string
+    Message: string
 }
