@@ -20,10 +20,7 @@ export class LighthouseClient extends HttpClient {
         query?: Lighthouse.DescribeInstancesTrafficPackagesRequest
     ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post(
-            "/cloud/lighthouse/describeInstancesTrafficPackages/" + region,
-            query
-        )
+        return this.post("/cloud/lighthouse/describeInstancesTrafficPackages/" + region, query)
     }
 
     public describeSnapshots(

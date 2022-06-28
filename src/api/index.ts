@@ -1,15 +1,11 @@
-import { MemberClient, SecretItem } from "./local/member"
+import { MemberClient } from "./local/member"
 
 import { CamClient } from "./cloud/cam"
 import { DnspodClient } from "./cloud/dnspod"
 import { LighthouseClient } from "./cloud/lighthouse"
 import { MonitorClient } from "./cloud/monitor"
 
-export type { SecretItem }
-export * from "./cloud/typings.d"
-
-// eslint-disable-next-line no-unused-vars
-export type APIReturnType<T extends (...args: never) => unknown> = ReturnType<T> extends Promise<infer R> ? R : never
+// 导出接口
 
 export default {
     // local api
@@ -20,3 +16,12 @@ export default {
     lighthouse: new LighthouseClient(),
     monitor: new MonitorClient(),
 }
+
+// 导出类型
+
+export type { SecretItem } from "./local/member"
+
+export * from "./cloud/typings.d"
+
+// eslint-disable-next-line no-unused-vars
+export type APIReturnType<T extends (...args: never) => unknown> = ReturnType<T> extends Promise<infer R> ? R : never

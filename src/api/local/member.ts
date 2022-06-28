@@ -9,6 +9,14 @@ export class MemberClient extends HttpClient {
         return this.post("/local/member/register", data)
     }
 
+    public updateInfo(data: UpdateInfoRequest): Promise<UpdateInfoResponse> {
+        return this.patch("/local/member/info", data)
+    }
+
+    public updatePassword(data: UpdatePasswordRequest): Promise<UpdatePasswordResponse> {
+        return this.patch("/local/member/password", data)
+    }
+
     public createSecret(data: SecretRequest): Promise<SecretResponse> {
         return this.post("/local/member/secret", data)
     }
@@ -20,17 +28,54 @@ export class MemberClient extends HttpClient {
     public fetchSecrets(): Promise<SecretItem[]> {
         return this.get("/local/member/secret")
     }
+}
 
-    public updateInfo(data: { description: string }): Promise<string> {
-        return this.patch("/local/member/info", data)
-    }
+export interface LoginRequest {
+    username: string
+    password: string
+}
 
-    public updatePassword(data: {
-        oldPassword: string
-        newPassword: string
-    }): Promise<string> {
-        return this.patch("/local/member/password", data)
-    }
+export interface LoginResponse {
+    keyid: number
+    token: string
+    username: string
+    description: string
+}
+
+export interface RegisterRequest {
+    username: string
+    password: string
+}
+
+export interface RegisterResponse {
+    Message: string
+}
+
+export interface UpdateInfoRequest {
+    description: string
+}
+
+export interface UpdateInfoResponse {
+    Message: string
+}
+
+export interface UpdatePasswordRequest {
+    oldPassword: string
+    newPassword: string
+}
+
+export interface UpdatePasswordResponse {
+    Message: string
+}
+
+export interface SecretRequest {
+    secretId: string
+    secretKey: string
+    description: string
+}
+
+export interface SecretResponse {
+    Message: string
 }
 
 export interface SecretItem {
@@ -42,35 +87,4 @@ export interface SecretItem {
     CreatedAt: string
     UpdatedAt: string
     DeletedAt: string
-}
-
-interface LoginRequest {
-    username: string
-    password: string
-}
-
-interface LoginResponse {
-    keyid: number
-    token: string
-    username: string
-    description: string
-}
-
-interface RegisterRequest {
-    username: string
-    password: string
-}
-
-interface RegisterResponse {
-    Message: string
-}
-
-interface SecretRequest {
-    secretId: string
-    secretKey: string
-    description: string
-}
-
-interface SecretResponse {
-    Message: string
 }
