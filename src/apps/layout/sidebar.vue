@@ -89,7 +89,7 @@ const items: MenuItem[] = [
     },
     {
         icon: "Key",
-        index: "/user/secret",
+        index: "/member/secret",
         title: "密钥管理",
     },
     // {

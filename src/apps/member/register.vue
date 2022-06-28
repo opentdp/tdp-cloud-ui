@@ -38,7 +38,7 @@
                     </el-button>
                 </div>
                 <div class="register-btn">
-                    <router-link to="/user/login">
+                    <router-link to="/member/login">
                         <el-button>登录</el-button>
                     </router-link>
                 </div>
@@ -76,9 +76,9 @@ const submitForm = () => {
             ElMessage.error("注册失败")
             return false
         }
-        Api.user.register(param).then(() => {
+        Api.member.register(param).then(() => {
             ElMessage.success("注册成功")
-            router.push("/user/login")
+            router.push("/member/login")
         })
     })
 }

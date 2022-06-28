@@ -73,7 +73,7 @@
 import { onMounted } from "vue"
 import { useRouter } from "vue-router"
 
-import Api from "@/api"
+import Api, { SecretItem } from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
@@ -96,29 +96,29 @@ onMounted(() => {
 })
 
 // 密钥列表
-Api.user.fetchSecrets().then((res) => {
+Api.member.fetchSecrets().then((res) => {
     session.setSecrets(res)
 })
 
 // 密钥下拉菜单选择事件
-const secretDropdown = (data) => {
+const secretDropdown = (data: SecretItem) => {
     session.keyname = data.Description
     session.keyid = data.Id
     location.reload()
 }
 
 // 用户名下拉菜单选择事件
-const userDropdown = (data) => {
+const userDropdown = (data: string) => {
     switch (data) {
         case "loginout":
             session.$reset()
-            router.push({ name: "user-login" })
+            router.push({ name: "member-login" })
             break
         case "user":
-            router.push({ name: "user-info" })
+            router.push({ name: "member-info" })
             break
         case "password":
-            router.push({ name: "user-password" })
+            router.push({ name: "member-password" })
             break
     }
 }

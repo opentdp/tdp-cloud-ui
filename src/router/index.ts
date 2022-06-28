@@ -19,12 +19,12 @@ router.beforeEach((to, from, next) => {
     const isSecret = session.keyid > 0
 
     if (to.meta.login && !isLogin) {
-        next("/user/login")
+        next("/member/login")
         return
     }
 
     if (to.meta.secret && !isSecret) {
-        next("/user/secret")
+        next("/member/secret")
         return
     }
 

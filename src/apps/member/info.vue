@@ -49,7 +49,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue"
-import { ElMessage, FormRules, FormInstance } from "element-plus"
+import { FormRules, FormInstance } from "element-plus"
 
 import Api from "@/api"
 import sessionStore from "@/store/session"
@@ -79,11 +79,11 @@ const formRules = ref<FormRules>({
 const onSubmit = () => {
     formRef.value.validate(async (valid) => {
         if (valid) {
-            await Api.user.updateInfo({
-                description: form.value.desc.trim(),
+            const description = form.value.desc.trim()
+            await Api.member.updateInfo({
+                description: description,
             })
-            session.description = form.value.desc.trim()
-            ElMessage.success("修改成功")
+            session.description = description
         }
     })
 }

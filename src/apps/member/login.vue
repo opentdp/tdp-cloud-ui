@@ -29,7 +29,7 @@
                     </el-button>
                 </div>
                 <div class="login-btn">
-                    <router-link to="/user/register">
+                    <router-link to="/member/register">
                         <el-button>注册</el-button>
                     </router-link>
                 </div>
@@ -67,7 +67,7 @@ const submitForm = () => {
             ElMessage.error("登录失败")
             return false
         }
-        Api.user.login(param).then((data) => {
+        Api.member.login(param).then((data) => {
             ElMessage.success("登录成功")
             session.username = data.username
             session.token = data.token
@@ -76,7 +76,7 @@ const submitForm = () => {
                 session.keyid = data.keyid
                 router.push("/")
             } else {
-                router.push({ name: "user-login" })
+                router.push({ name: "member-login" })
             }
         })
     })

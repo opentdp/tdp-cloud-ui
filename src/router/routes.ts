@@ -53,31 +53,31 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/lighthouse/detail.vue"),
             },
             {
-                path: "/user/info",
-                name: "user-info",
+                path: "/member/info",
+                name: "member-info",
                 meta: {
                     title: "个人中心",
                     login: true,
                 },
-                component: () => import("@/apps/user/info.vue"),
+                component: () => import("@/apps/member/info.vue"),
             },
             {
-                path: "/user/password",
-                name: "user-password",
+                path: "/member/password",
+                name: "member-password",
                 meta: {
                     title: "修改密码",
                     login: true,
                 },
-                component: () => import("@/apps/user/password.vue"),
+                component: () => import("@/apps/member/password.vue"),
             },
             {
-                path: "/user/secret",
-                name: "user-secret",
+                path: "/member/secret",
+                name: "member-secret",
                 meta: {
                     title: "密钥管理",
                     login: true,
                 },
-                component: () => import("@/apps/user/secret.vue"),
+                component: () => import("@/apps/member/secret.vue"),
             },
             {
                 path: "/error/403",
@@ -100,20 +100,20 @@ export const routes: RouteRecordRaw[] = [
         ],
     },
     {
-        path: "/user/login",
-        name: "user-login",
+        path: "/member/login",
+        name: "member-login",
         meta: {
             title: "登录",
         },
-        component: () => import("@/apps/user/login.vue"),
+        component: () => import("@/apps/member/login.vue"),
     },
     {
-        path: "/user/register",
-        name: "user-register",
+        path: "/member/register",
+        name: "member-register",
         meta: {
             title: "注册",
         },
-        component: () => import("@/apps/user/register.vue"),
+        component: () => import("@/apps/member/register.vue"),
     },
     {
         path: "/:catchAll(.*)",

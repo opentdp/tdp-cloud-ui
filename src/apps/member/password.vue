@@ -86,7 +86,7 @@ const formRules = ref<FormRules>({
 const onSubmit = () => {
     formRef.value.validate(async (valid) => {
         if (valid) {
-            await Api.user.updatePassword({
+            await Api.member.updatePassword({
                 oldPassword: form.value.oldpass,
                 newPassword: form.value.newpass,
             })

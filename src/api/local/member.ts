@@ -1,35 +1,35 @@
 import { HttpClient } from "../basic/http"
 
-export class UserClient extends HttpClient {
+export class MemberClient extends HttpClient {
     public login(data: LoginRequest): Promise<LoginResponse> {
-        return this.post("/local/user/login", data)
+        return this.post("/local/member/login", data)
     }
 
     public register(data: RegisterRequest): Promise<RegisterResponse> {
-        return this.post("/local/user/register", data)
+        return this.post("/local/member/register", data)
     }
 
     public createSecret(data: SecretRequest): Promise<SecretResponse> {
-        return this.post("/local/user/secret", data)
+        return this.post("/local/member/secret", data)
     }
 
     public deleteSecret(id: number): Promise<SecretResponse> {
-        return this.delete("/local/user/secret/" + id)
+        return this.delete("/local/member/secret/" + id)
     }
 
     public fetchSecrets(): Promise<SecretItem[]> {
-        return this.get("/local/user/secret")
+        return this.get("/local/member/secret")
     }
 
     public updateInfo(data: { description: string }): Promise<string> {
-        return this.patch("/local/user/info", data)
+        return this.patch("/local/member/info", data)
     }
 
     public updatePassword(data: {
         oldPassword: string
         newPassword: string
     }): Promise<string> {
-        return this.patch("/local/user/password", data)
+        return this.patch("/local/member/password", data)
     }
 }
 

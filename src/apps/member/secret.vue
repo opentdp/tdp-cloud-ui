@@ -61,7 +61,7 @@ const session = sessionStore()
 // 密钥列表
 
 const fetchSecrets = () => {
-    Api.user.fetchSecrets().then((res) => {
+    Api.member.fetchSecrets().then((res) => {
         session.setSecrets(res)
     })
 }
@@ -75,7 +75,7 @@ const param = reactive({
 })
 
 const createSecret = () => {
-    Api.user.createSecret(param).then(() => {
+    Api.member.createSecret(param).then(() => {
         param.secretId = ""
         param.secretKey = ""
         param.description = ""
@@ -90,7 +90,7 @@ const deleteSecret = (idx: number) => {
         type: "warning",
     }).then(() => {
         const item = session.secretList[idx]
-        Api.user.deleteSecret(item.Id).then(() => {
+        Api.member.deleteSecret(item.Id).then(() => {
             session.secretList.splice(idx, 1)
         })
     })
