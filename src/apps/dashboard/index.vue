@@ -49,9 +49,10 @@
 <script lang="ts" setup>
 import { ref } from "vue"
 
-import Api, { APIReturnType } from "@/api"
+import Api, { Cam } from "@/api"
 
-const accountSummary = ref<APIReturnType<typeof Api.cam.getAccountSummary>>()
+const accountSummary = ref<Cam.GetAccountSummaryResponse>()
+
 Api.cam.getAccountSummary().then((res) => {
     accountSummary.value = res
 })

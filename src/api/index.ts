@@ -22,6 +22,3 @@ export default {
 export type { SecretItem } from "./local/member"
 
 export * from "./cloud/typings.d"
-
-// eslint-disable-next-line no-unused-vars
-export type APIReturnType<T extends (...args: never) => unknown> = ReturnType<T> extends Promise<infer R> ? R : never

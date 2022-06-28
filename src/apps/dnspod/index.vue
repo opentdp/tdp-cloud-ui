@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { ref } from "vue"
 
-import Api, { APIReturnType } from "@/api"
+import Api, { Dnspod } from "@/api"
 
 const statusMap = {
     ENABLE: "正常",
@@ -39,8 +39,8 @@ const statusMap = {
     SPAM: "封禁",
 }
 
-const domainDescribe =
-    ref<APIReturnType<typeof Api.dnspod.describeDomainList>>()
+const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()
+
 Api.dnspod.describeDomainList().then((res) => {
     domainDescribe.value = res
 })
