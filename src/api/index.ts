@@ -19,6 +19,4 @@ export default {
 
 // 导出类型
 
-export type { SecretItem } from "./local/member"
-
 export * from "./cloud/typings.d"

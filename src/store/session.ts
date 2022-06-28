@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 
-import { SecretItem } from "@/api"
+import type { SecretItem } from "@/api/local/member"
 
 export default defineStore("session", {
     state() {

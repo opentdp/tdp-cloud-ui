@@ -31,3 +31,9 @@ export class DnspodClient extends HttpClient {
         return this.post("/cloud/dnspod/modifyRecord", query)
     }
 }
+
+export const DomainStatusMap: Record<string, string> = {
+    ENABLE: "正常",
+    PAUSE: "暂停",
+    SPAM: "封禁",
+}
