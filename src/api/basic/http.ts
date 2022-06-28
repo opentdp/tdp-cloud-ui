@@ -70,7 +70,7 @@ export class HttpClient {
         return data
     }
 
-    protected buildHeader(type = "") {
+    protected buildHeader(type?: string) {
         const headers: HeadersInit = {
             Accept: "application/json",
         }
