@@ -16,14 +16,14 @@ router.beforeEach((to, from, next) => {
     const session = sessionStore()
 
     const isLogin = !!session.token
-    const isSecret = session.keyid > 0
+    const isCloud = session.keyid > 0
 
     if (to.meta.login && !isLogin) {
         next("/member/login")
         return
     }
 
-    if (to.meta.secret && !isSecret) {
+    if (to.meta.cloud && !isCloud) {
         next("/member/secret")
         return
     }

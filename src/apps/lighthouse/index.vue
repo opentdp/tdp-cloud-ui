@@ -40,14 +40,7 @@
                     </el-table-column>
                     <el-table-column fixed="right" label="操作" width="180" align="center">
                         <template #default="scope">
-                            <router-link
-                                :to="
-                                    '/lighthouse/detail/' +
-                                        scope.row.Zone +
-                                        '/' +
-                                        scope.row.InstanceId
-                                "
-                            >
+                            <router-link :to="'/lighthouse/detail/' + scope.row.Zone + '/' + scope.row.InstanceId">
                                 <el-button link type="primary" icon="View">
                                     查看
                                 </el-button>

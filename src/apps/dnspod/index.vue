@@ -11,7 +11,7 @@
                 <el-table-column fixed prop="Name" label="域名" min-width="150" />
                 <el-table-column label="状态" min-width="100">
                     <template #default="scope">
-                        {{ statusMap[scope.row.Status] }}
+                        {{ DomainStatusMap[scope.row.Status] }}
                     </template>
                 </el-table-column>
                 <el-table-column prop="RecordCount" label="记录数" min-width="100" />
@@ -23,6 +23,15 @@
                 </el-table-column>
                 <el-table-column prop="GradeTitle" label="套餐" min-width="100" />
                 <el-table-column prop="VipEndAt" label="套餐有效期" min-width="180" />
+                <el-table-column fixed="right" label="操作" width="180" align="center">
+                    <template #default="scope">
+                        <router-link :to="'/dnspod/detail/' + scope.row.Name">
+                            <el-button link type="primary" icon="View">
+                                查看
+                            </el-button>
+                        </router-link>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-card>
     </div>
@@ -33,11 +42,7 @@ import { ref } from "vue"
 
 import Api, { Dnspod } from "@/api"
 
-const statusMap = {
-    ENABLE: "正常",
-    PAUSE: "暂停",
-    SPAM: "封禁",
-}
+import { DomainStatusMap } from "@/api/cloud/dnspod"
 
 const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()
 

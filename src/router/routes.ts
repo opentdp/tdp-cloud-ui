@@ -18,7 +18,7 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "系统首页",
                     login: true,
-                    secret: true,
+                    cloud: true,
                 },
                 component: () => import("@/apps/dashboard/index.vue"),
             },
@@ -28,9 +28,19 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "域名解析",
                     login: true,
-                    secret: true,
+                    cloud: true,
                 },
                 component: () => import("@/apps/dnspod/index.vue"),
+            },
+            {
+                path: "/dnspod/detail/:domain",
+                name: "dnspod-detail",
+                meta: {
+                    title: "域名详情",
+                    login: true,
+                    cloud: true,
+                },
+                component: () => import("@/apps/dnspod/detail.vue"),
             },
             {
                 path: "/lighthouse/index",
@@ -38,7 +48,7 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "轻量服务器",
                     login: true,
-                    secret: true,
+                    cloud: true,
                 },
                 component: () => import("@/apps/lighthouse/index.vue"),
             },
@@ -48,7 +58,7 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "轻量服务器详情",
                     login: true,
-                    secret: true,
+                    cloud: true,
                 },
                 component: () => import("@/apps/lighthouse/detail.vue"),
             },

@@ -73,9 +73,11 @@
 import { onMounted } from "vue"
 import { useRouter } from "vue-router"
 
-import Api, { SecretItem } from "@/api"
+import Api from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
+
+import type { SecretItem } from "@/api/local/member"
 
 const router = useRouter()
 const layout = layoutStore()
