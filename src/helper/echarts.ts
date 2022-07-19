@@ -9,9 +9,11 @@ import VChart from "vue-echarts"
 
 import { use } from "echarts/core"
 import {
+    DataZoomComponent,
     GridComponent,
     LegendComponent,
     TitleComponent,
+    ToolboxComponent,
     TooltipComponent,
 } from "echarts/components"
 import { BarChart, LineChart, PieChart } from "echarts/charts"
@@ -20,9 +22,11 @@ import { CanvasRenderer } from "echarts/renderers"
 
 use([
     // Component
+    DataZoomComponent,
     GridComponent,
     LegendComponent,
     TitleComponent,
+    ToolboxComponent,
     TooltipComponent,
     // Chart
     BarChart,

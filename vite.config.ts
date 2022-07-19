@@ -1,5 +1,6 @@
-import { defineConfig } from "vite"
 import createVuePlugin from "@vitejs/plugin-vue"
+
+import { defineConfig } from "vite"
 
 export default defineConfig({
     base: "./",

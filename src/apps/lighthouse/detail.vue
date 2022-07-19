@@ -16,6 +16,7 @@
                 <el-table-column prop="FirewallRuleDescription" label="备注" min-width="200" />
             </el-table>
         </el-card>
+
         <el-card v-if="snapshot" shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">
@@ -47,6 +48,15 @@
                 </el-table-column>
             </el-table>
         </el-card>
+
+        <el-card shadow="hover">
+            <template #header>
+                <div class="card-header">
+                    <b>外网出流量</b>
+                </div>
+            </template>
+            <v-chart :option="outtraffic" style="height: 400px" />
+        </el-card>
     </div>
 </template>
 
@@ -65,6 +75,63 @@ const instanceId = route.params.instanceId as string
 
 const snapshot = ref<Lighthouse.DescribeSnapshotsResponse>()
 const firewall = ref<Lighthouse.DescribeFirewallRulesResponse>()
+const outtraffic = ref<typeof outtrafficChart>()
+
+const outtrafficChart = {
+    toolbox: {
+        feature: {
+            dataZoom: {
+                yAxisIndex: false
+            },
+            saveAsImage: {
+                pixelRatio: 2
+            }
+        }
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'shadow'
+        }
+    },
+    grid: {
+        bottom: 90
+    },
+    dataZoom: [
+        {
+            type: 'inside'
+        },
+        {
+            type: 'slider'
+        }
+    ],
+    xAxis: {
+        silent: false,
+        splitLine: {
+            show: false
+        },
+        splitArea: {
+            show: false
+        },
+        data: []
+    },
+    yAxis: {
+        "axisLabel": {
+            "formatter": "{value} M"
+        },
+        splitArea: {
+            show: false
+        }
+    },
+    series: [
+        {
+            type: 'bar',
+            name: '流量',
+            large: true,
+            data: []
+        }
+    ]
+}
 
 const describeSnapshots = async () => {
     const data = await Api.lighthouse.describeSnapshots(region, {
@@ -80,30 +147,34 @@ const describeFirewallRules = async () => {
     firewall.value = data
 }
 
-// 外网平均每秒出流量
-// const getLighthouseOuttraffic = async () => {
-//   const data = await Api.monitor.getMonitorData(region, {
-//     Namespace: "QCE/LIGHTHOUSE",
-//     MetricName: "LighthouseOuttraffic",
-//     Instances: [
-//       {
-//         Dimensions: [
-//           {
-//             Name: "InstanceId",
-//             Value: instanceId,
-//           },
-//         ],
-//       },
-//     ],
-//     Period: 300,
-//     StartTime: "2022-06-20 00:00:00",
-//     EndTime: "2022-06-30 23:59:59",
-//   })
-//   firewall.value = data
-// }
+const getLighthouseOuttraffic = async () => {
+    const data = await Api.monitor.getMonitorData(region, {
+        Namespace: "QCE/LIGHTHOUSE",
+        MetricName: "LighthouseOuttraffic",
+        Instances: [
+            {
+                Dimensions: [
+                    {
+                        Name: "InstanceId",
+                        Value: instanceId,
+                    },
+                ],
+            },
+        ],
+        Period: 300,
+        StartTime: "2022-06-20 00:00:00",
+        EndTime: "2022-06-30 23:59:59",
+    })
+    outtrafficChart.xAxis.data = data.DataPoints[0].Timestamps.map(t => {
+        return dateFormat(t * 1000, "yyyy-MM-dd hh:mm:ss")
+    })
+    outtrafficChart.series[0].data = data.DataPoints[0].Values
+    outtraffic.value = outtrafficChart
+}
 
 describeSnapshots()
 describeFirewallRules()
+getLighthouseOuttraffic()
 </script>
 
 <style lang="scss" scoped>
