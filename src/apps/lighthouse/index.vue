@@ -71,11 +71,10 @@ const regions = reactive<
 
 const trafficPackages = reactive<Record<string, Lighthouse.TrafficPackage>>({})
 
-const geteRegions = async () => {
+const getRegions = async () => {
     const data = await Api.lighthouse.describeRegions()
     data.RegionSet.forEach(async (item) => {
         regions[item.Region] = { ...item, InstanceCount: 0, InstanceSet: [] }
-
         getInstances(item.Region)
     })
 }
@@ -118,7 +117,7 @@ const showRegion = (zone: string) => {
     return regions[zone].RegionName + ` ${n} 区`
 }
 
-geteRegions()
+getRegions()
 </script>
 
 <style lang="scss" scoped>

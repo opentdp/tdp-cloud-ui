@@ -41,14 +41,14 @@ const domain = route.params.domain as string
 
 const record = ref<Dnspod.DescribeRecordListResponse>()
 
-const describeRecordList = async () => {
+const getRecordList = async () => {
     const data = await Api.dnspod.describeRecordList({
         Domain: domain
     })
     record.value = data
 }
 
-describeRecordList()
+getRecordList()
 </script>
 
 <style lang="scss" scoped>

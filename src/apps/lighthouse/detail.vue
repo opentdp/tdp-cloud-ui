@@ -1,13 +1,13 @@
 <template>
     <div>
-        <el-card v-if="firewall" shadow="hover" class="mgb10">
+        <el-card v-if="firewallRules" shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">
                     <b>防火墙</b> &nbsp;
-                    <small>规则总数: {{ firewall.TotalCount }}</small>
+                    <small>规则总数: {{ firewallRules.TotalCount }}</small>
                 </div>
             </template>
-            <el-table :data="firewall.FirewallRuleSet" table-layout="fixed">
+            <el-table :data="firewallRules.FirewallRuleSet" table-layout="fixed">
                 <el-table-column prop="AppType" label="应用类型" min-width="100" />
                 <el-table-column prop="CidrBlock" label="来源" min-width="150" />
                 <el-table-column prop="Protocol" label="协议" min-width="100" />
@@ -17,14 +17,14 @@
             </el-table>
         </el-card>
 
-        <el-card v-if="snapshot" shadow="hover" class="mgb10">
+        <el-card v-if="snapshots" shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">
                     <b>快照</b> &nbsp;
-                    <small>快照总数: {{ snapshot.TotalCount }}</small>
+                    <small>快照总数: {{ snapshots.TotalCount }}</small>
                 </div>
             </template>
-            <el-table :data="snapshot.SnapshotSet" table-layout="fixed">
+            <el-table :data="snapshots.SnapshotSet" table-layout="fixed">
                 <el-table-column fixed prop="SnapshotName" label="名称" min-width="200" />
                 <el-table-column label="容量" min-width="100">
                     <template #default="scope">
@@ -55,7 +55,7 @@
                     <b>外网出流量</b>
                 </div>
             </template>
-            <v-chart :option="outtraffic" style="height: 400px" />
+            <v-chart :option="outtrafficChart" style="height: 400px" />
         </el-card>
     </div>
 </template>
@@ -73,11 +73,14 @@ const zone = route.params.zone as string
 const region = zone.replace(/-\d$/, "")
 const instanceId = route.params.instanceId as string
 
-const snapshot = ref<Lighthouse.DescribeSnapshotsResponse>()
-const firewall = ref<Lighthouse.DescribeFirewallRulesResponse>()
-const outtraffic = ref<typeof outtrafficChart>()
+const instance = ref<Lighthouse.Instance>()
+const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
+const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
 
-const outtrafficChart = {
+const outtrafficChart = ref<typeof outtrafficChartConfig>()
+
+const outtrafficChartConfig = {
+    backgroundColor: '#fcfcfc',
     toolbox: {
         feature: {
             dataZoom: {
@@ -93,33 +96,35 @@ const outtrafficChart = {
         axisPointer: {
             type: 'shadow'
         },
-        formatter: '时间：{b0}<br />流量：{c0} M'
+        formatter: '时间：{b0}<br />流量：{c0} M/s'
     },
     grid: {
-        bottom: 80
+        left: 80,
+        right: 80,
+        bottom: 90
     },
     dataZoom: [
         {
-            type: 'inside'
+            type: 'inside',
+            start: 80
         },
         {
             type: 'slider'
         }
     ],
     xAxis: {
-        large: true,
+        data: [],
         silent: false,
         splitLine: {
             show: false
         },
         splitArea: {
             show: false
-        },
-        data: []
+        }
     },
     yAxis: {
         axisLabel: {
-            formatter: '{value} M'
+            formatter: '{value} M/s'
         },
         splitArea: {
             show: false
@@ -127,7 +132,8 @@ const outtrafficChart = {
     },
     series: [
         {
-            type: 'bar',
+            type: 'line',
+            areaStyle: {},
             name: '流量',
             large: true,
             data: []
@@ -135,18 +141,26 @@ const outtrafficChart = {
     ]
 }
 
-const describeSnapshots = async () => {
+const getInstances = async () => {
+    const data = await Api.lighthouse.describeInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    instance.value = data.InstanceSet[0]
+    console.log(data.InstanceSet[0])
+}
+
+const getSnapshots = async () => {
     const data = await Api.lighthouse.describeSnapshots(region, {
         Filters: [{ Name: "instance-id", Values: [instanceId] }],
     })
-    snapshot.value = data
+    snapshots.value = data
 }
 
-const describeFirewallRules = async () => {
+const getFirewallRules = async () => {
     const data = await Api.lighthouse.describeFirewallRules(region, {
         InstanceId: instanceId,
     })
-    firewall.value = data
+    firewallRules.value = data
 }
 
 const getLighthouseOuttraffic = async () => {
@@ -167,15 +181,16 @@ const getLighthouseOuttraffic = async () => {
         StartTime: "2022-06-20 00:00:00",
         EndTime: "2022-06-30 23:59:59",
     })
-    outtrafficChart.xAxis.data = data.DataPoints[0].Timestamps.map(t => {
-        return dateFormat(t * 1000, "yyyy-MM-dd hh:mm:ss")
+    outtrafficChartConfig.xAxis.data = data.DataPoints[0].Timestamps.map(t => {
+        return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
     })
-    outtrafficChart.series[0].data = data.DataPoints[0].Values
-    outtraffic.value = outtrafficChart
+    outtrafficChartConfig.series[0].data = data.DataPoints[0].Values
+    outtrafficChart.value = outtrafficChartConfig
 }
 
-describeSnapshots()
-describeFirewallRules()
+getInstances()
+getSnapshots()
+getFirewallRules()
 getLighthouseOuttraffic()
 </script>
 
