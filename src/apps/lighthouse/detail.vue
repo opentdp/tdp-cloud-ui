@@ -92,10 +92,11 @@ const outtrafficChart = {
         trigger: 'axis',
         axisPointer: {
             type: 'shadow'
-        }
+        },
+        formatter: '时间：{b0}<br />流量：{c0} M'
     },
     grid: {
-        bottom: 90
+        bottom: 80
     },
     dataZoom: [
         {
@@ -106,6 +107,7 @@ const outtrafficChart = {
         }
     ],
     xAxis: {
+        large: true,
         silent: false,
         splitLine: {
             show: false
@@ -116,8 +118,8 @@ const outtrafficChart = {
         data: []
     },
     yAxis: {
-        "axisLabel": {
-            "formatter": "{value} M"
+        axisLabel: {
+            formatter: '{value} M'
         },
         splitArea: {
             show: false
