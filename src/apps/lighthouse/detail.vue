@@ -1,5 +1,45 @@
 <template>
     <div>
+        <el-card v-if="instance" shadow="hover" class="mgb10">
+            <template #header>
+                <div class="card-header">
+                    <b>实例信息</b> &nbsp;
+                </div>
+            </template>
+            <el-descriptions :column="2" border>
+                <el-descriptions-item label="实例ID">
+                    {{ instance.InstanceId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="实例名">
+                    {{ instance.InstanceName }}
+                </el-descriptions-item>
+                <el-descriptions-item label="规格">
+                    CPU：{{ instance.CPU }}核 / 内存：{{ instance.Memory }}GB
+                </el-descriptions-item>
+                <el-descriptions-item label="系统盘">
+                    {{ instance.SystemDisk.DiskSize }}GB
+                </el-descriptions-item>
+                <el-descriptions-item label="私网 IP">
+                    {{ instance.PrivateAddresses.join(", ") }}
+                </el-descriptions-item>
+                <el-descriptions-item label="公网 IP">
+                    {{ instance.PublicAddresses.join(", ") }}
+                </el-descriptions-item>
+                <el-descriptions-item label="镜像名称">
+                    {{ instance.BlueprintId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="操作系统">
+                    {{ instance.OsName }}
+                </el-descriptions-item>
+                <el-descriptions-item label="创建时间">
+                    {{ dateFormat(instance.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
+                </el-descriptions-item>
+                <el-descriptions-item label="到期时间">
+                    {{ dateFormat(instance.ExpiredTime, "yyyy-MM-dd hh:mm:ss") }}
+                </el-descriptions-item>
+            </el-descriptions>
+        </el-card>
+
         <el-card v-if="firewallRules" shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">
