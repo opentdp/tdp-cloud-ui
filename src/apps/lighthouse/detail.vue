@@ -93,6 +93,11 @@
             <template #header>
                 <div class="card-header">
                     <b>外网出流量</b>
+                    <small v-if="trafficPackage">
+                        流量包:
+                        {{ bytesToSize(trafficPackage.TrafficUsed) }} /
+                        {{ bytesToSize(trafficPackage.TrafficPackageTotal) }}
+                    </small>
                 </div>
             </template>
             <v-chart :option="outtrafficChart" style="height: 400px" />
@@ -105,7 +110,7 @@ import { ref } from "vue"
 import { useRoute } from "vue-router"
 
 import Api, { Lighthouse } from "@/api"
-import { dateFormat } from "@/helper/utils"
+import { bytesToSize, dateFormat } from "@/helper/utils"
 
 const route = useRoute()
 
@@ -116,6 +121,8 @@ const instanceId = route.params.instanceId as string
 const instance = ref<Lighthouse.Instance>()
 const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
 const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
+
+const trafficPackage = ref<Lighthouse.TrafficPackage>()
 
 const outtrafficChart = ref<typeof outtrafficChartConfig>()
 
@@ -188,6 +195,7 @@ const getInstance = async () => {
     instance.value = data.InstanceSet[0]
     getSnapshots()
     getFirewallRules()
+    getTrafficPackage()
     getLighthouseOuttraffic()
 }
 
@@ -203,6 +211,13 @@ const getFirewallRules = async () => {
         InstanceId: instanceId,
     })
     firewallRules.value = data
+}
+
+const getTrafficPackage = async () => {
+    const data = await Api.lighthouse.describeInstancesTrafficPackages(region, {
+        InstanceIds: [instanceId],
+    })
+    trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
 }
 
 const getLighthouseOuttraffic = async () => {
