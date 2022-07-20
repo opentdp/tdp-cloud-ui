@@ -14,10 +14,10 @@
                     {{ instance.InstanceName }}
                 </el-descriptions-item>
                 <el-descriptions-item label="规格">
-                    CPU：{{ instance.CPU }}核 / 内存：{{ instance.Memory }}GB
+                    CPU：{{ instance.CPU }}核 / 内存：{{ instance.Memory }} GB
                 </el-descriptions-item>
                 <el-descriptions-item label="系统盘">
-                    {{ instance.SystemDisk.DiskSize }}GB
+                    {{ instance.SystemDisk.DiskSize }} GB
                 </el-descriptions-item>
                 <el-descriptions-item label="私网 IP">
                     {{ instance.PrivateAddresses.join(", ") }}
@@ -68,7 +68,7 @@
                 <el-table-column fixed prop="SnapshotName" label="名称" min-width="200" />
                 <el-table-column label="容量" min-width="100">
                     <template #default="scope">
-                        {{ scope.row.DiskSize + "GiB" }}
+                        {{ scope.row.DiskSize + "GB" }}
                     </template>
                 </el-table-column>
                 <el-table-column label="进度" min-width="150">

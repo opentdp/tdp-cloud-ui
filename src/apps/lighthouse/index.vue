@@ -18,12 +18,12 @@
                     <el-table-column prop="CPU" label="vCPU" min-width="100" />
                     <el-table-column label="内存" min-width="100">
                         <template #default="scope">
-                            {{ scope.row.Memory + " GiB" }}
+                            {{ scope.row.Memory + " GB" }}
                         </template>
                     </el-table-column>
                     <el-table-column label="系统盘" min-width="150">
                         <template #default="scope">
-                            {{ scope.row.SystemDisk.DiskSize + " GiB" }}
+                            {{ scope.row.SystemDisk.DiskSize + " GB" }}
                         </template>
                     </el-table-column>
                     <el-table-column label="流量(已用/总量)" min-width="180">
