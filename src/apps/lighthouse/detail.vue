@@ -141,12 +141,14 @@ const outtrafficChartConfig = {
     ]
 }
 
-const getInstances = async () => {
+const getInstance = async () => {
     const data = await Api.lighthouse.describeInstances(region, {
         InstanceIds: [instanceId],
     })
     instance.value = data.InstanceSet[0]
-    console.log(data.InstanceSet[0])
+    getSnapshots()
+    getFirewallRules()
+    getLighthouseOuttraffic()
 }
 
 const getSnapshots = async () => {
@@ -178,8 +180,8 @@ const getLighthouseOuttraffic = async () => {
             },
         ],
         Period: 300,
-        StartTime: "2022-06-20 00:00:00",
-        EndTime: "2022-06-30 23:59:59",
+        StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
+        EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
     })
     outtrafficChartConfig.xAxis.data = data.DataPoints[0].Timestamps.map(t => {
         return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
@@ -188,10 +190,7 @@ const getLighthouseOuttraffic = async () => {
     outtrafficChart.value = outtrafficChartConfig
 }
 
-getInstances()
-getSnapshots()
-getFirewallRules()
-getLighthouseOuttraffic()
+getInstance()
 </script>
 
 <style lang="scss" scoped>
