@@ -28,15 +28,15 @@
                             <span>账户编辑</span>
                         </div>
                     </template>
-                    <el-form ref="formRef" :model="form" :rules="formRules" label-width="100px">
+                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
                         <el-form-item label="用户名：">
                             {{ session.username }}
                         </el-form-item>
                         <el-form-item label="个人简介：" prop="desc">
-                            <el-input v-model="form.desc" />
+                            <el-input v-model="formModel.description" />
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit">
+                            <el-button type="primary" @click="formSubmit(formRef)">
                                 保存
                             </el-button>
                         </el-form-item>
@@ -48,19 +48,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
-import { FormRules, FormInstance } from "element-plus"
+import { ref, reactive } from "vue"
+import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import Api from "@/api"
 import sessionStore from "@/store/session"
 
 const session = sessionStore()
 
-const form = ref({
-    desc: session.description,
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    description: session.description,
 })
 
-const formRef = ref<FormInstance>()
 const formRules = ref<FormRules>({
     desc: [
         { required: true, message: "请输入个人简介", trigger: "blur" },
@@ -71,20 +72,21 @@ const formRules = ref<FormRules>({
                 } else {
                     callback()
                 }
-            }, trigger: "blur"
+            },
+            trigger: "blur"
         },
     ],
 })
 
-const onSubmit = () => {
-    formRef.value.validate(async (valid) => {
-        if (valid) {
-            const description = form.value.desc.trim()
-            await Api.member.updateInfo({
-                description: description,
-            })
-            session.description = description
+const formSubmit = (form: FormInstance | undefined) => {
+    form && form.validate(valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
         }
+        Api.member.updateInfo(formModel).then(() => {
+            session.description = formModel.description
+        })
     })
 }
 </script>

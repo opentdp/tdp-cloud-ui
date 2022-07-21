@@ -4,9 +4,9 @@
             <div class="vt-title">
                 TDP Cloud
             </div>
-            <el-form ref="formRef" :model="param" :rules="formRules" label-width="0px" class="vt-content">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="0px" class="vt-content">
                 <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="用户名">
+                    <el-input v-model="formModel.username" placeholder="用户名">
                         <template #prepend>
                             <el-icon>
                                 <User />
@@ -15,7 +15,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="param.password" type="password" placeholder="密码">
+                    <el-input v-model="formModel.password" type="password" placeholder="密码">
                         <template #prepend>
                             <el-icon>
                                 <Lock />
@@ -24,7 +24,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password2">
-                    <el-input v-model="param.password2" type="password" placeholder="确认密码" @keyup.enter="formSubmit()">
+                    <el-input v-model="formModel.password2" type="password" placeholder="确认密码" @keyup.enter="formSubmit(formRef)">
                         <template #prepend>
                             <el-icon>
                                 <Lock />
@@ -33,7 +33,7 @@
                     </el-input>
                 </el-form-item>
                 <div class="register-btn">
-                    <el-button type="primary" @click="formSubmit()">
+                    <el-button type="primary" @click="formSubmit(formRef)">
                         注册
                     </el-button>
                 </div>
@@ -50,32 +50,33 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
 import { useRouter } from "vue-router"
-import { ElMessage, FormRules, FormInstance } from "element-plus"
+import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import Api from "@/api"
 
 const router = useRouter()
 
-const param = reactive({
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
     username: "",
     password: "",
     password2: "",
 })
 
-const formRef = ref<FormInstance>()
-const formRules = ref<FormRules>({
+const formRules: FormRules = {
     username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
     password: [{ required: true, message: "请输入密码", trigger: "blur" }],
     password2: [{ required: true, message: "请输入密码", trigger: "blur" }],
-})
+}
 
-const formSubmit = () => {
-    formRef.value.validate((valid: boolean) => {
+const formSubmit = (form: FormInstance | undefined) => {
+    form && form.validate(valid => {
         if (!valid) {
-            ElMessage.error("注册失败")
+            ElMessage.error("请检查表单")
             return false
         }
-        Api.member.register(param).then(() => {
+        Api.member.register(formModel).then(() => {
             ElMessage.success("注册成功")
             router.push("/member/login")
         })

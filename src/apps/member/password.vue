@@ -28,18 +28,18 @@
                             <span>修改密码</span>
                         </div>
                     </template>
-                    <el-form ref="formRef" :model="form" :rules="formRules" label-width="100px">
+                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
                         <el-form-item label="原密码：" prop="oldpass">
-                            <el-input v-model="form.oldpass" type="password" autocomplete="off" />
+                            <el-input v-model="formModel.oldPassword" type="password" autocomplete="off" />
                         </el-form-item>
                         <el-form-item label="新密码：" prop="newpass">
-                            <el-input v-model="form.newpass" type="password" autocomplete="off" />
+                            <el-input v-model="formModel.newPassword" type="password" autocomplete="off" />
                         </el-form-item>
                         <el-form-item label="新密码：" prop="newpass2">
-                            <el-input v-model="form.newpass2" type="password" autocomplete="off" />
+                            <el-input v-model="formModel.newPassword2" type="password" autocomplete="off" />
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="formSubmit">
+                            <el-button type="primary" @click="formSubmit(formRef)">
                                 保存
                             </el-button>
                         </el-form-item>
@@ -51,7 +51,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref, reactive } from "vue"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import Api from "@/api"
@@ -59,21 +59,22 @@ import sessionStore from "@/store/session"
 
 const session = sessionStore()
 
-const form = ref({
-    oldpass: "",
-    newpass: "",
-    newpass2: "",
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    oldPassword: "",
+    newPassword: "",
+    newPassword2: "",
 })
 
-const formRef = ref<FormInstance>()
 const formRules = ref<FormRules>({
-    oldpass: [{ required: true, message: "请输入原始", trigger: "blur" }],
-    newpass: [{ required: true, message: "请输入密码", trigger: "blur" }],
-    newpass2: [
+    oldPassword: [{ required: true, message: "请输入原始密码", trigger: "blur" }],
+    newPassword: [{ required: true, message: "请输入密码", trigger: "blur" }],
+    newPassword2: [
         { required: true, message: "请输入密码", trigger: "blur" },
         {
             validator: (rule, value, callback) => {
-                if (form.value.newpass != form.value.newpass2) {
+                if (formModel.newPassword != formModel.newPassword2) {
                     callback(new Error("两次密码不一致"))
                 } else {
                     callback()
@@ -83,15 +84,15 @@ const formRules = ref<FormRules>({
     ],
 })
 
-const formSubmit = () => {
-    formRef.value.validate(async (valid) => {
-        if (valid) {
-            await Api.member.updatePassword({
-                oldPassword: form.value.oldpass,
-                newPassword: form.value.newpass,
-            })
-            ElMessage.success("修改成功")
+const formSubmit = (form: FormInstance | undefined) => {
+    form && form.validate(valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
         }
+        Api.member.updatePassword(formModel).then(() => {
+            ElMessage.success("修改成功")
+        })
     })
 }
 </script>
