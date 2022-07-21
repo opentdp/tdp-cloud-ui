@@ -2,28 +2,51 @@
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:vue/vue3-recommended"
+        "plugin:vue/vue3-recommended",
+        "plugin:vue-scoped-css/base"
     ],
+    "env": {
+        "browser": true,
+        "node": true,
+        "jest": true,
+        "es6": true
+    },
+    "globals": {
+        "defineProps": "readonly",
+        "defineEmits": "readonly"
+    },
     "plugins": [
+        "vue",
         "@typescript-eslint"
     ],
     "parser": "vue-eslint-parser",
     "parserOptions": {
         "parser": "@typescript-eslint/parser",
-        "sourceType": "module"
+        "sourceType": "module",
+        "allowImportExportEverywhere": true,
+        "ecmaFeatures": {
+            "jsx": true
+        }
     },
     "rules": {
         "semi": [
             "warn",
             "never"
         ],
-        "vue/max-len": [
+        "no-prototype-builtins": "off",
+        "no-case-declarations": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
+        "@typescript-eslint/member-ordering": "off",
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "vue/component-name-in-template-casing": [
             "error",
-            {
-                "code": 160,
-                "template": 160,
-                "tabWidth": 4
-            }
+            "kebab-case"
+        ],
+        "vue/html-indent": [
+            "error",
+            4
         ],
         "vue/max-attributes-per-line": [
             "error",
@@ -36,9 +59,13 @@
                 }
             }
         ],
-        "vue/html-indent": [
+        "vue/max-len": [
             "error",
-            4
+            {
+                "code": 160,
+                "template": 160,
+                "tabWidth": 4
+            }
         ],
         "vue/multi-word-component-names": "off"
     }
