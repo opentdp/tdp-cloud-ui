@@ -39,7 +39,7 @@
                             <el-input v-model="form.newpass2" type="password" autocomplete="off" />
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit">
+                            <el-button type="primary" @click="formSubmit">
                                 保存
                             </el-button>
                         </el-form-item>
@@ -83,7 +83,7 @@ const formRules = ref<FormRules>({
     ],
 })
 
-const onSubmit = () => {
+const formSubmit = () => {
     formRef.value.validate(async (valid) => {
         if (valid) {
             await Api.member.updatePassword({

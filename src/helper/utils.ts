@@ -10,7 +10,7 @@ export function bytesToSize(a: number, d = 2) {
     return parseFloat((a / Math.pow(c, f)).toFixed(d)) + " " + e[f]
 }
 
-export function dateFormat(t: string, fmt: string) {
+export function dateFormat(t: string | number, fmt: string) {
     const d = new Date(t)
     const o = {
         "M+": d.getMonth() + 1,

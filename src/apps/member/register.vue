@@ -4,7 +4,7 @@
             <div class="vt-title">
                 TDP Cloud
             </div>
-            <el-form ref="register" :model="param" :rules="rules" label-width="0px" class="vt-content">
+            <el-form ref="formRef" :model="param" :rules="formRules" label-width="0px" class="vt-content">
                 <el-form-item prop="username">
                     <el-input v-model="param.username" placeholder="用户名">
                         <template #prepend>
@@ -24,7 +24,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password2">
-                    <el-input v-model="param.password2" type="password" placeholder="确认密码" @keyup.enter="submitForm()">
+                    <el-input v-model="param.password2" type="password" placeholder="确认密码" @keyup.enter="formSubmit()">
                         <template #prepend>
                             <el-icon>
                                 <Lock />
@@ -33,7 +33,7 @@
                     </el-input>
                 </el-form-item>
                 <div class="register-btn">
-                    <el-button type="primary" @click="submitForm()">
+                    <el-button type="primary" @click="formSubmit()">
                         注册
                     </el-button>
                 </div>
@@ -50,7 +50,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
 import { useRouter } from "vue-router"
-import { ElMessage } from "element-plus"
+import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import Api from "@/api"
 
@@ -62,16 +62,15 @@ const param = reactive({
     password2: "",
 })
 
-const rules = {
+const formRef = ref<FormInstance>()
+const formRules = ref<FormRules>({
     username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
     password: [{ required: true, message: "请输入密码", trigger: "blur" }],
     password2: [{ required: true, message: "请输入密码", trigger: "blur" }],
-}
+})
 
-const register = ref(null)
-
-const submitForm = () => {
-    register.value.validate((valid) => {
+const formSubmit = () => {
+    formRef.value.validate((valid: boolean) => {
         if (!valid) {
             ElMessage.error("注册失败")
             return false
