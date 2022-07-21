@@ -44,10 +44,10 @@ const goBack = () => {
     font-size: 250px;
     font-weight: bolder;
     color: #f02d2d;
-}
 
-.error-code span {
-    color: #00a854;
+    span {
+        color: #00a854;
+    }
 }
 
 .error-desc {
@@ -58,9 +58,9 @@ const goBack = () => {
 .error-handle {
     margin-top: 30px;
     padding-bottom: 200px;
-}
 
-.error-btn {
-    margin-left: 100px;
+    .error-btn {
+        margin-left: 100px;
+    }
 }
 </style>
