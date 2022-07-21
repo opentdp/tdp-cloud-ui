@@ -70,14 +70,12 @@ const submitForm = () => {
         Api.member.login(param).then((data) => {
             ElMessage.success("登录成功")
             session.username = data.username
-            session.token = data.token
             session.description = data.description
+            session.token = data.token
             if (data.keyid > 0) {
                 session.keyid = data.keyid
-                router.push("/")
-            } else {
-                router.push({ name: "member-login" })
             }
+            router.push("/")
         })
     })
 }
