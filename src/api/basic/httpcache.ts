@@ -48,7 +48,7 @@ export class HttpCache {
         const cacheItem: CacheItem = {
             key: key,
             content: JSON.stringify(content),
-            expires: String(Date.now() + 10 * 60 * 60)
+            expires: String(Date.now() + 10 * 60 * 1000)
         }
         localStorage.setItem(key, JSON.stringify(cacheItem))
     }
