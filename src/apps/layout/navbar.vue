@@ -15,12 +15,7 @@
                 <el-icon v-if="session.secretList.length > 0" :size="30">
                     <Key />
                 </el-icon>
-                <el-dropdown
-                    v-if="session.secretList.length > 0"
-                    class="user-name"
-                    trigger="click"
-                    @command="secretDropdown"
-                >
+                <el-dropdown v-if="session.secretList.length > 0" class="user-name" trigger="click" @command="secretDropdown">
                     <span class="el-dropdown-link">
                         &nbsp;{{ session.keyname || "请选择" }}&nbsp;
                         <el-icon>
@@ -42,7 +37,7 @@
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="userDropdown">
                     <span class="el-dropdown-link">
-                        &nbsp;{{ username }}&nbsp;
+                        &nbsp;{{ session.username }}&nbsp;
                         <el-icon>
                             <CaretBottom />
                         </el-icon>
@@ -83,24 +78,10 @@ const router = useRouter()
 const layout = layoutStore()
 const session = sessionStore()
 
-const username = session.username
-
 // 侧边栏折叠
 const collapseChange = () => {
     layout.setCollapse(!layout.collapse)
 }
-
-// 小屏自动折叠
-onMounted(() => {
-    if (document.body.clientWidth < 1000) {
-        collapseChange()
-    }
-})
-
-// 密钥列表
-Api.member.fetchSecrets().then((res) => {
-    session.setSecrets(res)
-})
 
 // 密钥下拉菜单选择事件
 const secretDropdown = (data: SecretItem) => {
@@ -124,6 +105,18 @@ const userDropdown = (data: string) => {
             break
     }
 }
+
+onMounted(() => {
+    // 获取密钥列表
+    Api.member.fetchSecrets().then((res) => {
+        session.setSecrets(res)
+        session.useSecret(session.keyid)
+    })
+    // 小屏自动折叠
+    if (document.body.clientWidth < 1000) {
+        collapseChange()
+    }
+})
 </script>
 
 <style lang="scss" scoped>
