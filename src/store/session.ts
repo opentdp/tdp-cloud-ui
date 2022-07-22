@@ -17,9 +17,8 @@ export default defineStore("session", {
         // 更新密钥列表
         setSecrets(data: SecretItem[]) {
             this.secretList = data
-            if (data.length > 0 && this.keyid < 1) {
-                this.keyname = data[0].Description
-                this.keyid = data[0].Id
+            if (data.length > 0) {
+                this.useSecret(this.keyid > 0 ? this.keyid : data[0].Id)
             }
         },
         // 设置当前密钥

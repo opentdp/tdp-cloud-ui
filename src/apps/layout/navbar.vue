@@ -110,7 +110,6 @@ onMounted(() => {
     // 获取密钥列表
     Api.member.fetchSecrets().then((res) => {
         session.setSecrets(res)
-        session.useSecret(session.keyid)
     })
     // 小屏自动折叠
     if (document.body.clientWidth < 1000) {
