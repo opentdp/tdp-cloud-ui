@@ -3,32 +3,63 @@ import { ElMessage } from "element-plus"
 import sessionStore from "@/store/session"
 
 import { Message } from "./mesg"
+import { HttpCache } from "./httpcache"
 
 let session: ReturnType<typeof sessionStore>
+
+type CacheParam = {
+    cache: boolean
+    version?: string
+}
+
 
 export class HttpClient {
     protected get session() {
         return session || (session = sessionStore())
     }
 
-    protected async get(url: string, query?: unknown) {
+    protected async get(url: string, query?: unknown, cache?: CacheParam) {
         if (query) {
             url += "?" + this.buildQuery(query)
+        }
+        let httpCache: HttpCache | undefined = undefined
+        if (cache?.cache) {
+            httpCache = new HttpCache("/api" + url, "GET", {}, cache.version,)
+            const cach_res = httpCache.Get()
+            if (cach_res != null) {
+                return cach_res
+            }
         }
         const body = await fetch("/api" + url, {
             method: "GET",
             headers: this.buildHeader(),
         })
-        return this.parseResponse(body)
+        const res = await this.parseResponse(body)
+        if (httpCache) {
+            httpCache.Set(res)
+        }
+        return res
     }
 
-    protected async post(url: string, query: unknown) {
+    protected async post(url: string, query: unknown, cache?: CacheParam) {
+        let httpCache: HttpCache | undefined = undefined
+        if (cache?.cache) {
+            httpCache = new HttpCache("/api" + url, "GET", query, cache.version,)
+            const cach_res = httpCache.Get()
+            if (cach_res != null) {
+                return cach_res
+            }
+        }
         const body = await fetch("/api" + url, {
             method: "POST",
             headers: this.buildHeader("json"),
             body: JSON.stringify(query || {}),
         })
-        return this.parseResponse(body)
+        const res = await this.parseResponse(body)
+        if (httpCache) {
+            httpCache.Set(res)
+        }
+        return res
     }
 
     protected async patch(url: string, query: unknown) {
