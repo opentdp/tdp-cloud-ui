@@ -49,7 +49,7 @@
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <a href="https://github.com/rehiy/vue-admin-template" target="_blank">
+                            <a href="https://github.com/tdp-resource/tdp-cloud" target="_blank">
                                 <el-dropdown-item>项目仓库</el-dropdown-item>
                             </a>
                             <el-dropdown-item command="user">
