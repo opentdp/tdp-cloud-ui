@@ -31,13 +31,13 @@
             </template>
             <el-form label-width="90px">
                 <el-form-item label="别名">
-                    <el-input v-model="param.description" />
+                    <el-input v-model="formModel.description" />
                 </el-form-item>
                 <el-form-item label="SecretId">
-                    <el-input v-model="param.secretId" />
+                    <el-input v-model="formModel.secretId" />
                 </el-form-item>
                 <el-form-item label="SecretKey">
-                    <el-input v-model="param.secretKey" />
+                    <el-input v-model="formModel.secretKey" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="createSecret">
@@ -68,17 +68,17 @@ const fetchSecrets = () => {
 
 // 添加密钥
 
-const param = reactive({
+const formModel = reactive({
     secretId: "",
     secretKey: "",
     description: "",
 })
 
 const createSecret = () => {
-    Api.member.createSecret(param).then(() => {
-        param.secretId = ""
-        param.secretKey = ""
-        param.description = ""
+    Api.member.createSecret(formModel).then(() => {
+        formModel.secretId = ""
+        formModel.secretKey = ""
+        formModel.description = ""
         fetchSecrets()
     })
 }
