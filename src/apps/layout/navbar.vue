@@ -47,6 +47,9 @@
                             <a href="https://github.com/tdp-resource/tdp-cloud" target="_blank">
                                 <el-dropdown-item>项目仓库</el-dropdown-item>
                             </a>
+                            <el-dropdown-item command="delcache">
+                                清理缓存
+                            </el-dropdown-item>
                             <el-dropdown-item command="user">
                                 个人中心
                             </el-dropdown-item>
@@ -93,6 +96,10 @@ const secretDropdown = (data: SecretItem) => {
 // 用户名下拉菜单选择事件
 const userDropdown = (data: string) => {
     switch (data) {
+        case "delcache":
+            Api.member.cached.clear(true)
+            location.reload()
+            break
         case "loginout":
             session.$reset()
             router.push({ name: "member-login" })

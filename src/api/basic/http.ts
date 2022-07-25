@@ -9,7 +9,7 @@ let cached: Cached
 let session: ReturnType<typeof sessionStore>
 
 export class HttpClient {
-    protected get cached() {
+    public get cached() {
         return cached || (cached = new Cached('http'))
     }
 
@@ -18,20 +18,22 @@ export class HttpClient {
     }
 
     protected async get(url: string, query?: unknown, expiry = 0) {
-        if (query) {
-            url += "?" + this.buildQuery(query)
-        }
         if (expiry > 0) {
             const cres = this.cached.get({ url, query })
             if (cres) {
                 return cres
             }
         }
+        // 请求远程接口
+        if (query) {
+            url += "?" + this.buildQuery(query)
+        }
         const body = await fetch("/api" + url, {
             method: "GET",
             headers: this.buildHeader(),
         })
         const res = await this.parseResponse(body)
+        // 写入本地缓存
         expiry > 0 && setTimeout(
             () => this.cached.set({ url, query }, res, expiry)
         )
@@ -45,12 +47,14 @@ export class HttpClient {
                 return cres
             }
         }
+        // 请求远程接口
         const body = await fetch("/api" + url, {
             method: "POST",
             headers: this.buildHeader("json"),
             body: JSON.stringify(query || {}),
         })
         const res = await this.parseResponse(body)
+        // 写入本地缓存
         expiry > 0 && setTimeout(
             () => this.cached.set({ url, query }, res, expiry)
         )
@@ -79,20 +83,19 @@ export class HttpClient {
 
     protected async parseResponse(body: Response) {
         const data = await body.json()
-
+        // 捕获错误信息
         if (data.Error) {
             const err = data.Error.Message || data.Error || "UKN"
             ElMessage.error(Message[err] || err)
             throw new Error(err)
         }
-
+        // 处理正确结果
         if (data.Payload) {
             if (data.Payload.Message) {
                 ElMessage.success(data.Payload.Message)
             }
             return data.Payload
         }
-
         return data
     }
 
@@ -100,18 +103,14 @@ export class HttpClient {
         const headers: HeadersInit = {
             Accept: "application/json",
         }
-
-        const keyid = this.session.keyid || 0
-        const token = this.session.token || ""
-
-        if (token) {
-            headers.Authorization = keyid + ":" + token
-        }
-
         if (type === "json") {
             headers["Content-Type"] = "application/json"
         }
-
+        if (this.session.token) {
+            const token = this.session.token
+            const keyid = this.session.keyid || 0
+            headers.Authorization = keyid + ":" + token
+        }
         return headers
     }
 
@@ -119,13 +118,10 @@ export class HttpClient {
         if (!obj && !key) {
             return ""
         }
-
         if (obj == null) {
             return key + "="
         }
-
         const result = []
-
         switch (typeof obj) {
             case "string":
             case "number":
@@ -140,7 +136,6 @@ export class HttpClient {
                 })
                 break
         }
-
         return result.join("&")
     }
 }
