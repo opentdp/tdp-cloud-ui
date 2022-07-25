@@ -29,18 +29,18 @@
                     </el-button>
                 </div>
             </template>
-            <el-form label-width="90px">
-                <el-form-item label="别名">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="90px">
+                <el-form-item prop="description" label="别名">
                     <el-input v-model="formModel.description" />
                 </el-form-item>
-                <el-form-item label="SecretId">
+                <el-form-item prop="secretId" label="SecretId">
                     <el-input v-model="formModel.secretId" />
                 </el-form-item>
-                <el-form-item label="SecretKey">
+                <el-form-item prop="secretKey" label="SecretKey">
                     <el-input v-model="formModel.secretKey" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="createSecret">
+                    <el-button type="primary" @click="formSubmit(formRef)">
                         保存
                     </el-button>
                 </el-form-item>
@@ -50,8 +50,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue"
-import { ElMessageBox } from "element-plus"
+import { ref, reactive } from "vue"
+import { ElMessage, ElMessageBox, FormInstance, FormRules } from "element-plus"
 
 import Api from "@/api"
 import sessionStore from "@/store/session"
@@ -68,18 +68,32 @@ const fetchSecrets = () => {
 
 // 添加密钥
 
+const formRef = ref<FormInstance>()
+
 const formModel = reactive({
     secretId: "",
     secretKey: "",
     description: "",
 })
 
-const createSecret = () => {
-    Api.member.createSecret(formModel).then(() => {
-        formModel.secretId = ""
-        formModel.secretKey = ""
-        formModel.description = ""
-        fetchSecrets()
+const formRules: FormRules = {
+    description: [{ required: true, message: "请输入别名", trigger: "blur" }],
+    secretId: [{ required: true, message: "请输入 SecretId", trigger: "blur" }],
+    secretKey: [{ required: true, message: "请输入 SecretKey", trigger: "blur" }],
+}
+
+const formSubmit = (form: FormInstance | undefined) => {
+    form && form.validate(valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
+        }
+        Api.member.createSecret(formModel).then(() => {
+            formModel.secretId = ""
+            formModel.secretKey = ""
+            formModel.description = ""
+            fetchSecrets()
+        })
     })
 }
 
