@@ -36,7 +36,7 @@ export default defineStore("session", {
         enabled: true,
         strategies: [
             {
-                key: "vt_session",
+                key: "tdp/session",
                 storage: localStorage,
             },
         ],

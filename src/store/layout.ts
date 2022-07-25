@@ -12,4 +12,13 @@ export default defineStore("layout", {
             this.collapse = data
         },
     },
+    persist: {
+        enabled: true,
+        strategies: [
+            {
+                key: "tdp/layout",
+                storage: sessionStorage,
+            },
+        ],
+    },
 })

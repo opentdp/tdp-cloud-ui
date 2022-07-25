@@ -8,6 +8,6 @@ export class MonitorClient extends HttpClient {
         query: Monitor.GetMonitorDataRequest
     ): Promise<Monitor.GetMonitorDataResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/cloud/monitor/getMonitorData/" + region, query, { cache: true })
+        return this.post("/cloud/monitor/getMonitorData/" + region, query, 600)
     }
 }

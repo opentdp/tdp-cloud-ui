@@ -1,33 +1,30 @@
 import { ElMessage } from "element-plus"
 
+import { Cached } from "@/helper/cached"
 import sessionStore from "@/store/session"
 
 import { Message } from "./mesg"
-import { HttpCache } from "./httpcache"
 
+let cached: Cached
 let session: ReturnType<typeof sessionStore>
 
-type CacheParam = {
-    cache: boolean
-    version?: string
-}
-
-
 export class HttpClient {
+    protected get cached() {
+        return cached || (cached = new Cached('http'))
+    }
+
     protected get session() {
         return session || (session = sessionStore())
     }
 
-    protected async get(url: string, query?: unknown, cache?: CacheParam) {
+    protected async get(url: string, query?: unknown, expiry = 0) {
         if (query) {
             url += "?" + this.buildQuery(query)
         }
-        let httpCache: HttpCache | undefined = undefined
-        if (cache?.cache) {
-            httpCache = new HttpCache("/api" + url, "GET", {}, cache.version,)
-            const cach_res = httpCache.Get()
-            if (cach_res != null) {
-                return cach_res
+        if (expiry > 0) {
+            const cres = this.cached.get({ url, query })
+            if (cres) {
+                return cres
             }
         }
         const body = await fetch("/api" + url, {
@@ -35,19 +32,17 @@ export class HttpClient {
             headers: this.buildHeader(),
         })
         const res = await this.parseResponse(body)
-        if (httpCache) {
-            httpCache.Set(res)
-        }
+        expiry > 0 && setTimeout(
+            () => this.cached.set({ url, query }, res, expiry)
+        )
         return res
     }
 
-    protected async post(url: string, query: unknown, cache?: CacheParam) {
-        let httpCache: HttpCache | undefined = undefined
-        if (cache?.cache) {
-            httpCache = new HttpCache("/api" + url, "GET", query, cache.version,)
-            const cach_res = httpCache.Get()
-            if (cach_res != null) {
-                return cach_res
+    protected async post(url: string, query: unknown, expiry = 0) {
+        if (expiry > 0) {
+            const cres = this.cached.get({ url, query })
+            if (cres) {
+                return cres
             }
         }
         const body = await fetch("/api" + url, {
@@ -56,9 +51,9 @@ export class HttpClient {
             body: JSON.stringify(query || {}),
         })
         const res = await this.parseResponse(body)
-        if (httpCache) {
-            httpCache.Set(res)
-        }
+        expiry > 0 && setTimeout(
+            () => this.cached.set({ url, query }, res, expiry)
+        )
         return res
     }
 
