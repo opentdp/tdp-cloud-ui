@@ -97,7 +97,7 @@ const secretDropdown = (data: SecretItem) => {
 const userDropdown = (data: string) => {
     switch (data) {
         case "delcache":
-            Api.member.cached.clear(true)
+            Api.member.clear()
             location.reload()
             break
         case "loginout":

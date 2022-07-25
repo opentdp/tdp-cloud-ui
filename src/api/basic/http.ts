@@ -9,7 +9,7 @@ let cached: Cached
 let session: ReturnType<typeof sessionStore>
 
 export class HttpClient {
-    public get cached() {
+    protected get cached() {
         return cached || (cached = new Cached('http'))
     }
 

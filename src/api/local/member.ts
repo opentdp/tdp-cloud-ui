@@ -1,6 +1,10 @@
 import { HttpClient } from "../basic/http"
 
 export class MemberClient extends HttpClient {
+    public clear() {
+        this.cached.clear(true)
+    }
+
     public login(data: LoginRequest): Promise<LoginResponse> {
         return this.post("/local/member/login", data)
     }
