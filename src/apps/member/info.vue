@@ -32,7 +32,7 @@
                         <el-form-item label="用户名：">
                             {{ session.username }}
                         </el-form-item>
-                        <el-form-item label="个人简介：" prop="desc">
+                        <el-form-item label="个人简介：" prop="description">
                             <el-input v-model="formModel.description" />
                         </el-form-item>
                         <el-form-item>

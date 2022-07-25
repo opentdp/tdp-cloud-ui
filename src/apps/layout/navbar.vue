@@ -44,17 +44,17 @@
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <a href="https://github.com/tdp-resource/tdp-cloud" target="_blank">
-                                <el-dropdown-item>项目仓库</el-dropdown-item>
-                            </a>
-                            <el-dropdown-item command="delcache">
-                                清理缓存
+                            <el-dropdown-item>
+                                <a href="https://github.com/tdp-resource/tdp-cloud" target="_blank">项目仓库 </a>
                             </el-dropdown-item>
                             <el-dropdown-item command="user">
                                 个人中心
                             </el-dropdown-item>
                             <el-dropdown-item command="password">
                                 修改密码
+                            </el-dropdown-item>
+                            <el-dropdown-item command="delcache">
+                                清理缓存
                             </el-dropdown-item>
                             <el-dropdown-item divided command="loginout">
                                 退出登录
@@ -151,7 +151,7 @@ onMounted(() => {
 
 .header-right {
     float: right;
-    padding-right: 50px;
+    padding-right: 24px;
 }
 
 .header-user-con {
