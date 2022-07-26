@@ -88,6 +88,11 @@ const items: MenuItem[] = [
         title: "轻量服务器",
     },
     {
+        icon: "Monitor",
+        index: "/tat/index",
+        title: "TAT",
+    },
+    {
         icon: "Key",
         index: "/member/secret",
         title: "密钥管理",
