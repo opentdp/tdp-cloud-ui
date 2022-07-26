@@ -1,5 +1,10 @@
 <template>
     <div>
+        <el-breadcrumb separator="/" class="breadcrumb">
+            <el-breadcrumb-item :to="{ name: 'dnspod-index' }">
+                域名解析
+            </el-breadcrumb-item>
+        </el-breadcrumb>
         <el-card v-if="domainDescribe && domainDescribe.DomainCountInfo" shadow="hover">
             <template #header>
                 <div class="card-header">
@@ -52,6 +57,10 @@ Api.dnspod.describeDomainList().then((res) => {
 </script>
 
 <style lang="scss" scoped>
+.breadcrumb {
+    margin: 10px 5px 15px;
+}
+
 .card-header {
     display: flex;
     justify-content: space-between;

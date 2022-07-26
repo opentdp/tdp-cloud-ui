@@ -1,5 +1,11 @@
 <template>
     <div>
+        <el-breadcrumb separator="/" class="breadcrumb">
+            <el-breadcrumb-item :to="{ name: 'dnspod-index' }">
+                域名解析
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>{{ domain }}</el-breadcrumb-item>
+        </el-breadcrumb>
         <el-card v-if="record" shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">
@@ -52,6 +58,10 @@ getRecordList()
 </script>
 
 <style lang="scss" scoped>
+.breadcrumb {
+    margin: 10px 5px 15px;
+}
+
 .card-header {
     display: flex;
     justify-content: space-between;
