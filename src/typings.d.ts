@@ -15,8 +15,4 @@ interface ImportMetaEnv {
 
     readonly VITE_USERNAME: string
     readonly VITE_PASSWORD: string
-
-    readonly SSH_ADDR: string
-    readonly SSH_USER: string
-    readonly SSH_PASSWORD: string
 }

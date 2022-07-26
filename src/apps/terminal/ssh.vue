@@ -9,17 +9,17 @@
                     <el-input v-model="formModel.user" />
                 </el-form-item>
                 <el-form-item prop="password" label="密码">
-                    <el-input v-model="formModel.password" />
+                    <el-input v-model="formModel.password" type="password" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="formSubmit(formRef)">
-                        保存
+                        链接
                     </el-button>
                 </el-form-item>
             </el-form>
         </el-card>
-        <el-card shadow="hover">
-            <div id="xterm" class="xterm" />
+        <el-card shadow="hover" class="ssh-card">
+            <div class="ssh-layer" />
         </el-card>
     </div>
 </template>
@@ -40,9 +40,9 @@ import Api from "@/api"
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    addr: import.meta.env.SSH_ADDR || "",
-    user: import.meta.env.SSH_USER || "",
-    password: import.meta.env.SSH_PASSWORD || "",
+    addr: "",
+    user: "",
+    password: "",
 })
 
 const formRules: FormRules = {
@@ -57,40 +57,17 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        sshConnect()
+        initXterm()
     })
 }
 
 // 创建终端
 
-const sshConnect = () => {
-    const term = new Terminal({
-        rendererType: "canvas", // 渲染类型
-        rows: 40, // 行数
-        cols: 120, // 设置之后会输入多行之后覆盖现象
-        convertEol: true, // 启用时，光标将设置为下一行的开头
-        scrollback: 30, // 终端中的回滚量
-        fontSize: 14, // 字体大小
-        disableStdin: false, // 是否应禁用输入。
-        cursorStyle: "block", // 光标样式
-        cursorBlink: true, // 光标闪烁
-        tabStopWidth: 4
-    })
-
-    const fitAddon = new FitAddon()
-    term.loadAddon(fitAddon)
-    fitAddon.fit()
-
-    const wrap = document.getElementById('xterm')
-    wrap && term.open(wrap)
-    term.focus()
-
+const initSocket = () => {
     const socket = Api.terminal.ssh(formModel)
 
     socket.onopen = () => {
-        const attachAddon = new AttachAddon(socket)
-        term.loadAddon(attachAddon)
-        term.focus()
+        console.log('socket open')
     }
     socket.onclose = () => {
         console.log('socket close')
@@ -98,9 +75,36 @@ const sshConnect = () => {
     socket.onerror = () => {
         console.log('socket error')
     }
+
+    return socket
 }
 
+const initXterm = () => {
+    const sock = initSocket()
+
+    const term = new Terminal({
+        fontSize: 14, // 字体大小
+        cursorBlink: true, // 光标闪烁
+    })
+
+    const fitAddon = new FitAddon()
+    term.loadAddon(fitAddon)
+    fitAddon.fit()
+
+    const attachAddon = new AttachAddon(sock)
+    term.loadAddon(attachAddon)
+
+    const wrap = document.querySelector('.ssh-layer')
+    wrap && term.open(wrap as HTMLElement)
+    term.focus()
+
+    return [sock, term]
+}
 </script>
 
 <style lang="scss" scoped>
+.ssh-card {
+    --el-card-padding: 8px 0 8px 8px;
+    --el-fill-color-blank: #000;
+}
 </style>
