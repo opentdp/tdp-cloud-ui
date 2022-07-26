@@ -34,9 +34,7 @@ export class HttpClient {
         })
         const res = await this.parseResponse(body)
         // 写入本地缓存
-        expiry > 0 && setTimeout(
-            () => this.cached.set({ url, query }, res, expiry)
-        )
+        this.cached.set({ url, query }, res, expiry)
         return res
     }
 
@@ -54,10 +52,7 @@ export class HttpClient {
             body: JSON.stringify(query || {}),
         })
         const res = await this.parseResponse(body)
-        // 写入本地缓存
-        expiry > 0 && setTimeout(
-            () => this.cached.set({ url, query }, res, expiry)
-        )
+        this.cached.set({ url, query }, res, expiry)
         return res
     }
 
