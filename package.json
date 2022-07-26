@@ -12,12 +12,15 @@
     "dependencies": {
         "@element-plus/icons-vue": "^2.0.6",
         "echarts": "^5.3.3",
-        "element-plus": "^2.2.9",
-        "pinia": "^2.0.16",
+        "element-plus": "^2.2.10",
+        "pinia": "^2.0.17",
         "pinia-plugin-persist": "^1.0.0",
         "vue": "^3.2.37",
         "vue-echarts": "^6.2.3",
-        "vue-router": "^4.1.2"
+        "vue-router": "^4.1.2",
+        "xterm": "^4.19.0",
+        "xterm-addon-attach": "^0.6.0",
+        "xterm-addon-fit": "^0.5.0"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.30.7",
@@ -26,12 +29,12 @@
         "@vue/compiler-sfc": "^3.2.37",
         "eslint": "^8.20.0",
         "eslint-plugin-import": "^2.26.0",
-        "eslint-plugin-vue": "^9.2.0",
+        "eslint-plugin-vue": "^9.3.0",
         "eslint-plugin-vue-scoped-css": "^2.2.0",
-        "sass": "^1.53.0",
-        "tencentcloud-sdk-nodejs": "^4.0.385",
+        "sass": "^1.54.0",
+        "tencentcloud-sdk-nodejs": "^4.0.387",
         "typescript": "^4.7.4",
-        "vite": "^3.0.2",
-        "vue-tsc": "^0.38.9"
+        "vite": "^3.0.3",
+        "vue-tsc": "^0.39.0"
     }
 }
