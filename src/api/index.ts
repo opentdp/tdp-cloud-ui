@@ -1,4 +1,5 @@
-import { MemberClient } from "./local/member"
+import { UserClient } from "./local/user"
+import { SecretClient } from "./local/secret"
 
 import { CamClient } from "./cloud/cam"
 import { DnspodClient } from "./cloud/dnspod"
@@ -9,7 +10,8 @@ import { MonitorClient } from "./cloud/monitor"
 
 export default {
     // local api
-    member: new MemberClient(),
+    user: new UserClient(),
+    secret: new SecretClient(),
     // cloud api
     cam: new CamClient(),
     dnspod: new DnspodClient(),

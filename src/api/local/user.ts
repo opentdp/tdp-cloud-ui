@@ -1,36 +1,24 @@
 import { HttpClient } from "../basic/http"
 
-export class MemberClient extends HttpClient {
+export class UserClient extends HttpClient {
     public clear() {
         this.cached.clear(true)
     }
 
     public login(data: LoginRequest): Promise<LoginResponse> {
-        return this.post("/local/member/login", data)
+        return this.post("/local/user/login", data)
     }
 
     public register(data: RegisterRequest): Promise<RegisterResponse> {
-        return this.post("/local/member/register", data)
+        return this.post("/local/user/register", data)
     }
 
     public updateInfo(data: UpdateInfoRequest): Promise<UpdateInfoResponse> {
-        return this.patch("/local/member/info", data)
+        return this.patch("/local/user/info", data)
     }
 
     public updatePassword(data: UpdatePasswordRequest): Promise<UpdatePasswordResponse> {
-        return this.patch("/local/member/password", data)
-    }
-
-    public createSecret(data: SecretRequest): Promise<SecretResponse> {
-        return this.post("/local/member/secret", data)
-    }
-
-    public deleteSecret(id: number): Promise<SecretResponse> {
-        return this.delete("/local/member/secret/" + id)
-    }
-
-    public fetchSecrets(): Promise<SecretItem[]> {
-        return this.get("/local/member/secret")
+        return this.patch("/local/user/password", data)
     }
 }
 
@@ -70,25 +58,4 @@ export interface UpdatePasswordRequest {
 
 export interface UpdatePasswordResponse {
     Message: string
-}
-
-export interface SecretRequest {
-    secretId: string
-    secretKey: string
-    description: string
-}
-
-export interface SecretResponse {
-    Message: string
-}
-
-export interface SecretItem {
-    Id: number
-    UserId: number
-    SecretId: string
-    SecretKey: string
-    Description: string
-    CreatedAt: string
-    UpdatedAt: string
-    DeletedAt: string
 }
