@@ -1,5 +1,16 @@
 <template>
     <div>
+        <el-breadcrumb separator="/" class="crumbs">
+            <el-breadcrumb-item :to="{ path: '/' }">
+                首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/lighthouse/index' }">
+                轻量服务器
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                {{ instance?.InstanceId || "详情" }}
+            </el-breadcrumb-item>
+        </el-breadcrumb>
         <el-card v-if="instance" shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">

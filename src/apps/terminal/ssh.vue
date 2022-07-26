@@ -1,5 +1,13 @@
 <template>
     <div>
+        <el-breadcrumb separator="/" class="crumbs">
+            <el-breadcrumb-item :to="{ path: '/' }">
+                首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                SSH 终端
+            </el-breadcrumb-item>
+        </el-breadcrumb>
         <el-card shadow="hover" class="ssh-form mgb10">
             <el-form ref="formRef" :inline="true" :model="formModel" :rules="formRules">
                 <el-form-item prop="addr">
@@ -9,8 +17,7 @@
                     <el-input v-model="formModel.user" placeholder="用户名" />
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="formModel.password" type="password" placeholder="密码"
-                        @keyup.enter="formSubmit(formRef)" />
+                    <el-input v-model="formModel.password" type="password" placeholder="密码" @keyup.enter="formSubmit(formRef)" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="formSubmit(formRef)">

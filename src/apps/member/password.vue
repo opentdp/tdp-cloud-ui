@@ -1,5 +1,13 @@
 <template>
     <div>
+        <el-breadcrumb separator="/" class="crumbs">
+            <el-breadcrumb-item :to="{ path: '/' }">
+                首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                修改密码
+            </el-breadcrumb-item>
+        </el-breadcrumb>
         <el-row :gutter="20">
             <el-col :span="12">
                 <el-card shadow="hover">

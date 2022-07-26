@@ -1,5 +1,13 @@
 <template>
     <div>
+        <el-breadcrumb separator="/" class="crumbs">
+            <el-breadcrumb-item :to="{ path: '/' }">
+                首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                TAT
+            </el-breadcrumb-item>
+        </el-breadcrumb>
         <el-card shadow="hover">
             <template #header>
                 <div class="card-header">

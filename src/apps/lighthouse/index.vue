@@ -1,5 +1,13 @@
 <template>
     <div>
+        <el-breadcrumb separator="/" class="crumbs">
+            <el-breadcrumb-item :to="{ path: '/' }">
+                首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                轻量服务器
+            </el-breadcrumb-item>
+        </el-breadcrumb>
         <template v-for="region in regions" :key="region.Region">
             <el-card v-if="region.InstanceCount > 0" shadow="hover" class="mgb10">
                 <template #header>

@@ -1,8 +1,11 @@
 <template>
     <div>
-        <el-breadcrumb separator="/" class="breadcrumb">
-            <el-breadcrumb-item :to="{ name: 'dnspod-index' }">
-                域名解析
+        <el-breadcrumb separator="/" class="crumbs">
+            <el-breadcrumb-item :to="{ path: '/' }">
+                首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                域名列表
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card v-if="domainDescribe && domainDescribe.DomainCountInfo" shadow="hover">
@@ -47,7 +50,7 @@ import { ref } from "vue"
 
 import Api, { Dnspod } from "@/api"
 
-import { DomainStatusMap } from "@/api/cloud/dnspod"
+import { DomainStatusMap } from "@/api/qcloud/dnspod"
 
 const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()
 
@@ -57,10 +60,6 @@ Api.dnspod.describeDomainList().then((res) => {
 </script>
 
 <style lang="scss" scoped>
-.breadcrumb {
-    margin: 10px 5px 15px;
-}
-
 .card-header {
     display: flex;
     justify-content: space-between;
