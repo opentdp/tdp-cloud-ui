@@ -34,7 +34,9 @@ export class HttpClient {
         })
         const res = await this.parseResponse(body)
         // 写入本地缓存
-        this.cached.set({ url, query }, res, expiry)
+        if (expiry > 0) {
+            this.cached.set({ url, query }, res, expiry)
+        }
         return res
     }
 
@@ -52,7 +54,9 @@ export class HttpClient {
             body: JSON.stringify(query || {}),
         })
         const res = await this.parseResponse(body)
-        this.cached.set({ url, query }, res, expiry)
+        if (expiry > 0) {
+            this.cached.set({ url, query }, res, expiry)
+        }
         return res
     }
 
