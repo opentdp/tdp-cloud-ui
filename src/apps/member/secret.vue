@@ -61,7 +61,7 @@ const session = sessionStore()
 // 密钥列表
 
 const fetchSecrets = () => {
-    Api.member.fetchSecrets().then((res) => {
+    Api.secret.fetch().then((res) => {
         session.setSecrets(res)
     })
 }
@@ -88,7 +88,7 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.member.createSecret(formModel).then(() => {
+        Api.secret.create(formModel).then(() => {
             formModel.secretId = ""
             formModel.secretKey = ""
             formModel.description = ""
@@ -104,7 +104,7 @@ const deleteSecret = (idx: number) => {
         type: "warning",
     }).then(() => {
         const item = session.secretList[idx]
-        Api.member.deleteSecret(item.Id).then(() => {
+        Api.secret.remove(item.Id).then(() => {
             session.secretList.splice(idx, 1)
         })
     })

@@ -67,7 +67,7 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.member.login(formModel).then((data) => {
+        Api.user.login(formModel).then((data) => {
             ElMessage.success("登录成功")
             session.username = data.username
             session.description = data.description

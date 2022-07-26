@@ -75,7 +75,7 @@ import Api from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
-import type { SecretItem } from "@/api/local/member"
+import type { SecretItem } from "@/api/local/user"
 
 const router = useRouter()
 const layout = layoutStore()
@@ -97,7 +97,7 @@ const secretDropdown = (data: SecretItem) => {
 const userDropdown = (data: string) => {
     switch (data) {
         case "delcache":
-            Api.member.clear()
+            Api.user.clear()
             location.reload()
             break
         case "loginout":
@@ -115,7 +115,7 @@ const userDropdown = (data: string) => {
 
 onMounted(() => {
     // 获取密钥列表
-    Api.member.fetchSecrets().then((res) => {
+    Api.secret.fetch().then((res) => {
         session.setSecrets(res)
     })
     // 小屏自动折叠

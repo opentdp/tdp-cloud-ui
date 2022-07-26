@@ -90,7 +90,7 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.member.updatePassword(formModel).then(() => {
+        Api.user.updatePassword(formModel).then(() => {
             ElMessage.success("修改成功")
         })
     })

@@ -76,7 +76,7 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.member.register(formModel).then(() => {
+        Api.user.register(formModel).then(() => {
             ElMessage.success("注册成功")
             router.push("/member/login")
         })

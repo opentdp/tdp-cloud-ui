@@ -84,7 +84,7 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.member.updateInfo(formModel).then(() => {
+        Api.user.updateInfo(formModel).then(() => {
             session.description = formModel.description
         })
     })
