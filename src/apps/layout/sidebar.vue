@@ -88,7 +88,12 @@ const items: MenuItem[] = [
         title: "轻量服务器",
     },
     {
-        icon: "Monitor",
+        icon: "Wallet",
+        index: "/terminal/ssh",
+        title: "SSH 终端",
+    },
+    {
+        icon: "ToiletPaper",
         index: "/tat/index",
         title: "TAT",
     },
