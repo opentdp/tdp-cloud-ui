@@ -4,7 +4,7 @@ import { Lighthouse } from "./typings"
 
 export class LighthouseClient extends HttpClient {
     public describeRegions(): Promise<Lighthouse.DescribeRegionsResponse> {
-        return this.post("/cloud/lighthouse/describeRegions", {}, 600)
+        return this.post("/qcloud/lighthouse/describeRegions", {}, 600)
     }
 
     public describeInstances(
@@ -12,7 +12,7 @@ export class LighthouseClient extends HttpClient {
         query?: Lighthouse.DescribeInstancesRequest
     ): Promise<Lighthouse.DescribeInstancesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/cloud/lighthouse/describeInstances/" + region, query, 600)
+        return this.post("/qcloud/lighthouse/describeInstances/" + region, query, 600)
     }
 
     public describeInstancesTrafficPackages(
@@ -20,7 +20,7 @@ export class LighthouseClient extends HttpClient {
         query?: Lighthouse.DescribeInstancesTrafficPackagesRequest
     ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/cloud/lighthouse/describeInstancesTrafficPackages/" + region, query, 600)
+        return this.post("/qcloud/lighthouse/describeInstancesTrafficPackages/" + region, query, 600)
     }
 
     public describeSnapshots(
@@ -28,7 +28,7 @@ export class LighthouseClient extends HttpClient {
         query: Lighthouse.DescribeSnapshotsRequest
     ): Promise<Lighthouse.DescribeSnapshotsResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/cloud/lighthouse/describeSnapshots/" + region, query, 600)
+        return this.post("/qcloud/lighthouse/describeSnapshots/" + region, query, 600)
     }
 
     public describeFirewallRules(
@@ -36,6 +36,6 @@ export class LighthouseClient extends HttpClient {
         query: Lighthouse.DescribeFirewallRulesRequest
     ): Promise<Lighthouse.DescribeFirewallRulesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/cloud/lighthouse/describeFirewallRules/" + region, query, 600)
+        return this.post("/qcloud/lighthouse/describeFirewallRules/" + region, query, 600)
     }
 }

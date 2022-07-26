@@ -1,10 +1,10 @@
 import { UserClient } from "./local/user"
 import { SecretClient } from "./local/secret"
 
-import { CamClient } from "./cloud/cam"
-import { DnspodClient } from "./cloud/dnspod"
-import { LighthouseClient } from "./cloud/lighthouse"
-import { MonitorClient } from "./cloud/monitor"
+import { CamClient } from "./qcloud/cam"
+import { DnspodClient } from "./qcloud/dnspod"
+import { LighthouseClient } from "./qcloud/lighthouse"
+import { MonitorClient } from "./qcloud/monitor"
 import { TATClient } from "./local/tat"
 
 // 导出接口
@@ -21,6 +21,6 @@ export default {
     monitor: new MonitorClient(),
 }
 
-// 导出类型
+// 导出类型./qcloud/typings
 
-export * from "./cloud/typings.d"
+export * from "./qcloud/typings.d"
