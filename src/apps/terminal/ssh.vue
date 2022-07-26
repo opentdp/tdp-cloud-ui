@@ -20,7 +20,7 @@
             </el-form>
         </el-card>
         <el-card shadow="hover" class="ssh-card">
-            <div id="ssh-layer" />
+            <div ref="termRef" id="ssh-layer" />
         </el-card>
     </div>
 </template>
@@ -38,6 +38,7 @@ import Api from "@/api"
 
 // 登录服务器
 
+const termRef = ref<HTMLElement>()
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
@@ -93,8 +94,8 @@ const initXterm = (ws: WebSocket) => {
     const attachAddon = new AttachAddon(ws)
     term.loadAddon(attachAddon)
 
-    const wrap = document.querySelector('#ssh-layer')
-    wrap && term.open(wrap as HTMLElement)
+    const wrap = termRef.value
+    wrap && term.open(wrap)
     term.focus()
 
     return term
