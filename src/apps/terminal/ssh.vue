@@ -1,25 +1,26 @@
 <template>
     <div>
-        <el-card shadow="hover" class="mgb10">
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="90px">
-                <el-form-item prop="addr" label="远程地址">
-                    <el-input v-model="formModel.addr" />
+        <el-card shadow="hover" class="ssh-form mgb10">
+            <el-form ref="formRef" :inline="true" :model="formModel" :rules="formRules">
+                <el-form-item prop="addr">
+                    <el-input v-model="formModel.addr" placeholder="远程地址" />
                 </el-form-item>
-                <el-form-item prop="user" label="用户名">
-                    <el-input v-model="formModel.user" />
+                <el-form-item prop="user">
+                    <el-input v-model="formModel.user" placeholder="用户名" />
                 </el-form-item>
-                <el-form-item prop="password" label="密码">
-                    <el-input v-model="formModel.password" type="password" />
+                <el-form-item prop="password">
+                    <el-input v-model="formModel.password" type="password" placeholder="密码"
+                        @keyup.enter="formSubmit(formRef)" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="formSubmit(formRef)">
-                        链接
+                        登录
                     </el-button>
                 </el-form-item>
             </el-form>
         </el-card>
         <el-card shadow="hover" class="ssh-card">
-            <div class="ssh-layer" />
+            <div id="ssh-layer" />
         </el-card>
     </div>
 </template>
@@ -57,31 +58,29 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        initXterm()
+        initXterm(initSocket())
     })
 }
 
 // 创建终端
 
 const initSocket = () => {
-    const socket = Api.terminal.ssh(formModel)
+    const ws = Api.terminal.ssh(formModel)
 
-    socket.onopen = () => {
+    ws.onopen = () => {
         console.log('socket open')
     }
-    socket.onclose = () => {
+    ws.onclose = () => {
         console.log('socket close')
     }
-    socket.onerror = () => {
+    ws.onerror = () => {
         console.log('socket error')
     }
 
-    return socket
+    return ws
 }
 
-const initXterm = () => {
-    const sock = initSocket()
-
+const initXterm = (ws: WebSocket) => {
     const term = new Terminal({
         fontSize: 14, // 字体大小
         cursorBlink: true, // 光标闪烁
@@ -91,18 +90,22 @@ const initXterm = () => {
     term.loadAddon(fitAddon)
     fitAddon.fit()
 
-    const attachAddon = new AttachAddon(sock)
+    const attachAddon = new AttachAddon(ws)
     term.loadAddon(attachAddon)
 
-    const wrap = document.querySelector('.ssh-layer')
+    const wrap = document.querySelector('#ssh-layer')
     wrap && term.open(wrap as HTMLElement)
     term.focus()
 
-    return [sock, term]
+    return term
 }
 </script>
 
 <style lang="scss" scoped>
+.ssh-form {
+    --el-card-padding: 20px 20px 2px 20px;
+}
+
 .ssh-card {
     --el-card-padding: 8px 0 8px 8px;
     --el-fill-color-blank: #000;

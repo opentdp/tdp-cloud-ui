@@ -23,6 +23,10 @@ export default defineConfig({
             "/api": {
                 target: "http://127.0.0.1:7800",
             },
+            "/wsl": {
+                target: "http://127.0.0.1:7800",
+                ws: true
+            },
         },
     },
     css: {
