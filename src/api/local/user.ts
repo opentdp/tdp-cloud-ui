@@ -6,19 +6,19 @@ export class UserClient extends HttpClient {
     }
 
     public login(data: LoginRequest): Promise<LoginResponse> {
-        return this.post("/local/user/login", data)
+        return this.post("/user/login", data)
     }
 
     public register(data: RegisterRequest): Promise<RegisterResponse> {
-        return this.post("/local/user/register", data)
+        return this.post("/user/register", data)
     }
 
     public updateInfo(data: UpdateInfoRequest): Promise<UpdateInfoResponse> {
-        return this.patch("/local/user/info", data)
+        return this.patch("/user/info", data)
     }
 
     public updatePassword(data: UpdatePasswordRequest): Promise<UpdatePasswordResponse> {
-        return this.patch("/local/user/password", data)
+        return this.patch("/user/password", data)
     }
 }
 

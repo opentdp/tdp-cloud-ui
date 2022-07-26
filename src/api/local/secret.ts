@@ -6,15 +6,15 @@ export class SecretClient extends HttpClient {
     }
 
     public create(data: SecretRequest): Promise<SecretResponse> {
-        return this.post("/local/secret", data)
+        return this.post("/secret", data)
     }
 
     public remove(id: number): Promise<SecretResponse> {
-        return this.delete("/local/secret/" + id)
+        return this.delete("/secret/" + id)
     }
 
     public fetch(): Promise<SecretItem[]> {
-        return this.get("/local/secret")
+        return this.get("/secret")
     }
 }
 
