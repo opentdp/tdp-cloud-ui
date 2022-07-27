@@ -2,6 +2,8 @@
 
 [Cloud Panel](https://github.com/tdp-resource/cloud-panel) 的前端组件, 框架基于 [vue-admin-template](https://github.com/rehiy/vue-admin-template)
 
+*注意*：此项目无法单独使用，需要配合 [TDP Cloud 后端源码](https://github.com/tdp-resource/tdp-cloud) 或者编译好的 [TDP Cloud 二进制程序](https://github.com/tdp-resource/tdp-cloud-ci/releases/tag/v0.0.11) 使用。
+
 ## 编译并打包
 
 在项目目录运行  `build.bat` 或 `./build.sh`
