@@ -28,11 +28,11 @@ export class WebSSH {
         const socket = Api.terminal.ssh(this.sr)
 
         socket.onclose = () => {
-            this.terminal.writeln('连接已关闭')
+            this.terminal.writeln('> 连接已关闭')
         }
 
         socket.onerror = () => {
-            this.terminal.writeln('连接错误')
+            this.terminal.writeln('> 连接错误')
         }
 
         return socket
@@ -55,7 +55,7 @@ export class WebSSH {
         const attachAddon = new AttachAddon(this.socket)
         terminal.loadAddon(attachAddon)
 
-        terminal.writeln('正在连接...')
+        terminal.writeln('> 正在连接...')
 
         return terminal
     }
