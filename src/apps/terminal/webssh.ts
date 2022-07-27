@@ -28,7 +28,7 @@ export class WebSSH {
         const socket = Api.terminal.ssh(this.sr)
 
         socket.onclose = () => {
-            this.terminal.writeln('> 连接已关闭')
+            this.terminal.writeln('> 连接已断开')
         }
 
         socket.onerror = () => {
