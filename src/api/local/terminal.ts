@@ -11,9 +11,8 @@ export class TerminalClient extends HttpClient {
         const param = this.buildQuery(query)
         const wsurl = "/wsl/terminal/ssh?" + param
         const origin = location.origin.replace(/^http/, "ws")
-        const socket = new WebSocket(decodeURIComponent(origin + wsurl))
 
-        return socket
+        return new WebSocket(decodeURIComponent(origin + wsurl))
     }
 }
 

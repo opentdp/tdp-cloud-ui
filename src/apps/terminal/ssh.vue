@@ -8,7 +8,7 @@
                 SSH 终端
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-tabs v-model="curTabName" type="border-card" @tab-remove="removeTab">
+        <el-tabs v-model="curTabId" type="border-card" @tab-remove="removeTab">
             <el-tab-pane label="新建" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
                     <el-form-item prop="addr" label="主机">
@@ -27,9 +27,8 @@
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
-            <el-tab-pane v-for="item in sshTabs" :key="item.name" :name="item.name" :label="item.label" closable>
-                <div :id="item.name" class="ssh-layer" />
-                <div>正在连接...</div>
+            <el-tab-pane v-for="item in sshTabs" :key="item.id" :name="item.id" :label="item.label" closable>
+                <div :id="item.id" />
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -39,38 +38,7 @@
 import { ref, reactive } from "vue"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import 'xterm/css/xterm.css'
-import { Terminal } from 'xterm'
-import { FitAddon } from 'xterm-addon-fit'
-import { AttachAddon } from 'xterm-addon-attach'
-
-import Api from "@/api"
-
-// 标签页
-
-interface sshTab {
-    name: string
-    label: string
-    socket?: WebSocket
-    terminal?: Terminal
-}
-
-const curTabName = ref("new")
-
-const sshTabs = ref<sshTab[]>([])
-
-const removeTab = (targetName: string) => {
-    const tabs = sshTabs.value
-    if (curTabName.value === targetName) {
-        tabs.forEach((tab, index) => {
-            if (tab.name === targetName) {
-                const nextTab = tabs[index + 1] || tabs[index - 1]
-                curTabName.value = nextTab && nextTab.name || "new"
-            }
-        })
-    }
-    sshTabs.value = tabs.filter((tab) => tab.name !== targetName)
-}
+import { WebSSH } from './webssh'
 
 // 登录服务器
 
@@ -94,69 +62,51 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        const tab: sshTab = {
-            name: "tab-" + Date.now(),
-            label: formModel.addr,
+        createTab()
+    })
+}
+
+// 标签页
+
+interface sshTab {
+    id: string
+    label: string
+    webssh?: WebSSH
+}
+
+const curTabId = ref("new")
+
+const sshTabs = ref<sshTab[]>([])
+
+const createTab = () => {
+    const tab: sshTab = {
+        id: "tab-" + Date.now(),
+        label: formModel.addr
+    }
+    sshTabs.value.push(tab)
+    curTabId.value = tab.id
+
+    setTimeout(() => {
+        tab.webssh = new WebSSH(tab.id, formModel)
+    }, 100)
+}
+
+const removeTab = (targetId: string) => {
+    const tabs = sshTabs.value
+    if (curTabId.value === targetId) {
+        tabs.forEach((tab, index) => {
+            if (tab.id === targetId) {
+                const nextTab = tabs[index + 1] || tabs[index - 1]
+                curTabId.value = nextTab && nextTab.id || "new"
+            }
+        })
+    }
+    sshTabs.value = tabs.filter((tab) => {
+        if (tab.id === targetId) {
+            tab.webssh?.dispose()
+            return false
         }
-        sshTabs.value.push(tab)
-        curTabName.value = tab.name
-        setTimeout(() => {
-            tab.socket = initSocket()
-            tab.terminal = initXterm(tab.socket, tab.name)
-        }, 1000)
+        return true
     })
-}
-
-// 创建终端
-
-const initSocket = () => {
-    const ws = Api.terminal.ssh(formModel)
-
-    ws.onopen = () => {
-        console.log('socket open')
-    }
-    ws.onclose = () => {
-        console.log('socket close')
-    }
-    ws.onerror = () => {
-        console.log('socket error')
-    }
-
-    return ws
-}
-
-const initXterm = (ws: WebSocket, id: string) => {
-    const term = new Terminal({
-        fontSize: 14, // 字体大小
-        cursorBlink: true, // 光标闪烁
-    })
-
-    const fitAddon = new FitAddon()
-    term.loadAddon(fitAddon)
-    fitAddon.fit()
-
-    const attachAddon = new AttachAddon(ws)
-    term.loadAddon(attachAddon)
-
-    const elem = document.getElementById(id)
-    elem && term.open(elem)
-    term.focus()
-
-    return term
 }
 </script>
-
-<style lang="scss" scoped>
-.ssh-form {
-    --el-card-padding: 20px 20px 2px 20px;
-}
-
-.ssh-layer:not(:empty)+div {
-    display: none;
-}
-
-.ssh-card {
-    --el-card-padding: 8px 0 8px 8px;
-    --el-fill-color-blank: #000;
-}
-</style>
