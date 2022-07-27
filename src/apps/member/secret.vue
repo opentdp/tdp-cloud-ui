@@ -39,7 +39,7 @@
                     </el-button>
                 </div>
             </template>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="90px">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
                 <el-form-item prop="description" label="别名">
                     <el-input v-model="formModel.description" />
                 </el-form-item>

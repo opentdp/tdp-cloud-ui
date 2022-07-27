@@ -36,14 +36,14 @@
                             <span>修改密码</span>
                         </div>
                     </template>
-                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
-                        <el-form-item label="原密码：" prop="oldPassword">
+                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
+                        <el-form-item label="原密码" prop="oldPassword">
                             <el-input v-model="formModel.oldPassword" type="password" autocomplete="off" />
                         </el-form-item>
-                        <el-form-item label="新密码：" prop="newPassword">
+                        <el-form-item label="新密码" prop="newPassword">
                             <el-input v-model="formModel.newPassword" type="password" autocomplete="off" />
                         </el-form-item>
-                        <el-form-item label="新密码：" prop="newPassword2">
+                        <el-form-item label="新密码" prop="newPassword2">
                             <el-input v-model="formModel.newPassword2" type="password" autocomplete="off" />
                         </el-form-item>
                         <el-form-item>

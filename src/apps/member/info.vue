@@ -36,11 +36,11 @@
                             <span>账户编辑</span>
                         </div>
                     </template>
-                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
-                        <el-form-item label="用户名：">
-                            {{ session.username }}
+                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="72px">
+                        <el-form-item label="用户名">
+                            <b>{{ session.username }}</b>
                         </el-form-item>
-                        <el-form-item label="个人简介：" prop="description">
+                        <el-form-item label="个人简介" prop="description">
                             <el-input v-model="formModel.description" />
                         </el-form-item>
                         <el-form-item>
