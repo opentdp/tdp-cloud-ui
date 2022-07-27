@@ -32,8 +32,10 @@
             <template #header>
                 <div class="card-header">
                     <b>添加密钥</b>
-                    <el-button class="button" text @click="gotoQCloudCAM">
-                        腾讯云 CAM
+                    <el-button class="button" text icon="Position">
+                        <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云密钥" target="_blank">
+                            操作指南
+                        </a>
                     </el-button>
                 </div>
             </template>
@@ -116,11 +118,6 @@ const deleteSecret = (idx: number) => {
             session.secretList.splice(idx, 1)
         })
     })
-}
-
-// 腾讯云CAM
-const gotoQCloudCAM = () => {
-    window.open("https://console.cloud.tencent.com/cam", "_blank")
 }
 
 fetchSecrets()
