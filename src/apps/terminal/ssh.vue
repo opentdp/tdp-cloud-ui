@@ -8,27 +8,30 @@
                 SSH 终端
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-card shadow="hover" class="ssh-form mgb10">
-            <el-form ref="formRef" :inline="true" :model="formModel" :rules="formRules">
-                <el-form-item prop="addr">
-                    <el-input v-model="formModel.addr" placeholder="远程地址" />
-                </el-form-item>
-                <el-form-item prop="user">
-                    <el-input v-model="formModel.user" placeholder="用户名" />
-                </el-form-item>
-                <el-form-item prop="password">
-                    <el-input v-model="formModel.password" type="password" placeholder="密码" @keyup.enter="formSubmit(formRef)" />
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="formSubmit(formRef)">
-                        登录
-                    </el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
-        <el-card shadow="hover" class="ssh-card">
-            <div ref="termRef" id="ssh-layer" />
-        </el-card>
+        <el-tabs v-model="curTabName" type="border-card" @tab-remove="removeTab">
+            <el-tab-pane label="新建" name="new">
+                <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
+                    <el-form-item prop="addr" label="主机">
+                        <el-input v-model="formModel.addr" />
+                    </el-form-item>
+                    <el-form-item prop="user" label="用户名">
+                        <el-input v-model="formModel.user" />
+                    </el-form-item>
+                    <el-form-item prop="password" label="密码">
+                        <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="formSubmit(formRef)">
+                            登录
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <el-tab-pane v-for="item in sshTabs" :key="item.name" :name="item.name" :label="item.label" closable>
+                <div :id="item.name" class="ssh-layer" />
+                <div>正在连接...</div>
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 
@@ -43,9 +46,34 @@ import { AttachAddon } from 'xterm-addon-attach'
 
 import Api from "@/api"
 
+// 标签页
+
+interface sshTab {
+    name: string
+    label: string
+    socket?: WebSocket
+    terminal?: Terminal
+}
+
+const curTabName = ref("new")
+
+const sshTabs = ref<sshTab[]>([])
+
+const removeTab = (targetName: string) => {
+    const tabs = sshTabs.value
+    if (curTabName.value === targetName) {
+        tabs.forEach((tab, index) => {
+            if (tab.name === targetName) {
+                const nextTab = tabs[index + 1] || tabs[index - 1]
+                curTabName.value = nextTab && nextTab.name || "new"
+            }
+        })
+    }
+    sshTabs.value = tabs.filter((tab) => tab.name !== targetName)
+}
+
 // 登录服务器
 
-const termRef = ref<HTMLElement>()
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
@@ -66,7 +94,16 @@ const formSubmit = (form: FormInstance | undefined) => {
             ElMessage.error("请检查表单")
             return false
         }
-        initXterm(initSocket())
+        const tab: sshTab = {
+            name: "tab-" + Date.now(),
+            label: formModel.addr,
+        }
+        sshTabs.value.push(tab)
+        curTabName.value = tab.name
+        setTimeout(() => {
+            tab.socket = initSocket()
+            tab.terminal = initXterm(tab.socket, tab.name)
+        }, 1000)
     })
 }
 
@@ -88,7 +125,7 @@ const initSocket = () => {
     return ws
 }
 
-const initXterm = (ws: WebSocket) => {
+const initXterm = (ws: WebSocket, id: string) => {
     const term = new Terminal({
         fontSize: 14, // 字体大小
         cursorBlink: true, // 光标闪烁
@@ -101,8 +138,8 @@ const initXterm = (ws: WebSocket) => {
     const attachAddon = new AttachAddon(ws)
     term.loadAddon(attachAddon)
 
-    const wrap = termRef.value
-    wrap && term.open(wrap)
+    const elem = document.getElementById(id)
+    elem && term.open(elem)
     term.focus()
 
     return term
@@ -112,6 +149,10 @@ const initXterm = (ws: WebSocket) => {
 <style lang="scss" scoped>
 .ssh-form {
     --el-card-padding: 20px 20px 2px 20px;
+}
+
+.ssh-layer:not(:empty)+div {
+    display: none;
 }
 
 .ssh-card {
