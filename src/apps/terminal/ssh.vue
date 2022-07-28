@@ -37,8 +37,8 @@
                     <b>快捷命令</b>
                 </div>
             </template>
-            <el-button @click="sshExec(cmdClear)">
-                清理垃圾
+            <el-button v-for="item in cmdList" :key="item.id" @click="sshExec(item.cmd)">
+                {{ item.name }}
             </el-button>
         </el-card>
     </div>
@@ -140,16 +140,22 @@ const sshExec = (cmd: string) => {
     }
 }
 
-const cmdClear = `
-    find /var/log -type f -name *.[0-9] -delete
-    find /var/log -type f -name *.gz -delete
-    find /var/log -type f -name *.xz -delete
+const cmdList = [
+    {
+        id: 0,
+        name: "清理垃圾",
+        cmd: `
+            find /var/log -type f -name *.[0-9] -delete
+            find /var/log -type f -name *.gz -delete
+            find /var/log -type f -name *.xz -delete
 
-    > /var/log/wtmp
-    > /var/log/btmp
-    > /var/log/lastlog
-    > /var/log/faillog
+            > /var/log/wtmp
+            > /var/log/btmp
+            > /var/log/lastlog
+            > /var/log/faillog
 
-    > /root/.bash_history
-`
+            > /root/.bash_history
+        `
+    }
+]
 </script>
