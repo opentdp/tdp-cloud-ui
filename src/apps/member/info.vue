@@ -75,7 +75,7 @@ const formRules = ref<FormRules>({
         { required: true, message: "请输入个人简介", trigger: "blur" },
         {
             validator: (rule, value, callback) => {
-                if (value.trim().length == 0) {
+                if (value.trim().length === 0) {
                     callback(new Error("请输入个人简介"))
                 } else {
                     callback()

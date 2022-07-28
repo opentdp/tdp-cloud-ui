@@ -3,7 +3,9 @@
  */
 
 export function bytesToSize(a: number, d = 2) {
-    if (0 == a) return "0 Bytes"
+    if (a === 0) {
+        return "0 Bytes"
+    }
     const c = 1024
     const e = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
     const f = Math.floor(Math.log(a) / Math.log(c))
@@ -31,7 +33,7 @@ export function dateFormat(t: string | number, fmt: string) {
         if (new RegExp("(" + k + ")").test(fmt)) {
             fmt = fmt.replace(
                 RegExp.$1,
-                RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
+                RegExp.$1.length === 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
             )
         }
     }
