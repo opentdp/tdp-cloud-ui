@@ -37,7 +37,7 @@
                     <b>快捷命令</b>
                 </div>
             </template>
-            <el-button @click="curTab.webssh?.exec(cmdClear)">
+            <el-button @click="sshExec(cmdClear)">
                 清理垃圾
             </el-button>
         </el-card>
@@ -84,13 +84,9 @@ interface sshTab {
     webssh?: WebSSH
 }
 
-const fstTab: sshTab = {
-    id: "new",
-    label: "新建",
-    webssh: undefined
-}
-
-const curTab = reactive(Object.assign({}, fstTab))
+const curTab = reactive({
+    id: "new", label: ""
+})
 
 const sshTabs = reactive<sshTab[]>([])
 
@@ -117,7 +113,8 @@ const indexTab = (id: string) => {
 
 const changeTab = (id: string) => {
     const target = indexTab(id)
-    Object.assign(curTab, target ? target.tab : fstTab)
+    curTab.id = target?.tab.id || "new"
+    curTab.label = target?.tab.label || ""
 }
 
 const removeTab = (id: string) => {
@@ -132,6 +129,15 @@ const removeTab = (id: string) => {
     }
     tab.webssh?.dispose()
     sshTabs.splice(index, 1)
+}
+
+// 执行快捷命令
+
+const sshExec = (cmd: string) => {
+    const target = indexTab(curTab.id)
+    if (target?.tab.webssh) {
+        target.tab.webssh.exec(cmd)
+    }
 }
 
 const cmdClear = `
