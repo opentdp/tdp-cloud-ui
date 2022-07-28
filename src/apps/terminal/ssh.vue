@@ -8,7 +8,7 @@
                 SSH 终端
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-tabs v-model="curTabId" type="border-card" @tab-remove="removeTab">
+        <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">
             <el-tab-pane label="新建" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
                     <el-form-item prop="addr" label="主机">
@@ -31,6 +31,16 @@
                 <div :id="item.id" />
             </el-tab-pane>
         </el-tabs>
+        <el-card v-if="curTab.id !== 'new'" shadow="hover">
+            <template #header>
+                <div class="card-header">
+                    <b>快捷命令</b>
+                </div>
+            </template>
+            <el-button @click="curTab.webssh?.exec(cmdClear)">
+                清理垃圾
+            </el-button>
+        </el-card>
     </div>
 </template>
 
@@ -66,7 +76,7 @@ const formSubmit = (form: FormInstance | undefined) => {
     })
 }
 
-// 标签页
+// 管理标签页
 
 interface sshTab {
     id: string
@@ -74,39 +84,66 @@ interface sshTab {
     webssh?: WebSSH
 }
 
-const curTabId = ref("new")
+const fstTab: sshTab = {
+    id: "new",
+    label: "新建",
+    webssh: undefined
+}
 
-const sshTabs = ref<sshTab[]>([])
+const curTab = reactive(Object.assign({}, fstTab))
+
+const sshTabs = reactive<sshTab[]>([])
 
 const createTab = () => {
     const tab: sshTab = {
         id: "tab-" + Date.now(),
         label: formModel.addr
     }
-    sshTabs.value.push(tab)
-    curTabId.value = tab.id
-
+    sshTabs.push(tab)
+    // 延迟连接
+    changeTab(tab.id)
     setTimeout(() => {
         tab.webssh = new WebSSH(tab.id, formModel)
     }, 100)
 }
 
-const removeTab = (targetId: string) => {
-    const tabs = sshTabs.value
-    if (curTabId.value === targetId) {
-        tabs.forEach((tab, index) => {
-            if (tab.id === targetId) {
-                const nextTab = tabs[index + 1] || tabs[index - 1]
-                curTabId.value = nextTab && nextTab.id || "new"
-            }
-        })
-    }
-    sshTabs.value = tabs.filter((tab) => {
-        if (tab.id === targetId) {
-            tab.webssh?.dispose()
-            return false
+const indexTab = (id: string) => {
+    for (let i = 0; i < sshTabs.length; i++) {
+        if (sshTabs[i].id === id) {
+            return { index: i, tab: sshTabs[i] }
         }
-        return true
-    })
+    }
 }
+
+const changeTab = (id: string) => {
+    const target = indexTab(id)
+    Object.assign(curTab, target ? target.tab : fstTab)
+}
+
+const removeTab = (id: string) => {
+    const target = indexTab(id)
+    if (!target) {
+        return
+    }
+    const { index, tab } = target
+    if (curTab.id === id) {
+        const next = sshTabs[index + 1] || sshTabs[index - 1]
+        changeTab(next ? next.id : "new")
+    }
+    tab.webssh?.dispose()
+    sshTabs.splice(index, 1)
+}
+
+const cmdClear = `
+    find /var/log -type f -name *.[0-9] -delete
+    find /var/log -type f -name *.gz -delete
+    find /var/log -type f -name *.xz -delete
+
+    > /var/log/wtmp
+    > /var/log/btmp
+    > /var/log/lastlog
+    > /var/log/faillog
+
+    > /root/.bash_history
+`
 </script>

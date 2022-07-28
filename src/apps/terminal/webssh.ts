@@ -19,6 +19,13 @@ export class WebSSH {
         this.terminal = this.initTerminal()
     }
 
+    public exec(cmd: string) {
+        cmd = cmd.replace(/\n\s+/g, '\n')
+        cmd = cmd.replace(/\n+/g, '\n')
+        cmd = cmd.trim() + '\n'
+        this.socket.send(cmd)
+    }
+
     public dispose() {
         this.socket.close()
         this.terminal.dispose()
