@@ -1,13 +1,13 @@
 <template>
     <div class="vnc-wrap">
         <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item :to="{ path: '/' }">
+            <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/lighthouse/index' }">
+            <el-breadcrumb-item to="/lighthouse/index">
                 轻量服务器
             </el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/lighthouse/detail/' + zone + '/' + instanceId }">
+            <el-breadcrumb-item :to="'/lighthouse/detail/' + zone + '/' + instanceId">
                 {{ instanceId }}
             </el-breadcrumb-item>
             <el-breadcrumb-item>

@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item :to="{ path: '/' }">
+            <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/dnspod/index' }">
+            <el-breadcrumb-item to="/dnspod/index">
                 域名列表
             </el-breadcrumb-item>
             <el-breadcrumb-item>

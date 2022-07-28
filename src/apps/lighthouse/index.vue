@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item :to="{ path: '/' }">
+            <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
@@ -51,6 +51,11 @@
                             <router-link :to="'/lighthouse/detail/' + scope.row.Zone + '/' + scope.row.InstanceId">
                                 <el-button link type="primary" icon="View">
                                     查看
+                                </el-button>
+                            </router-link>
+                            <router-link :to="'/lighthouse/vnc/' + scope.row.Zone + '/' + scope.row.InstanceId">
+                                <el-button link type="primary" icon="Connection">
+                                    登录
                                 </el-button>
                             </router-link>
                         </template>

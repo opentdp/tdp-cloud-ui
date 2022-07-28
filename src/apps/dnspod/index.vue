@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item :to="{ path: '/' }">
+            <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>

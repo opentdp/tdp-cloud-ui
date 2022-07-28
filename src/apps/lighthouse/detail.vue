@@ -1,10 +1,10 @@
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item :to="{ path: '/' }">
+            <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: '/lighthouse/index' }">
+            <el-breadcrumb-item to="/lighthouse/index">
                 轻量服务器
             </el-breadcrumb-item>
             <el-breadcrumb-item>
@@ -15,7 +15,7 @@
             <template #header>
                 <div class="card-header">
                     <b>实例信息</b> &nbsp;
-                    <router-link :to="{ path: '/lighthouse/vnc/' + zone + '/' + instanceId }">
+                    <router-link :to="'/lighthouse/vnc/' + zone + '/' + instanceId">
                         <el-button text>
                             VNC 登录
                         </el-button>
