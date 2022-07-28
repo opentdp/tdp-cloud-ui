@@ -41,20 +41,30 @@ const zone = route.params.zone as string
 const region = zone.replace(/-\d$/, "")
 const instanceId = route.params.instanceId as string
 
+const vncInit = async () => {
+    const data = await Api.lighthouse.describeInstanceVncUrl(region, {
+        InstanceId: instanceId,
+    })
+    if (frame.value) {
+        const vnc = '/api/terminal/vnc?InstanceVncUrl='
+        frame.value.src = vnc + data.InstanceVncUrl
+    }
+}
+
 const vncExec = (cmd: string) => {
-    const ifrm = document.querySelector('iframe')
-    if (ifrm && ifrm.contentWindow) {
-        const vdoc = ifrm.contentWindow.document
-        const cbtn = vdoc.querySelector('a.copyBtn') as HTMLAnchorElement
-        cbtn.click()
-        setTimeout(() => {
-            const ipt = vdoc.querySelector('textarea.vnc-paste-text') as HTMLInputElement
-            const btn = vdoc.querySelector('button.bt_confirm') as HTMLInputElement
-            cmd = cmd.replace(/\n\s+/g, '\n')
-            cmd = cmd.replace(/\n+/g, '\n')
-            cmd = cmd.trim() + '\n'
-            ipt.value = cmd
-            btn.click()
+    if (frame.value?.contentWindow) {
+        const vdoc = frame.value.contentWindow.document
+        const cbtn = vdoc.querySelector<HTMLAnchorElement>('a.copyBtn')
+        cbtn && cbtn.click(), setTimeout(() => {
+            const btn = vdoc.querySelector<HTMLButtonElement>('button.bt_confirm')
+            const ipt = vdoc.querySelector<HTMLInputElement>('textarea.vnc-paste-text')
+            if (btn && ipt) {
+                cmd = cmd.replace(/\n\s+/g, '\n')
+                cmd = cmd.replace(/\n+/g, '\n')
+                cmd = cmd.trim() + '\n'
+                ipt.value = cmd
+                btn.click()
+            }
         }, 500)
     }
 }
@@ -78,15 +88,7 @@ const cmdList = [
     }
 ]
 
-onMounted(async () => {
-    const data = await Api.lighthouse.describeInstanceVncUrl(region, {
-        InstanceId: instanceId,
-    })
-    if (frame.value) {
-        const vnc = '/api/terminal/vnc?InstanceVncUrl='
-        frame.value.src = vnc + data.InstanceVncUrl
-    }
-})
+onMounted(() => vncInit())
 </script>
 
 <style lang="scss" scoped>
