@@ -48,7 +48,8 @@
 import { ref, reactive } from "vue"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { WebSSH } from './webssh'
+import Api from "@/api"
+import { WebSSH } from "@/helper/webssh"
 
 // 登录服务器
 
@@ -99,7 +100,8 @@ const createTab = () => {
     // 延迟连接
     changeTab(tab.id)
     setTimeout(() => {
-        tab.webssh = new WebSSH(tab.id, formModel)
+        const url = Api.terminal.getWebsshWsurl(formModel)
+        tab.webssh = new WebSSH(tab.id, url)
     }, 100)
 }
 

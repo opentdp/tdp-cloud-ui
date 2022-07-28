@@ -3,20 +3,23 @@ import { Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import { AttachAddon } from 'xterm-addon-attach'
 
-import Api from "@/api"
-import { SSHRequest } from "@/api/local/terminal"
-
 export class WebSSH {
     private socket: WebSocket
     private terminal: Terminal
+    private dispatch: (() => void)[] = []
 
     constructor(
         private id: string,
-        private sr: SSHRequest
+        private url: string | URL
     ) {
-        this.id = id
         this.socket = this.initSocket()
         this.terminal = this.initTerminal()
+    }
+
+    public dispose() {
+        this.socket.close()
+        this.terminal.dispose()
+        this.dispatch.forEach(fn => fn())
     }
 
     public exec(cmd: string) {
@@ -26,13 +29,8 @@ export class WebSSH {
         this.socket.send(cmd)
     }
 
-    public dispose() {
-        this.socket.close()
-        this.terminal.dispose()
-    }
-
     private initSocket() {
-        const socket = Api.terminal.ssh(this.sr)
+        const socket = new WebSocket(this.url)
 
         socket.onclose = () => {
             this.terminal.writeln('> 连接已断开')
@@ -51,18 +49,25 @@ export class WebSSH {
             cursorBlink: true, // 光标闪烁
         })
 
-        const fitAddon = new FitAddon()
-        terminal.loadAddon(fitAddon)
-        fitAddon.fit()
-
-        const element = document.getElementById(this.id)
-        element && terminal.open(element)
-        terminal.focus()
-
         const attachAddon = new AttachAddon(this.socket)
         terminal.loadAddon(attachAddon)
 
+        const fitAddon = new FitAddon()
+        terminal.loadAddon(fitAddon)
+
+        const wrapper = document.getElementById(this.id)
+        wrapper && terminal.open(wrapper)
+        fitAddon.fit() // 适应容器
+
+        // 自动适应窗口
+        const autofit = () => fitAddon.fit()
+        window.addEventListener('resize', autofit)
+        this.dispatch.push(() => {
+            window.removeEventListener('resize', autofit)
+        })
+
         terminal.writeln('> 正在连接...')
+        terminal.focus()
 
         return terminal
     }

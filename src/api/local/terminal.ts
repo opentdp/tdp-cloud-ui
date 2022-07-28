@@ -1,7 +1,7 @@
 import { HttpClient } from "../basic/http"
 
 export class TerminalClient extends HttpClient {
-    public ssh(query: SSHRequest): WebSocket {
+    public getWebsshWsurl(query: SSHRequest) {
         if (this.session.token) {
             const token = this.session.token
             const keyid = this.session.keyid || 0
@@ -12,7 +12,7 @@ export class TerminalClient extends HttpClient {
         const wsurl = "/wsl/terminal/ssh?" + param
         const origin = location.origin.replace(/^http/, "ws")
 
-        return new WebSocket(decodeURIComponent(origin + wsurl))
+        return origin + wsurl
     }
 }
 
