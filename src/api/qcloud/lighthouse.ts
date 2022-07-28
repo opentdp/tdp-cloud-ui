@@ -15,6 +15,14 @@ export class LighthouseClient extends HttpClient {
         return this.post("/qcloud/lighthouse/describeInstances/" + region, query, 600)
     }
 
+    public describeInstanceVncUrl(
+        region: string,
+        query?: Lighthouse.DescribeInstanceVncUrlRequest
+    ): Promise<Lighthouse.DescribeInstanceVncUrlResponse> {
+        query = Object.assign({ Limit: 100 }, query)
+        return this.post("/qcloud/lighthouse/describeInstanceVncUrl/" + region, query)
+    }
+
     public describeInstancesTrafficPackages(
         region: string,
         query?: Lighthouse.DescribeInstancesTrafficPackagesRequest

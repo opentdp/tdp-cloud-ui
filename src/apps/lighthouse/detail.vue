@@ -8,13 +8,18 @@
                 轻量服务器
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                {{ instance?.InstanceId || "详情" }}
+                {{ instanceId }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card v-if="instance" shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">
                     <b>实例信息</b> &nbsp;
+                    <router-link :to="{ path: '/lighthouse/vnc/' + zone + '/' + instanceId }">
+                        <el-button text>
+                            VNC 登录
+                        </el-button>
+                    </router-link>
                 </div>
             </template>
             <el-descriptions :column="2" border>
@@ -120,6 +125,8 @@
 import { ref } from "vue"
 import { useRoute } from "vue-router"
 
+import { ElMessageBox } from 'element-plus'
+
 import Api, { Lighthouse } from "@/api"
 import { bytesToSize, dateFormat } from "@/helper/utils"
 
@@ -208,6 +215,20 @@ const getInstance = async () => {
     getFirewallRules()
     getTrafficPackage()
     getLighthouseOuttraffic()
+}
+
+const openVnc = async () => {
+    const data = await Api.lighthouse.describeInstanceVncUrl(region, {
+        InstanceId: instanceId,
+    })
+    const url = 'https://img.qcloud.com/qcloud/app/active_vnc/index.html?InstanceVncUrl=' + data.InstanceVncUrl
+    ElMessageBox.alert(
+        `<iframe src="${url}" style="width:300px; height:300px"></iframe>`,
+        'VNC 终端',
+        {
+            dangerouslyUseHTMLString: true,
+        }
+    )
 }
 
 const getSnapshots = async () => {
