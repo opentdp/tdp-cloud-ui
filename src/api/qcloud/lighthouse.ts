@@ -3,8 +3,10 @@ import { HttpClient } from "../basic/http"
 import { Lighthouse } from "./typings"
 
 export class LighthouseClient extends HttpClient {
+    public uri = "/qcloud/lighthouse/2020-03-24"
+
     public describeRegions(): Promise<Lighthouse.DescribeRegionsResponse> {
-        return this.post("/qcloud/lighthouse/describeRegions", {}, 600)
+        return this.post(this.uri + "/DescribeRegions", {}, 600)
     }
 
     public describeInstances(
@@ -12,7 +14,7 @@ export class LighthouseClient extends HttpClient {
         query?: Lighthouse.DescribeInstancesRequest
     ): Promise<Lighthouse.DescribeInstancesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/qcloud/lighthouse/describeInstances/" + region, query, 600)
+        return this.post(this.uri + "/DescribeInstances/" + region, query, 600)
     }
 
     public describeInstanceVncUrl(
@@ -20,7 +22,7 @@ export class LighthouseClient extends HttpClient {
         query?: Lighthouse.DescribeInstanceVncUrlRequest
     ): Promise<Lighthouse.DescribeInstanceVncUrlResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/qcloud/lighthouse/describeInstanceVncUrl/" + region, query)
+        return this.post(this.uri + "/DescribeInstanceVncUrl/" + region, query)
     }
 
     public describeInstancesTrafficPackages(
@@ -28,7 +30,7 @@ export class LighthouseClient extends HttpClient {
         query?: Lighthouse.DescribeInstancesTrafficPackagesRequest
     ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/qcloud/lighthouse/describeInstancesTrafficPackages/" + region, query, 600)
+        return this.post(this.uri + "/DescribeInstancesTrafficPackages/" + region, query, 600)
     }
 
     public describeSnapshots(
@@ -36,7 +38,7 @@ export class LighthouseClient extends HttpClient {
         query: Lighthouse.DescribeSnapshotsRequest
     ): Promise<Lighthouse.DescribeSnapshotsResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/qcloud/lighthouse/describeSnapshots/" + region, query, 600)
+        return this.post(this.uri + "/DescribeSnapshots/" + region, query, 600)
     }
 
     public describeFirewallRules(
@@ -44,6 +46,6 @@ export class LighthouseClient extends HttpClient {
         query: Lighthouse.DescribeFirewallRulesRequest
     ): Promise<Lighthouse.DescribeFirewallRulesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/qcloud/lighthouse/describeFirewallRules/" + region, query, 600)
+        return this.post(this.uri + "/DescribeFirewallRules/" + region, query, 600)
     }
 }
