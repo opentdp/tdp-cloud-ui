@@ -9,6 +9,8 @@ let cached: Cached
 let session: ReturnType<typeof sessionStore>
 
 export class HttpClient {
+    protected api = "/api"
+
     protected get cached() {
         return cached || (cached = new Cached('http'))
     }
@@ -28,7 +30,7 @@ export class HttpClient {
         if (query) {
             url += "?" + this.buildQuery(query)
         }
-        const body = await fetch("/api" + url, {
+        const body = await fetch(this.api + url, {
             method: "GET",
             headers: this.buildHeader(),
         })
@@ -48,7 +50,7 @@ export class HttpClient {
             }
         }
         // 请求远程接口
-        const body = await fetch("/api" + url, {
+        const body = await fetch(this.api + url, {
             method: "POST",
             headers: this.buildHeader("json"),
             body: JSON.stringify(query || {}),
@@ -62,7 +64,7 @@ export class HttpClient {
     }
 
     protected async patch(url: string, query: unknown) {
-        const body = await fetch("/api" + url, {
+        const body = await fetch(this.api + url, {
             method: "PATCH",
             headers: this.buildHeader("json"),
             body: JSON.stringify(query || {}),
@@ -74,7 +76,7 @@ export class HttpClient {
         if (query) {
             url += "?" + this.buildQuery(query)
         }
-        const body = await fetch("/api" + url, {
+        const body = await fetch(this.api + url, {
             method: "DELETE",
             headers: this.buildHeader(),
         })
