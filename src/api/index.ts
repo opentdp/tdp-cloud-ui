@@ -7,6 +7,7 @@ import { CamClient } from "./qcloud/cam"
 import { DnspodClient } from "./qcloud/dnspod"
 import { LighthouseClient } from "./qcloud/lighthouse"
 import { MonitorClient } from "./qcloud/monitor"
+import { TATClient as TATCClient } from "./qcloud/tat"
 
 // 导出接口
 
@@ -21,6 +22,7 @@ export default {
     dnspod: new DnspodClient(),
     lighthouse: new LighthouseClient(),
     monitor: new MonitorClient(),
+    tatcclient: new TATCClient(),
 }
 
 // 导出类型./qcloud/typings
