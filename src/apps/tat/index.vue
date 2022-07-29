@@ -45,47 +45,48 @@
                 </el-table-column>
             </el-table>
         </el-card>
+
+
+        <el-dialog v-model="editDialogVisible" title="修改命令">
+            <el-form v-if="editForm" :model="editForm" label-width="120px">
+                <el-form-item label="名称">
+                    <el-input v-model="editForm.Name" />
+                </el-form-item>
+                <el-form-item label="描述">
+                    <el-input v-model="editForm.Description" />
+                </el-form-item>
+                <el-form-item label="命令">
+                    <el-input v-model="editForm.Content" type="textarea" rows="5" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="editDialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="onEditSave">保存</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <el-dialog v-model="newDialogVisible" title="添加命令">
+            <el-form v-if="newForm" :model="newForm" label-width="120px">
+                <el-form-item label="名称">
+                    <el-input v-model="newForm.name" />
+                </el-form-item>
+                <el-form-item label="描述">
+                    <el-input v-model="newForm.description" />
+                </el-form-item>
+                <el-form-item label="命令">
+                    <el-input v-model="newForm.content" type="textarea" rows="5" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="newDialogVisible = false">取消</el-button>
+                    <el-button type="primary" @click="onNewSave">保存</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
-
-    <el-dialog v-model="editDialogVisible" title="修改命令">
-        <el-form v-if="editForm" :model="editForm" label-width="120px">
-            <el-form-item label="名称">
-                <el-input v-model="editForm.Name" />
-            </el-form-item>
-            <el-form-item label="描述">
-                <el-input v-model="editForm.Description" />
-            </el-form-item>
-            <el-form-item label="命令">
-                <el-input v-model="editForm.Content" type="textarea" rows="5" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="editDialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="onEditSave">保存</el-button>
-            </span>
-        </template>
-    </el-dialog>
-
-    <el-dialog v-model="newDialogVisible" title="添加命令">
-        <el-form v-if="newForm" :model="newForm" label-width="120px">
-            <el-form-item label="名称">
-                <el-input v-model="newForm.name" />
-            </el-form-item>
-            <el-form-item label="描述">
-                <el-input v-model="newForm.description" />
-            </el-form-item>
-            <el-form-item label="命令">
-                <el-input v-model="newForm.content" type="textarea" rows="5" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="newDialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="onNewSave">保存</el-button>
-            </span>
-        </template>
-    </el-dialog>
 </template>
 <script lang="ts" setup>
 
