@@ -21,7 +21,6 @@ export class LighthouseClient extends HttpClient {
         region: string,
         query?: Lighthouse.DescribeInstanceVncUrlRequest
     ): Promise<Lighthouse.DescribeInstanceVncUrlResponse> {
-        query = Object.assign({ Limit: 100 }, query)
         return this.post(this.uri + "/DescribeInstanceVncUrl/" + region, query)
     }
 
