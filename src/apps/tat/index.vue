@@ -13,7 +13,7 @@
                 <div class="card-header">
                     <div class="left">
                         <b>命令列表</b> &nbsp;
-                        <small>域名总数: {{ tatList.length }}</small>
+                        <small>命令总数: {{ tatList.length }}</small>
                     </div>
                     <div id="right">
                         <el-button type="primary" plain @click="onNew">
@@ -45,7 +45,6 @@
                 </el-table-column>
             </el-table>
         </el-card>
-
 
         <el-dialog v-model="editDialogVisible" title="修改命令">
             <el-form v-if="editForm" :model="editForm" label-width="120px">
@@ -123,7 +122,7 @@
 </template>
 <script lang="ts" setup>
 
-import { default as api, default as Api, Lighthouse } from "@/api"
+import { default as Api, Lighthouse } from "@/api"
 import { TATItem } from '@/api/local/tat'
 import { ElMessage } from "element-plus"
 import { Base64 } from 'js-base64'
@@ -244,28 +243,27 @@ function onRun(tatItem: TATItem) {
 
 async function onDoRun() {
     try {
-        if (runForm.value.InstanceIds.length == 0) {
-            return
-        }
-        const regions = new Set<string>()
-        runForm.value.InstanceIds.forEach(id => {
-            regions.add(instanceRegionMap.get(id) as string)
-        })
-        regions.forEach(async (region) => {
-            const instanceIds = runForm.value.InstanceIds.filter(id => instanceRegionMap.get(id) == region)
-            await api.tatcclient.runCommand(region, {
-                Content: Base64.encode(runForm.value.content),
-                Description: runForm.value.description,
-                CommandName: runForm.value.name,
-                Username: runForm.value.user,
-                WorkingDirectory: runForm.value.path,
-                InstanceIds: instanceIds,
+        if (runForm.value.InstanceIds.length > 0) {
+            const regions = new Set<string>()
+            runForm.value.InstanceIds.forEach(id => {
+                regions.add(instanceRegionMap.get(id) as string)
             })
-        })
-
+            regions.forEach(async (region) => {
+                const instanceIds = runForm.value.InstanceIds.filter(id => instanceRegionMap.get(id) == region)
+                await Api.tatcclient.runCommand(region, {
+                    Content: Base64.encode(runForm.value.content),
+                    Description: runForm.value.description,
+                    CommandName: runForm.value.name,
+                    Username: runForm.value.user,
+                    WorkingDirectory: runForm.value.path,
+                    InstanceIds: instanceIds,
+                })
+            })
+        }
     } catch (error) {
         ElMessage.error(error as string)
     }
+    runDialogVisible.value = false
 }
 
 </script>
