@@ -16,7 +16,7 @@
                         <small>命令总数: {{ tatList.length }}</small>
                     </div>
                     <div id="right">
-                        <el-button type="primary" plain @click="onNew">
+                        <el-button type="primary" plain size="small" icon="Plus" @click="onNew">
                             添加
                         </el-button>
                     </div>
@@ -25,7 +25,7 @@
             <el-table v-loading="loading" :data="tatList">
                 <el-table-column fixed prop="Name" label="名称" min-width="150" />
                 <el-table-column prop="Description" label="描述" min-width="100" />
-                <el-table-column prop="Content" label="命令" min-width="250" />
+                <el-table-column prop="Content" label="命令" min-width="250" show-overflow-tooltip />
                 <el-table-column fixed="right" label="操作" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View" @click="onRun(scope.row)">
@@ -48,18 +48,25 @@
 
         <el-card shadow="hover">
             <template #header>
-                <div>
-                    <b>历史记录</b> &nbsp;
-                    <el-select v-model="currentRegion" class="region-select" placeholder="选择区域" size="small" @change="onRegionChange">
-                        <el-option v-for="item in regionList" :key="item.value" :label="item.label" :value="item.value" />
-                    </el-select>
-                    <small>记录总数: {{ HistoryList.length }}</small>
+                <div class="card-header">
+                    <div class="left">
+                        <b>历史记录</b> &nbsp;
+                        <el-select v-model="currentRegion" class="region-select" placeholder="选择区域" size="small" @change="onRegionChange">
+                            <el-option v-for="item in regionList" :key="item.value" :label="item.label" :value="item.value" />
+                        </el-select>
+                        <small>记录总数: {{ HistoryList.length }}</small>
+                    </div>
+                    <div id="right">
+                        <el-button type="primary" plain size="small" icon="Refresh" @click="fetchHistory">
+                            刷新
+                        </el-button>
+                    </div>
                 </div>
             </template>
-            <el-table v-loading="loading" :data="HistoryList">
+            <el-table v-loading="historyLoading" :data="HistoryList">
                 <el-table-column prop="InvocationId" label="执行ID" />
                 <el-table-column prop="InvocationStatus" label="执行状态" />
-                <el-table-column prop="CommandContent" label="命令内容" min-width="150" />
+                <el-table-column prop="CommandContent" label="命令内容" min-width="150" show-overflow-tooltip />
                 <el-table-column fixed="right" label="操作" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View" @click="onHistoryDetail(scope.row)">
@@ -171,7 +178,8 @@ import { Base64 } from 'js-base64'
 import { onMounted, ref } from 'vue'
 
 const tatList = ref<TATItem[]>([])
-const loading = ref<boolean>(false)
+const loading = ref(false)
+const historyLoading = ref(false)
 const regionList = ref<{ value: string, label: string }[]>([])
 const currentRegion = ref("")
 const LHInstances = ref<(Lighthouse.Instance & { region: string })[]>([])
@@ -205,11 +213,13 @@ async function fetchHistory() {
     if (currentRegion.value === '') {
         return
     }
+    historyLoading.value = true
     const data = await Api.tatcclient.describeInvocations(currentRegion.value, { Filters: [{ Name: "instance-kind", Values: ["LIGHTHOUSE"] }] })
     HistoryList.value = data.InvocationSet
     HistoryList.value.forEach(item => {
         item.CommandContent = Base64.fromBase64(item.CommandContent)
     })
+    historyLoading.value = false
 }
 
 
@@ -325,6 +335,9 @@ async function onDoRun() {
                     InstanceIds: instanceIds,
                 })
             })
+            setTimeout(() => {
+                fetchHistory()
+            }, 1000)
         }
     } catch (error) {
         ElMessage.error(error as string)
