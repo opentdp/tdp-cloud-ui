@@ -22,7 +22,7 @@ export default {
     dnspod: new DnspodClient(),
     lighthouse: new LighthouseClient(),
     monitor: new MonitorClient(),
-    tatcclient: new TATCClient(),
+    tatCloud: new TATCClient(),
 }
 
 // 导出类型./qcloud/typings

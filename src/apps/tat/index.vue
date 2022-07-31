@@ -231,7 +231,7 @@ async function fetchHistory() {
         return
     }
     historyLoading.value = true
-    const data = await Api.tatcclient.describeInvocations(currentRegion.value, { Filters: [{ Name: "instance-kind", Values: ["LIGHTHOUSE"] }] })
+    const data = await Api.tatCloud.describeInvocations(currentRegion.value, { Filters: [{ Name: "instance-kind", Values: ["LIGHTHOUSE"] }] })
     HistoryList.value = data.InvocationSet
     HistoryList.value.forEach(item => {
         item.CommandContent = Base64.fromBase64(item.CommandContent)
@@ -343,7 +343,7 @@ async function onDoRun() {
             })
             regions.forEach(async (region) => {
                 const instanceIds = runForm.value.InstanceIds.filter(id => instanceRegionMap.get(id) == region)
-                await Api.tatcclient.runCommand(region, {
+                await Api.tatCloud.runCommand(region, {
                     Content: Base64.encode(runForm.value.content),
                     Description: runForm.value.description,
                     CommandName: runForm.value.name,
@@ -366,7 +366,7 @@ async function onDoRun() {
 const historyDetailVisiable = ref(false)
 const historyDetail = ref<TAT.InvocationTask>()
 async function onHistoryDetail(src: TAT.Invocation) {
-    const data = await Api.tatcclient.describeInvocationTasks(currentRegion.value,
+    const data = await Api.tatCloud.describeInvocationTasks(currentRegion.value,
         {
             Filters: [{ Name: "invocation-id", Values: [src.InvocationId] }],
             HideOutput: false
@@ -386,7 +386,7 @@ async function fetchCommandList() {
     importLoading.value = true
     commandList.value = []
     await Promise.all(regionList.value.map(async item => {
-        const data = await Api.tatcclient.describeCommands(item.value, { Filters: [{ Name: "created-by", Values: ["USER"] }] })
+        const data = await Api.tatCloud.describeCommands(item.value, { Filters: [{ Name: "created-by", Values: ["USER"] }] })
         if (data.TotalCount > 0) {
             commandList.value.push(...data.CommandSet)
         }
