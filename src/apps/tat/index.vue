@@ -19,6 +19,9 @@
                         <el-button type="primary" plain size="small" icon="Plus" @click="onNew">
                             添加
                         </el-button>
+                        <el-button type="primary" plain size="small" icon="Download" @click="onImport">
+                            导入
+                        </el-button>
                     </div>
                 </div>
             </template>
@@ -167,13 +170,27 @@
                 </span>
             </template>
         </el-dialog>
+
+        <el-dialog v-model="importVisiable" title="导入命令">
+            <el-table ref="importTable" v-loading="importLoading" :data="commandList">
+                <el-table-column type="selection" width="55" />
+                <el-table-column prop="CommandId" label="命令ID" />
+                <el-table-column prop="CommandName" label="命令名称" min-width="150" />
+            </el-table>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="onDoImport">确定</el-button>
+                    <el-button @click="importVisiable = false">取消</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 <script lang="ts" setup>
 
 import { default as Api, Lighthouse, TAT } from "@/api"
 import { TATItem } from '@/api/local/tat'
-import { ElMessage } from "element-plus"
+import { ElMessage, ElTable } from "element-plus"
 import { Base64 } from 'js-base64'
 import { onMounted, ref } from 'vue'
 
@@ -358,6 +375,50 @@ async function onHistoryDetail(src: TAT.Invocation) {
         historyDetail.value = data.InvocationTaskSet[0]
         historyDetailVisiable.value = true
     }
+}
+
+// Import
+const importVisiable = ref(false)
+const importLoading = ref(false)
+const commandList = ref<TAT.Command[]>([])
+const importTable = ref<InstanceType<typeof ElTable>>()
+async function fetchCommandList() {
+    importLoading.value = true
+    commandList.value = []
+    await Promise.all(regionList.value.map(async item => {
+        const data = await Api.tatcclient.describeCommands(item.value, { Filters: [{ Name: "created-by", Values: ["USER"] }] })
+        if (data.TotalCount > 0) {
+            commandList.value.push(...data.CommandSet)
+        }
+    }))
+    importLoading.value = false
+}
+async function onImport() {
+    importVisiable.value = true
+    try {
+        await fetchCommandList()
+    } catch (error) {
+        ElMessage.error(error as string)
+    }
+}
+
+async function onDoImport() {
+    const rows: TAT.Command[] = importTable.value?.getSelectionRows()
+    loading.value = true
+    try {
+        await Promise.all(rows.map(row => Api.tat.newTAT(
+            {
+                name: row.CommandName,
+                description: row.Description,
+                content: Base64.fromBase64(row.Content)
+            })))
+        await fetchTATList()
+    }
+    catch (error) {
+        ElMessage.error(error + "")
+    }
+    loading.value = false
+    importVisiable.value = false
 }
 
 </script>

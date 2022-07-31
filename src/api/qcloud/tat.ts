@@ -16,4 +16,8 @@ export class TATClient extends HttpClient {
     public describeInvocationTasks(region: string, query: TAT.DescribeInvocationTasksRequest): Promise<TAT.DescribeInvocationTasksResponse> {
         return this.post("/DescribeInvocationTasks/" + region, query)
     }
+
+    public describeCommands(region: string, query: TAT.DescribeCommandsRequest): Promise<TAT.DescribeCommandsResponse> {
+        return this.post("/DescribeCommands/" + region, query)
+    }
 }
