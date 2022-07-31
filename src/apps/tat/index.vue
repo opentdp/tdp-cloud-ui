@@ -194,7 +194,7 @@ async function fetchTATList() {
 
 async function fetchLH() {
     const data = await Api.lighthouse.describeRegions()
-    data.RegionSet.forEach(async (item) => {
+    await Promise.all(data.RegionSet.map(async item => {
         const data = await Api.lighthouse.describeInstances(item.Region)
         if (data.TotalCount > 0) {
             regionList.value.push({ value: item.Region, label: item.RegionName })
@@ -206,7 +206,7 @@ async function fetchLH() {
                 instanceRegionMap.set(instance.InstanceId, item.Region)
             })
         }
-    })
+    }))
 }
 
 async function fetchHistory() {
