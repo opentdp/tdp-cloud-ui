@@ -8,4 +8,12 @@ export class TATClient extends HttpClient {
     public runCommand(region: string, query: TAT.RunCommandRequest): Promise<TAT.RunCommandResponse> {
         return this.post("/RunCommand/" + region, query)
     }
+
+    public describeInvocations(region: string, query: TAT.DescribeInvocationsRequest): Promise<TAT.DescribeInvocationsResponse> {
+        return this.post("/DescribeInvocations/" + region, query)
+    }
+
+    public describeInvocationTasks(region: string, query: TAT.DescribeInvocationTasksRequest): Promise<TAT.DescribeInvocationTasksResponse> {
+        return this.post("/DescribeInvocationTasks/" + region, query)
+    }
 }

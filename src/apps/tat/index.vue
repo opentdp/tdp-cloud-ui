@@ -8,7 +8,7 @@
                 TAT
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-card shadow="hover">
+        <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="card-header">
                     <div class="left">
@@ -22,7 +22,7 @@
                     </div>
                 </div>
             </template>
-            <el-table v-loading="loading" :data="tatList" table-layout="fixed">
+            <el-table v-loading="loading" :data="tatList">
                 <el-table-column fixed prop="Name" label="名称" min-width="150" />
                 <el-table-column prop="Description" label="描述" min-width="100" />
                 <el-table-column prop="Content" label="命令" min-width="250" />
@@ -41,6 +41,30 @@
                                 </el-button>
                             </template>
                         </el-popconfirm>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-card>
+
+        <el-card shadow="hover">
+            <template #header>
+                <div>
+                    <b>历史记录</b> &nbsp;
+                    <el-select v-model="currentRegion" class="region-select" placeholder="选择区域" size="small" @change="onRegionChange">
+                        <el-option v-for="item in regionList" :key="item.value" :label="item.label" :value="item.value" />
+                    </el-select>
+                    <small>记录总数: {{ HistoryList.length }}</small>
+                </div>
+            </template>
+            <el-table v-loading="loading" :data="HistoryList">
+                <el-table-column prop="InvocationId" label="执行ID" />
+                <el-table-column prop="InvocationStatus" label="执行状态" />
+                <el-table-column prop="CommandContent" label="命令内容" min-width="150" />
+                <el-table-column fixed="right" label="操作" align="center">
+                    <template #default="scope">
+                        <el-button link type="primary" icon="View" @click="onHistoryDetail(scope.row)">
+                            历史详情
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -118,11 +142,29 @@
                 </span>
             </template>
         </el-dialog>
+
+        <el-dialog v-model="historyDetailVisiable" title="历史详情">
+            <div v-if="historyDetail" class="history-detail">
+                <div class="title">
+                    命令：
+                </div>
+                <pre class="cmd">{{ Base64.fromBase64(historyDetail.CommandDocument.Content) }}</pre>
+                <div class="title">
+                    结果：
+                </div>
+                <pre class="result">{{ Base64.fromBase64(historyDetail.TaskResult.Output) }}</pre>
+            </div>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="historyDetailVisiable = false">确定</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 <script lang="ts" setup>
 
-import { default as Api, Lighthouse } from "@/api"
+import { default as Api, Lighthouse, TAT } from "@/api"
 import { TATItem } from '@/api/local/tat'
 import { ElMessage } from "element-plus"
 import { Base64 } from 'js-base64'
@@ -130,7 +172,10 @@ import { onMounted, ref } from 'vue'
 
 const tatList = ref<TATItem[]>([])
 const loading = ref<boolean>(false)
-const LHInstances = ref<(Lighthouse.DescribeInstancesResponse["InstanceSet"][number] & { region: string })[]>([])
+const regionList = ref<{ value: string, label: string }[]>([])
+const currentRegion = ref("")
+const LHInstances = ref<(Lighthouse.Instance & { region: string })[]>([])
+const HistoryList = ref<TAT.Invocation[]>([])
 const instanceRegionMap = new Map<string, string>()
 
 
@@ -138,16 +183,32 @@ async function fetchTATList() {
     const res = await Api.tat.fetchTATList()
     tatList.value = res
 }
+
 async function fetchLH() {
     const data = await Api.lighthouse.describeRegions()
     data.RegionSet.forEach(async (item) => {
         const data = await Api.lighthouse.describeInstances(item.Region)
         if (data.TotalCount > 0) {
+            regionList.value.push({ value: item.Region, label: item.RegionName })
+            if (currentRegion.value === '') {
+                currentRegion.value = item.Region
+            }
             data.InstanceSet.forEach(instance => {
                 LHInstances.value.push({ ...instance, region: item.Region })
                 instanceRegionMap.set(instance.InstanceId, item.Region)
             })
         }
+    })
+}
+
+async function fetchHistory() {
+    if (currentRegion.value === '') {
+        return
+    }
+    const data = await Api.tatcclient.describeInvocations(currentRegion.value, { Filters: [{ Name: "instance-kind", Values: ["LIGHTHOUSE"] }] })
+    HistoryList.value = data.InvocationSet
+    HistoryList.value.forEach(item => {
+        item.CommandContent = Base64.fromBase64(item.CommandContent)
     })
 }
 
@@ -157,11 +218,16 @@ onMounted(async () => {
     try {
         await fetchTATList()
         await fetchLH()
+        await fetchHistory()
     } catch (error) {
         ElMessage.error(error as string)
     }
     loading.value = false
 })
+
+async function onRegionChange() {
+    await fetchHistory()
+}
 
 //Edit
 const editDialogVisible = ref<boolean>(false)
@@ -266,10 +332,40 @@ async function onDoRun() {
     runDialogVisible.value = false
 }
 
+// History
+const historyDetailVisiable = ref(false)
+const historyDetail = ref<TAT.InvocationTask>()
+async function onHistoryDetail(src: TAT.Invocation) {
+    const data = await Api.tatcclient.describeInvocationTasks(currentRegion.value,
+        {
+            Filters: [{ Name: "invocation-id", Values: [src.InvocationId] }],
+            HideOutput: false
+        })
+    if (data.TotalCount > 0) {
+        historyDetail.value = data.InvocationTaskSet[0]
+        historyDetailVisiable.value = true
+    }
+}
+
 </script>
 <style lang="scss" scoped>
 .card-header {
     display: flex;
     justify-content: space-between;
+}
+
+.region-select {
+    margin-right: 10px;
+}
+
+.history-detail {
+
+    .cmd,
+    .result {
+        background-color: black;
+        color: white;
+        padding: 10px;
+        overflow: auto;
+    }
 }
 </style>
