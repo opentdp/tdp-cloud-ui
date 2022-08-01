@@ -21,8 +21,8 @@
                     <b>快捷命令</b>
                 </div>
             </template>
-            <el-button v-for="item in cmdList" :key="item.id" @click="vncExec(item.cmd)">
-                {{ item.name }}
+            <el-button v-for="item in cmdList" :key="item.Id" @click="vncExec(item.Content)">
+                {{ item.Name }}
             </el-button>
         </el-card>
     </div>
@@ -33,6 +33,7 @@ import { onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 
 import Api from "@/api"
+import { TATItem } from '@/api/local/tat'
 
 const route = useRoute()
 const frame = ref<HTMLIFrameElement>()
@@ -49,6 +50,15 @@ async function vncInit() {
         const vnc = '/api/terminal/vnc?InstanceVncUrl='
         frame.value.src = vnc + data.InstanceVncUrl
     }
+}
+
+// 执行快捷命令
+
+const cmdList = ref<TATItem[]>([])
+
+async function fetchTATList() {
+    const res = await Api.tat.fetchTATList()
+    cmdList.value = res
 }
 
 function vncExec(cmd: string) {
@@ -69,25 +79,7 @@ function vncExec(cmd: string) {
     }
 }
 
-const cmdList = [
-    {
-        id: 0,
-        name: "清理垃圾",
-        cmd: `
-            find /var/log -type f -name *.[0-9] -delete
-            find /var/log -type f -name *.gz -delete
-            find /var/log -type f -name *.xz -delete
-
-            > /var/log/wtmp
-            > /var/log/btmp
-            > /var/log/lastlog
-            > /var/log/faillog
-
-            > /root/.bash_history
-        `
-    }
-]
-
+fetchTATList()
 onMounted(() => vncInit())
 </script>
 

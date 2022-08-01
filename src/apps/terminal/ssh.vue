@@ -37,8 +37,8 @@
                     <b>快捷命令</b>
                 </div>
             </template>
-            <el-button v-for="item in cmdList" :key="item.id" @click="sshExec(item.cmd)">
-                {{ item.name }}
+            <el-button v-for="item in cmdList" :key="item.Id" @click="sshExec(item.Content)">
+                {{ item.Name }}
             </el-button>
         </el-card>
     </div>
@@ -49,6 +49,8 @@ import { ref, reactive } from "vue"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import Api from "@/api"
+import { TATItem } from '@/api/local/tat'
+
 import { WebSSH } from "@/helper/webssh"
 
 // 登录服务器
@@ -135,6 +137,13 @@ function removeTab(id: string) {
 
 // 执行快捷命令
 
+const cmdList = ref<TATItem[]>([])
+
+async function fetchTATList() {
+    const res = await Api.tat.fetchTATList()
+    cmdList.value = res
+}
+
 function sshExec(cmd: string) {
     const target = indexTab(curTab.id)
     if (target?.tab.webssh) {
@@ -142,22 +151,5 @@ function sshExec(cmd: string) {
     }
 }
 
-const cmdList = [
-    {
-        id: 0,
-        name: "清理垃圾",
-        cmd: `
-            find /var/log -type f -name *.[0-9] -delete
-            find /var/log -type f -name *.gz -delete
-            find /var/log -type f -name *.xz -delete
-
-            > /var/log/wtmp
-            > /var/log/btmp
-            > /var/log/lastlog
-            > /var/log/faillog
-
-            > /root/.bash_history
-        `
-    }
-]
+fetchTATList()
 </script>
