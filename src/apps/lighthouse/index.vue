@@ -111,7 +111,7 @@ async function getTrafficPackages(zone: string) {
     }
 }
 
-async function showTraffic(id: string) {
+function showTraffic(id: string) {
     if (!trafficPackages[id]) {
         return ""
     }
@@ -120,7 +120,7 @@ async function showTraffic(id: string) {
     return `${used} / ${total}`
 }
 
-async function showRegion(zone: string) {
+function showRegion(zone: string) {
     const r = zone.split("-")
     const n = r.pop()
     zone = r.join("-")
