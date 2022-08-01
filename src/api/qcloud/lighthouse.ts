@@ -3,7 +3,7 @@ import { HttpClient } from "../basic/http"
 import { Lighthouse } from "./typings"
 
 export class LighthouseClient extends HttpClient {
-    protected api = "/api/qcloud/lighthouse/2020-03-24/"
+    protected api = "/api/qcloud/lighthouse/2020-03-24"
 
     public describeRegions(): Promise<Lighthouse.DescribeRegionsResponse> {
         return this.post("/DescribeRegions", {}, 600)
