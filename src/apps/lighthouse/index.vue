@@ -84,7 +84,7 @@ const regions = reactive<
 
 const trafficPackages = reactive<Record<string, Lighthouse.TrafficPackage>>({})
 
-const getRegions = async () => {
+async function getRegions() {
     const data = await Api.lighthouse.describeRegions()
     data.RegionSet.forEach(async (item) => {
         regions[item.Region] = { ...item, InstanceCount: 0, InstanceSet: [] }
@@ -92,7 +92,7 @@ const getRegions = async () => {
     })
 }
 
-const getInstances = async (region: string) => {
+async function getInstances(region: string) {
     const data = await Api.lighthouse.describeInstances(region)
     if (data.TotalCount > 0) {
         regions[region].InstanceCount = data.TotalCount
@@ -102,7 +102,7 @@ const getInstances = async (region: string) => {
     return data.TotalCount
 }
 
-const getTrafficPackages = async (zone: string) => {
+async function getTrafficPackages(zone: string) {
     const data = await Api.lighthouse.describeInstancesTrafficPackages(zone)
     if (data.TotalCount > 0) {
         data.InstanceTrafficPackageSet.forEach((item) => {
@@ -111,7 +111,7 @@ const getTrafficPackages = async (zone: string) => {
     }
 }
 
-const showTraffic = (id: string) => {
+async function showTraffic(id: string) {
     if (!trafficPackages[id]) {
         return ""
     }
@@ -120,7 +120,7 @@ const showTraffic = (id: string) => {
     return `${used} / ${total}`
 }
 
-const showRegion = (zone: string) => {
+async function showRegion(zone: string) {
     const r = zone.split("-")
     const n = r.pop()
     zone = r.join("-")

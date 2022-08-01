@@ -54,8 +54,10 @@
                 <div class="card-header">
                     <div class="left">
                         <b>历史记录</b> &nbsp;
-                        <el-select v-model="currentRegion" class="region-select" placeholder="选择区域" size="small" @change="onRegionChange">
-                            <el-option v-for="item in regionList" :key="item.value" :label="item.label" :value="item.value" />
+                        <el-select v-model="currentRegion" class="region-select" placeholder="选择区域" size="small"
+                            @change="onRegionChange">
+                            <el-option v-for="item in regionList" :key="item.value" :label="item.label"
+                                :value="item.value" />
                         </el-select>
                         <small>记录总数: {{ HistoryList.length }}</small>
                     </div>
@@ -186,8 +188,8 @@
         </el-dialog>
     </div>
 </template>
-<script lang="ts" setup>
 
+<script lang="ts" setup>
 import { default as Api, Lighthouse, TAT } from "@/api"
 import { TATItem } from '@/api/local/tat'
 import { ElMessage, ElTable } from "element-plus"
@@ -238,19 +240,6 @@ async function fetchHistory() {
     })
     historyLoading.value = false
 }
-
-
-onMounted(async () => {
-    loading.value = true
-    try {
-        await fetchTATList()
-        await fetchLH()
-        await fetchHistory()
-    } catch (error) {
-        ElMessage.error(error as string)
-    }
-    loading.value = false
-})
 
 async function onRegionChange() {
     await fetchHistory()
@@ -352,9 +341,7 @@ async function onDoRun() {
                     InstanceIds: instanceIds,
                 })
             })
-            setTimeout(() => {
-                fetchHistory()
-            }, 1000)
+            setTimeout(() => fetchHistory(), 1000)
         }
     } catch (error) {
         ElMessage.error(error as string)
@@ -421,7 +408,19 @@ async function onDoImport() {
     importVisiable.value = false
 }
 
+onMounted(async () => {
+    loading.value = true
+    try {
+        await fetchTATList()
+        await fetchLH()
+        await fetchHistory()
+    } catch (error) {
+        ElMessage.error(error as string)
+    }
+    loading.value = false
+})
 </script>
+
 <style lang="scss" scoped>
 .card-header {
     display: flex;

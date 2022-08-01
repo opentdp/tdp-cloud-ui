@@ -67,7 +67,7 @@ const formRules: FormRules = {
     password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 }
 
-const formSubmit = (form: FormInstance | undefined) => {
+function formSubmit(form: FormInstance | undefined) {
     form && form.validate(valid => {
         if (!valid) {
             ElMessage.error("请检查表单")
@@ -91,7 +91,7 @@ const curTab = reactive({
 
 const sshTabs = reactive<sshTab[]>([])
 
-const createTab = () => {
+function createTab() {
     const tab: sshTab = {
         id: "tab-" + Date.now(),
         label: formModel.addr
@@ -105,7 +105,7 @@ const createTab = () => {
     }, 100)
 }
 
-const indexTab = (id: string) => {
+function indexTab(id: string) {
     for (let i = 0; i < sshTabs.length; i++) {
         if (sshTabs[i].id === id) {
             return { index: i, tab: sshTabs[i] }
@@ -113,13 +113,13 @@ const indexTab = (id: string) => {
     }
 }
 
-const changeTab = (id: string) => {
+function changeTab(id: string) {
     const target = indexTab(id)
     curTab.id = target?.tab.id || "new"
     curTab.label = target?.tab.label || ""
 }
 
-const removeTab = (id: string) => {
+function removeTab(id: string) {
     const target = indexTab(id)
     if (!target) {
         return
@@ -135,7 +135,7 @@ const removeTab = (id: string) => {
 
 // 执行快捷命令
 
-const sshExec = (cmd: string) => {
+function sshExec(cmd: string) {
     const target = indexTab(curTab.id)
     if (target?.tab.webssh) {
         target.tab.webssh.exec(cmd)

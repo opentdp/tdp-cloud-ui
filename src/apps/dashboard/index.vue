@@ -53,9 +53,12 @@ import Api, { Cam } from "@/api"
 
 const accountSummary = ref<Cam.GetAccountSummaryResponse>()
 
-Api.cam.getAccountSummary().then((res) => {
+async function getAccountSummary() {
+    const res = await Api.cam.getAccountSummary()
     accountSummary.value = res
-})
+}
+
+getAccountSummary()
 </script>
 
 <style lang="scss" scoped>

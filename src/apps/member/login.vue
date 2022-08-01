@@ -15,7 +15,8 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                    <el-input v-model="formModel.password" type="password" placeholder="密码" @keyup.enter="formSubmit(formRef)">
+                    <el-input v-model="formModel.password" type="password" placeholder="密码"
+                        @keyup.enter="formSubmit(formRef)">
                         <template #prepend>
                             <el-icon>
                                 <Lock />
@@ -61,20 +62,21 @@ const formRules: FormRules = {
     password: [{ required: true, message: "请输入密码", trigger: "blur" }],
 }
 
-const formSubmit = (form: FormInstance | undefined) => {
-    form && form.validate(valid => {
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
         if (!valid) {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.user.login(formModel).then((data) => {
+        const data = await Api.user.login(formModel)
+        if (data.username) {
             ElMessage.success("登录成功")
-            session.username = data.username
-            session.description = data.description
-            session.token = data.token
-            session.keyid = data.keyid
-            router.push("/")
-        })
+        }
+        session.username = data.username
+        session.description = data.description
+        session.token = data.token
+        session.keyid = data.keyid
+        router.push("/")
     })
 }
 </script>

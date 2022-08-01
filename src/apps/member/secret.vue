@@ -70,10 +70,9 @@ const session = sessionStore()
 
 // 密钥列表
 
-const fetchSecrets = () => {
-    Api.secret.fetch().then((res) => {
-        session.setSecrets(res)
-    })
+async function fetchSecrets() {
+    const res = await Api.secret.fetch()
+    session.setSecrets(res)
 }
 
 // 添加密钥
@@ -92,32 +91,29 @@ const formRules: FormRules = {
     secretKey: [{ required: true, message: "请输入 SecretKey", trigger: "blur" }],
 }
 
-const formSubmit = (form: FormInstance | undefined) => {
-    form && form.validate(valid => {
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
         if (!valid) {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.secret.create(formModel).then(() => {
-            formModel.secretId = ""
-            formModel.secretKey = ""
-            formModel.description = ""
-            fetchSecrets()
-        })
+        await Api.secret.create(formModel)
+        formModel.secretId = ""
+        formModel.secretKey = ""
+        formModel.description = ""
+        fetchSecrets()
     })
 }
 
 // 删除密钥
 
-const deleteSecret = (idx: number) => {
-    ElMessageBox.confirm("确定要删除吗？", "提示", {
+async function deleteSecret(idx: number) {
+    await ElMessageBox.confirm("确定要删除吗？", "提示", {
         type: "warning",
-    }).then(() => {
-        const item = session.secretList[idx]
-        Api.secret.remove(item.Id).then(() => {
-            session.secretList.splice(idx, 1)
-        })
     })
+    const item = session.secretList[idx]
+    await Api.secret.remove(item.Id)
+    session.secretList.splice(idx, 1)
 }
 
 fetchSecrets()

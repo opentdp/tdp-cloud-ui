@@ -86,15 +86,14 @@ const formRules = ref<FormRules>({
     ],
 })
 
-const formSubmit = (form: FormInstance | undefined) => {
-    form && form.validate(valid => {
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
         if (!valid) {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.user.updateInfo(formModel).then(() => {
-            session.description = formModel.description
-        })
+        await Api.user.updateInfo(formModel)
+        session.description = formModel.description
     })
 }
 </script>

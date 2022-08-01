@@ -92,15 +92,14 @@ const formRules = ref<FormRules>({
     ],
 })
 
-const formSubmit = (form: FormInstance | undefined) => {
-    form && form.validate(valid => {
+async function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
         if (!valid) {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.user.updatePassword(formModel).then(() => {
-            ElMessage.success("修改成功")
-        })
+        await Api.user.updatePassword(formModel)
+        ElMessage.success("修改成功")
     })
 }
 </script>

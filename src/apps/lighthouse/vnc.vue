@@ -41,7 +41,7 @@ const zone = route.params.zone as string
 const region = zone.replace(/-\d$/, "")
 const instanceId = route.params.instanceId as string
 
-const vncInit = async () => {
+async function vncInit() {
     const data = await Api.lighthouse.describeInstanceVncUrl(region, {
         InstanceId: instanceId,
     })
@@ -51,7 +51,7 @@ const vncInit = async () => {
     }
 }
 
-const vncExec = (cmd: string) => {
+function vncExec(cmd: string) {
     if (frame.value?.contentWindow) {
         const vdoc = frame.value.contentWindow.document
         const cbtn = vdoc.querySelector<HTMLAnchorElement>('a.copyBtn')

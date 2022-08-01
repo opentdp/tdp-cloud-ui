@@ -52,7 +52,7 @@ const domain = route.params.domain as string
 
 const record = ref<Dnspod.DescribeRecordListResponse>()
 
-const getRecordList = async () => {
+async function getRecordList() {
     const data = await Api.dnspod.describeRecordList({
         Domain: domain
     })

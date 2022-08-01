@@ -15,7 +15,8 @@
                 <el-icon v-if="session.secretList.length > 0" :size="30">
                     <Key />
                 </el-icon>
-                <el-dropdown v-if="session.secretList.length > 0" class="user-name" trigger="click" @command="secretDropdown">
+                <el-dropdown v-if="session.secretList.length > 0" class="user-name" trigger="click"
+                    @command="secretDropdown">
                     <span class="el-dropdown-link">
                         &nbsp;{{ session.keyname || "请选择" }}&nbsp;
                         <el-icon>
@@ -81,20 +82,26 @@ const router = useRouter()
 const layout = layoutStore()
 const session = sessionStore()
 
+// 获取密钥列表
+async function getSecret() {
+    const res = await Api.secret.fetch()
+    session.setSecrets(res)
+}
+
 // 侧边栏折叠
-const collapseChange = () => {
+function collapseChange() {
     layout.setCollapse(!layout.collapse)
 }
 
 // 密钥下拉菜单选择事件
-const secretDropdown = (data: SecretItem) => {
+function secretDropdown(data: SecretItem) {
     session.keyname = data.Description
     session.keyid = data.Id
     location.reload()
 }
 
 // 用户名下拉菜单选择事件
-const userDropdown = (data: string) => {
+function userDropdown(data: string) {
     switch (data) {
         case "delcache":
             Api.user.clear()
@@ -114,10 +121,7 @@ const userDropdown = (data: string) => {
 }
 
 onMounted(() => {
-    // 获取密钥列表
-    Api.secret.fetch().then((res) => {
-        session.setSecrets(res)
-    })
+    getSecret()
     // 小屏自动折叠
     if (document.body.clientWidth < 1000) {
         collapseChange()

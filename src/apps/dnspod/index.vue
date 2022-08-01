@@ -54,9 +54,12 @@ import { DomainStatusMap } from "@/api/qcloud/dnspod"
 
 const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()
 
-Api.dnspod.describeDomainList().then((res) => {
+async function getDomainList() {
+    const res = await Api.dnspod.describeDomainList()
     domainDescribe.value = res
-})
+}
+
+getDomainList()
 </script>
 
 <style lang="scss" scoped>

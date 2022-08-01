@@ -24,7 +24,8 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="password2">
-                    <el-input v-model="formModel.password2" type="password" placeholder="确认密码" @keyup.enter="formSubmit(formRef)">
+                    <el-input v-model="formModel.password2" type="password" placeholder="确认密码"
+                        @keyup.enter="formSubmit(formRef)">
                         <template #prepend>
                             <el-icon>
                                 <Lock />
@@ -70,16 +71,15 @@ const formRules: FormRules = {
     password2: [{ required: true, message: "请输入密码", trigger: "blur" }],
 }
 
-const formSubmit = (form: FormInstance | undefined) => {
-    form && form.validate(valid => {
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
         if (!valid) {
             ElMessage.error("请检查表单")
             return false
         }
-        Api.user.register(formModel).then(() => {
-            ElMessage.success("注册成功")
-            router.push("/member/login")
-        })
+        await Api.user.register(formModel)
+        ElMessage.success("注册成功")
+        router.push("/member/login")
     })
 }
 </script>

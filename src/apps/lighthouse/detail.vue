@@ -161,7 +161,7 @@ const outtrafficChartConfig = {
         axisPointer: {
             type: 'shadow'
         },
-        formatter: '时间：{b0}<br />流量：{c0} M/s'
+        formatter: '时间：{b0}<br />流量：{c0} MB/s'
     },
     grid: {
         left: 80,
@@ -189,7 +189,7 @@ const outtrafficChartConfig = {
     },
     yAxis: {
         axisLabel: {
-            formatter: '{value} M/s'
+            formatter: '{value} MB/s'
         },
         splitArea: {
             show: false
@@ -206,7 +206,7 @@ const outtrafficChartConfig = {
     ]
 }
 
-const getInstance = async () => {
+async function getInstance() {
     const data = await Api.lighthouse.describeInstances(region, {
         InstanceIds: [instanceId],
     })
@@ -217,7 +217,7 @@ const getInstance = async () => {
     getLighthouseOuttraffic()
 }
 
-const openVnc = async () => {
+async function  openVnc() {
     const data = await Api.lighthouse.describeInstanceVncUrl(region, {
         InstanceId: instanceId,
     })
@@ -231,28 +231,28 @@ const openVnc = async () => {
     )
 }
 
-const getSnapshots = async () => {
+async function  getSnapshots() {
     const data = await Api.lighthouse.describeSnapshots(region, {
         Filters: [{ Name: "instance-id", Values: [instanceId] }],
     })
     snapshots.value = data
 }
 
-const getFirewallRules = async () => {
+async function  getFirewallRules() {
     const data = await Api.lighthouse.describeFirewallRules(region, {
         InstanceId: instanceId,
     })
     firewallRules.value = data
 }
 
-const getTrafficPackage = async () => {
+async function  getTrafficPackage() {
     const data = await Api.lighthouse.describeInstancesTrafficPackages(region, {
         InstanceIds: [instanceId],
     })
     trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
 }
 
-const getLighthouseOuttraffic = async () => {
+async function  getLighthouseOuttraffic() {
     const data = await Api.monitor.getMonitorData(region, {
         Namespace: "QCE/LIGHTHOUSE",
         MetricName: "LighthouseOuttraffic",
