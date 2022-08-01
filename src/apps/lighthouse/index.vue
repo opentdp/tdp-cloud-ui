@@ -8,7 +8,7 @@
                 轻量服务器
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <template v-for="region in regions" :key="region.Region">
+        <template v-for="region in regionsInstances" :key="region.Region">
             <el-card v-if="region.InstanceCount > 0" shadow="hover" class="mgb10">
                 <template #header>
                     <div class="card-header">
@@ -72,12 +72,12 @@ import { reactive } from "vue"
 import Api, { Lighthouse } from "@/api"
 import { bytesToSize, dateFormat } from "@/helper/utils"
 
-const regions = reactive<
+const regionsInstances = reactive<
     Record<
         string,
         Lighthouse.RegionInfo & {
-            InstanceCount: number
             InstanceSet: Lighthouse.DescribeInstancesResponse["InstanceSet"]
+            InstanceCount: number
         }
     >
 >({})
@@ -87,7 +87,7 @@ const trafficPackages = reactive<Record<string, Lighthouse.TrafficPackage>>({})
 async function getRegions() {
     const data = await Api.lighthouse.describeRegions()
     data.RegionSet.forEach(async (item) => {
-        regions[item.Region] = { ...item, InstanceCount: 0, InstanceSet: [] }
+        regionsInstances[item.Region] = { ...item, InstanceCount: 0, InstanceSet: [] }
         getInstances(item.Region)
     })
 }
@@ -95,8 +95,8 @@ async function getRegions() {
 async function getInstances(region: string) {
     const data = await Api.lighthouse.describeInstances(region)
     if (data.TotalCount > 0) {
-        regions[region].InstanceCount = data.TotalCount
-        regions[region].InstanceSet.push(...data.InstanceSet)
+        regionsInstances[region].InstanceCount = data.TotalCount
+        regionsInstances[region].InstanceSet.push(...data.InstanceSet)
         getTrafficPackages(region)
     }
     return data.TotalCount
@@ -124,10 +124,10 @@ function showRegion(zone: string) {
     const r = zone.split("-")
     const n = r.pop()
     zone = r.join("-")
-    if (!regions[zone]) {
+    if (!regionsInstances[zone]) {
         return ""
     }
-    return regions[zone].RegionName + ` ${n} 区`
+    return regionsInstances[zone].RegionName + ` ${n} 区`
 }
 
 getRegions()
