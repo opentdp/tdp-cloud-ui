@@ -75,7 +75,7 @@ import Api from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
-import type { SecretItem } from "@/api/local/user"
+import type { SecretItem } from "@/api/local/secret"
 
 const router = useRouter()
 const layout = layoutStore()

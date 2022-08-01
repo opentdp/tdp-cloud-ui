@@ -89,6 +89,9 @@ export class HttpClient {
         if (data.Error) {
             const err = data.Error.Message || data.Error || "UKN"
             ElMessage.error(Message[err] || err)
+            if (/会话已失效|登录后重试/.test(err)) {
+                session.$reset(), location.reload()
+            }
             throw new Error(err)
         }
         // 处理正确结果
