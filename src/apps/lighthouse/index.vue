@@ -106,7 +106,7 @@ async function getTrafficPackages(zone: string) {
     const data = await Api.lighthouse.describeInstancesTrafficPackages(zone)
     if (data.TotalCount > 0) {
         data.InstanceTrafficPackageSet.forEach((item) => {
-            trafficPackages[item.InstanceId] = item.TrafficPackageSet.pop()
+            trafficPackages[item.InstanceId] = item.TrafficPackageSet[0]
         })
     }
 }
