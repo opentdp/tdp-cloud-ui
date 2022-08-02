@@ -12,46 +12,45 @@ export class Cached {
     }
 
     // 获取数据
-    public get(key: any) {
+    public get(key: unknown) {
         const skey = this.hashkey(key)
-        let data: any = this.driver.getItem(skey)
-        if (!data || !/^\{.+\}$/.test(data)) {
-            return data
+        const svalue = this.driver.getItem(skey)
+        if (!svalue || !/^\{.+\}$/.test(svalue)) {
+            return svalue
         }
         // 尝试反序列化
         try {
-            data = JSON.parse(data)
+            const data = JSON.parse(svalue)
+            if (0 < data.expiry && data.expiry < Date.now()) {
+                this.driver.removeItem(skey)
+                return null
+            }
+            return data.value
         } catch (e) {
             return null
         }
-        // 验证数据有效期
-        if (0 < data.expiry && data.expiry < Date.now()) {
-            this.driver.removeItem(skey)
-            return null
-        }
-        return data.value
     }
 
     // 存储数据
-    public set(key: any, value: any, expiry = 0) {
+    public set(key: unknown, value: unknown, expiry = 0) {
         if (value === null) {
             return this.remove(key)
         }
         // 数据序列化
         expiry > 0 && (expiry = Date.now() + expiry * 1000)
-        value = JSON.stringify({ key, value, expiry })
+        const svalue = JSON.stringify({ key, value, expiry })
         // 存储到后端
         const skey = this.hashkey(key)
         try {
-            this.driver.setItem(skey, value)
+            this.driver.setItem(skey, svalue)
         } catch (e) {
             this.clear() // 防止容量超限
-            this.driver.setItem(skey, value)
+            this.driver.setItem(skey, svalue)
         }
     }
 
     // 删除缓存
-    public remove(key: any) {
+    public remove(key: unknown) {
         const skey = this.hashkey(key)
         this.driver.removeItem(skey)
     }
@@ -71,16 +70,16 @@ export class Cached {
     }
 
     // 转换键名
-    private hashkey(key: any): string {
+    private hashkey(key: unknown): string {
         // 字符串作为key
         if (typeof key !== 'object') {
             return this.prefix + key
         }
         // 将对象作为key
         let hash = 0
-        key = JSON.stringify(key) || 'null'
-        for (let i = 0, l = key.length; i < l; i++) {
-            hash = ((hash << 5) - hash) + key.charCodeAt(i)
+        const tmp = JSON.stringify(key) || 'null'
+        for (let i = 0, l = tmp.length; i < l; i++) {
+            hash = ((hash << 5) - hash) + tmp.charCodeAt(i)
             hash |= 0
         }
         return this.prefix + 'hash-' + (hash >>> 0)

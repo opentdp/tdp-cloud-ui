@@ -5,11 +5,11 @@ export class TATClient extends HttpClient {
         return this.get("/tat")
     }
 
-    public updateTAT(src: { id: number, name: string, description: string, content: string }): Promise<any> {
+    public updateTAT(src: { id: number, name: string, description: string, content: string }) {
         return this.patch("/tat/" + src.id, src)
     }
 
-    public newTAT(src: { name: string, description: string, content: string }): Promise<any> {
+    public newTAT(src: { name: string, description: string, content: string }) {
         return this.post("/tat/", src)
     }
 

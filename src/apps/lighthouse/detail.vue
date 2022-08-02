@@ -125,7 +125,7 @@
 import { ref } from "vue"
 import { useRoute } from "vue-router"
 
-import { ElMessageBox } from 'element-plus'
+import { EChartsOption } from "echarts"
 
 import Api, { Lighthouse } from "@/api"
 import { bytesToSize, dateFormat } from "@/helper/utils"
@@ -142,68 +142,69 @@ const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
 
 const trafficPackage = ref<Lighthouse.TrafficPackage>()
 
-const outtrafficChart = ref<typeof outtrafficChartConfig>()
+const outtrafficChart = ref<EChartsOption>()
 
-const outtrafficChartConfig = {
-    backgroundColor: '#fcfcfc',
-    toolbox: {
-        feature: {
-            dataZoom: {
-                yAxisIndex: false
-            },
-            saveAsImage: {
-                pixelRatio: 2
+function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {
+    return {
+        backgroundColor: '#fcfcfc',
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: false
+                },
+                saveAsImage: {
+                    pixelRatio: 2
+                }
             }
-        }
-    },
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'shadow'
         },
-        formatter: '时间：{b0}<br />流量：{c0} MB/s'
-    },
-    grid: {
-        left: 80,
-        right: 80,
-        bottom: 90
-    },
-    dataZoom: [
-        {
-            type: 'inside',
-            start: 80
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: '时间：{b0}<br />流量：{c0} MB/s'
         },
-        {
-            type: 'slider'
-        }
-    ],
-    xAxis: {
-        data: [],
-        silent: false,
-        splitLine: {
-            show: false
+        grid: {
+            left: 80,
+            right: 80,
+            bottom: 90
         },
-        splitArea: {
-            show: false
-        }
-    },
-    yAxis: {
-        axisLabel: {
-            formatter: '{value} MB/s'
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 80
+            },
+            {
+                type: 'slider'
+            }
+        ],
+        xAxis: {
+            silent: false,
+            splitLine: {
+                show: false
+            },
+            splitArea: {
+                show: false
+            },
+            data: xdata
         },
-        splitArea: {
-            show: false
-        }
-    },
-    series: [
-        {
-            type: 'line',
-            areaStyle: {},
-            name: '流量',
-            large: true,
-            data: []
-        }
-    ]
+        yAxis: {
+            axisLabel: {
+                formatter: '{value} MB/s'
+            },
+            splitArea: {
+                show: false
+            }
+        },
+        series: [
+            {
+                type: 'line',
+                areaStyle: {},
+                name: '流量',
+                data: sdata
+            }
+        ]
+    }
 }
 
 async function getInstance() {
@@ -217,42 +218,28 @@ async function getInstance() {
     getLighthouseOuttraffic()
 }
 
-async function  openVnc() {
-    const data = await Api.lighthouse.describeInstanceVncUrl(region, {
-        InstanceId: instanceId,
-    })
-    const url = 'https://img.qcloud.com/qcloud/app/active_vnc/index.html?InstanceVncUrl=' + data.InstanceVncUrl
-    ElMessageBox.alert(
-        `<iframe src="${url}" style="width:300px; height:300px"></iframe>`,
-        'VNC 终端',
-        {
-            dangerouslyUseHTMLString: true,
-        }
-    )
-}
-
-async function  getSnapshots() {
+async function getSnapshots() {
     const data = await Api.lighthouse.describeSnapshots(region, {
         Filters: [{ Name: "instance-id", Values: [instanceId] }],
     })
     snapshots.value = data
 }
 
-async function  getFirewallRules() {
+async function getFirewallRules() {
     const data = await Api.lighthouse.describeFirewallRules(region, {
         InstanceId: instanceId,
     })
     firewallRules.value = data
 }
 
-async function  getTrafficPackage() {
+async function getTrafficPackage() {
     const data = await Api.lighthouse.describeInstancesTrafficPackages(region, {
         InstanceIds: [instanceId],
     })
     trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
 }
 
-async function  getLighthouseOuttraffic() {
+async function getLighthouseOuttraffic() {
     const data = await Api.monitor.getMonitorData(region, {
         Namespace: "QCE/LIGHTHOUSE",
         MetricName: "LighthouseOuttraffic",
@@ -270,11 +257,10 @@ async function  getLighthouseOuttraffic() {
         StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
         EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
     })
-    outtrafficChartConfig.xAxis.data = data.DataPoints[0].Timestamps.map(t => {
+    const xdata = data.DataPoints[0].Timestamps.map(t => {
         return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
     })
-    outtrafficChartConfig.series[0].data = data.DataPoints[0].Values
-    outtrafficChart.value = outtrafficChartConfig
+    outtrafficChart.value = getOuttrafficChartConfig(xdata, data.DataPoints[0].Values)
 }
 
 getInstance()
