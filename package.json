@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "dev": "vite --open --mode development",
+        "dev": "vite --mode development",
         "build": "vite build --mode release",
         "preview": "vite preview",
         "lint": "eslint src/**/*.{js,ts,vue}",
