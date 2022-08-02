@@ -68,6 +68,7 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "轻量服务器 VNC",
                     login: true,
+                    cloud: true,
                 },
                 component: () => import("@/apps/lighthouse/vnc.vue"),
             },
@@ -77,6 +78,7 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "SSH 终端",
                     login: true,
+                    cloud: true,
                 },
                 component: () => import("@/apps/terminal/ssh.vue"),
             },
@@ -86,6 +88,7 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "TAT",
                     login: true,
+                    cloud: true,
                 },
                 component: () => import("@/apps/tat/index.vue"),
             },
