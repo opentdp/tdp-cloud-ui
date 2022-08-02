@@ -84,7 +84,7 @@ export const routes: RouteRecordRaw[] = [
             },
             {
                 path: "/tat/index",
-                name: "txt-index",
+                name: "tat-index",
                 meta: {
                     title: "TAT",
                     login: true,
