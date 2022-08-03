@@ -14,8 +14,8 @@
         <el-card v-if="instance" shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>实例信息</b> &nbsp;
-                    <small>{{ InstanceStateMap[instance.InstanceState] }}</small>
+                    <b>实例信息</b> &nbsp; &nbsp;
+                    <small style="color: #a0cfff;">{{ InstanceStateMap[instance.InstanceState] }}</small>
                     <div style="flex:auto" />
                     <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
                         :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
