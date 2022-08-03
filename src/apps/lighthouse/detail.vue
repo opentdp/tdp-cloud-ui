@@ -17,22 +17,25 @@
                     <b>实例信息</b> &nbsp;
                     <small>{{ InstanceStateMap[instance.InstanceState] }}</small>
                     <div style="flex:auto" />
-                    <el-button type="primary" plain size="small" @click="startInstance"
-                        :disabled="instance.InstanceState != 'STOPPED'">
+                    <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
+                        @click="startInstance">
                         开机
                     </el-button>
-                    <el-button type="primary" plain size="small" @click="stopInstance"
-                        :disabled="instance.InstanceState != 'RUNNING'">
+                    <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
+                        @click="stopInstance">
                         关机
                     </el-button>
-                    <el-button type="primary" plain size="small" @click="rebootInstance"
-                        :disabled="instance.InstanceState != 'RUNNING'">
+                    <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
+                        @click="rebootInstance">
                         重启
                     </el-button>
-                    <el-button type="primary" plain size="small">
+                    <el-button v-if="instance.InstanceState == 'RUNNING'" type="primary" plain size="small">
                         <router-link :to="'/lighthouse/vnc/' + zone + '/' + instanceId">
                             VNC 终端
                         </router-link>
+                    </el-button>
+                    <el-button v-else type="primary" plain size="small" disabled>
+                        VNC 终端
                     </el-button>
                 </div>
             </template>
