@@ -10,7 +10,7 @@
         </el-breadcrumb>
         <el-card v-if="domainDescribe && domainDescribe.DomainCountInfo" shadow="hover">
             <template #header>
-                <div class="card-header">
+                <div class="flex-between">
                     <b>域名列表</b> &nbsp;
                     <small>域名总数: {{ domainDescribe.DomainCountInfo.AllTotal }}</small>
                 </div>
@@ -33,11 +33,11 @@
                 <el-table-column prop="VipEndAt" label="套餐有效期" min-width="180" />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
-                        <router-link :to="'/dnspod/detail/' + scope.row.Name">
-                            <el-button link type="primary" icon="View">
-                                查看
-                            </el-button>
-                        </router-link>
+                        <el-button link type="primary" icon="View">
+                            <router-link :to="'/dnspod/detail/' + scope.row.Name">
+                                管理
+                            </router-link>
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -61,11 +61,3 @@ async function getDomainList() {
 
 getDomainList()
 </script>
-
-<style lang="scss" scoped>
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-</style>

@@ -39,9 +39,11 @@
                     </el-button>
                 </div>
                 <div class="register-btn">
-                    <router-link to="/member/login">
-                        <el-button>登录</el-button>
-                    </router-link>
+                    <el-button>
+                        <router-link to="/member/login">
+                            登录
+                        </router-link>
+                    </el-button>
                 </div>
             </el-form>
         </div>

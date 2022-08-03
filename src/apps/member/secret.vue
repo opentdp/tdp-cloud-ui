@@ -10,7 +10,7 @@
         </el-breadcrumb>
         <el-card shadow="hover" class="mgb10">
             <template #header>
-                <div class="card-header">
+                <div class="flex-between">
                     <b>密钥列表</b>
                 </div>
             </template>
@@ -30,7 +30,7 @@
         </el-card>
         <el-card shadow="hover">
             <template #header>
-                <div class="card-header">
+                <div class="flex-between">
                     <b>添加密钥</b>
                     <el-button class="button" text icon="Position">
                         <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云密钥" target="_blank">
@@ -118,11 +118,3 @@ async function deleteSecret(idx: number) {
 
 fetchSecrets()
 </script>
-
-<style lang="scss" scoped>
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-</style>

@@ -7,8 +7,9 @@ export class MonitorClient extends HttpClient {
 
     public getMonitorData(
         region: string,
-        query: Monitor.GetMonitorDataRequest
+        query: Monitor.GetMonitorDataRequest,
+        expiry = 600
     ): Promise<Monitor.GetMonitorDataResponse> {
-        return this.post("/GetMonitorData/" + region, query, 600)
+        return this.post("/GetMonitorData/" + region, query, expiry)
     }
 }

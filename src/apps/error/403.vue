@@ -7,11 +7,11 @@
             啊哦~ 你没有权限访问该页面哦
         </div>
         <div class="error-handle">
-            <router-link to="/">
-                <el-button type="primary" size="large">
+            <el-button type="primary" size="large">
+                <router-link to="/">
                     返回首页
-                </el-button>
-            </router-link>
+                </router-link>
+            </el-button>
             <el-button class="error-btn" type="primary" size="large" @click="goBack">
                 返回上一页
             </el-button>

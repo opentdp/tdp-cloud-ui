@@ -33,7 +33,7 @@
         </el-tabs>
         <el-card v-if="curTab.id !== 'new'" shadow="hover">
             <template #header>
-                <div class="card-header">
+                <div class="flex-between">
                     <b>快捷命令</b>
                 </div>
             </template>

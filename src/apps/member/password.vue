@@ -12,7 +12,7 @@
             <el-col :span="12">
                 <el-card shadow="hover">
                     <template #header>
-                        <div class="card-header">
+                        <div class="flex-between">
                             <span>基础信息</span>
                         </div>
                     </template>
@@ -32,7 +32,7 @@
             <el-col :span="12">
                 <el-card shadow="hover">
                     <template #header>
-                        <div class="card-header">
+                        <div class="flex-between">
                             <span>修改密码</span>
                         </div>
                     </template>

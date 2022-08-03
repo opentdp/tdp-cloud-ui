@@ -13,7 +13,7 @@
         </el-breadcrumb>
         <el-card v-if="record" shadow="hover" class="mgb10">
             <template #header>
-                <div class="card-header">
+                <div class="flex-between">
                     <b>解析列表 - {{ domain }}</b> &nbsp;
                     <small>记录总数: {{ record.RecordCountInfo.TotalCount }}</small>
                 </div>
@@ -61,11 +61,3 @@ async function getRecordList() {
 
 getRecordList()
 </script>
-
-<style lang="scss" scoped>
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-</style>

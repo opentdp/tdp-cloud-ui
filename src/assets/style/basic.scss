@@ -41,8 +41,18 @@ strong {
     font-weight: bolder;
 }
 
-////////////////////// 常用类
+////////////////////// 通用类
 
 .mgb10 {
     margin-bottom: 10px;
+}
+
+.flex-auto {
+    flex: auto
+}
+
+.flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }

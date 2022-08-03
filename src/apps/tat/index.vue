@@ -10,19 +10,16 @@
         </el-breadcrumb>
         <el-card shadow="hover" class="mgb10">
             <template #header>
-                <div class="card-header">
-                    <div class="left">
-                        <b>命令列表</b> &nbsp;
-                        <small>命令总数: {{ tatList.length }}</small>
-                    </div>
-                    <div id="right">
-                        <el-button type="primary" plain size="small" icon="Plus" @click="onNew">
-                            添加
-                        </el-button>
-                        <el-button type="primary" plain size="small" icon="Download" @click="onImport">
-                            导入
-                        </el-button>
-                    </div>
+                <div class="flex-between">
+                    <b>命令列表</b> &nbsp;
+                    <small>命令总数: {{ tatList.length }}</small>
+                    <div class="flex-auto" />
+                    <el-button type="primary" plain size="small" icon="Plus" @click="onNew">
+                        添加
+                    </el-button>
+                    <el-button type="primary" plain size="small" icon="Download" @click="onImport">
+                        导入
+                    </el-button>
                 </div>
             </template>
             <el-table v-loading="loading" :data="tatList">
@@ -51,21 +48,18 @@
 
         <el-card shadow="hover">
             <template #header>
-                <div class="card-header">
-                    <div class="left">
-                        <b>历史记录</b> &nbsp;
-                        <el-select v-model="currentRegion" class="region-select" placeholder="选择区域" size="small"
-                            @change="onRegionChange">
-                            <el-option v-for="item in regionList" :key="item.value" :label="item.label"
-                                :value="item.value" />
-                        </el-select>
-                        <small>记录总数: {{ HistoryList.length }}</small>
-                    </div>
-                    <div id="right">
-                        <el-button type="primary" plain size="small" icon="Refresh" @click="fetchHistory">
-                            刷新
-                        </el-button>
-                    </div>
+                <div class="flex-between">
+                    <b>历史记录</b> &nbsp;
+                    <el-select v-model="currentRegion" class="region-select" placeholder="选择区域" size="small"
+                        @change="onRegionChange">
+                        <el-option v-for="item in regionList" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
+                    <small>记录总数: {{ HistoryList.length }}</small>
+                    <div class="flex-auto" />
+                    <el-button type="primary" plain size="small" icon="Refresh" @click="fetchHistory">
+                        刷新
+                    </el-button>
                 </div>
             </template>
             <el-table v-loading="historyLoading" :data="HistoryList">
@@ -422,11 +416,6 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
-.card-header {
-    display: flex;
-    justify-content: space-between;
-}
-
 .region-select {
     margin-right: 10px;
 }

@@ -11,7 +11,7 @@
         <template v-for="region in regionsInstances" :key="region.Region">
             <el-card v-if="region.InstanceCount > 0" shadow="hover" class="mgb10">
                 <template #header>
-                    <div class="card-header">
+                    <div class="flex-between">
                         <b>{{ region.RegionName }}</b> &nbsp;
                         <small>实例总数: {{ region.InstanceCount }}</small>
                     </div>
@@ -48,16 +48,16 @@
                     </el-table-column>
                     <el-table-column fixed="right" label="操作" width="180" align="center">
                         <template #default="scope">
-                            <router-link :to="'/lighthouse/detail/' + scope.row.Zone + '/' + scope.row.InstanceId">
-                                <el-button link type="primary" icon="View">
-                                    查看
-                                </el-button>
-                            </router-link>
-                            <router-link :to="'/lighthouse/vnc/' + scope.row.Zone + '/' + scope.row.InstanceId">
-                                <el-button link type="primary" icon="Connection">
-                                    登录
-                                </el-button>
-                            </router-link>
+                            <el-button link type="primary" icon="View">
+                                <router-link :to="'/lighthouse/detail/' + scope.row.Zone + '/' + scope.row.InstanceId">
+                                    管理
+                                </router-link>
+                            </el-button>
+                            <el-button link type="primary" icon="Connection">
+                                <router-link :to="'/lighthouse/vnc/' + scope.row.Zone + '/' + scope.row.InstanceId">
+                                    VNC
+                                </router-link>
+                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -132,11 +132,3 @@ function showRegion(zone: string) {
 
 getRegions()
 </script>
-
-<style lang="scss" scoped>
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-</style>
