@@ -286,6 +286,7 @@ async function stopInstance() {
     const data = await Api.lighthouse.stopInstances(region, {
         InstanceIds: [instanceId],
     })
+    refreshInstance()
 }
 
 async function startInstance() {
@@ -293,6 +294,7 @@ async function startInstance() {
     const data = await Api.lighthouse.startInstances(region, {
         InstanceIds: [instanceId],
     })
+    refreshInstance()
 }
 
 async function rebootInstance() {
@@ -300,6 +302,18 @@ async function rebootInstance() {
     const data = await Api.lighthouse.rebootInstances(region, {
         InstanceIds: [instanceId],
     })
+    refreshInstance()
+}
+
+async function refreshInstance() {
+    const data = await Api.lighthouse.describeInstances(region, {
+        InstanceIds: [instanceId],
+    }, 0)
+    instance.value = data.InstanceSet[0]
+    // 持续刷新状态
+    if (instance.value.InstanceState.match(/ING$/)) {
+        setTimeout(refreshInstance, 1500)
+    }
 }
 
 //////
