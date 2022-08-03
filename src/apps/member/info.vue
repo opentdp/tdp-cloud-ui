@@ -59,7 +59,7 @@
 import { ref, reactive } from "vue"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
-import Api from "@/api"
+import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
 const session = sessionStore()

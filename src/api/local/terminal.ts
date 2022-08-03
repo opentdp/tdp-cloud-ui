@@ -1,6 +1,6 @@
 import { HttpClient } from "../basic/http"
 
-export class TerminalClient extends HttpClient {
+export class TerminalModel extends HttpClient {
     public getWebsshWsurl(query: SSHRequest) {
         if (this.session.token) {
             const token = this.session.token

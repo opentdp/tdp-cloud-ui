@@ -48,7 +48,7 @@
 import { ref, reactive } from "vue"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import Api from "@/api"
+import { Api } from "@/api"
 import { TATItem } from '@/api/local/tat'
 
 import { WebSSH } from "@/helper/webssh"

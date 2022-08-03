@@ -1,10 +1,6 @@
 import { HttpClient } from "../basic/http"
 
-export class UserClient extends HttpClient {
-    public clear() {
-        this.cached.clear(true)
-    }
-
+export class UserModel extends HttpClient {
     public login(data: LoginRequest): Promise<LoginResponse> {
         return this.post("/user/login", data)
     }

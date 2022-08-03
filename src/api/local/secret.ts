@@ -1,10 +1,6 @@
 import { HttpClient } from "../basic/http"
 
-export class SecretClient extends HttpClient {
-    public clear() {
-        this.cached.clear(true)
-    }
-
+export class SecretModel extends HttpClient {
     public create(data: SecretRequest): Promise<SecretResponse> {
         return this.post("/secret", data)
     }

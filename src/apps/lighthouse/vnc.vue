@@ -32,7 +32,7 @@
 import { onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 
-import Api from "@/api"
+import { Api, QApi } from "@/api"
 import { TATItem } from '@/api/local/tat'
 
 const route = useRoute()
@@ -43,7 +43,7 @@ const region = zone.replace(/-\d$/, "")
 const instanceId = route.params.instanceId as string
 
 async function vncInit() {
-    const data = await Api.lighthouse.describeInstanceVncUrl(region, {
+    const data = await QApi.lighthouse.describeInstanceVncUrl(region, {
         InstanceId: instanceId,
     })
     if (frame.value) {

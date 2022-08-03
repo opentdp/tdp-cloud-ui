@@ -46,7 +46,7 @@ import { ref, reactive } from "vue"
 import { useRouter } from "vue-router"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import Api from "@/api"
+import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
 const router = useRouter()

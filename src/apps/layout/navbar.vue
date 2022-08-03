@@ -13,7 +13,7 @@
             <div class="header-user-con">
                 <!-- 密钥管理 -->
                 <el-icon v-if="session.secretList.length > 0" :size="30">
-                    <Key />
+                    <Wallet />
                 </el-icon>
                 <el-dropdown v-if="session.secretList.length > 0" class="user-name" trigger="click"
                     @command="secretDropdown">
@@ -72,7 +72,7 @@
 import { onMounted } from "vue"
 import { useRouter } from "vue-router"
 
-import Api from "@/api"
+import { Api } from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
@@ -104,7 +104,7 @@ function secretDropdown(data: SecretItem) {
 function userDropdown(data: string) {
     switch (data) {
         case "delcache":
-            Api.user.clear()
+            Api.cache.clear()
             location.reload()
             break
         case "loginout":

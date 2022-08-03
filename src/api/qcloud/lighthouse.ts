@@ -2,22 +2,19 @@ import { HttpClient } from "../basic/http"
 
 import { Lighthouse } from "./typings"
 
-export class LighthouseClient extends HttpClient {
+export class LighthouseModel extends HttpClient {
     protected api = "/api/qcloud/lighthouse/2020-03-24"
 
-    public describeRegions(
-        expiry = 600
-    ): Promise<Lighthouse.DescribeRegionsResponse> {
-        return this.post("/DescribeRegions", {}, expiry)
+    public describeRegions(): Promise<Lighthouse.DescribeRegionsResponse> {
+        return this.post("/DescribeRegions", {}, 600)
     }
 
     public describeInstances(
         region: string,
-        query?: Lighthouse.DescribeInstancesRequest,
-        expiry = 600
+        query?: Lighthouse.DescribeInstancesRequest
     ): Promise<Lighthouse.DescribeInstancesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeInstances/" + region, query, expiry)
+        return this.post("/DescribeInstances/" + region, query, 600)
     }
 
     public modifyInstancesAttribute(
@@ -63,11 +60,17 @@ export class LighthouseClient extends HttpClient {
 
     public describeSnapshots(
         region: string,
-        query: Lighthouse.DescribeSnapshotsRequest,
-        expiry = 600
+        query: Lighthouse.DescribeSnapshotsRequest
     ): Promise<Lighthouse.DescribeSnapshotsResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeSnapshots/" + region, query, expiry)
+        return this.post("/DescribeSnapshots/" + region, query, 600)
+    }
+
+    public createInstanceSnapshot(
+        region: string,
+        query: Lighthouse.CreateInstanceSnapshotRequest
+    ): Promise<Lighthouse.CreateInstanceSnapshotResponse> {
+        return this.post("/CreateInstanceSnapshot/" + region, query)
     }
 
     public applyInstanceSnapshot(
@@ -95,11 +98,10 @@ export class LighthouseClient extends HttpClient {
 
     public describeFirewallRules(
         region: string,
-        query: Lighthouse.DescribeFirewallRulesRequest,
-        expiry = 600
+        query: Lighthouse.DescribeFirewallRulesRequest
     ): Promise<Lighthouse.DescribeFirewallRulesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeFirewallRules/" + region, query, expiry)
+        return this.post("/DescribeFirewallRules/" + region, query, 600)
     }
 
     public createFirewallRules(
@@ -134,11 +136,10 @@ export class LighthouseClient extends HttpClient {
 
     public describeInstancesTrafficPackages(
         region: string,
-        query?: Lighthouse.DescribeInstancesTrafficPackagesRequest,
-        expiry = 600
+        query?: Lighthouse.DescribeInstancesTrafficPackagesRequest
     ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeInstancesTrafficPackages/" + region, query, expiry)
+        return this.post("/DescribeInstancesTrafficPackages/" + region, query, 600)
     }
 }
 

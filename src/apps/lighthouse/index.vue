@@ -69,7 +69,7 @@
 <script lang="ts" setup>
 import { reactive } from "vue"
 
-import Api, { Lighthouse } from "@/api"
+import { QApi, Lighthouse } from "@/api"
 import { bytesToSize, dateFormat } from "@/helper/utils"
 
 const regionsInstances = reactive<
@@ -85,7 +85,7 @@ const regionsInstances = reactive<
 const trafficPackages = reactive<Record<string, Lighthouse.TrafficPackage>>({})
 
 async function getRegions() {
-    const data = await Api.lighthouse.describeRegions()
+    const data = await QApi.lighthouse.describeRegions()
     data.RegionSet.forEach(async (item) => {
         regionsInstances[item.Region] = { ...item, InstanceCount: 0, InstanceSet: [] }
         getInstances(item.Region)
@@ -93,7 +93,7 @@ async function getRegions() {
 }
 
 async function getInstances(region: string) {
-    const data = await Api.lighthouse.describeInstances(region)
+    const data = await QApi.lighthouse.describeInstances(region)
     if (data.TotalCount > 0) {
         regionsInstances[region].InstanceCount = data.TotalCount
         regionsInstances[region].InstanceSet.push(...data.InstanceSet)
@@ -103,7 +103,7 @@ async function getInstances(region: string) {
 }
 
 async function getTrafficPackages(zone: string) {
-    const data = await Api.lighthouse.describeInstancesTrafficPackages(zone)
+    const data = await QApi.lighthouse.describeInstancesTrafficPackages(zone)
     if (data.TotalCount > 0) {
         data.InstanceTrafficPackageSet.forEach((item) => {
             trafficPackages[item.InstanceId] = item.TrafficPackageSet[0]

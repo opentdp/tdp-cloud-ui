@@ -78,7 +78,7 @@ const items: MenuItem[] = [
         title: "系统首页",
     },
     {
-        icon: "WindPower",
+        icon: "Lightning",
         index: "/dnspod/index",
         title: "域名解析",
     },
@@ -88,17 +88,17 @@ const items: MenuItem[] = [
         title: "轻量服务器",
     },
     {
-        icon: "Wallet",
+        icon: "Connection",
         index: "/terminal/ssh",
         title: "SSH 终端",
     },
     {
-        icon: "ToiletPaper",
+        icon: "Dish",
         index: "/tat/index",
         title: "TAT",
     },
     {
-        icon: "Key",
+        icon: "Wallet",
         index: "/member/secret",
         title: "密钥管理",
     },

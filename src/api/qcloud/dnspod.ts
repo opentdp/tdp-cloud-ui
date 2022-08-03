@@ -2,40 +2,35 @@ import { HttpClient } from "../basic/http"
 
 import { Dnspod } from "./typings"
 
-export class DnspodClient extends HttpClient {
+export class DnspodModel extends HttpClient {
     protected api = "/api/qcloud/dnspod/2021-03-23"
 
     public describeDomainList(
-        query?: Dnspod.DescribeDomainListRequest,
-        expiry = 600
+        query?: Dnspod.DescribeDomainListRequest
     ): Promise<Dnspod.DescribeDomainListResponse> {
-        return this.post("/DescribeDomainList", query, expiry)
+        return this.post("/DescribeDomainList", query, 600)
     }
     public describeRecordList(
-        query?: Dnspod.DescribeRecordListRequest,
-        expiry = 600
+        query?: Dnspod.DescribeRecordListRequest
     ): Promise<Dnspod.DescribeRecordListResponse> {
-        return this.post("/DescribeRecordList", query, expiry)
+        return this.post("/DescribeRecordList", query, 600)
     }
 
     public describeRecordLineList(
-        query?: Dnspod.DescribeRecordLineListRequest,
-        expiry = 600
+        query?: Dnspod.DescribeRecordLineListRequest
     ): Promise<Dnspod.DescribeRecordLineListResponse> {
-        return this.post("/DescribeRecordLineList", query, expiry)
+        return this.post("/DescribeRecordLineList", query, 600)
     }
     public describeRecordType(
-        query?: Dnspod.DescribeRecordTypeRequest,
-        expiry = 600
+        query?: Dnspod.DescribeRecordTypeRequest
     ): Promise<Dnspod.DescribeRecordTypeResponse> {
-        return this.post("/DescribeRecordType", query, expiry)
+        return this.post("/DescribeRecordType", query, 600)
     }
 
     public modifyRecord(
-        query?: Dnspod.ModifyRecordRequest,
-        expiry = 600
+        query?: Dnspod.ModifyRecordRequest
     ): Promise<Dnspod.ModifyRecordResponse> {
-        return this.post("/ModifyRecord", query, expiry)
+        return this.post("/ModifyRecord", query)
     }
 }
 

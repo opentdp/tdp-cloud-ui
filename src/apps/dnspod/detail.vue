@@ -44,7 +44,7 @@
 import { ref } from "vue"
 import { useRoute } from "vue-router"
 
-import Api, { Dnspod } from "@/api"
+import { QApi, Dnspod } from "@/api"
 
 const route = useRoute()
 
@@ -53,7 +53,7 @@ const domain = route.params.domain as string
 const record = ref<Dnspod.DescribeRecordListResponse>()
 
 async function getRecordList() {
-    const data = await Api.dnspod.describeRecordList({
+    const data = await QApi.dnspod.describeRecordList({
         Domain: domain
     })
     record.value = data

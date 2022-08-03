@@ -184,7 +184,7 @@
 </template>
 
 <script lang="ts" setup>
-import { default as Api, Lighthouse, TAT } from "@/api"
+import { Api, QApi, Lighthouse, TAT } from "@/api"
 import { TATItem } from '@/api/local/tat'
 import { ElMessage, ElTable } from "element-plus"
 import { Base64 } from 'js-base64'
@@ -206,9 +206,9 @@ async function fetchTATList() {
 }
 
 async function fetchLH() {
-    const data = await Api.lighthouse.describeRegions()
+    const data = await QApi.lighthouse.describeRegions()
     await Promise.all(data.RegionSet.map(async item => {
-        const data = await Api.lighthouse.describeInstances(item.Region)
+        const data = await QApi.lighthouse.describeInstances(item.Region)
         if (data.TotalCount > 0) {
             regionList.value.push({ value: item.Region, label: item.RegionName })
             if (currentRegion.value === '') {
@@ -227,7 +227,7 @@ async function fetchHistory() {
         return
     }
     historyLoading.value = true
-    const data = await Api.tatCloud.describeInvocations(currentRegion.value, { Filters: [{ Name: "instance-kind", Values: ["LIGHTHOUSE"] }] })
+    const data = await QApi.tat.describeInvocations(currentRegion.value, { Filters: [{ Name: "instance-kind", Values: ["LIGHTHOUSE"] }] })
     HistoryList.value = data.InvocationSet
     HistoryList.value.forEach(item => {
         item.CommandContent = Base64.fromBase64(item.CommandContent)
@@ -326,7 +326,7 @@ async function onDoRun() {
             })
             regions.forEach(async (region) => {
                 const instanceIds = runForm.value.InstanceIds.filter(id => instanceRegionMap.get(id) == region)
-                await Api.tatCloud.runCommand(region, {
+                await QApi.tat.runCommand(region, {
                     Content: Base64.encode(runForm.value.content),
                     Description: runForm.value.description,
                     CommandName: runForm.value.name,
@@ -347,7 +347,7 @@ async function onDoRun() {
 const historyDetailVisiable = ref(false)
 const historyDetail = ref<TAT.InvocationTask>()
 async function onHistoryDetail(src: TAT.Invocation) {
-    const data = await Api.tatCloud.describeInvocationTasks(currentRegion.value,
+    const data = await QApi.tat.describeInvocationTasks(currentRegion.value,
         {
             Filters: [{ Name: "invocation-id", Values: [src.InvocationId] }],
             HideOutput: false
@@ -367,7 +367,7 @@ async function fetchCommandList() {
     importLoading.value = true
     commandList.value = []
     await Promise.all(regionList.value.map(async item => {
-        const data = await Api.tatCloud.describeCommands(item.value, { Filters: [{ Name: "created-by", Values: ["USER"] }] })
+        const data = await QApi.tat.describeCommands(item.value, { Filters: [{ Name: "created-by", Values: ["USER"] }] })
         if (data.TotalCount > 0) {
             commandList.value.push(...data.CommandSet)
         }

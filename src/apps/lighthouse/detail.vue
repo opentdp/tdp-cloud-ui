@@ -95,7 +95,9 @@
             <template #header>
                 <div class="flex-between">
                     <b>快照</b> &nbsp;
-                    <small>快照总数: {{ snapshots.TotalCount }}</small>
+                    <el-button type="primary" plain size="small" @click="createSnapshotModel.dailog = true">
+                        创建快照
+                    </el-button>
                 </div>
             </template>
             <el-table :data="snapshots.SnapshotSet" table-layout="fixed">
@@ -118,6 +120,16 @@
                 <el-table-column label="创建时间" min-width="180">
                     <template #default="scope">
                         {{ dateFormat(scope.row.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
+                    </template>
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="180" align="center">
+                    <template #default="scope">
+                        <el-button link type="primary" icon="Clock">
+                            回滚
+                        </el-button>
+                        <el-button link type="primary" icon="Delete">
+                            删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -151,6 +163,21 @@
                 </span>
             </template>
         </el-dialog>
+
+        <el-dialog v-model="createSnapshotModel.dailog" title="创建快照">
+            <el-form v-if="instance" :model="createSnapshotModel">
+                <el-form-item label="快照名">
+                    <el-input v-model="createSnapshotModel.name" :value="'Snapshot-' + Date.now()" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="createSnapshotModel.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="createSnapshotModel.loading" @click="createSnapshot">保存
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -160,7 +187,7 @@ import { useRoute } from "vue-router"
 
 import { EChartsOption } from "echarts"
 
-import Api, { Lighthouse } from "@/api"
+import { Api, QApi, Lighthouse } from "@/api"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
@@ -176,7 +203,7 @@ const instanceId = route.params.instanceId as string
 const instance = ref<Lighthouse.Instance>()
 
 async function getInstance() {
-    const data = await Api.lighthouse.describeInstances(region, {
+    const data = await QApi.lighthouse.describeInstances(region, {
         InstanceIds: [instanceId],
     })
     instance.value = data.InstanceSet[0]
@@ -188,39 +215,36 @@ async function stopInstance() {
     if (instance.value) {
         instance.value.InstanceState = "STOPPING"
     }
-    await Api.lighthouse.stopInstances(region, {
+    await QApi.lighthouse.stopInstances(region, {
         InstanceIds: [instanceId],
     })
-    refreshInstance()
+    setTimeout(refreshInstance, 1500)
 }
 
 async function startInstance() {
     if (instance.value) {
         instance.value.InstanceState = "STARTING"
     }
-    await Api.lighthouse.startInstances(region, {
+    await QApi.lighthouse.startInstances(region, {
         InstanceIds: [instanceId],
     })
-    refreshInstance()
+    setTimeout(refreshInstance, 1500)
 }
 
 async function rebootInstance() {
     if (instance.value) {
         instance.value.InstanceState = "REBOOTING"
     }
-    await Api.lighthouse.rebootInstances(region, {
+    await QApi.lighthouse.rebootInstances(region, {
         InstanceIds: [instanceId],
     })
-    refreshInstance()
+    setTimeout(refreshInstance, 1500)
 }
 
 async function refreshInstance() {
-    const data = await Api.lighthouse.describeInstances(region, {
-        InstanceIds: [instanceId],
-    }, 0)
-    instance.value = data.InstanceSet[0]
-    // 持续刷新状态
-    if (instance.value.InstanceState.match(/ING$/)) {
+    Api.cache.clear()
+    await getInstance()
+    if (instance.value?.InstanceState.match(/ING$/)) {
         setTimeout(refreshInstance, 1500)
     }
 }
@@ -237,7 +261,7 @@ async function modifyInstanceName() {
     modifyInstanceNameModel.loading = true
     if (instance.value && modifyInstanceNameModel.name &&
         instance.value.InstanceName != modifyInstanceNameModel.name) {
-        await Api.lighthouse.modifyInstancesAttribute(region, {
+        await QApi.lighthouse.modifyInstancesAttribute(region, {
             InstanceIds: [instanceId],
             InstanceName: modifyInstanceNameModel.name
         })
@@ -251,11 +275,36 @@ async function modifyInstanceName() {
 
 const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
 
+const createSnapshotModel = reactive({
+    dailog: false,
+    loading: false,
+    name: ""
+})
+
 async function getSnapshots() {
-    const data = await Api.lighthouse.describeSnapshots(region, {
+    const data = await QApi.lighthouse.describeSnapshots(region, {
         Filters: [{ Name: "instance-id", Values: [instanceId] }],
     })
     snapshots.value = data
+}
+
+async function createSnapshot() {
+    createSnapshotModel.loading = true
+    await QApi.lighthouse.createInstanceSnapshot(region, {
+        InstanceId: instanceId,
+        SnapshotName: createSnapshotModel.name
+    })
+    createSnapshotModel.dailog = false
+    createSnapshotModel.loading = false
+    refreshSnapshot()
+}
+
+async function refreshSnapshot() {
+    Api.cache.clear()
+    await getSnapshots()
+    if (instance.value?.InstanceState.match(/ING$/)) {
+        setTimeout(refreshSnapshot, 1500)
+    }
 }
 
 ////// 防火墙管理
@@ -263,7 +312,7 @@ async function getSnapshots() {
 const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
 
 async function getFirewallRules() {
-    const data = await Api.lighthouse.describeFirewallRules(region, {
+    const data = await QApi.lighthouse.describeFirewallRules(region, {
         InstanceId: instanceId,
     })
     firewallRules.value = data
@@ -276,14 +325,14 @@ const trafficPackage = ref<Lighthouse.TrafficPackage>()
 const outtrafficChart = ref<EChartsOption>()
 
 async function getTrafficPackage() {
-    const data = await Api.lighthouse.describeInstancesTrafficPackages(region, {
+    const data = await QApi.lighthouse.describeInstancesTrafficPackages(region, {
         InstanceIds: [instanceId],
     })
     trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
 }
 
 async function getLighthouseOuttraffic() {
-    const data = await Api.monitor.getMonitorData(region, {
+    const data = await QApi.monitor.getMonitorData(region, {
         Namespace: "QCE/LIGHTHOUSE",
         MetricName: "LighthouseOuttraffic",
         Instances: [

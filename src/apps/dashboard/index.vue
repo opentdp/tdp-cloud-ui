@@ -49,12 +49,12 @@
 <script lang="ts" setup>
 import { ref } from "vue"
 
-import Api, { Cam } from "@/api"
+import { QApi, Cam } from "@/api"
 
 const accountSummary = ref<Cam.GetAccountSummaryResponse>()
 
 async function getAccountSummary() {
-    const res = await Api.cam.getAccountSummary()
+    const res = await QApi.cam.getAccountSummary()
     accountSummary.value = res
 }
 

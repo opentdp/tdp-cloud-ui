@@ -48,13 +48,13 @@
 <script lang="ts" setup>
 import { ref } from "vue"
 
-import Api, { Dnspod } from "@/api"
+import { QApi, Dnspod } from "@/api"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
 
 const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()
 
 async function getDomainList() {
-    const res = await Api.dnspod.describeDomainList()
+    const res = await QApi.dnspod.describeDomainList()
     domainDescribe.value = res
 }
 
