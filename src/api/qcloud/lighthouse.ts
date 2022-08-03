@@ -59,17 +59,6 @@ export class LighthouseClient extends HttpClient {
         return this.post("/DescribeInstanceVncUrl/" + region, query)
     }
 
-    // 流量包
-
-    public describeInstancesTrafficPackages(
-        region: string,
-        query?: Lighthouse.DescribeInstancesTrafficPackagesRequest,
-        expiry = 600
-    ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
-        query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeInstancesTrafficPackages/" + region, query, expiry)
-    }
-
     // 快照
 
     public describeSnapshots(
@@ -81,6 +70,27 @@ export class LighthouseClient extends HttpClient {
         return this.post("/DescribeSnapshots/" + region, query, expiry)
     }
 
+    public applyInstanceSnapshot(
+        region: string,
+        query: Lighthouse.ApplyInstanceSnapshotRequest
+    ): Promise<Lighthouse.ApplyInstanceSnapshotResponse> {
+        return this.post("/ApplyInstanceSnapshot/" + region, query)
+    }
+
+    public modifySnapshotAttribute(
+        region: string,
+        query: Lighthouse.ModifySnapshotAttributeRequest
+    ): Promise<Lighthouse.ModifySnapshotAttributeResponse> {
+        return this.post("/ModifySnapshotAttribute/" + region, query)
+    }
+
+    public deleteSnapshots(
+        region: string,
+        query: Lighthouse.DeleteSnapshotsRequest
+    ): Promise<Lighthouse.DeleteSnapshotsResponse> {
+        return this.post("/DeleteSnapshots/" + region, query)
+    }
+
     // 防火墙
 
     public describeFirewallRules(
@@ -90,6 +100,45 @@ export class LighthouseClient extends HttpClient {
     ): Promise<Lighthouse.DescribeFirewallRulesResponse> {
         query = Object.assign({ Limit: 100 }, query)
         return this.post("/DescribeFirewallRules/" + region, query, expiry)
+    }
+
+    public createFirewallRules(
+        region: string,
+        query: Lighthouse.CreateFirewallRulesRequest
+    ): Promise<Lighthouse.CreateFirewallRulesResponse> {
+        return this.post("/CreateFirewallRules/" + region, query)
+    }
+
+    public modifyFirewallRules(
+        region: string,
+        query: Lighthouse.ModifyFirewallRulesRequest
+    ): Promise<Lighthouse.ModifyFirewallRulesResponse> {
+        return this.post("/ModifyFirewallRules/" + region, query)
+    }
+
+    public modifyFirewallRuleDescription(
+        region: string,
+        query: Lighthouse.ModifyFirewallRuleDescriptionRequest
+    ): Promise<Lighthouse.ModifyFirewallRuleDescriptionResponse> {
+        return this.post("/ModifyFirewallRuleDescription/" + region, query)
+    }
+
+    public deleteFirewallRules(
+        region: string,
+        query: Lighthouse.DeleteFirewallRulesRequest
+    ): Promise<Lighthouse.DeleteFirewallRulesResponse> {
+        return this.post("/DeleteFirewallRules/" + region, query)
+    }
+
+    // 流量包
+
+    public describeInstancesTrafficPackages(
+        region: string,
+        query?: Lighthouse.DescribeInstancesTrafficPackagesRequest,
+        expiry = 600
+    ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
+        query = Object.assign({ Limit: 100 }, query)
+        return this.post("/DescribeInstancesTrafficPackages/" + region, query, expiry)
     }
 }
 
