@@ -20,6 +20,13 @@ export class LighthouseClient extends HttpClient {
         return this.post("/DescribeInstances/" + region, query, expiry)
     }
 
+    public modifyInstancesAttribute(
+        region: string,
+        query?: Lighthouse.ModifyInstancesAttributeRequest
+    ): Promise<Lighthouse.ModifyInstancesAttributeResponse> {
+        return this.post("/ModifyInstancesAttribute/" + region, query)
+    }
+
     // 电源
 
     public stopInstances(

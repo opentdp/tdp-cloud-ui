@@ -45,6 +45,7 @@
                 </el-descriptions-item>
                 <el-descriptions-item label="实例名">
                     {{ instance.InstanceName }}
+                    <el-button link icon="Edit" @click="modifyInstanceNameModel.dailog = true" />
                 </el-descriptions-item>
                 <el-descriptions-item label="规格">
                     CPU：{{ instance.CPU }} 核 / 内存：{{ instance.Memory }} GB
@@ -135,11 +136,26 @@
             </template>
             <v-chart :option="outtrafficChart" style="height: 400px" />
         </el-card>
+
+        <el-dialog v-model="modifyInstanceNameModel.dailog" title="修改实例名">
+            <el-form v-if="instance" :model="modifyInstanceNameModel">
+                <el-form-item label="实例名">
+                    <el-input v-model="modifyInstanceNameModel.name" :value="instance.InstanceName" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="modifyInstanceNameModel.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="modifyInstanceNameModel.loading" @click="modifyInstanceName">保存
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref, reactive } from "vue"
 import { useRoute } from "vue-router"
 
 import { EChartsOption } from "echarts"
@@ -155,24 +171,85 @@ const zone = route.params.zone as string
 const region = zone.replace(/-\d$/, "")
 const instanceId = route.params.instanceId as string
 
+////// 实例信息
+
 const instance = ref<Lighthouse.Instance>()
-const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
-const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
-
-const trafficPackage = ref<Lighthouse.TrafficPackage>()
-
-const outtrafficChart = ref<EChartsOption>()
 
 async function getInstance() {
     const data = await Api.lighthouse.describeInstances(region, {
         InstanceIds: [instanceId],
     })
     instance.value = data.InstanceSet[0]
-    getSnapshots()
-    getFirewallRules()
-    getTrafficPackage()
-    getLighthouseOuttraffic()
 }
+
+////// 电源管理
+
+async function stopInstance() {
+    if (instance.value) {
+        instance.value.InstanceState = "STOPPING"
+    }
+    await Api.lighthouse.stopInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    refreshInstance()
+}
+
+async function startInstance() {
+    if (instance.value) {
+        instance.value.InstanceState = "STARTING"
+    }
+    await Api.lighthouse.startInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    refreshInstance()
+}
+
+async function rebootInstance() {
+    if (instance.value) {
+        instance.value.InstanceState = "REBOOTING"
+    }
+    await Api.lighthouse.rebootInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    refreshInstance()
+}
+
+async function refreshInstance() {
+    const data = await Api.lighthouse.describeInstances(region, {
+        InstanceIds: [instanceId],
+    }, 0)
+    instance.value = data.InstanceSet[0]
+    // 持续刷新状态
+    if (instance.value.InstanceState.match(/ING$/)) {
+        setTimeout(refreshInstance, 1500)
+    }
+}
+
+////// 修改实例名
+
+const modifyInstanceNameModel = reactive({
+    dailog: false,
+    loading: false,
+    name: ""
+})
+
+async function modifyInstanceName() {
+    modifyInstanceNameModel.loading = true
+    if (instance.value && modifyInstanceNameModel.name &&
+        instance.value.InstanceName != modifyInstanceNameModel.name) {
+        await Api.lighthouse.modifyInstancesAttribute(region, {
+            InstanceIds: [instanceId],
+            InstanceName: modifyInstanceNameModel.name
+        })
+        instance.value.InstanceName = modifyInstanceNameModel.name
+    }
+    modifyInstanceNameModel.dailog = false
+    modifyInstanceNameModel.loading = false
+}
+
+////// 快照管理
+
+const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
 
 async function getSnapshots() {
     const data = await Api.lighthouse.describeSnapshots(region, {
@@ -181,12 +258,22 @@ async function getSnapshots() {
     snapshots.value = data
 }
 
+////// 防火墙管理
+
+const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
+
 async function getFirewallRules() {
     const data = await Api.lighthouse.describeFirewallRules(region, {
         InstanceId: instanceId,
     })
     firewallRules.value = data
 }
+
+////// 流量包信息
+
+const trafficPackage = ref<Lighthouse.TrafficPackage>()
+
+const outtrafficChart = ref<EChartsOption>()
 
 async function getTrafficPackage() {
     const data = await Api.lighthouse.describeInstancesTrafficPackages(region, {
@@ -282,44 +369,13 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
     }
 }
 
-//////
+////// 初始化
 
-async function stopInstance() {
-    instance.value.InstanceState = "STOPPING"
-    const data = await Api.lighthouse.stopInstances(region, {
-        InstanceIds: [instanceId],
-    })
-    refreshInstance()
-}
-
-async function startInstance() {
-    instance.value.InstanceState = "STARTING"
-    const data = await Api.lighthouse.startInstances(region, {
-        InstanceIds: [instanceId],
-    })
-    refreshInstance()
-}
-
-async function rebootInstance() {
-    instance.value.InstanceState = "REBOOTING"
-    const data = await Api.lighthouse.rebootInstances(region, {
-        InstanceIds: [instanceId],
-    })
-    refreshInstance()
-}
-
-async function refreshInstance() {
-    const data = await Api.lighthouse.describeInstances(region, {
-        InstanceIds: [instanceId],
-    }, 0)
-    instance.value = data.InstanceSet[0]
-    // 持续刷新状态
-    if (instance.value.InstanceState.match(/ING$/)) {
-        setTimeout(refreshInstance, 1500)
-    }
-}
-
-//////
-
-getInstance()
+(async () => {
+    await getInstance()
+    getSnapshots()
+    getFirewallRules()
+    getTrafficPackage()
+    getLighthouseOuttraffic()
+})()
 </script>
