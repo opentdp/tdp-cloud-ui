@@ -49,7 +49,6 @@
 import { ref } from "vue"
 
 import Api, { Dnspod } from "@/api"
-
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
 
 const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()

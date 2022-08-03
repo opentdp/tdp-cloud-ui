@@ -15,14 +15,18 @@
             <template #header>
                 <div class="flex-between">
                     <b>实例信息</b>
+                    <div>{{ InstanceStateMap[instance.InstanceState] }}</div>
                     <div style="flex:auto" />
-                    <el-button type="primary" plain size="small" @click="startInstance">
+                    <el-button type="primary" plain size="small" @click="startInstance"
+                        :disabled="instance.InstanceState != 'STOPPED'">
                         开机
                     </el-button>
-                    <el-button type="primary" plain size="small" @click="stopInstance">
+                    <el-button type="primary" plain size="small" @click="stopInstance"
+                        :disabled="instance.InstanceState != 'RUNNING'">
                         关机
                     </el-button>
-                    <el-button type="primary" plain size="small" @click="rebootInstance">
+                    <el-button type="primary" plain size="small" @click="rebootInstance"
+                        :disabled="instance.InstanceState != 'RUNNING'">
                         重启
                     </el-button>
                     <el-button type="primary" plain size="small">
@@ -138,6 +142,8 @@ import { useRoute } from "vue-router"
 import { EChartsOption } from "echarts"
 
 import Api, { Lighthouse } from "@/api"
+import { InstanceStateMap } from "@/api/qcloud/lighthouse"
+
 import { bytesToSize, dateFormat } from "@/helper/utils"
 
 const route = useRoute()
@@ -276,24 +282,24 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
 //////
 
 async function stopInstance() {
+    instance.value.InstanceState = "STOPPING"
     const data = await Api.lighthouse.stopInstances(region, {
         InstanceIds: [instanceId],
     })
-    console.log(data)
 }
 
 async function startInstance() {
+    instance.value.InstanceState = "STARTING"
     const data = await Api.lighthouse.startInstances(region, {
         InstanceIds: [instanceId],
     })
-    console.log(data)
 }
 
 async function rebootInstance() {
+    instance.value.InstanceState = "REBOOTING"
     const data = await Api.lighthouse.rebootInstances(region, {
         InstanceIds: [instanceId],
     })
-    console.log(data)
 }
 
 //////

@@ -85,3 +85,17 @@ export class LighthouseClient extends HttpClient {
         return this.post("/DescribeFirewallRules/" + region, query, expiry)
     }
 }
+
+export const InstanceStateMap: Record<string, string> = {
+    PENDING: "创建中",
+    LAUNCH_FAILED: "创建失败",
+    RUNNING: "运行中",
+    STOPPED: "关机",
+    STARTING: "开机中",
+    STOPPING: "关机中",
+    REBOOTING: "重启中",
+    SHUTDOWN: "停止待销毁",
+    TERMINATING: "销毁中",
+    DELETING: "删除中",
+    FREEZING: "冻结中",
+}
