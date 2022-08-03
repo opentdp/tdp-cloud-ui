@@ -47,7 +47,7 @@
                     {{ instance.InstanceName }}
                 </el-descriptions-item>
                 <el-descriptions-item label="规格">
-                    CPU：{{ instance.CPU }}核 / 内存：{{ instance.Memory }} GB
+                    CPU：{{ instance.CPU }} 核 / 内存：{{ instance.Memory }} GB
                 </el-descriptions-item>
                 <el-descriptions-item label="系统盘">
                     {{ instance.SystemDisk.DiskSize }} GB

@@ -23,7 +23,7 @@
                             {{ showRegion(scope.row.Zone) }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="CPU" label="vCPU" min-width="100" />
+                    <el-table-column prop="CPU" label="CPU" min-width="100" />
                     <el-table-column label="内存" min-width="100">
                         <template #default="scope">
                             {{ scope.row.Memory + " GB" }}
@@ -34,7 +34,7 @@
                             {{ scope.row.SystemDisk.DiskSize + " GB" }}
                         </template>
                     </el-table-column>
-                    <el-table-column label="流量(已用/总量)" min-width="180">
+                    <el-table-column label="已用 / 流量包" min-width="180">
                         <template #default="scope">
                             {{ showTraffic(scope.row.InstanceId) }}
                         </template>
@@ -48,14 +48,14 @@
                     </el-table-column>
                     <el-table-column fixed="right" label="操作" width="180" align="center">
                         <template #default="scope">
-                            <el-button link type="primary" icon="View">
-                                <router-link :to="'/lighthouse/detail/' + scope.row.Zone + '/' + scope.row.InstanceId">
-                                    管理
-                                </router-link>
-                            </el-button>
                             <el-button link type="primary" icon="Connection">
                                 <router-link :to="'/lighthouse/vnc/' + scope.row.Zone + '/' + scope.row.InstanceId">
                                     VNC
+                                </router-link>
+                            </el-button>
+                            <el-button link type="primary" icon="View">
+                                <router-link :to="'/lighthouse/detail/' + scope.row.Zone + '/' + scope.row.InstanceId">
+                                    管理
                                 </router-link>
                             </el-button>
                         </template>
