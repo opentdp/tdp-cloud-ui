@@ -13,13 +13,23 @@
         </el-breadcrumb>
         <el-card v-if="instance" shadow="hover" class="mgb10">
             <template #header>
-                <div class="card-header">
-                    <b>实例信息</b> &nbsp;
-                    <router-link :to="'/lighthouse/vnc/' + zone + '/' + instanceId">
-                        <el-button text>
-                            VNC 登录
-                        </el-button>
-                    </router-link>
+                <div class="flex-between">
+                    <b>实例信息</b>
+                    <div style="flex:auto" />
+                    <el-button type="primary" plain size="small" @click="startInstance">
+                        开机
+                    </el-button>
+                    <el-button type="primary" plain size="small" @click="stopInstance">
+                        关机
+                    </el-button>
+                    <el-button type="primary" plain size="small" @click="rebootInstance">
+                        重启
+                    </el-button>
+                    <el-button type="primary" plain size="small">
+                        <router-link :to="'/lighthouse/vnc/' + zone + '/' + instanceId">
+                            VNC 终端
+                        </router-link>
+                    </el-button>
                 </div>
             </template>
             <el-descriptions :column="2" border>
@@ -58,7 +68,7 @@
 
         <el-card v-if="firewallRules" shadow="hover" class="mgb10">
             <template #header>
-                <div class="card-header">
+                <div class="flex-between">
                     <b>防火墙</b> &nbsp;
                     <small>规则总数: {{ firewallRules.TotalCount }}</small>
                 </div>
@@ -75,7 +85,7 @@
 
         <el-card v-if="snapshots" shadow="hover" class="mgb10">
             <template #header>
-                <div class="card-header">
+                <div class="flex-between">
                     <b>快照</b> &nbsp;
                     <small>快照总数: {{ snapshots.TotalCount }}</small>
                 </div>
@@ -107,7 +117,7 @@
 
         <el-card shadow="hover">
             <template #header>
-                <div class="card-header">
+                <div class="flex-between">
                     <b>外网出流量</b>
                     <small v-if="trafficPackage">
                         流量包:
@@ -143,6 +153,62 @@ const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
 const trafficPackage = ref<Lighthouse.TrafficPackage>()
 
 const outtrafficChart = ref<EChartsOption>()
+
+async function getInstance() {
+    const data = await Api.lighthouse.describeInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    instance.value = data.InstanceSet[0]
+    getSnapshots()
+    getFirewallRules()
+    getTrafficPackage()
+    getLighthouseOuttraffic()
+}
+
+async function getSnapshots() {
+    const data = await Api.lighthouse.describeSnapshots(region, {
+        Filters: [{ Name: "instance-id", Values: [instanceId] }],
+    })
+    snapshots.value = data
+}
+
+async function getFirewallRules() {
+    const data = await Api.lighthouse.describeFirewallRules(region, {
+        InstanceId: instanceId,
+    })
+    firewallRules.value = data
+}
+
+async function getTrafficPackage() {
+    const data = await Api.lighthouse.describeInstancesTrafficPackages(region, {
+        InstanceIds: [instanceId],
+    })
+    trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
+}
+
+async function getLighthouseOuttraffic() {
+    const data = await Api.monitor.getMonitorData(region, {
+        Namespace: "QCE/LIGHTHOUSE",
+        MetricName: "LighthouseOuttraffic",
+        Instances: [
+            {
+                Dimensions: [
+                    {
+                        Name: "InstanceId",
+                        Value: instanceId,
+                    },
+                ],
+            },
+        ],
+        Period: 300,
+        StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
+        EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
+    })
+    const xdata = data.DataPoints[0].Timestamps.map(t => {
+        return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
+    })
+    outtrafficChart.value = getOuttrafficChartConfig(xdata, data.DataPoints[0].Values)
+}
 
 function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {
     return {
@@ -207,69 +273,30 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
     }
 }
 
-async function getInstance() {
-    const data = await Api.lighthouse.describeInstances(region, {
+//////
+
+async function stopInstance() {
+    const data = await Api.lighthouse.stopInstances(region, {
         InstanceIds: [instanceId],
     })
-    instance.value = data.InstanceSet[0]
-    getSnapshots()
-    getFirewallRules()
-    getTrafficPackage()
-    getLighthouseOuttraffic()
+    console.log(data)
 }
 
-async function getSnapshots() {
-    const data = await Api.lighthouse.describeSnapshots(region, {
-        Filters: [{ Name: "instance-id", Values: [instanceId] }],
-    })
-    snapshots.value = data
-}
-
-async function getFirewallRules() {
-    const data = await Api.lighthouse.describeFirewallRules(region, {
-        InstanceId: instanceId,
-    })
-    firewallRules.value = data
-}
-
-async function getTrafficPackage() {
-    const data = await Api.lighthouse.describeInstancesTrafficPackages(region, {
+async function startInstance() {
+    const data = await Api.lighthouse.startInstances(region, {
         InstanceIds: [instanceId],
     })
-    trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
+    console.log(data)
 }
 
-async function getLighthouseOuttraffic() {
-    const data = await Api.monitor.getMonitorData(region, {
-        Namespace: "QCE/LIGHTHOUSE",
-        MetricName: "LighthouseOuttraffic",
-        Instances: [
-            {
-                Dimensions: [
-                    {
-                        Name: "InstanceId",
-                        Value: instanceId,
-                    },
-                ],
-            },
-        ],
-        Period: 300,
-        StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
-        EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
+async function rebootInstance() {
+    const data = await Api.lighthouse.rebootInstances(region, {
+        InstanceIds: [instanceId],
     })
-    const xdata = data.DataPoints[0].Timestamps.map(t => {
-        return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
-    })
-    outtrafficChart.value = getOuttrafficChartConfig(xdata, data.DataPoints[0].Values)
+    console.log(data)
 }
+
+//////
 
 getInstance()
 </script>
-
-<style lang="scss" scoped>
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-</style>
