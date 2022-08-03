@@ -15,7 +15,9 @@
             <template #header>
                 <div class="flex-between">
                     <b>实例信息</b> &nbsp; &nbsp;
-                    <small style="color: #a0cfff;">{{ InstanceStateMap[instance.InstanceState] }}</small>
+                    <small style="color: #a0cfff;">
+                        {{ InstanceStateMap[instance.InstanceState] }}
+                    </small>
                     <div style="flex:auto" />
                     <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
                         :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
@@ -45,7 +47,7 @@
                 </el-descriptions-item>
                 <el-descriptions-item label="实例名">
                     {{ instance.InstanceName }}
-                    <el-button link icon="Edit" @click="modifyInstanceNameModel.dailog = true" />
+                    <el-button link icon="EditPen" @click="modifyInstanceNameModel.dailog = true" />
                 </el-descriptions-item>
                 <el-descriptions-item label="规格">
                     CPU：{{ instance.CPU }} 核 / 内存：{{ instance.Memory }} GB
@@ -77,8 +79,12 @@
         <el-card v-if="firewallRules" shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>防火墙</b> &nbsp;
+                    <b>防火墙</b> &nbsp; &nbsp;
                     <small>规则总数: {{ firewallRules.TotalCount }}</small>
+                    <div class="flex-auto" />
+                    <el-button type="primary" plain size="small" @click="createSnapshotModel.dailog = true">
+                        添加规则
+                    </el-button>
                 </div>
             </template>
             <el-table :data="firewallRules.FirewallRuleSet" table-layout="fixed">
@@ -87,14 +93,31 @@
                 <el-table-column prop="Protocol" label="协议" min-width="100" />
                 <el-table-column prop="Port" label="端口" min-width="120" />
                 <el-table-column prop="Action" label="策略" min-width="100" />
-                <el-table-column prop="FirewallRuleDescription" label="备注" min-width="200" />
+                <el-table-column prop="FirewallRuleDescription" label="备注" min-width="200">
+                    <template #default="scope">
+                        {{ scope.row.FirewallRuleDescription }}
+                        <el-button link icon="EditPen" @click="modifyInstanceNameModel.dailog = true" />
+                    </template>
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="180" align="center">
+                    <template #default="scope">
+                        <el-button link type="primary" icon="Edit">
+                            编辑
+                        </el-button>
+                        <el-button link type="primary" icon="Delete">
+                            删除
+                        </el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-card>
 
         <el-card v-if="snapshots" shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>快照</b> &nbsp;
+                    <b>快照</b> &nbsp; &nbsp;
+                    <small>快照总数: {{ snapshots.TotalCount }}</small>
+                    <div class="flex-auto" />
                     <el-button type="primary" plain size="small" @click="createSnapshotModel.dailog = true">
                         创建快照
                     </el-button>

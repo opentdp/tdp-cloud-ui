@@ -14,7 +14,7 @@
         <el-card v-if="record" shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>解析列表 - {{ domain }}</b> &nbsp;
+                    <b>解析列表 - {{ domain }}</b>
                     <small>记录总数: {{ record.RecordCountInfo.TotalCount }}</small>
                 </div>
             </template>

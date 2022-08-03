@@ -11,7 +11,7 @@
         <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>命令列表</b> &nbsp;
+                    <b>命令列表</b> &nbsp; &nbsp;
                     <small>命令总数: {{ tatList.length }}</small>
                     <div class="flex-auto" />
                     <el-button type="primary" plain size="small" icon="Plus" @click="onNew">
@@ -49,14 +49,14 @@
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>历史记录</b> &nbsp;
+                    <b>历史记录</b> &nbsp; &nbsp;
+                    <small>记录总数: {{ HistoryList.length }}</small>
+                    <div class="flex-auto" />
                     <el-select v-model="currentRegion" class="region-select" placeholder="选择区域" size="small"
                         @change="onRegionChange">
                         <el-option v-for="item in regionList" :key="item.value" :label="item.label"
                             :value="item.value" />
                     </el-select>
-                    <small>记录总数: {{ HistoryList.length }}</small>
-                    <div class="flex-auto" />
                     <el-button type="primary" plain size="small" icon="Refresh" @click="fetchHistory">
                         刷新
                     </el-button>

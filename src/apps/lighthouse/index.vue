@@ -12,7 +12,7 @@
             <el-card v-if="region.InstanceCount > 0" shadow="hover" class="mgb10">
                 <template #header>
                     <div class="flex-between">
-                        <b>{{ region.RegionName }}</b> &nbsp;
+                        <b>{{ region.RegionName }}</b>
                         <small>实例总数: {{ region.InstanceCount }}</small>
                     </div>
                 </template>

@@ -11,7 +11,7 @@
         <el-card v-if="domainDescribe && domainDescribe.DomainCountInfo" shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>域名列表</b> &nbsp;
+                    <b>域名列表</b>
                     <small>域名总数: {{ domainDescribe.DomainCountInfo.AllTotal }}</small>
                 </div>
             </template>
