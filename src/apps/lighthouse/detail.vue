@@ -104,9 +104,13 @@
                         <el-button link type="primary" icon="Edit">
                             编辑
                         </el-button>
-                        <el-button link type="primary" icon="Delete">
-                            删除
-                        </el-button>
+                        <el-popconfirm title="确定删除?" @confirm="onDelete(scope.row)">
+                            <template #reference>
+                                <el-button link type="primary" icon="Delete">
+                                    删除
+                                </el-button>
+                            </template>
+                        </el-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>
@@ -147,12 +151,20 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="Clock">
-                            回滚
-                        </el-button>
-                        <el-button link type="primary" icon="Delete">
-                            删除
-                        </el-button>
+                        <el-popconfirm title="确定删除?" @confirm="applySnapshot(scope.row)">
+                            <template #reference>
+                                <el-button link type="primary" icon="Clock">
+                                    回滚
+                                </el-button>
+                            </template>
+                        </el-popconfirm>
+                        <el-popconfirm title="确定删除?" @confirm="deleteSnapshot(scope.row)">
+                            <template #reference>
+                                <el-button link type="primary" icon="Delete">
+                                    删除
+                                </el-button>
+                            </template>
+                        </el-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>
@@ -313,19 +325,35 @@ async function getSnapshots() {
 
 async function createSnapshot() {
     createSnapshotModel.loading = true
+    const name = createSnapshotModel.name || 'Snapshot-' + Date.now()
     await QApi.lighthouse.createInstanceSnapshot(region, {
         InstanceId: instanceId,
-        SnapshotName: createSnapshotModel.name
+        SnapshotName: name
     })
     createSnapshotModel.dailog = false
     createSnapshotModel.loading = false
     refreshSnapshot()
 }
 
+async function applySnapshot(item: Lighthouse.Snapshot) {
+    await QApi.lighthouse.applyInstanceSnapshot(region, {
+        InstanceId: instanceId,
+        SnapshotId: item.SnapshotId
+    })
+    refreshInstance
+}
+
+async function deleteSnapshot(item: Lighthouse.Snapshot) {
+    await QApi.lighthouse.deleteSnapshots(region, {
+        SnapshotIds: [item.SnapshotId],
+    })
+    refreshSnapshot()
+}
+
 async function refreshSnapshot() {
     Api.cache.clear()
     await getSnapshots()
-    if (instance.value?.InstanceState.match(/ING$/)) {
+    if (snapshots.value?.SnapshotSet.find((item) => item.Percent < 100)) {
         setTimeout(refreshSnapshot, 1500)
     }
 }
