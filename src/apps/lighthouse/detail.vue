@@ -94,6 +94,7 @@ const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
 interface FirewallRuleModel {
     dailog: boolean;
     loading: boolean;
+    index?: number;
     item: Lighthouse.FirewallRule & {
         AppType?: string
     }
@@ -114,17 +115,13 @@ const createFirewallRuleModel = reactive<FirewallRuleModel>({
 const modifyFirewallRuleModel = reactive<FirewallRuleModel>({
     dailog: false,
     loading: false,
-    item: {
-        Protocol: "",
-    }
+    item: { Protocol: "" }
 })
 
 const modifyFirewallRuleDescriptionModel = reactive<FirewallRuleModel>({
     dailog: false,
     loading: false,
-    item: {
-        Protocol: "",
-    }
+    item: { Protocol: "" }
 })
 
 async function getFirewallRules() {
@@ -153,7 +150,10 @@ async function modifyFirewallRule() {
     await QApi.lighthouse.modifyFirewallRules(region, {
         InstanceId: instanceId,
         FirewallRules: firewallRules.value.FirewallRuleSet.map(
-            (item: FirewallRuleModel["item"]) => {
+            (item: FirewallRuleModel["item"], idx) => {
+                if (modifyFirewallRuleModel.index === idx) {
+                    item = Object.assign({}, modifyFirewallRuleModel.item)
+                }
                 delete item.AppType
                 return item
             }
@@ -164,8 +164,9 @@ async function modifyFirewallRule() {
     refreshFirewallRules()
 }
 
-function modifyFirewallRuleDailog(item: Lighthouse.FirewallRule) {
+function modifyFirewallRuleDailog(item: Lighthouse.FirewallRule, idx: number) {
     modifyFirewallRuleModel.item = Object.assign({}, item)
+    modifyFirewallRuleModel.index = idx
     modifyFirewallRuleModel.dailog = true
 }
 
@@ -483,7 +484,8 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="Edit" @click="modifyFirewallRuleDailog(scope.row)">
+                        <el-button link type="primary" icon="Edit"
+                            @click="modifyFirewallRuleDailog(scope.row, scope.$index)">
                             编辑
                         </el-button>
                         <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">
