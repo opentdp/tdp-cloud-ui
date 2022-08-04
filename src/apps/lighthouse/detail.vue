@@ -11,6 +11,7 @@
                 {{ instanceId }}
             </el-breadcrumb-item>
         </el-breadcrumb>
+
         <el-card v-if="instance" shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
@@ -76,19 +77,33 @@
             </el-descriptions>
         </el-card>
 
+        <el-dialog v-model="modifyInstanceNameModel.dailog" title="修改实例名">
+            <el-form v-if="instance" :model="modifyInstanceNameModel">
+                <el-form-item label="实例名">
+                    <el-input v-model="modifyInstanceNameModel.name" :value="instance.InstanceName" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="modifyInstanceNameModel.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="modifyInstanceNameModel.loading" @click="modifyInstanceName">保存
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
+
         <el-card v-if="firewallRules" shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
                     <b>防火墙</b> &nbsp; &nbsp;
                     <small>规则总数: {{ firewallRules.TotalCount }}</small>
                     <div class="flex-auto" />
-                    <el-button type="primary" plain size="small" @click="createSnapshotModel.dailog = true">
+                    <el-button type="primary" plain size="small" @click="createFirewallRuleModel.dailog = true">
                         添加规则
                     </el-button>
                 </div>
             </template>
             <el-table :data="firewallRules.FirewallRuleSet" table-layout="fixed">
-                <el-table-column prop="AppType" label="应用类型" min-width="100" />
                 <el-table-column prop="CidrBlock" label="来源" min-width="150" />
                 <el-table-column prop="Protocol" label="协议" min-width="100" />
                 <el-table-column prop="Port" label="端口" min-width="120" />
@@ -96,15 +111,15 @@
                 <el-table-column prop="FirewallRuleDescription" label="备注" min-width="200">
                     <template #default="scope">
                         {{ scope.row.FirewallRuleDescription }}
-                        <el-button link icon="EditPen" @click="modifyInstanceNameModel.dailog = true" />
+                        <el-button link icon="EditPen" @click="modifyFirewallRuleDescriptionDailog(scope.row)" />
                     </template>
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="Edit">
+                        <el-button link type="primary" icon="Edit" @click="modifyFirewallRuleDailog(scope.row)">
                             编辑
                         </el-button>
-                        <el-popconfirm title="确定删除?" @confirm="onDelete(scope.row)">
+                        <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">
                             <template #reference>
                                 <el-button link type="primary" icon="Delete">
                                     删除
@@ -116,13 +131,100 @@
             </el-table>
         </el-card>
 
+        <el-dialog v-model="createFirewallRuleModel.dailog" title="添加规则">
+            <el-form v-if="instance" :model="createFirewallRuleModel">
+                <el-form-item label="来源">
+                    <el-input v-model="createFirewallRuleModel.item.CidrBlock" />
+                </el-form-item>
+                <el-form-item label="协议">
+                    <el-select v-model="createFirewallRuleModel.item.Protocol">
+                        <el-option label="TCP" value="TCP" />
+                        <el-option label="UDP" value="UDP" />
+                        <el-option label="ICMP" value="ICMP" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="端口">
+                    <el-input v-model="createFirewallRuleModel.item.Port" />
+                </el-form-item>
+                <el-form-item label="策略">
+                    <el-select v-model="createFirewallRuleModel.item.Action">
+                        <el-option label="允许" value="ACCEPT" />
+                        <el-option label="拒绝" value="DROP" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="createFirewallRuleModel.item.FirewallRuleDescription" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="createFirewallRuleModel.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="createFirewallRuleModel.loading" @click="createFirewallRule">
+                        保存
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <el-dialog v-model="modifyFirewallRuleModel.dailog" title="修改规则">
+            <el-form v-if="instance" :model="modifyFirewallRuleModel">
+                <el-form-item label="来源">
+                    <el-input v-model="modifyFirewallRuleModel.item.CidrBlock" />
+                </el-form-item>
+                <el-form-item label="协议">
+                    <el-select v-model="modifyFirewallRuleModel.item.Protocol">
+                        <el-option label="TCP" value="TCP" />
+                        <el-option label="UDP" value="UDP" />
+                        <el-option label="ICMP" value="ICMP" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="端口">
+                    <el-input v-model="modifyFirewallRuleModel.item.Port" />
+                </el-form-item>
+                <el-form-item label="策略">
+                    <el-select v-model="modifyFirewallRuleModel.item.Action">
+                        <el-option label="允许" value="ACCEPT" />
+                        <el-option label="拒绝" value="DROP" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="modifyFirewallRuleModel.item.FirewallRuleDescription" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="modifyFirewallRuleModel.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="modifyFirewallRuleModel.loading" @click="modifyFirewallRule">
+                        保存
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <el-dialog v-model="modifyFirewallRuleDescriptionModel.dailog" title="修改备注">
+            <el-form v-if="instance" :model="modifyFirewallRuleDescriptionModel">
+                <el-form-item label="备注">
+                    <el-input v-model="modifyFirewallRuleDescriptionModel.item.FirewallRuleDescription" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="modifyFirewallRuleDescriptionModel.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="modifyFirewallRuleDescriptionModel.loading"
+                        @click="modifyFirewallRuleDescription">
+                        保存
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
+
         <el-card v-if="snapshots" shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
                     <b>快照</b> &nbsp; &nbsp;
                     <small>快照总数: {{ snapshots.TotalCount }}</small>
                     <div class="flex-auto" />
-                    <el-button type="primary" plain size="small" @click="createSnapshotModel.dailog = true">
+                    <el-button type="primary" plain size="small" @click="createSnapshotDailog">
                         创建快照
                     </el-button>
                 </div>
@@ -170,6 +272,22 @@
             </el-table>
         </el-card>
 
+        <el-dialog v-model="createSnapshotModel.dailog" title="创建快照">
+            <el-form v-if="instance" :model="createSnapshotModel">
+                <el-form-item label="名称">
+                    <el-input v-model="createSnapshotModel.name" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="createSnapshotModel.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="createSnapshotModel.loading" @click="createSnapshot">
+                        保存
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
+
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
@@ -183,36 +301,6 @@
             </template>
             <v-chart :option="outtrafficChart" style="height: 400px" />
         </el-card>
-
-        <el-dialog v-model="modifyInstanceNameModel.dailog" title="修改实例名">
-            <el-form v-if="instance" :model="modifyInstanceNameModel">
-                <el-form-item label="实例名">
-                    <el-input v-model="modifyInstanceNameModel.name" :value="instance.InstanceName" />
-                </el-form-item>
-            </el-form>
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="modifyInstanceNameModel.dailog = false">取消</el-button>
-                    <el-button type="primary" :loading="modifyInstanceNameModel.loading" @click="modifyInstanceName">保存
-                    </el-button>
-                </span>
-            </template>
-        </el-dialog>
-
-        <el-dialog v-model="createSnapshotModel.dailog" title="创建快照">
-            <el-form v-if="instance" :model="createSnapshotModel">
-                <el-form-item label="快照名">
-                    <el-input v-model="createSnapshotModel.name" :value="'Snapshot-' + Date.now()" />
-                </el-form-item>
-            </el-form>
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="createSnapshotModel.dailog = false">取消</el-button>
-                    <el-button type="primary" :loading="createSnapshotModel.loading" @click="createSnapshot">保存
-                    </el-button>
-                </span>
-            </template>
-        </el-dialog>
     </div>
 </template>
 
@@ -277,8 +365,7 @@ async function rebootInstance() {
 }
 
 async function refreshInstance() {
-    Api.cache.clear()
-    await getInstance()
+    Api.cache.clear(), await getInstance()
     if (instance.value?.InstanceState.match(/ING$/)) {
         setTimeout(refreshInstance, 1500)
     }
@@ -306,6 +393,116 @@ async function modifyInstanceName() {
     modifyInstanceNameModel.loading = false
 }
 
+////// 防火墙管理
+
+const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
+
+interface FirewallRuleModel {
+    dailog: boolean;
+    loading: boolean;
+    item: Lighthouse.FirewallRule & {
+        AppType?: string
+    }
+}
+
+const createFirewallRuleModel = reactive<FirewallRuleModel>({
+    dailog: false,
+    loading: false,
+    item: {
+        Protocol: "TCP",
+        Port: "",
+        CidrBlock: "0.0.0.0/0",
+        Action: "ACCEPT",
+        FirewallRuleDescription: "",
+    }
+})
+
+const modifyFirewallRuleModel = reactive<FirewallRuleModel>({
+    dailog: false,
+    loading: false,
+    item: {
+        Protocol: "",
+    }
+})
+
+function modifyFirewallRuleDailog(item: Lighthouse.FirewallRule) {
+    modifyFirewallRuleModel.item = item
+    modifyFirewallRuleModel.dailog = true
+}
+
+const modifyFirewallRuleDescriptionModel = reactive<FirewallRuleModel>({
+    dailog: false,
+    loading: false,
+    item: {
+        Protocol: "",
+    }
+})
+
+function modifyFirewallRuleDescriptionDailog(item: Lighthouse.FirewallRule) {
+    modifyFirewallRuleDescriptionModel.item = item
+    modifyFirewallRuleDescriptionModel.dailog = true
+}
+
+async function getFirewallRules() {
+    const data = await QApi.lighthouse.describeFirewallRules(region, {
+        InstanceId: instanceId,
+    })
+    firewallRules.value = data
+}
+
+async function createFirewallRule() {
+    createFirewallRuleModel.loading = true
+    await QApi.lighthouse.createFirewallRules(region, {
+        InstanceId: instanceId,
+        FirewallRules: [createFirewallRuleModel.item]
+    })
+    createFirewallRuleModel.dailog = false
+    createFirewallRuleModel.loading = false
+    refreshFirewallRules()
+}
+
+async function modifyFirewallRule() {
+    if (!firewallRules.value) {
+        return
+    }
+    modifyFirewallRuleModel.loading = true
+    await QApi.lighthouse.modifyFirewallRules(region, {
+        InstanceId: instanceId,
+        FirewallRules: firewallRules.value.FirewallRuleSet.map((item: FirewallRuleModel["item"]) => {
+            delete item.AppType
+            return item
+        })
+    })
+    modifyFirewallRuleModel.dailog = false
+    modifyFirewallRuleModel.loading = false
+    refreshFirewallRules()
+}
+
+async function modifyFirewallRuleDescription() {
+    modifyFirewallRuleDescriptionModel.loading = true
+    delete modifyFirewallRuleDescriptionModel.item.AppType
+    await QApi.lighthouse.modifyFirewallRuleDescription(region, {
+        InstanceId: instanceId,
+        FirewallRule: modifyFirewallRuleDescriptionModel.item
+    })
+    modifyFirewallRuleDescriptionModel.dailog = false
+    modifyFirewallRuleDescriptionModel.loading = false
+    refreshFirewallRules()
+}
+
+async function deleteFirewallRule(item: FirewallRuleModel["item"]) {
+    delete item.AppType
+    await QApi.lighthouse.deleteFirewallRules(region, {
+        InstanceId: instanceId,
+        FirewallRules: [item]
+    })
+    refreshFirewallRules()
+}
+
+async function refreshFirewallRules() {
+    Api.cache.clear(), await getFirewallRules()
+}
+
 ////// 快照管理
 
 const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
@@ -316,6 +513,11 @@ const createSnapshotModel = reactive({
     name: ""
 })
 
+function createSnapshotDailog() {
+    createSnapshotModel.name = 'Snapshot-' + Date.now()
+    createSnapshotModel.dailog = true
+}
+
 async function getSnapshots() {
     const data = await QApi.lighthouse.describeSnapshots(region, {
         Filters: [{ Name: "instance-id", Values: [instanceId] }],
@@ -325,10 +527,9 @@ async function getSnapshots() {
 
 async function createSnapshot() {
     createSnapshotModel.loading = true
-    const name = createSnapshotModel.name || 'Snapshot-' + Date.now()
     await QApi.lighthouse.createInstanceSnapshot(region, {
         InstanceId: instanceId,
-        SnapshotName: name
+        SnapshotName: createSnapshotModel.name
     })
     createSnapshotModel.dailog = false
     createSnapshotModel.loading = false
@@ -340,7 +541,7 @@ async function applySnapshot(item: Lighthouse.Snapshot) {
         InstanceId: instanceId,
         SnapshotId: item.SnapshotId
     })
-    refreshInstance
+    refreshInstance()
 }
 
 async function deleteSnapshot(item: Lighthouse.Snapshot) {
@@ -351,22 +552,10 @@ async function deleteSnapshot(item: Lighthouse.Snapshot) {
 }
 
 async function refreshSnapshot() {
-    Api.cache.clear()
-    await getSnapshots()
+    Api.cache.clear(), await getSnapshots()
     if (snapshots.value?.SnapshotSet.find((item) => item.Percent < 100)) {
         setTimeout(refreshSnapshot, 1500)
     }
-}
-
-////// 防火墙管理
-
-const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
-
-async function getFirewallRules() {
-    const data = await QApi.lighthouse.describeFirewallRules(region, {
-        InstanceId: instanceId,
-    })
-    firewallRules.value = data
 }
 
 ////// 流量包信息
