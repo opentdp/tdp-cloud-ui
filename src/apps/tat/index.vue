@@ -309,7 +309,7 @@ onMounted(async () => {
         </el-card>
 
         <el-dialog v-model="editDialogVisible" title="修改命令">
-            <el-form v-if="editForm" :model="editForm" label-width="120px">
+            <el-form v-if="editForm" :model="editForm">
                 <el-form-item label="名称">
                     <el-input v-model="editForm.Name" />
                 </el-form-item>
@@ -329,7 +329,7 @@ onMounted(async () => {
         </el-dialog>
 
         <el-dialog v-model="newDialogVisible" title="添加命令">
-            <el-form :model="newForm" label-width="120px">
+            <el-form :model="newForm">
                 <el-form-item label="名称">
                     <el-input v-model="newForm.name" />
                 </el-form-item>
@@ -344,6 +344,20 @@ onMounted(async () => {
                 <span class="dialog-footer">
                     <el-button @click="newDialogVisible = false">取消</el-button>
                     <el-button type="primary" @click="onNewSave">保存</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
+        <el-dialog v-model="importVisiable" title="导入命令">
+            <el-table ref="importTable" v-loading="importLoading" :data="commandList">
+                <el-table-column type="selection" width="55" />
+                <el-table-column prop="CommandId" label="命令ID" />
+                <el-table-column prop="CommandName" label="命令名称" min-width="150" />
+            </el-table>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="onDoImport">确定</el-button>
+                    <el-button @click="importVisiable = false">取消</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -395,20 +409,6 @@ onMounted(async () => {
             <template #footer>
                 <span class="dialog-footer">
                     <el-button @click="historyDetailVisiable = false">确定</el-button>
-                </span>
-            </template>
-        </el-dialog>
-
-        <el-dialog v-model="importVisiable" title="导入命令">
-            <el-table ref="importTable" v-loading="importLoading" :data="commandList">
-                <el-table-column type="selection" width="55" />
-                <el-table-column prop="CommandId" label="命令ID" />
-                <el-table-column prop="CommandName" label="命令名称" min-width="150" />
-            </el-table>
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button type="primary" @click="onDoImport">确定</el-button>
-                    <el-button @click="importVisiable = false">取消</el-button>
                 </span>
             </template>
         </el-dialog>
