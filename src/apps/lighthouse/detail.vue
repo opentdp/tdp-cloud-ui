@@ -77,7 +77,7 @@
             </el-descriptions>
         </el-card>
 
-        <el-dialog v-model="modifyInstanceNameModel.dailog" title="修改实例名">
+        <el-dialog v-model="modifyInstanceNameModel.dailog" title="修改实例名" width="320px">
             <el-form v-if="instance" :model="modifyInstanceNameModel">
                 <el-form-item label="实例名">
                     <el-input v-model="modifyInstanceNameModel.name" :value="instance.InstanceName" />
@@ -131,7 +131,7 @@
             </el-table>
         </el-card>
 
-        <el-dialog v-model="createFirewallRuleModel.dailog" title="添加规则">
+        <el-dialog v-model="createFirewallRuleModel.dailog" title="添加规则" width="320px">
             <el-form v-if="instance" :model="createFirewallRuleModel">
                 <el-form-item label="来源">
                     <el-input v-model="createFirewallRuleModel.item.CidrBlock" />
@@ -166,13 +166,13 @@
             </template>
         </el-dialog>
 
-        <el-dialog v-model="modifyFirewallRuleModel.dailog" title="修改规则">
+        <el-dialog v-model="modifyFirewallRuleModel.dailog" title="修改规则" width="320px">
             <el-form v-if="instance" :model="modifyFirewallRuleModel">
                 <el-form-item label="来源">
                     <el-input v-model="modifyFirewallRuleModel.item.CidrBlock" />
                 </el-form-item>
                 <el-form-item label="协议">
-                    <el-select v-model="modifyFirewallRuleModel.item.Protocol">
+                    <el-select v-model="modifyFirewallRuleModel.item.Protocol" width="100%">
                         <el-option label="TCP" value="TCP" />
                         <el-option label="UDP" value="UDP" />
                         <el-option label="ICMP" value="ICMP" />
@@ -201,7 +201,7 @@
             </template>
         </el-dialog>
 
-        <el-dialog v-model="modifyFirewallRuleDescriptionModel.dailog" title="修改备注">
+        <el-dialog v-model="modifyFirewallRuleDescriptionModel.dailog" title="修改备注" width="320px">
             <el-form v-if="instance" :model="modifyFirewallRuleDescriptionModel">
                 <el-form-item label="备注">
                     <el-input v-model="modifyFirewallRuleDescriptionModel.item.FirewallRuleDescription" />
@@ -272,7 +272,7 @@
             </el-table>
         </el-card>
 
-        <el-dialog v-model="createSnapshotModel.dailog" title="创建快照">
+        <el-dialog v-model="createSnapshotModel.dailog" title="创建快照" width="320px">
             <el-form v-if="instance" :model="createSnapshotModel">
                 <el-form-item label="名称">
                     <el-input v-model="createSnapshotModel.name" />
