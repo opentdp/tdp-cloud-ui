@@ -111,13 +111,13 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/member/password.vue"),
             },
             {
-                path: "/member/secret",
-                name: "member-secret",
+                path: "/keypod/secret",
+                name: "keypod-secret",
                 meta: {
                     title: "密钥管理",
                     login: true,
                 },
-                component: () => import("@/apps/member/secret.vue"),
+                component: () => import("@/apps/keypod/secret.vue"),
             },
             {
                 path: "/error/403",

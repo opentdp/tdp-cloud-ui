@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
     }
 
     if (to.meta.cloud && !isCloud) {
-        next("/member/secret")
+        next("/keypod/secret")
         return
     }
 

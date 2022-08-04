@@ -44,7 +44,7 @@ const items: MenuItem[] = [
     },
     {
         icon: "Wallet",
-        index: "/member/secret",
+        index: "/keypod/secret",
         title: "密钥管理",
     },
     // {
