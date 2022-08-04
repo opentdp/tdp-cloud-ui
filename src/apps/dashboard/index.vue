@@ -1,3 +1,18 @@
+<script lang="ts" setup>
+import { ref } from "vue"
+
+import { QApi, Cam } from "@/api"
+
+const accountSummary = ref<Cam.GetAccountSummaryResponse>()
+
+async function getAccountSummary() {
+    const res = await QApi.cam.getAccountSummary()
+    accountSummary.value = res
+}
+
+getAccountSummary()
+</script>
+
 <template>
     <div>
         <el-row :gutter="20">
@@ -45,21 +60,6 @@
         </el-row>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from "vue"
-
-import { QApi, Cam } from "@/api"
-
-const accountSummary = ref<Cam.GetAccountSummaryResponse>()
-
-async function getAccountSummary() {
-    const res = await QApi.cam.getAccountSummary()
-    accountSummary.value = res
-}
-
-getAccountSummary()
-</script>
 
 <style lang="scss" scoped>
 .grid-content {

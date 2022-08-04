@@ -1,49 +1,3 @@
-<template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
-                首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
-                SSH 终端
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">
-            <el-tab-pane label="新建" name="new">
-                <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
-                    <el-form-item prop="addr" label="主机">
-                        <el-input v-model="formModel.addr" />
-                    </el-form-item>
-                    <el-form-item prop="user" label="用户名">
-                        <el-input v-model="formModel.user" />
-                    </el-form-item>
-                    <el-form-item prop="password" label="密码">
-                        <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="formSubmit(formRef)">
-                            登录
-                        </el-button>
-                    </el-form-item>
-                </el-form>
-            </el-tab-pane>
-            <el-tab-pane v-for="item in sshTabs" :key="item.id" :name="item.id" :label="item.label" closable>
-                <div :id="item.id" />
-            </el-tab-pane>
-        </el-tabs>
-        <el-card v-if="curTab.id !== 'new'" shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>快捷命令</b>
-                </div>
-            </template>
-            <el-button v-for="item in cmdList" :key="item.Id" @click="sshExec(item.Content)">
-                {{ item.Name }}
-            </el-button>
-        </el-card>
-    </div>
-</template>
-
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
@@ -153,3 +107,49 @@ function sshExec(cmd: string) {
 
 fetchTATList()
 </script>
+
+<template>
+    <div>
+        <el-breadcrumb separator="/" class="crumbs">
+            <el-breadcrumb-item to="/">
+                首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                SSH 终端
+            </el-breadcrumb-item>
+        </el-breadcrumb>
+        <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">
+            <el-tab-pane label="新建" name="new">
+                <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
+                    <el-form-item prop="addr" label="主机">
+                        <el-input v-model="formModel.addr" />
+                    </el-form-item>
+                    <el-form-item prop="user" label="用户名">
+                        <el-input v-model="formModel.user" />
+                    </el-form-item>
+                    <el-form-item prop="password" label="密码">
+                        <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="formSubmit(formRef)">
+                            登录
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+            <el-tab-pane v-for="item in sshTabs" :key="item.id" :name="item.id" :label="item.label" closable>
+                <div :id="item.id" />
+            </el-tab-pane>
+        </el-tabs>
+        <el-card v-if="curTab.id !== 'new'" shadow="hover">
+            <template #header>
+                <div class="flex-between">
+                    <b>快捷命令</b>
+                </div>
+            </template>
+            <el-button v-for="item in cmdList" :key="item.Id" @click="sshExec(item.Content)">
+                {{ item.Name }}
+            </el-button>
+        </el-card>
+    </div>
+</template>

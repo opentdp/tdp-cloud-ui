@@ -1,3 +1,13 @@
+<script lang="ts" setup>
+import { useRouter } from "vue-router"
+
+const router = useRouter()
+
+function goBack() {
+    router.go(-1)
+}
+</script>
+
 <template>
     <div class="error-page">
         <div class="error-code">
@@ -18,16 +28,6 @@
         </div>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { useRouter } from "vue-router"
-
-const router = useRouter()
-
-function goBack() {
-    router.go(-1)
-}
-</script>
 
 <style lang="scss" scoped>
 .error-page {

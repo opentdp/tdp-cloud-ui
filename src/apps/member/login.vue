@@ -1,3 +1,45 @@
+<script lang="ts" setup>
+import { ref, reactive } from "vue"
+import { useRouter } from "vue-router"
+import { ElMessage, FormInstance, FormRules } from "element-plus"
+
+import { Api } from "@/api"
+import sessionStore from "@/store/session"
+
+const router = useRouter()
+const session = sessionStore()
+
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    username: import.meta.env.VITE_USERNAME || "",
+    password: import.meta.env.VITE_PASSWORD || "",
+})
+
+const formRules: FormRules = {
+    username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+    password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+}
+
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
+        }
+        const data = await Api.user.login(formModel)
+        if (data.username) {
+            ElMessage.success("登录成功")
+        }
+        session.username = data.username
+        session.description = data.description
+        session.token = data.token
+        session.keyid = data.keyid
+        router.push("/")
+    })
+}
+</script>
+
 <template>
     <div class="login-wrap">
         <div class="vt-login">
@@ -40,48 +82,6 @@
         </div>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRouter } from "vue-router"
-import { ElMessage, FormInstance, FormRules } from "element-plus"
-
-import { Api } from "@/api"
-import sessionStore from "@/store/session"
-
-const router = useRouter()
-const session = sessionStore()
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    username: import.meta.env.VITE_USERNAME || "",
-    password: import.meta.env.VITE_PASSWORD || "",
-})
-
-const formRules: FormRules = {
-    username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-    password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-}
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        const data = await Api.user.login(formModel)
-        if (data.username) {
-            ElMessage.success("登录成功")
-        }
-        session.username = data.username
-        session.description = data.description
-        session.token = data.token
-        session.keyid = data.keyid
-        router.push("/")
-    })
-}
-</script>
 
 <style lang="scss" scoped>
 .login-wrap {

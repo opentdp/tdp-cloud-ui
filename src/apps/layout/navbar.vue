@@ -1,3 +1,64 @@
+<script lang="ts" setup>
+import { onMounted } from "vue"
+import { useRouter } from "vue-router"
+
+import { Api } from "@/api"
+import layoutStore from "@/store/layout"
+import sessionStore from "@/store/session"
+
+import type { SecretItem } from "@/api/local/secret"
+
+const router = useRouter()
+const layout = layoutStore()
+const session = sessionStore()
+
+// 获取密钥列表
+async function getSecret() {
+    const res = await Api.secret.fetch()
+    session.setSecrets(res)
+}
+
+// 侧边栏折叠
+function collapseChange() {
+    layout.setCollapse(!layout.collapse)
+}
+
+// 密钥下拉菜单选择事件
+function secretDropdown(data: SecretItem) {
+    session.keyname = data.Description
+    session.keyid = data.Id
+    location.reload()
+}
+
+// 用户名下拉菜单选择事件
+function userDropdown(data: string) {
+    switch (data) {
+        case "delcache":
+            Api.cache.clear()
+            location.reload()
+            break
+        case "loginout":
+            session.$reset()
+            router.push({ name: "member-login" })
+            break
+        case "user":
+            router.push({ name: "member-info" })
+            break
+        case "password":
+            router.push({ name: "member-password" })
+            break
+    }
+}
+
+onMounted(() => {
+    getSecret()
+    // 小屏自动折叠
+    if (document.body.clientWidth < 1000) {
+        collapseChange()
+    }
+})
+</script>
+
 <template>
     <div class="header">
         <div class="collapse-btn" @click="collapseChange">
@@ -67,67 +128,6 @@
         </div>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { onMounted } from "vue"
-import { useRouter } from "vue-router"
-
-import { Api } from "@/api"
-import layoutStore from "@/store/layout"
-import sessionStore from "@/store/session"
-
-import type { SecretItem } from "@/api/local/secret"
-
-const router = useRouter()
-const layout = layoutStore()
-const session = sessionStore()
-
-// 获取密钥列表
-async function getSecret() {
-    const res = await Api.secret.fetch()
-    session.setSecrets(res)
-}
-
-// 侧边栏折叠
-function collapseChange() {
-    layout.setCollapse(!layout.collapse)
-}
-
-// 密钥下拉菜单选择事件
-function secretDropdown(data: SecretItem) {
-    session.keyname = data.Description
-    session.keyid = data.Id
-    location.reload()
-}
-
-// 用户名下拉菜单选择事件
-function userDropdown(data: string) {
-    switch (data) {
-        case "delcache":
-            Api.cache.clear()
-            location.reload()
-            break
-        case "loginout":
-            session.$reset()
-            router.push({ name: "member-login" })
-            break
-        case "user":
-            router.push({ name: "member-info" })
-            break
-        case "password":
-            router.push({ name: "member-password" })
-            break
-    }
-}
-
-onMounted(() => {
-    getSecret()
-    // 小屏自动折叠
-    if (document.body.clientWidth < 1000) {
-        collapseChange()
-    }
-})
-</script>
 
 <style lang="scss" scoped>
 .header {

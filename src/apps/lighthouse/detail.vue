@@ -1,3 +1,370 @@
+<script lang="ts" setup>
+import { ref, reactive } from "vue"
+import { useRoute } from "vue-router"
+
+import { EChartsOption } from "echarts"
+
+import { Api, QApi, Lighthouse } from "@/api"
+import { InstanceStateMap } from "@/api/qcloud/lighthouse"
+
+import { bytesToSize, dateFormat } from "@/helper/utils"
+
+const route = useRoute()
+
+const zone = route.params.zone as string
+const region = zone.replace(/-\d$/, "")
+const instanceId = route.params.instanceId as string
+
+////// 实例信息
+
+const instance = ref<Lighthouse.Instance>()
+
+async function getInstance() {
+    const data = await QApi.lighthouse.describeInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    instance.value = data.InstanceSet[0]
+}
+
+////// 电源管理
+
+async function stopInstance() {
+    if (instance.value) {
+        instance.value.InstanceState = "STOPPING"
+    }
+    await QApi.lighthouse.stopInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    setTimeout(refreshInstance, 1500)
+}
+
+async function startInstance() {
+    if (instance.value) {
+        instance.value.InstanceState = "STARTING"
+    }
+    await QApi.lighthouse.startInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    setTimeout(refreshInstance, 1500)
+}
+
+async function rebootInstance() {
+    if (instance.value) {
+        instance.value.InstanceState = "REBOOTING"
+    }
+    await QApi.lighthouse.rebootInstances(region, {
+        InstanceIds: [instanceId],
+    })
+    setTimeout(refreshInstance, 1500)
+}
+
+async function refreshInstance() {
+    Api.cache.clear(), await getInstance()
+    if (instance.value?.InstanceState.match(/ING$/)) {
+        setTimeout(refreshInstance, 1500)
+    }
+}
+
+////// 修改实例名
+
+const modifyInstanceNameModel = reactive({
+    dailog: false,
+    loading: false,
+    name: ""
+})
+
+async function modifyInstanceName() {
+    modifyInstanceNameModel.loading = true
+    if (instance.value && modifyInstanceNameModel.name &&
+        instance.value.InstanceName != modifyInstanceNameModel.name) {
+        await QApi.lighthouse.modifyInstancesAttribute(region, {
+            InstanceIds: [instanceId],
+            InstanceName: modifyInstanceNameModel.name
+        })
+        instance.value.InstanceName = modifyInstanceNameModel.name
+    }
+    modifyInstanceNameModel.dailog = false
+    modifyInstanceNameModel.loading = false
+}
+
+////// 防火墙管理
+
+const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
+
+interface FirewallRuleModel {
+    dailog: boolean;
+    loading: boolean;
+    item: Lighthouse.FirewallRule & {
+        AppType?: string
+    }
+}
+
+const createFirewallRuleModel = reactive<FirewallRuleModel>({
+    dailog: false,
+    loading: false,
+    item: {
+        Protocol: "TCP",
+        Port: "",
+        CidrBlock: "0.0.0.0/0",
+        Action: "ACCEPT",
+        FirewallRuleDescription: "",
+    }
+})
+
+const modifyFirewallRuleModel = reactive<FirewallRuleModel>({
+    dailog: false,
+    loading: false,
+    item: {
+        Protocol: "",
+    }
+})
+
+const modifyFirewallRuleDescriptionModel = reactive<FirewallRuleModel>({
+    dailog: false,
+    loading: false,
+    item: {
+        Protocol: "",
+    }
+})
+
+async function getFirewallRules() {
+    const data = await QApi.lighthouse.describeFirewallRules(region, {
+        InstanceId: instanceId,
+    })
+    firewallRules.value = data
+}
+
+async function createFirewallRule() {
+    createFirewallRuleModel.loading = true
+    await QApi.lighthouse.createFirewallRules(region, {
+        InstanceId: instanceId,
+        FirewallRules: [createFirewallRuleModel.item]
+    })
+    createFirewallRuleModel.dailog = false
+    createFirewallRuleModel.loading = false
+    refreshFirewallRules()
+}
+
+async function modifyFirewallRule() {
+    if (!firewallRules.value) {
+        return
+    }
+    modifyFirewallRuleModel.loading = true
+    await QApi.lighthouse.modifyFirewallRules(region, {
+        InstanceId: instanceId,
+        FirewallRules: firewallRules.value.FirewallRuleSet.map(
+            (item: FirewallRuleModel["item"]) => {
+                delete item.AppType
+                return item
+            }
+        )
+    })
+    modifyFirewallRuleModel.dailog = false
+    modifyFirewallRuleModel.loading = false
+    refreshFirewallRules()
+}
+
+function modifyFirewallRuleDailog(item: Lighthouse.FirewallRule) {
+    modifyFirewallRuleModel.item = Object.assign({}, item)
+    modifyFirewallRuleModel.dailog = true
+}
+
+async function modifyFirewallRuleDescription() {
+    modifyFirewallRuleDescriptionModel.loading = true
+    delete modifyFirewallRuleDescriptionModel.item.AppType
+    await QApi.lighthouse.modifyFirewallRuleDescription(region, {
+        InstanceId: instanceId,
+        FirewallRule: modifyFirewallRuleDescriptionModel.item
+    })
+    modifyFirewallRuleDescriptionModel.dailog = false
+    modifyFirewallRuleDescriptionModel.loading = false
+    refreshFirewallRules()
+}
+
+function modifyFirewallRuleDescriptionDailog(item: Lighthouse.FirewallRule) {
+    modifyFirewallRuleDescriptionModel.item = Object.assign({}, item)
+    modifyFirewallRuleDescriptionModel.dailog = true
+}
+
+async function deleteFirewallRule(item: FirewallRuleModel["item"]) {
+    delete item.AppType
+    await QApi.lighthouse.deleteFirewallRules(region, {
+        InstanceId: instanceId,
+        FirewallRules: [item]
+    })
+    refreshFirewallRules()
+}
+
+async function refreshFirewallRules() {
+    Api.cache.clear(), await getFirewallRules()
+}
+
+////// 快照管理
+
+const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
+
+const createSnapshotModel = reactive({
+    dailog: false,
+    loading: false,
+    name: ""
+})
+
+async function getSnapshots() {
+    const data = await QApi.lighthouse.describeSnapshots(region, {
+        Filters: [{ Name: "instance-id", Values: [instanceId] }],
+    })
+    snapshots.value = data
+}
+
+async function createSnapshot() {
+    createSnapshotModel.loading = true
+    await QApi.lighthouse.createInstanceSnapshot(region, {
+        InstanceId: instanceId,
+        SnapshotName: createSnapshotModel.name
+    })
+    createSnapshotModel.dailog = false
+    createSnapshotModel.loading = false
+    refreshSnapshot()
+}
+
+function createSnapshotDailog() {
+    createSnapshotModel.name = 'Snapshot-' + Date.now()
+    createSnapshotModel.dailog = true
+}
+
+async function applySnapshot(item: Lighthouse.Snapshot) {
+    await QApi.lighthouse.applyInstanceSnapshot(region, {
+        InstanceId: instanceId,
+        SnapshotId: item.SnapshotId
+    })
+    refreshInstance()
+}
+
+async function deleteSnapshot(item: Lighthouse.Snapshot) {
+    await QApi.lighthouse.deleteSnapshots(region, {
+        SnapshotIds: [item.SnapshotId],
+    })
+    refreshSnapshot()
+}
+
+async function refreshSnapshot() {
+    Api.cache.clear(), await getSnapshots()
+    if (snapshots.value?.SnapshotSet.find((item) => item.Percent < 100)) {
+        setTimeout(refreshSnapshot, 1500)
+    }
+}
+
+////// 流量包信息
+
+const trafficPackage = ref<Lighthouse.TrafficPackage>()
+
+const outtrafficChart = ref<EChartsOption>()
+
+async function getTrafficPackage() {
+    const data = await QApi.lighthouse.describeInstancesTrafficPackages(region, {
+        InstanceIds: [instanceId],
+    })
+    trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
+}
+
+async function getLighthouseOuttraffic() {
+    const data = await QApi.monitor.getMonitorData(region, {
+        Namespace: "QCE/LIGHTHOUSE",
+        MetricName: "LighthouseOuttraffic",
+        Instances: [
+            {
+                Dimensions: [
+                    {
+                        Name: "InstanceId",
+                        Value: instanceId,
+                    },
+                ],
+            },
+        ],
+        Period: 300,
+        StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
+        EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
+    })
+    const xdata = data.DataPoints[0].Timestamps.map(t => {
+        return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
+    })
+    outtrafficChart.value = getOuttrafficChartConfig(xdata, data.DataPoints[0].Values)
+}
+
+function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {
+    return {
+        backgroundColor: '#fcfcfc',
+        toolbox: {
+            feature: {
+                dataZoom: {
+                    yAxisIndex: false
+                },
+                saveAsImage: {
+                    pixelRatio: 2
+                }
+            }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            },
+            formatter: '时间：{b0}<br />流量：{c0} MB/s'
+        },
+        grid: {
+            left: 80,
+            right: 80,
+            bottom: 90
+        },
+        dataZoom: [
+            {
+                type: 'inside',
+                start: 80
+            },
+            {
+                type: 'slider'
+            }
+        ],
+        xAxis: {
+            silent: false,
+            splitLine: {
+                show: false
+            },
+            splitArea: {
+                show: false
+            },
+            data: xdata
+        },
+        yAxis: {
+            axisLabel: {
+                formatter: '{value} MB/s'
+            },
+            splitArea: {
+                show: false
+            }
+        },
+        series: [
+            {
+                type: 'line',
+                areaStyle: {},
+                name: '流量',
+                data: sdata
+            }
+        ]
+    }
+}
+
+////// 初始化
+
+(async () => {
+    await getInstance()
+    getSnapshots()
+    getFirewallRules()
+    getTrafficPackage()
+    getLighthouseOuttraffic()
+})()
+</script>
+
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
@@ -143,7 +510,7 @@
                         <el-option label="ICMP" value="ICMP" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="端口">
+                <el-form-item v-if="/TCP|UDP/.test(createFirewallRuleModel.item.Protocol)" label="端口">
                     <el-input v-model="createFirewallRuleModel.item.Port" />
                 </el-form-item>
                 <el-form-item label="策略">
@@ -178,7 +545,7 @@
                         <el-option label="ICMP" value="ICMP" />
                     </el-select>
                 </el-form-item>
-                <el-form-item label="端口">
+                <el-form-item v-if="/TCP|UDP/.test(modifyFirewallRuleModel.item.Protocol)" label="端口">
                     <el-input v-model="modifyFirewallRuleModel.item.Port" />
                 </el-form-item>
                 <el-form-item label="策略">
@@ -303,368 +670,3 @@
         </el-card>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRoute } from "vue-router"
-
-import { EChartsOption } from "echarts"
-
-import { Api, QApi, Lighthouse } from "@/api"
-import { InstanceStateMap } from "@/api/qcloud/lighthouse"
-
-import { bytesToSize, dateFormat } from "@/helper/utils"
-
-const route = useRoute()
-
-const zone = route.params.zone as string
-const region = zone.replace(/-\d$/, "")
-const instanceId = route.params.instanceId as string
-
-////// 实例信息
-
-const instance = ref<Lighthouse.Instance>()
-
-async function getInstance() {
-    const data = await QApi.lighthouse.describeInstances(region, {
-        InstanceIds: [instanceId],
-    })
-    instance.value = data.InstanceSet[0]
-}
-
-////// 电源管理
-
-async function stopInstance() {
-    if (instance.value) {
-        instance.value.InstanceState = "STOPPING"
-    }
-    await QApi.lighthouse.stopInstances(region, {
-        InstanceIds: [instanceId],
-    })
-    setTimeout(refreshInstance, 1500)
-}
-
-async function startInstance() {
-    if (instance.value) {
-        instance.value.InstanceState = "STARTING"
-    }
-    await QApi.lighthouse.startInstances(region, {
-        InstanceIds: [instanceId],
-    })
-    setTimeout(refreshInstance, 1500)
-}
-
-async function rebootInstance() {
-    if (instance.value) {
-        instance.value.InstanceState = "REBOOTING"
-    }
-    await QApi.lighthouse.rebootInstances(region, {
-        InstanceIds: [instanceId],
-    })
-    setTimeout(refreshInstance, 1500)
-}
-
-async function refreshInstance() {
-    Api.cache.clear(), await getInstance()
-    if (instance.value?.InstanceState.match(/ING$/)) {
-        setTimeout(refreshInstance, 1500)
-    }
-}
-
-////// 修改实例名
-
-const modifyInstanceNameModel = reactive({
-    dailog: false,
-    loading: false,
-    name: ""
-})
-
-async function modifyInstanceName() {
-    modifyInstanceNameModel.loading = true
-    if (instance.value && modifyInstanceNameModel.name &&
-        instance.value.InstanceName != modifyInstanceNameModel.name) {
-        await QApi.lighthouse.modifyInstancesAttribute(region, {
-            InstanceIds: [instanceId],
-            InstanceName: modifyInstanceNameModel.name
-        })
-        instance.value.InstanceName = modifyInstanceNameModel.name
-    }
-    modifyInstanceNameModel.dailog = false
-    modifyInstanceNameModel.loading = false
-}
-
-////// 防火墙管理
-
-const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
-
-interface FirewallRuleModel {
-    dailog: boolean;
-    loading: boolean;
-    item: Lighthouse.FirewallRule & {
-        AppType?: string
-    }
-}
-
-const createFirewallRuleModel = reactive<FirewallRuleModel>({
-    dailog: false,
-    loading: false,
-    item: {
-        Protocol: "TCP",
-        Port: "",
-        CidrBlock: "0.0.0.0/0",
-        Action: "ACCEPT",
-        FirewallRuleDescription: "",
-    }
-})
-
-const modifyFirewallRuleModel = reactive<FirewallRuleModel>({
-    dailog: false,
-    loading: false,
-    item: {
-        Protocol: "",
-    }
-})
-
-function modifyFirewallRuleDailog(item: Lighthouse.FirewallRule) {
-    modifyFirewallRuleModel.item = item
-    modifyFirewallRuleModel.dailog = true
-}
-
-const modifyFirewallRuleDescriptionModel = reactive<FirewallRuleModel>({
-    dailog: false,
-    loading: false,
-    item: {
-        Protocol: "",
-    }
-})
-
-function modifyFirewallRuleDescriptionDailog(item: Lighthouse.FirewallRule) {
-    modifyFirewallRuleDescriptionModel.item = item
-    modifyFirewallRuleDescriptionModel.dailog = true
-}
-
-async function getFirewallRules() {
-    const data = await QApi.lighthouse.describeFirewallRules(region, {
-        InstanceId: instanceId,
-    })
-    firewallRules.value = data
-}
-
-async function createFirewallRule() {
-    createFirewallRuleModel.loading = true
-    await QApi.lighthouse.createFirewallRules(region, {
-        InstanceId: instanceId,
-        FirewallRules: [createFirewallRuleModel.item]
-    })
-    createFirewallRuleModel.dailog = false
-    createFirewallRuleModel.loading = false
-    refreshFirewallRules()
-}
-
-async function modifyFirewallRule() {
-    if (!firewallRules.value) {
-        return
-    }
-    modifyFirewallRuleModel.loading = true
-    await QApi.lighthouse.modifyFirewallRules(region, {
-        InstanceId: instanceId,
-        FirewallRules: firewallRules.value.FirewallRuleSet.map((item: FirewallRuleModel["item"]) => {
-            delete item.AppType
-            return item
-        })
-    })
-    modifyFirewallRuleModel.dailog = false
-    modifyFirewallRuleModel.loading = false
-    refreshFirewallRules()
-}
-
-async function modifyFirewallRuleDescription() {
-    modifyFirewallRuleDescriptionModel.loading = true
-    delete modifyFirewallRuleDescriptionModel.item.AppType
-    await QApi.lighthouse.modifyFirewallRuleDescription(region, {
-        InstanceId: instanceId,
-        FirewallRule: modifyFirewallRuleDescriptionModel.item
-    })
-    modifyFirewallRuleDescriptionModel.dailog = false
-    modifyFirewallRuleDescriptionModel.loading = false
-    refreshFirewallRules()
-}
-
-async function deleteFirewallRule(item: FirewallRuleModel["item"]) {
-    delete item.AppType
-    await QApi.lighthouse.deleteFirewallRules(region, {
-        InstanceId: instanceId,
-        FirewallRules: [item]
-    })
-    refreshFirewallRules()
-}
-
-async function refreshFirewallRules() {
-    Api.cache.clear(), await getFirewallRules()
-}
-
-////// 快照管理
-
-const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
-
-const createSnapshotModel = reactive({
-    dailog: false,
-    loading: false,
-    name: ""
-})
-
-function createSnapshotDailog() {
-    createSnapshotModel.name = 'Snapshot-' + Date.now()
-    createSnapshotModel.dailog = true
-}
-
-async function getSnapshots() {
-    const data = await QApi.lighthouse.describeSnapshots(region, {
-        Filters: [{ Name: "instance-id", Values: [instanceId] }],
-    })
-    snapshots.value = data
-}
-
-async function createSnapshot() {
-    createSnapshotModel.loading = true
-    await QApi.lighthouse.createInstanceSnapshot(region, {
-        InstanceId: instanceId,
-        SnapshotName: createSnapshotModel.name
-    })
-    createSnapshotModel.dailog = false
-    createSnapshotModel.loading = false
-    refreshSnapshot()
-}
-
-async function applySnapshot(item: Lighthouse.Snapshot) {
-    await QApi.lighthouse.applyInstanceSnapshot(region, {
-        InstanceId: instanceId,
-        SnapshotId: item.SnapshotId
-    })
-    refreshInstance()
-}
-
-async function deleteSnapshot(item: Lighthouse.Snapshot) {
-    await QApi.lighthouse.deleteSnapshots(region, {
-        SnapshotIds: [item.SnapshotId],
-    })
-    refreshSnapshot()
-}
-
-async function refreshSnapshot() {
-    Api.cache.clear(), await getSnapshots()
-    if (snapshots.value?.SnapshotSet.find((item) => item.Percent < 100)) {
-        setTimeout(refreshSnapshot, 1500)
-    }
-}
-
-////// 流量包信息
-
-const trafficPackage = ref<Lighthouse.TrafficPackage>()
-
-const outtrafficChart = ref<EChartsOption>()
-
-async function getTrafficPackage() {
-    const data = await QApi.lighthouse.describeInstancesTrafficPackages(region, {
-        InstanceIds: [instanceId],
-    })
-    trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
-}
-
-async function getLighthouseOuttraffic() {
-    const data = await QApi.monitor.getMonitorData(region, {
-        Namespace: "QCE/LIGHTHOUSE",
-        MetricName: "LighthouseOuttraffic",
-        Instances: [
-            {
-                Dimensions: [
-                    {
-                        Name: "InstanceId",
-                        Value: instanceId,
-                    },
-                ],
-            },
-        ],
-        Period: 300,
-        StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
-        EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
-    })
-    const xdata = data.DataPoints[0].Timestamps.map(t => {
-        return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
-    })
-    outtrafficChart.value = getOuttrafficChartConfig(xdata, data.DataPoints[0].Values)
-}
-
-function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {
-    return {
-        backgroundColor: '#fcfcfc',
-        toolbox: {
-            feature: {
-                dataZoom: {
-                    yAxisIndex: false
-                },
-                saveAsImage: {
-                    pixelRatio: 2
-                }
-            }
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
-            },
-            formatter: '时间：{b0}<br />流量：{c0} MB/s'
-        },
-        grid: {
-            left: 80,
-            right: 80,
-            bottom: 90
-        },
-        dataZoom: [
-            {
-                type: 'inside',
-                start: 80
-            },
-            {
-                type: 'slider'
-            }
-        ],
-        xAxis: {
-            silent: false,
-            splitLine: {
-                show: false
-            },
-            splitArea: {
-                show: false
-            },
-            data: xdata
-        },
-        yAxis: {
-            axisLabel: {
-                formatter: '{value} MB/s'
-            },
-            splitArea: {
-                show: false
-            }
-        },
-        series: [
-            {
-                type: 'line',
-                areaStyle: {},
-                name: '流量',
-                data: sdata
-            }
-        ]
-    }
-}
-
-////// 初始化
-
-(async () => {
-    await getInstance()
-    getSnapshots()
-    getFirewallRules()
-    getTrafficPackage()
-    getLighthouseOuttraffic()
-})()
-</script>

@@ -1,3 +1,63 @@
+<script lang="ts" setup>
+import { ref, reactive } from "vue"
+import { ElMessage, ElMessageBox, FormInstance, FormRules } from "element-plus"
+
+import { Api } from "@/api"
+import sessionStore from "@/store/session"
+
+const session = sessionStore()
+
+// 密钥列表
+
+async function fetchSecrets() {
+    const res = await Api.secret.fetch()
+    session.setSecrets(res)
+}
+
+// 添加密钥
+
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    secretId: "",
+    secretKey: "",
+    description: "",
+})
+
+const formRules: FormRules = {
+    description: [{ required: true, message: "请输入别名", trigger: "blur" }],
+    secretId: [{ required: true, message: "请输入 SecretId", trigger: "blur" }],
+    secretKey: [{ required: true, message: "请输入 SecretKey", trigger: "blur" }],
+}
+
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
+        }
+        await Api.secret.create(formModel)
+        formModel.secretId = ""
+        formModel.secretKey = ""
+        formModel.description = ""
+        fetchSecrets()
+    })
+}
+
+// 删除密钥
+
+async function deleteSecret(idx: number) {
+    await ElMessageBox.confirm("确定要删除吗？", "提示", {
+        type: "warning",
+    })
+    const item = session.secretList[idx]
+    await Api.secret.remove(item.Id)
+    session.secretList.splice(idx, 1)
+}
+
+fetchSecrets()
+</script>
+
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
@@ -58,63 +118,3 @@
         </el-card>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { ElMessage, ElMessageBox, FormInstance, FormRules } from "element-plus"
-
-import { Api } from "@/api"
-import sessionStore from "@/store/session"
-
-const session = sessionStore()
-
-// 密钥列表
-
-async function fetchSecrets() {
-    const res = await Api.secret.fetch()
-    session.setSecrets(res)
-}
-
-// 添加密钥
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    secretId: "",
-    secretKey: "",
-    description: "",
-})
-
-const formRules: FormRules = {
-    description: [{ required: true, message: "请输入别名", trigger: "blur" }],
-    secretId: [{ required: true, message: "请输入 SecretId", trigger: "blur" }],
-    secretKey: [{ required: true, message: "请输入 SecretKey", trigger: "blur" }],
-}
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.secret.create(formModel)
-        formModel.secretId = ""
-        formModel.secretKey = ""
-        formModel.description = ""
-        fetchSecrets()
-    })
-}
-
-// 删除密钥
-
-async function deleteSecret(idx: number) {
-    await ElMessageBox.confirm("确定要删除吗？", "提示", {
-        type: "warning",
-    })
-    const item = session.secretList[idx]
-    await Api.secret.remove(item.Id)
-    session.secretList.splice(idx, 1)
-}
-
-fetchSecrets()
-</script>

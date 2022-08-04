@@ -1,33 +1,3 @@
-<template>
-    <div class="vnc-wrap">
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
-                首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item to="/lighthouse/index">
-                轻量服务器
-            </el-breadcrumb-item>
-            <el-breadcrumb-item :to="'/lighthouse/detail/' + zone + '/' + instanceId">
-                {{ instanceId }}
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
-                VNC 终端
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <iframe ref="frame" frameborder="no" class="mgb10" />
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>快捷命令</b>
-                </div>
-            </template>
-            <el-button v-for="item in cmdList" :key="item.Id" @click="vncExec(item.Content)">
-                {{ item.Name }}
-            </el-button>
-        </el-card>
-    </div>
-</template>
-
 <script lang="ts" setup>
 import { onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
@@ -82,6 +52,36 @@ function vncExec(cmd: string) {
 fetchTATList()
 onMounted(() => vncInit())
 </script>
+
+<template>
+    <div class="vnc-wrap">
+        <el-breadcrumb separator="/" class="crumbs">
+            <el-breadcrumb-item to="/">
+                首页
+            </el-breadcrumb-item>
+            <el-breadcrumb-item to="/lighthouse/index">
+                轻量服务器
+            </el-breadcrumb-item>
+            <el-breadcrumb-item :to="'/lighthouse/detail/' + zone + '/' + instanceId">
+                {{ instanceId }}
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                VNC 终端
+            </el-breadcrumb-item>
+        </el-breadcrumb>
+        <iframe ref="frame" frameborder="no" class="mgb10" />
+        <el-card shadow="hover">
+            <template #header>
+                <div class="flex-between">
+                    <b>快捷命令</b>
+                </div>
+            </template>
+            <el-button v-for="item in cmdList" :key="item.Id" @click="vncExec(item.Content)">
+                {{ item.Name }}
+            </el-button>
+        </el-card>
+    </div>
+</template>
 
 <style lang="scss" scoped>
 iframe {

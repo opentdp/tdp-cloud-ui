@@ -1,3 +1,46 @@
+<script lang="ts" setup>
+import { ref, reactive } from "vue"
+import { ElMessage, FormRules, FormInstance } from "element-plus"
+
+import { Api } from "@/api"
+import sessionStore from "@/store/session"
+
+const session = sessionStore()
+
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    description: session.description,
+})
+
+const formRules = ref<FormRules>({
+    desc: [
+        { required: true, message: "请输入个人简介", trigger: "blur" },
+        {
+            validator: (rule, value, callback) => {
+                if (value.trim().length === 0) {
+                    callback(new Error("请输入个人简介"))
+                } else {
+                    callback()
+                }
+            },
+            trigger: "blur"
+        },
+    ],
+})
+
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
+        }
+        await Api.user.updateInfo(formModel)
+        session.description = formModel.description
+    })
+}
+</script>
+
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
@@ -54,49 +97,6 @@
         </el-row>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { ElMessage, FormRules, FormInstance } from "element-plus"
-
-import { Api } from "@/api"
-import sessionStore from "@/store/session"
-
-const session = sessionStore()
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    description: session.description,
-})
-
-const formRules = ref<FormRules>({
-    desc: [
-        { required: true, message: "请输入个人简介", trigger: "blur" },
-        {
-            validator: (rule, value, callback) => {
-                if (value.trim().length === 0) {
-                    callback(new Error("请输入个人简介"))
-                } else {
-                    callback()
-                }
-            },
-            trigger: "blur"
-        },
-    ],
-})
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.user.updateInfo(formModel)
-        session.description = formModel.description
-    })
-}
-</script>
 
 <style lang="scss" scoped>
 .info {

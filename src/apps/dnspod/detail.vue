@@ -1,3 +1,25 @@
+<script lang="ts" setup>
+import { ref } from "vue"
+import { useRoute } from "vue-router"
+
+import { QApi, Dnspod } from "@/api"
+
+const route = useRoute()
+
+const domain = route.params.domain as string
+
+const record = ref<Dnspod.DescribeRecordListResponse>()
+
+async function getRecordList() {
+    const data = await QApi.dnspod.describeRecordList({
+        Domain: domain
+    })
+    record.value = data
+}
+
+getRecordList()
+</script>
+
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
@@ -39,25 +61,3 @@
         </el-card>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from "vue"
-import { useRoute } from "vue-router"
-
-import { QApi, Dnspod } from "@/api"
-
-const route = useRoute()
-
-const domain = route.params.domain as string
-
-const record = ref<Dnspod.DescribeRecordListResponse>()
-
-async function getRecordList() {
-    const data = await QApi.dnspod.describeRecordList({
-        Domain: domain
-    })
-    record.value = data
-}
-
-getRecordList()
-</script>

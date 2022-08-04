@@ -1,3 +1,19 @@
+<script lang="ts" setup>
+import { ref } from "vue"
+
+import { QApi, Dnspod } from "@/api"
+import { DomainStatusMap } from "@/api/qcloud/dnspod"
+
+const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()
+
+async function getDomainList() {
+    const res = await QApi.dnspod.describeDomainList()
+    domainDescribe.value = res
+}
+
+getDomainList()
+</script>
+
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
@@ -44,19 +60,3 @@
         </el-card>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from "vue"
-
-import { QApi, Dnspod } from "@/api"
-import { DomainStatusMap } from "@/api/qcloud/dnspod"
-
-const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()
-
-async function getDomainList() {
-    const res = await QApi.dnspod.describeDomainList()
-    domainDescribe.value = res
-}
-
-getDomainList()
-</script>

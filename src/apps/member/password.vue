@@ -1,3 +1,49 @@
+<script lang="ts" setup>
+import { ref, reactive } from "vue"
+import { ElMessage, FormRules, FormInstance } from "element-plus"
+
+import { Api } from "@/api"
+import sessionStore from "@/store/session"
+
+const session = sessionStore()
+
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    oldPassword: "",
+    newPassword: "",
+    newPassword2: "",
+})
+
+const formRules = ref<FormRules>({
+    oldPassword: [{ required: true, message: "请输入原始密码", trigger: "blur" }],
+    newPassword: [{ required: true, message: "请输入密码", trigger: "blur" }],
+    newPassword2: [
+        { required: true, message: "请输入密码", trigger: "blur" },
+        {
+            validator: (rule, value, callback) => {
+                if (formModel.newPassword != formModel.newPassword2) {
+                    callback(new Error("两次密码不一致"))
+                } else {
+                    callback()
+                }
+            }, trigger: "blur"
+        },
+    ],
+})
+
+async function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
+        }
+        await Api.user.updatePassword(formModel)
+        ElMessage.success("修改成功")
+    })
+}
+</script>
+
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
@@ -57,52 +103,6 @@
         </el-row>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { ElMessage, FormRules, FormInstance } from "element-plus"
-
-import { Api } from "@/api"
-import sessionStore from "@/store/session"
-
-const session = sessionStore()
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    oldPassword: "",
-    newPassword: "",
-    newPassword2: "",
-})
-
-const formRules = ref<FormRules>({
-    oldPassword: [{ required: true, message: "请输入原始密码", trigger: "blur" }],
-    newPassword: [{ required: true, message: "请输入密码", trigger: "blur" }],
-    newPassword2: [
-        { required: true, message: "请输入密码", trigger: "blur" },
-        {
-            validator: (rule, value, callback) => {
-                if (formModel.newPassword != formModel.newPassword2) {
-                    callback(new Error("两次密码不一致"))
-                } else {
-                    callback()
-                }
-            }, trigger: "blur"
-        },
-    ],
-})
-
-async function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.user.updatePassword(formModel)
-        ElMessage.success("修改成功")
-    })
-}
-</script>
 
 <style lang="scss" scoped>
 .info {

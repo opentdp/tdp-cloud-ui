@@ -1,3 +1,12 @@
+<script lang="ts" setup>
+import layoutStore from "@/store/layout"
+
+import vNavbar from "./navbar.vue"
+import vSidebar from "./sidebar.vue"
+
+const layout = layoutStore()
+</script>
+
 <template>
     <v-navbar />
     <v-sidebar />
@@ -9,15 +18,6 @@
         </router-view>
     </div>
 </template>
-
-<script lang="ts" setup>
-import layoutStore from "@/store/layout"
-
-import vNavbar from "./navbar.vue"
-import vSidebar from "./sidebar.vue"
-
-const layout = layoutStore()
-</script>
 
 <style lang="scss" scoped>
 .content-box {

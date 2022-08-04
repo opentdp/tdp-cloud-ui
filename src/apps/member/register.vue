@@ -1,3 +1,39 @@
+<script lang="ts" setup>
+import { ref, reactive } from "vue"
+import { useRouter } from "vue-router"
+import { ElMessage, FormInstance, FormRules } from "element-plus"
+
+import { Api } from "@/api"
+
+const router = useRouter()
+
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    username: "",
+    password: "",
+    password2: "",
+})
+
+const formRules: FormRules = {
+    username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+    password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+    password2: [{ required: true, message: "请输入密码", trigger: "blur" }],
+}
+
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
+        }
+        await Api.user.register(formModel)
+        ElMessage.success("注册成功")
+        router.push("/member/login")
+    })
+}
+</script>
+
 <template>
     <div class="register-wrap">
         <div class="vt-register">
@@ -49,42 +85,6 @@
         </div>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRouter } from "vue-router"
-import { ElMessage, FormInstance, FormRules } from "element-plus"
-
-import { Api } from "@/api"
-
-const router = useRouter()
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    username: "",
-    password: "",
-    password2: "",
-})
-
-const formRules: FormRules = {
-    username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-    password: [{ required: true, message: "请输入密码", trigger: "blur" }],
-    password2: [{ required: true, message: "请输入密码", trigger: "blur" }],
-}
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.user.register(formModel)
-        ElMessage.success("注册成功")
-        router.push("/member/login")
-    })
-}
-</script>
 
 <style lang="scss" scoped>
 .register-wrap {

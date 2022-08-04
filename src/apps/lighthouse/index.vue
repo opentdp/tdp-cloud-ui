@@ -1,3 +1,70 @@
+<script lang="ts" setup>
+import { reactive } from "vue"
+
+import { QApi, Lighthouse } from "@/api"
+import { bytesToSize, dateFormat } from "@/helper/utils"
+
+const regionsInstances = reactive<
+    Record<
+        string,
+        Lighthouse.RegionInfo & {
+            InstanceSet: Lighthouse.DescribeInstancesResponse["InstanceSet"]
+            InstanceCount: number
+        }
+    >
+>({})
+
+const trafficPackages = reactive<Record<string, Lighthouse.TrafficPackage>>({})
+
+async function getRegions() {
+    const data = await QApi.lighthouse.describeRegions()
+    data.RegionSet.forEach(async (item) => {
+        regionsInstances[item.Region] = { ...item, InstanceCount: 0, InstanceSet: [] }
+        getInstances(item.Region)
+    })
+}
+
+async function getInstances(region: string) {
+    const data = await QApi.lighthouse.describeInstances(region)
+    if (data.TotalCount > 0) {
+        regionsInstances[region].InstanceCount = data.TotalCount
+        regionsInstances[region].InstanceSet.push(...data.InstanceSet)
+        getTrafficPackages(region)
+    }
+    return data.TotalCount
+}
+
+async function getTrafficPackages(zone: string) {
+    const data = await QApi.lighthouse.describeInstancesTrafficPackages(zone)
+    if (data.TotalCount > 0) {
+        data.InstanceTrafficPackageSet.forEach((item) => {
+            trafficPackages[item.InstanceId] = item.TrafficPackageSet[0]
+        })
+    }
+}
+
+function showTraffic(id: string) {
+    if (!trafficPackages[id]) {
+        return ""
+    }
+    const used = bytesToSize(trafficPackages[id].TrafficUsed)
+    const total = bytesToSize(trafficPackages[id].TrafficPackageTotal)
+    return `${used} / ${total}`
+}
+
+function showRegion(zone: string) {
+    const r = zone.split("-")
+    const n = r.pop()
+    zone = r.join("-")
+    if (!regionsInstances[zone]) {
+        return ""
+    }
+    return regionsInstances[zone].RegionName + ` ${n} 区`
+}
+
+getRegions()
+</script>
+
 <template>
     <div>
         <el-breadcrumb separator="/" class="crumbs">
@@ -65,70 +132,3 @@
         </template>
     </div>
 </template>
-
-<script lang="ts" setup>
-import { reactive } from "vue"
-
-import { QApi, Lighthouse } from "@/api"
-import { bytesToSize, dateFormat } from "@/helper/utils"
-
-const regionsInstances = reactive<
-    Record<
-        string,
-        Lighthouse.RegionInfo & {
-            InstanceSet: Lighthouse.DescribeInstancesResponse["InstanceSet"]
-            InstanceCount: number
-        }
-    >
->({})
-
-const trafficPackages = reactive<Record<string, Lighthouse.TrafficPackage>>({})
-
-async function getRegions() {
-    const data = await QApi.lighthouse.describeRegions()
-    data.RegionSet.forEach(async (item) => {
-        regionsInstances[item.Region] = { ...item, InstanceCount: 0, InstanceSet: [] }
-        getInstances(item.Region)
-    })
-}
-
-async function getInstances(region: string) {
-    const data = await QApi.lighthouse.describeInstances(region)
-    if (data.TotalCount > 0) {
-        regionsInstances[region].InstanceCount = data.TotalCount
-        regionsInstances[region].InstanceSet.push(...data.InstanceSet)
-        getTrafficPackages(region)
-    }
-    return data.TotalCount
-}
-
-async function getTrafficPackages(zone: string) {
-    const data = await QApi.lighthouse.describeInstancesTrafficPackages(zone)
-    if (data.TotalCount > 0) {
-        data.InstanceTrafficPackageSet.forEach((item) => {
-            trafficPackages[item.InstanceId] = item.TrafficPackageSet[0]
-        })
-    }
-}
-
-function showTraffic(id: string) {
-    if (!trafficPackages[id]) {
-        return ""
-    }
-    const used = bytesToSize(trafficPackages[id].TrafficUsed)
-    const total = bytesToSize(trafficPackages[id].TrafficPackageTotal)
-    return `${used} / ${total}`
-}
-
-function showRegion(zone: string) {
-    const r = zone.split("-")
-    const n = r.pop()
-    zone = r.join("-")
-    if (!regionsInstances[zone]) {
-        return ""
-    }
-    return regionsInstances[zone].RegionName + ` ${n} 区`
-}
-
-getRegions()
-</script>
