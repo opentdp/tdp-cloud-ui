@@ -3,8 +3,8 @@ import { QCloudClient } from "../basic/qcloud"
 import { TAT } from "./typings"
 
 export class TATModel extends QCloudClient {
-    protected qService = "lighthouse"
-    protected qVersion = "2020-03-24"
+    protected qService = "tat"
+    protected qVersion = "2020-10-28"
 
     public runCommand(region: string, query: TAT.RunCommandRequest): Promise<TAT.RunCommandResponse> {
         return this.q({
