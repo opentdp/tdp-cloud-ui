@@ -34,8 +34,8 @@ export class HttpClient {
         return this.request({ method: "DELETE", url, query })
     }
 
-    protected post(url: string, query: unknown, expiry = 0) {
-        return this.rcache({ method: "POST", url, query, expiry })
+    protected post(url: string, query: unknown) {
+        return this.request({ method: "POST", url, query })
     }
 
     protected patch(url: string, query: unknown) {
@@ -43,17 +43,9 @@ export class HttpClient {
     }
 
     protected async rcache(hcp: HttpClientParams & { expiry: number }) {
-        // 从缓存读取
-        if (hcp.expiry) {
-            const res = this.cached.get(hcp)
-            if (res) {
-                return res
-            }
-        }
-        // 请求远程接口
-        const res = await this.request(hcp)
-        // 写入本地缓存
-        if (hcp.expiry) {
+        let res = this.cached.get(hcp)
+        if (!res) {
+            res = await this.request(hcp)
             this.cached.set(hcp, res, hcp.expiry)
         }
         return res

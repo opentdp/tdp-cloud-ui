@@ -1,23 +1,36 @@
-import { HttpClient } from "../basic/http"
+import { QCloudClient } from "../basic/qcloud"
 
 import { TAT } from "./typings"
 
-export class TATModel extends HttpClient {
-    protected api = "/api/qcloud/tat/2020-10-28"
+export class TATModel extends QCloudClient {
+    protected qService = "lighthouse"
+    protected qVersion = "2020-03-24"
 
     public runCommand(region: string, query: TAT.RunCommandRequest): Promise<TAT.RunCommandResponse> {
-        return this.post("/RunCommand/" + region, query)
+        return this.q({
+            action: "RunCommand",
+            region, query,
+        })
     }
 
     public describeInvocations(region: string, query: TAT.DescribeInvocationsRequest): Promise<TAT.DescribeInvocationsResponse> {
-        return this.post("/DescribeInvocations/" + region, query)
+        return this.q({
+            action: "DescribeInvocations",
+            region, query,
+        })
     }
 
     public describeInvocationTasks(region: string, query: TAT.DescribeInvocationTasksRequest): Promise<TAT.DescribeInvocationTasksResponse> {
-        return this.post("/DescribeInvocationTasks/" + region, query)
+        return this.q({
+            action: "DescribeInvocationTasks",
+            region, query,
+        })
     }
 
     public describeCommands(region: string, query: TAT.DescribeCommandsRequest): Promise<TAT.DescribeCommandsResponse> {
-        return this.post("/DescribeCommands/" + region, query)
+        return this.q({
+            action: "DescribeCommands",
+            region, query,
+        })
     }
 }

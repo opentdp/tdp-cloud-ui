@@ -1,12 +1,16 @@
-import { HttpClient } from "../basic/http"
+import { QCloudClient } from "../basic/qcloud"
 
 import { Lighthouse } from "./typings"
 
-export class LighthouseModel extends HttpClient {
-    protected api = "/api/qcloud/lighthouse/2020-03-24"
+export class LighthouseModel extends QCloudClient {
+    protected qService = "lighthouse"
+    protected qVersion = "2020-03-24"
 
     public describeRegions(): Promise<Lighthouse.DescribeRegionsResponse> {
-        return this.post("/DescribeRegions", {}, 600)
+        return this.q({
+            action: "DescribeRegions",
+            expiry: 600
+        })
     }
 
     public describeInstances(
@@ -14,14 +18,20 @@ export class LighthouseModel extends HttpClient {
         query?: Lighthouse.DescribeInstancesRequest
     ): Promise<Lighthouse.DescribeInstancesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeInstances/" + region, query, 600)
+        return this.q({
+            action: "DescribeInstances",
+            region, query, expiry: 600
+        })
     }
 
     public modifyInstancesAttribute(
         region: string,
         query?: Lighthouse.ModifyInstancesAttributeRequest
     ): Promise<Lighthouse.ModifyInstancesAttributeResponse> {
-        return this.post("/ModifyInstancesAttribute/" + region, query)
+        return this.q({
+            action: "ModifyInstancesAttribute",
+            region, query,
+        })
     }
 
     // 电源
@@ -30,21 +40,30 @@ export class LighthouseModel extends HttpClient {
         region: string,
         query?: Lighthouse.StopInstancesRequest
     ): Promise<Lighthouse.StopInstancesResponse> {
-        return this.post("/StopInstances/" + region, query)
+        return this.q({
+            action: "StopInstances",
+            region, query,
+        })
     }
 
     public startInstances(
         region: string,
         query?: Lighthouse.StartInstancesRequest
     ): Promise<Lighthouse.StartInstancesResponse> {
-        return this.post("/StartInstances/" + region, query)
+        return this.q({
+            action: "StartInstances",
+            region, query,
+        })
     }
 
     public rebootInstances(
         region: string,
         query?: Lighthouse.RebootInstancesRequest
     ): Promise<Lighthouse.RebootInstancesResponse> {
-        return this.post("/RebootInstances/" + region, query)
+        return this.q({
+            action: "RebootInstances",
+            region, query,
+        })
     }
 
     // VNC
@@ -53,7 +72,10 @@ export class LighthouseModel extends HttpClient {
         region: string,
         query?: Lighthouse.DescribeInstanceVncUrlRequest
     ): Promise<Lighthouse.DescribeInstanceVncUrlResponse> {
-        return this.post("/DescribeInstanceVncUrl/" + region, query)
+        return this.q({
+            action: "DescribeInstanceVncUrl",
+            region, query,
+        })
     }
 
     // 快照
@@ -63,35 +85,50 @@ export class LighthouseModel extends HttpClient {
         query: Lighthouse.DescribeSnapshotsRequest
     ): Promise<Lighthouse.DescribeSnapshotsResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeSnapshots/" + region, query, 600)
+        return this.q({
+            action: "DescribeSnapshots",
+            region, query, expiry: 600
+        })
     }
 
     public createInstanceSnapshot(
         region: string,
         query: Lighthouse.CreateInstanceSnapshotRequest
     ): Promise<Lighthouse.CreateInstanceSnapshotResponse> {
-        return this.post("/CreateInstanceSnapshot/" + region, query)
+        return this.q({
+            action: "CreateInstanceSnapshot",
+            region, query,
+        })
     }
 
     public applyInstanceSnapshot(
         region: string,
         query: Lighthouse.ApplyInstanceSnapshotRequest
     ): Promise<Lighthouse.ApplyInstanceSnapshotResponse> {
-        return this.post("/ApplyInstanceSnapshot/" + region, query)
+        return this.q({
+            action: "ApplyInstanceSnapshot",
+            region, query,
+        })
     }
 
     public modifySnapshotAttribute(
         region: string,
         query: Lighthouse.ModifySnapshotAttributeRequest
     ): Promise<Lighthouse.ModifySnapshotAttributeResponse> {
-        return this.post("/ModifySnapshotAttribute/" + region, query)
+        return this.q({
+            action: "ModifySnapshotAttribute",
+            region, query,
+        })
     }
 
     public deleteSnapshots(
         region: string,
         query: Lighthouse.DeleteSnapshotsRequest
     ): Promise<Lighthouse.DeleteSnapshotsResponse> {
-        return this.post("/DeleteSnapshots/" + region, query)
+        return this.q({
+            action: "DeleteSnapshots",
+            region, query,
+        })
     }
 
     // 防火墙
@@ -101,35 +138,50 @@ export class LighthouseModel extends HttpClient {
         query: Lighthouse.DescribeFirewallRulesRequest
     ): Promise<Lighthouse.DescribeFirewallRulesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeFirewallRules/" + region, query, 600)
+        return this.q({
+            action: "DescribeFirewallRules",
+            region, query, expiry: 600
+        })
     }
 
     public createFirewallRules(
         region: string,
         query: Lighthouse.CreateFirewallRulesRequest
     ): Promise<Lighthouse.CreateFirewallRulesResponse> {
-        return this.post("/CreateFirewallRules/" + region, query)
+        return this.q({
+            action: "CreateFirewallRules",
+            region, query,
+        })
     }
 
     public modifyFirewallRules(
         region: string,
         query: Lighthouse.ModifyFirewallRulesRequest
     ): Promise<Lighthouse.ModifyFirewallRulesResponse> {
-        return this.post("/ModifyFirewallRules/" + region, query)
+        return this.q({
+            action: "ModifyFirewallRules",
+            region, query,
+        })
     }
 
     public modifyFirewallRuleDescription(
         region: string,
         query: Lighthouse.ModifyFirewallRuleDescriptionRequest
     ): Promise<Lighthouse.ModifyFirewallRuleDescriptionResponse> {
-        return this.post("/ModifyFirewallRuleDescription/" + region, query)
+        return this.q({
+            action: "ModifyFirewallRuleDescription",
+            region, query,
+        })
     }
 
     public deleteFirewallRules(
         region: string,
         query: Lighthouse.DeleteFirewallRulesRequest
     ): Promise<Lighthouse.DeleteFirewallRulesResponse> {
-        return this.post("/DeleteFirewallRules/" + region, query)
+        return this.q({
+            action: "DeleteFirewallRules",
+            region, query,
+        })
     }
 
     // 流量包
@@ -139,7 +191,10 @@ export class LighthouseModel extends HttpClient {
         query?: Lighthouse.DescribeInstancesTrafficPackagesRequest
     ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
         query = Object.assign({ Limit: 100 }, query)
-        return this.post("/DescribeInstancesTrafficPackages/" + region, query, 600)
+        return this.q({
+            action: "DescribeInstancesTrafficPackages",
+            region, query, expiry: 600
+        })
     }
 }
 
