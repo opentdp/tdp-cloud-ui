@@ -8,6 +8,13 @@ import { Message } from "./mesg"
 let cached: Cached
 let session: ReturnType<typeof sessionStore>
 
+interface HttpClientParams {
+    method: "GET" | "DELETE" | "POST" | "PATCH"
+    url: string
+    query?: unknown
+    header?: HeadersInit
+}
+
 export class HttpClient {
     protected api = "/api"
 
@@ -19,71 +26,72 @@ export class HttpClient {
         return session || (session = sessionStore())
     }
 
-    protected async get(url: string, query?: unknown, expiry = 0) {
-        if (expiry > 0) {
-            const cres = this.cached.get({ url, query })
-            if (cres) {
-                return cres
+    protected get(url: string, query?: unknown) {
+        return this.request({ method: "GET", url, query })
+    }
+
+    protected delete(url: string, query?: unknown) {
+        return this.request({ method: "DELETE", url, query })
+    }
+
+    protected post(url: string, query: unknown, expiry = 0) {
+        return this.rcache({ method: "POST", url, query, expiry })
+    }
+
+    protected patch(url: string, query: unknown) {
+        return this.request({ method: "PATCH", url, query })
+    }
+
+    protected async rcache(hcp: HttpClientParams & { expiry: number }) {
+        // 从缓存读取
+        if (hcp.expiry) {
+            const res = this.cached.get(hcp)
+            if (res) {
+                return res
             }
         }
         // 请求远程接口
-        if (query) {
-            url += "?" + this.buildQuery(query)
-        }
-        const body = await fetch(this.api + url, {
-            method: "GET",
-            headers: this.buildHeader(),
-        })
-        const res = await this.parseResponse(body)
+        const res = await this.request(hcp)
         // 写入本地缓存
-        if (expiry > 0) {
-            this.cached.set({ url, query }, res, expiry)
+        if (hcp.expiry) {
+            this.cached.set(hcp, res, hcp.expiry)
         }
         return res
     }
 
-    protected async post(url: string, query: unknown, expiry = 0) {
-        if (expiry > 0) {
-            const cres = this.cached.get({ url, query })
-            if (cres) {
-                return cres
+    protected async request(hcp: HttpClientParams) {
+        // 构造请求头
+        const headers: HeadersInit = {
+            Accept: "application/json",
+        }
+        if (hcp.header) {
+            Object.assign(headers, hcp.header)
+        }
+        if (this.session.token) {
+            const token = this.session.token
+            const keyid = this.session.keyid || 0
+            headers.Authorization = keyid + ":" + token
+        }
+        // 构造请求参数
+        const request: RequestInit = {
+            method: hcp.method,
+            headers
+        }
+        if (hcp.query) {
+            if (/GET|DELETE/.test(hcp.method)) {
+                hcp.url += "?" + this.buildQuery(hcp.query)
+            }
+            else if (/PATCH|POST/.test(hcp.method)) {
+                request.body = JSON.stringify(hcp.query)
+                headers["Content-Type"] = "application/json"
             }
         }
-        // 请求远程接口
-        const body = await fetch(this.api + url, {
-            method: "POST",
-            headers: this.buildHeader("json"),
-            body: JSON.stringify(query || {}),
-        })
-        const res = await this.parseResponse(body)
-        // 写入本地缓存
-        if (expiry > 0) {
-            this.cached.set({ url, query }, res, expiry)
-        }
-        return res
+        // 发起请求并返回结构数据
+        return this.fetchData(hcp.url, request)
     }
 
-    protected async patch(url: string, query: unknown) {
-        const body = await fetch(this.api + url, {
-            method: "PATCH",
-            headers: this.buildHeader("json"),
-            body: JSON.stringify(query || {}),
-        })
-        return this.parseResponse(body)
-    }
-
-    protected async delete(url: string, query?: unknown) {
-        if (query) {
-            url += "?" + this.buildQuery(query)
-        }
-        const body = await fetch(this.api + url, {
-            method: "DELETE",
-            headers: this.buildHeader(),
-        })
-        return this.parseResponse(body)
-    }
-
-    protected async parseResponse(body: Response) {
+    protected async fetchData(url: string, req: RequestInit) {
+        const body = await fetch(this.api + url, req)
         const data = await body.json()
         // 捕获错误信息
         if (data.Error) {
@@ -102,21 +110,6 @@ export class HttpClient {
             return data.Payload
         }
         return data
-    }
-
-    protected buildHeader(type?: string) {
-        const headers: HeadersInit = {
-            Accept: "application/json",
-        }
-        if (type === "json") {
-            headers["Content-Type"] = "application/json"
-        }
-        if (this.session.token) {
-            const token = this.session.token
-            const keyid = this.session.keyid || 0
-            headers.Authorization = keyid + ":" + token
-        }
-        return headers
     }
 
     protected buildQuery(obj: unknown, key?: string) {
