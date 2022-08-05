@@ -21,5 +21,5 @@ export interface SSHRequest {
     addr: string
     user: string
     password?: string
-    publicKey?: string
+    privateKey?: string
 }

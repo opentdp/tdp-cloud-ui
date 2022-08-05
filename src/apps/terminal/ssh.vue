@@ -12,10 +12,10 @@ import { WebSSH } from "@/helper/webssh"
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    addr: "",
-    user: "",
+    addr: "106.52.239.51:2200",
+    user: "root",
     password: "",
-    publicKey: ""
+    privateKey: ""
 })
 
 const formRules: FormRules = {
@@ -23,16 +23,16 @@ const formRules: FormRules = {
     user: [{ required: true, message: "请输入用户名", trigger: "blur" }],
     password: [{
         validator: (rule, value, callback) => {
-            if (!formModel.password && !formModel.publicKey) {
+            if (!formModel.password && !formModel.privateKey) {
                 callback(new Error("密码或公钥至少提供一个"))
             } else {
                 callback()
             }
         }, trigger: "blur"
     }],
-    publicKey: [{
+    privateKey: [{
         validator: (rule, value, callback) => {
-            if (!formModel.password && !formModel.publicKey) {
+            if (!formModel.password && !formModel.privateKey) {
                 callback(new Error("密码或公钥至少提供一个"))
             } else {
                 callback()
@@ -148,8 +148,8 @@ fetchTATList()
                     <el-form-item prop="password" label="密码">
                         <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
-                    <el-form-item prop="publicKey" label="公钥">
-                        <el-input v-model="formModel.publicKey" type="textarea" :rows="4" @keyup.enter="formSubmit(formRef)" />
+                    <el-form-item prop="privateKey" label="私钥">
+                        <el-input v-model="formModel.privateKey" type="textarea" :rows="4" @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="formSubmit(formRef)">
