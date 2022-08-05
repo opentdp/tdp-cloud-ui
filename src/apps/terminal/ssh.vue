@@ -4,7 +4,7 @@ import { useRoute } from "vue-router"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { Api } from "@/api"
+import { Api, QApi } from "@/api"
 import { TATItem } from '@/api/local/tat'
 
 import { WebSSH } from "@/helper/webssh"
@@ -23,8 +23,8 @@ const formModel = reactive({
 })
 
 const formRules: FormRules = {
-    addr: [{ required: true, message: "格式 1.1.1.1:22", trigger: "blur" }],
-    user: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+    addr: [{ required: true, message: "格式 1.1.1.1:22" }],
+    user: [{ required: true, message: "请输入用户名" }],
     password: [{
         validator: (rule, value, callback) => {
             if (!formModel.password && !formModel.privateKey) {
@@ -32,7 +32,7 @@ const formRules: FormRules = {
             } else {
                 callback()
             }
-        }, trigger: "blur"
+        }
     }],
     privateKey: [{
         validator: (rule, value, callback) => {
@@ -41,7 +41,7 @@ const formRules: FormRules = {
             } else {
                 callback()
             }
-        }, trigger: "blur"
+        }
     }],
 }
 
@@ -111,6 +111,39 @@ function removeTab(id: string) {
     sshTabs.splice(index, 1)
 }
 
+// 获取实例列表
+
+const lighthouseInstances = reactive<
+    {
+        ipAddresse: string
+        platformType: string
+        regionName: string
+    }[]
+>([])
+
+async function getLighthouseInstances() {
+    const data = await QApi.lighthouse.describeRegions()
+    data.RegionSet.forEach(async (regoin) => {
+        const data = await QApi.lighthouse.describeInstances(regoin.Region)
+        if (data.TotalCount > 0) {
+            data.InstanceSet.map(instance => {
+                lighthouseInstances.push({
+                    regionName: regoin.RegionName,
+                    ipAddresse: instance.PublicAddresses[0],
+                    platformType: instance.PlatformType
+                })
+            })
+        }
+    })
+}
+
+function lighthouseSearch(qr: string, cb: (a: unknown[]) => void) {
+    const rs = lighthouseInstances.map((item) => {
+        return { value: item.ipAddresse + " - " + item.regionName }
+    })
+    cb(rs)
+}
+
 // 执行快捷命令
 
 const cmdList = ref<TATItem[]>([])
@@ -128,6 +161,7 @@ function sshExec(cmd: string) {
 }
 
 fetchTATList()
+getLighthouseInstances()
 </script>
 
 <template>
@@ -144,7 +178,7 @@ fetchTATList()
             <el-tab-pane label="新建" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
                     <el-form-item prop="addr" label="主机">
-                        <el-input v-model="formModel.addr" />
+                        <el-autocomplete v-model="formModel.addr" :fetch-suggestions="lighthouseSearch" clearable />
                     </el-form-item>
                     <el-form-item prop="user" label="用户名">
                         <el-input v-model="formModel.user" />
@@ -153,8 +187,8 @@ fetchTATList()
                         <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
                     <el-form-item prop="privateKey" label="私钥">
-                        <el-input v-model="formModel.privateKey" type="textarea" :autosize="{ minRows: 3, maxRows: 10 }"
-                            @keyup.enter="formSubmit(formRef)" />
+                        <el-input v-model="formModel.privateKey" type="textarea"
+                            :autosize="{ minRows: 3, maxRows: 10 }" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="formSubmit(formRef)">
