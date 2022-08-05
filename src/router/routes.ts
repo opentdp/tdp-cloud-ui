@@ -73,7 +73,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/lighthouse/vnc.vue"),
             },
             {
-                path: "/terminal/ssh",
+                path: "/terminal/ssh/:addr*",
                 name: "terminal-ssh",
                 meta: {
                     title: "SSH 终端",

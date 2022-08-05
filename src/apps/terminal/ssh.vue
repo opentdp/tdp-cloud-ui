@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
+import { useRoute } from "vue-router"
+
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api } from "@/api"
@@ -7,12 +9,14 @@ import { TATItem } from '@/api/local/tat'
 
 import { WebSSH } from "@/helper/webssh"
 
+const route = useRoute()
+
 // 登录服务器
 
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    addr: "106.52.239.51:2200",
+    addr: "" + route.params.addr,
     user: "root",
     password: "",
     privateKey: ""
@@ -149,7 +153,8 @@ fetchTATList()
                         <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
                     <el-form-item prop="privateKey" label="私钥">
-                        <el-input v-model="formModel.privateKey" type="textarea" :rows="4" @keyup.enter="formSubmit(formRef)" />
+                        <el-input v-model="formModel.privateKey" type="textarea" :autosize="{ minRows: 3, maxRows: 10 }"
+                            @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="formSubmit(formRef)">

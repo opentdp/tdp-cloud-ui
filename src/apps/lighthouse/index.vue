@@ -101,13 +101,12 @@ getRegions()
                             {{ scope.row.SystemDisk.DiskSize + " GB" }}
                         </template>
                     </el-table-column>
+                    <el-table-column prop="PublicAddresses" label="外网 IP" min-width="130" />
                     <el-table-column label="已用 / 流量包" min-width="150">
                         <template #default="scope">
                             {{ showTraffic(scope.row.InstanceId) }}
                         </template>
                     </el-table-column>
-                    <el-table-column prop="PrivateAddresses" label="内网 IP" min-width="100" />
-                    <el-table-column prop="PublicAddresses" label="外网 IP" min-width="130" />
                     <el-table-column label="到期时间" min-width="100">
                         <template #default="scope">
                             {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
