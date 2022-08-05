@@ -25,9 +25,9 @@ const formModel = reactive({
 })
 
 const formRules: FormRules = {
-    description: [{ required: true, message: "请输入别名", trigger: "blur" }],
-    secretId: [{ required: true, message: "请输入 SecretId", trigger: "blur" }],
-    secretKey: [{ required: true, message: "请输入 SecretKey", trigger: "blur" }],
+    description: [{ required: true, message: "请输入别名" }],
+    secretId: [{ required: true, message: "请输入 SecretId" }],
+    secretKey: [{ required: true, message: "请输入 SecretKey" }],
 }
 
 function formSubmit(form: FormInstance | undefined) {

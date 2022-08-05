@@ -15,7 +15,7 @@ const formModel = reactive({
 
 const formRules = ref<FormRules>({
     desc: [
-        { required: true, message: "请输入个人简介", trigger: "blur" },
+        { required: true, message: "请输入个人简介" },
         {
             validator: (rule, value, callback) => {
                 if (value.trim().length === 0) {
