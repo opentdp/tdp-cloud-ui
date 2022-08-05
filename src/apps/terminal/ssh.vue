@@ -123,11 +123,11 @@ const lighthouseInstances = reactive<
 
 async function getLighthouseInstances() {
     const data = await QApi.lighthouse.describeRegions()
-    data.RegionSet.forEach(async (regoin) => {
-        const data = await QApi.lighthouse.describeInstances(regoin.Region)
+    data.RegionSet.forEach(async (region) => {
+        const data = await QApi.lighthouse.describeInstances(region.Region)
         data.InstanceSet.forEach(instance => {
             lighthouseInstances.push({
-                regionName: regoin.RegionName,
+                regionName: region.RegionName,
                 ipAddresse: instance.PublicAddresses[0],
                 platformType: instance.PlatformType
             })
@@ -140,7 +140,7 @@ function lighthouseSearch(qr: string, cb: (a: unknown[]) => void) {
     lighthouseInstances.forEach((item) => {
         if (item.platformType === "LINUX_UNIX"
             && (item.ipAddresse + item.regionName).includes(qr)) {
-            rs.push({ value: item.ipAddresse, regoin: item.regionName })
+            rs.push({ value: item.ipAddresse, region: item.regionName })
         }
     })
     cb(rs)
@@ -150,7 +150,7 @@ function lighthouseSearch(qr: string, cb: (a: unknown[]) => void) {
 
 const cmdList = ref<TATItem[]>([])
 
-async function fetchTATList() {
+async function getTATCommondList() {
     const res = await Api.tat.fetchTATList()
     cmdList.value = res
 }
@@ -162,8 +162,10 @@ function sshExec(cmd: string) {
     }
 }
 
-fetchTATList()
+////// 初始化
+
 getLighthouseInstances()
+getTATCommondList()
 </script>
 
 <template>
@@ -182,7 +184,7 @@ getLighthouseInstances()
                     <el-form-item prop="addr" label="主机">
                         <el-autocomplete v-model="formModel.addr" :fetch-suggestions="lighthouseSearch" clearable>
                             <template #default="{ item }">
-                                {{ item.value }} - {{ item.regoin }}
+                                {{ item.value }} - {{ item.region }}
                             </template>
                         </el-autocomplete>
                     </el-form-item>
