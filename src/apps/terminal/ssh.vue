@@ -15,12 +15,30 @@ const formModel = reactive({
     addr: "",
     user: "",
     password: "",
+    publicKey: ""
 })
 
 const formRules: FormRules = {
     addr: [{ required: true, message: "格式 1.1.1.1:22", trigger: "blur" }],
     user: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-    password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+    password: [{
+        validator: (rule, value, callback) => {
+            if (!formModel.password && !formModel.publicKey) {
+                callback(new Error("密码或公钥至少提供一个"))
+            } else {
+                callback()
+            }
+        }, trigger: "blur"
+    }],
+    publicKey: [{
+        validator: (rule, value, callback) => {
+            if (!formModel.password && !formModel.publicKey) {
+                callback(new Error("密码或公钥至少提供一个"))
+            } else {
+                callback()
+            }
+        }, trigger: "blur"
+    }],
 }
 
 function formSubmit(form: FormInstance | undefined) {
@@ -129,6 +147,9 @@ fetchTATList()
                     </el-form-item>
                     <el-form-item prop="password" label="密码">
                         <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
+                    </el-form-item>
+                    <el-form-item prop="publicKey" label="公钥">
+                        <el-input v-model="formModel.publicKey" type="textarea" :rows="4" @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="formSubmit(formRef)">
