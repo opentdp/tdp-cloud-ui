@@ -125,21 +125,23 @@ async function getLighthouseInstances() {
     const data = await QApi.lighthouse.describeRegions()
     data.RegionSet.forEach(async (regoin) => {
         const data = await QApi.lighthouse.describeInstances(regoin.Region)
-        if (data.TotalCount > 0) {
-            data.InstanceSet.map(instance => {
-                lighthouseInstances.push({
-                    regionName: regoin.RegionName,
-                    ipAddresse: instance.PublicAddresses[0],
-                    platformType: instance.PlatformType
-                })
+        data.InstanceSet.forEach(instance => {
+            lighthouseInstances.push({
+                regionName: regoin.RegionName,
+                ipAddresse: instance.PublicAddresses[0],
+                platformType: instance.PlatformType
             })
-        }
+        })
     })
 }
 
 function lighthouseSearch(qr: string, cb: (a: unknown[]) => void) {
-    const rs = lighthouseInstances.map((item) => {
-        return { value: item.ipAddresse + " - " + item.regionName }
+    const rs: unknown[] = []
+    lighthouseInstances.forEach((item) => {
+        if (item.platformType === "LINUX_UNIX"
+            && (item.ipAddresse + item.regionName).includes(qr)) {
+            rs.push({ value: item.ipAddresse, regoin: item.regionName })
+        }
     })
     cb(rs)
 }
@@ -178,7 +180,11 @@ getLighthouseInstances()
             <el-tab-pane label="新建" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
                     <el-form-item prop="addr" label="主机">
-                        <el-autocomplete v-model="formModel.addr" :fetch-suggestions="lighthouseSearch" clearable />
+                        <el-autocomplete v-model="formModel.addr" :fetch-suggestions="lighthouseSearch" clearable>
+                            <template #default="{ item }">
+                                {{ item.value }} - {{ item.regoin }}
+                            </template>
+                        </el-autocomplete>
                     </el-form-item>
                     <el-form-item prop="user" label="用户名">
                         <el-input v-model="formModel.user" />
