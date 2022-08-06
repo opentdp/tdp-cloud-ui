@@ -17,7 +17,7 @@ async function vncInit() {
         InstanceId: instanceId,
     })
     if (frame.value) {
-        const vnc = '/api/terminal/vnc?InstanceVncUrl='
+        const vnc = '/api/qcloud/vnc?InstanceVncUrl='
         frame.value.src = vnc + data.InstanceVncUrl
     }
 }
