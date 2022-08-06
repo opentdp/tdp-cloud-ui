@@ -40,7 +40,7 @@ const items: MenuItem[] = [
     {
         icon: "Dish",
         index: "/tat/index",
-        title: "TAT",
+        title: "自动化助手",
     },
     {
         icon: "Wallet",
