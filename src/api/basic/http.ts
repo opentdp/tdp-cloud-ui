@@ -1,9 +1,7 @@
-import { ElMessage } from "element-plus"
-
 import { Cached } from "@/helper/cached"
 import sessionStore from "@/store/session"
 
-import { Message } from "./mesg"
+import { errNotify, okNotify } from "./notify"
 
 let cached: Cached
 let session: ReturnType<typeof sessionStore>
@@ -80,8 +78,7 @@ export class HttpClient {
         const data = await body.json()
         // 捕获错误信息
         if (data.Error) {
-            const err = data.Error.Message || data.Error || "UKN"
-            ElMessage.error(Message[err] || err)
+            const err = errNotify(data.Error)
             if (/会话已失效|登录后重试/.test(err)) {
                 session.$reset(), location.reload()
             }
@@ -90,7 +87,7 @@ export class HttpClient {
         // 处理正确结果
         if (data.Payload) {
             if (data.Payload.Message) {
-                ElMessage.success(data.Payload.Message)
+                okNotify(data.Payload.Message)
             }
             return data.Payload
         }
@@ -124,8 +121,8 @@ export class HttpClient {
 }
 
 export interface HttpClientParams {
-    method: "GET" | "DELETE" | "POST" | "PATCH"
     url: string
-    query?: unknown
     header?: HeadersInit
+    method: "GET" | "DELETE" | "POST" | "PATCH"
+    query?: unknown
 }
