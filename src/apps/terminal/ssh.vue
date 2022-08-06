@@ -180,7 +180,7 @@ getTATCommondList()
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">
             <el-tab-pane label="新建" name="new">
-                <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
+                <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="66px">
                     <el-form-item prop="addr" label="主机">
                         <el-autocomplete v-model="formModel.addr" :fetch-suggestions="lighthouseSearch" clearable>
                             <template #default="{ item }">
