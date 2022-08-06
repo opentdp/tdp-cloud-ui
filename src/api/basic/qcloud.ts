@@ -1,4 +1,4 @@
-import { HttpClient } from "./http"
+import { HttpClient, HttpClientParams } from "./http"
 
 export class QCloudClient extends HttpClient {
     protected api = "/api/qcloud"
@@ -7,7 +7,7 @@ export class QCloudClient extends HttpClient {
     protected qVersion = ""
 
     protected q(q: { action: string, region?: string, endpoint?: string, query?: unknown, expiry?: number }) {
-        let header: HeadersInit = {
+        const header: HeadersInit = {
             service: this.qService,
             version: this.qVersion,
             action: q.action,
@@ -18,13 +18,17 @@ export class QCloudClient extends HttpClient {
         if (q.endpoint) {
             header.endpoint = q.endpoint
         }
-        header = {
-            "TDP-Cloud": JSON.stringify(header)
+        const params: HttpClientParams = {
+            method: "POST",
+            url: "/",
+            header: {
+                "TDP-QCloud": JSON.stringify(header)
+            },
+            query: q.query
         }
-        if (q.expiry) {
-            return this.rcache({ method: "POST", url: "/", header, query: q.query, expiry: q.expiry })
-        } else {
-            return this.request({ method: "POST", url: "/", header, query: q.query })
+        if (!q.expiry) {
+            return this.request(params)
         }
+        return this.rcache(Object.assign(params, { expiry: q.expiry }))
     }
 }

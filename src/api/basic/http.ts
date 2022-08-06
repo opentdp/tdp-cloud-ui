@@ -8,13 +8,6 @@ import { Message } from "./mesg"
 let cached: Cached
 let session: ReturnType<typeof sessionStore>
 
-interface HttpClientParams {
-    method: "GET" | "DELETE" | "POST" | "PATCH"
-    url: string
-    query?: unknown
-    header?: HeadersInit
-}
-
 export class HttpClient {
     protected api = "/api"
 
@@ -128,4 +121,11 @@ export class HttpClient {
         }
         return result.join("&")
     }
+}
+
+export interface HttpClientParams {
+    method: "GET" | "DELETE" | "POST" | "PATCH"
+    url: string
+    query?: unknown
+    header?: HeadersInit
 }
