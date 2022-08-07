@@ -2,19 +2,19 @@ import { HttpClient } from "../basic/http"
 
 export class TATModel extends HttpClient {
     public fetchTATList(): Promise<TATItem[]> {
-        return this.get("/tat")
+        return this.get("/tat/script")
     }
 
     public updateTAT(src: TATItem) {
-        return this.patch("/tat/" + src.Id, src)
+        return this.patch("/tat/script/" + src.Id, src)
     }
 
     public newTAT(src: Omit<TATItem, "Id">) {
-        return this.post("/tat/", src)
+        return this.post("/tat/script/", src)
     }
 
     public deleteTAT(id: string) {
-        return this.delete("/tat/" + id)
+        return this.delete("/tat/script/" + id)
     }
 
     public newTATHistory(src: {
@@ -61,4 +61,3 @@ export interface TATHistoryItem {
     InvocationStatus: string
     InvocationResultJson: string
 }
-

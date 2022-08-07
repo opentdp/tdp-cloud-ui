@@ -86,16 +86,16 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="执行路径">
-                    <el-input v-model="newForm.WorkingDirectory" :placeholder="newForm.CommandType == 'SHELL' ? '非必填，默认为/root' : '非必填，默认为C:\\Program Files\\qcloud\\tat_agent\\workdir'" />
+                    <el-input v-model="newForm.WorkingDirectory" :placeholder="newForm.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\Program Files\\qcloud\\tat_agent\\workdir'" />
                 </el-form-item>
                 <el-form-item label="执行用户">
-                    <el-input v-model="newForm.Username" :placeholder="newForm.CommandType == 'SHELL' ? '非必填，默认为root' : '非必填，默认为System'" />
+                    <el-input v-model="newForm.Username" :placeholder="newForm.CommandType == 'SHELL' ? '非必填，默认为 root' : '非必填，默认为 System'" />
                 </el-form-item>
                 <el-form-item label="命令">
                     <el-input v-model="newForm.Content" type="textarea" rows="5" />
                 </el-form-item>
                 <el-form-item label="超时时间">
-                    <el-input-number v-model="newForm.Timeout" placeholder="非必填，默认60s" :min="1" :max="86400" :value-on-clear="60" />
+                    <el-input-number v-model="newForm.Timeout" placeholder="非必填，默认为 60s" :min="1" :max="86400" :value-on-clear="60" />
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -121,16 +121,16 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="执行路径">
-                    <el-input v-model="editForm.WorkingDirectory" :placeholder="editForm.CommandType == 'SHELL' ? '非必填，默认为/root' : '非必填，默认为C:\\Program Files\\qcloud\\tat_agent\\workdir'" />
+                    <el-input v-model="editForm.WorkingDirectory" :placeholder="editForm.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\Program Files\\qcloud\\tat_agent\\workdir'" />
                 </el-form-item>
                 <el-form-item label="执行用户">
-                    <el-input v-model="editForm.Username" :placeholder="editForm.CommandType == 'SHELL' ? '非必填，默认为root' : '非必填，默认为System'" />
+                    <el-input v-model="editForm.Username" :placeholder="editForm.CommandType == 'SHELL' ? '非必填，默认为 root' : '非必填，默认为 System'" />
                 </el-form-item>
                 <el-form-item label="命令">
                     <el-input v-model="editForm.Content" type="textarea" rows="5" />
                 </el-form-item>
                 <el-form-item label="超时时间">
-                    <el-input-number v-model="editForm.Timeout" placeholder="非必填，默认60s" :min="1" :max="86400" :value-on-clear="60" />
+                    <el-input-number v-model="editForm.Timeout" placeholder="非必填，默认为 60s" :min="1" :max="86400" :value-on-clear="60" />
                 </el-form-item>
             </el-form>
             <template #footer>
