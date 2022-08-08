@@ -1,4 +1,60 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { ref, reactive } from "vue"
+import { ElMessage, ElMessageBox, FormInstance, FormRules } from "element-plus"
+
+import { Api } from "@/api"
+import { SSHKeyItem } from "@/api/local/ssh_key"
+
+const keylist = ref<SSHKeyItem[]>([])
+
+// 密钥列表
+
+async function fetchKeys() {
+    const res = await Api.sshkey.fetch()
+    keylist.value = res
+}
+
+// 添加密钥
+
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    publicKey: "",
+    privateKey: "",
+    description: "",
+})
+
+const formRules: FormRules = {
+    description: [{ required: true, message: "请输入别名" }],
+    publicKey: [{ required: true, message: "请输入公钥" }],
+    privateKey: [{ required: true, message: "请输入密钥" }],
+}
+
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(async valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
+        }
+        await Api.sshkey.create(formModel)
+        formRef.value?.resetFields()
+        fetchKeys()
+    })
+}
+
+// 删除密钥
+
+async function deleteKey(idx: number) {
+    await ElMessageBox.confirm("确定要删除吗？", "提示", {
+        type: "warning",
+    })
+    const item = keylist.value[idx]
+    await Api.sshkey.remove(item.Id)
+    keylist.value.splice(idx, 1)
+}
+
+fetchKeys()
+</script>
 
 <template>
     <div>
@@ -10,5 +66,48 @@
                 SSH 密钥
             </el-breadcrumb-item>
         </el-breadcrumb>
+        <el-card shadow="hover" class="mgb10">
+            <template #header>
+                <div class="flex-between">
+                    <b>密钥列表</b>
+                </div>
+            </template>
+            <el-table :data="keylist" style="width: 100%">
+                <el-table-column prop="Id" label="序号" width="80" />
+                <el-table-column prop="Description" label="别名" width="160" />
+                <el-table-column prop="PublicKey" label="公钥" />
+                <el-table-column prop="PrivateKey" label="私钥" />
+                <el-table-column label="操作" width="180" align="center">
+                    <template #default="scope">
+                        <el-button link type="danger" icon="Delete" @click="deleteKey(scope.$index)">
+                            删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </el-card>
+        <el-card shadow="hover">
+            <template #header>
+                <div class="flex-between">
+                    <b>添加密钥</b>
+                </div>
+            </template>
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
+                <el-form-item prop="description" label="别名">
+                    <el-input v-model="formModel.description" />
+                </el-form-item>
+                <el-form-item prop="publicKey" label="PublicKey">
+                    <el-input v-model="formModel.publicKey" />
+                </el-form-item>
+                <el-form-item prop="privateKey" label="PrivateKey">
+                    <el-input v-model="formModel.privateKey" />
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="formSubmit(formRef)">
+                        保存
+                    </el-button>
+                </el-form-item>
+            </el-form>
+        </el-card>
     </div>
 </template>

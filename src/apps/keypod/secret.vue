@@ -37,9 +37,7 @@ function formSubmit(form: FormInstance | undefined) {
             return false
         }
         await Api.secret.create(formModel)
-        formModel.secretId = ""
-        formModel.secretKey = ""
-        formModel.description = ""
+        formRef.value?.resetFields()
         fetchSecrets()
     })
 }
