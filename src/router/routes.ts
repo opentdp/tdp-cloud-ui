@@ -83,14 +83,24 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/terminal/ssh.vue"),
             },
             {
-                path: "/tat/index",
-                name: "tat-index",
+                path: "/tat/history",
+                name: "tat-history",
                 meta: {
-                    title: "自动化助手",
+                    title: "自动化助手-历史记录",
                     login: true,
                     cloud: true,
                 },
-                component: () => import("@/apps/tat/index.vue"),
+                component: () => import("@/apps/tat/history.vue"),
+            },
+            {
+                path: "/tat/script",
+                name: "tat-script",
+                meta: {
+                    title: "自动化助手-命令列表",
+                    login: true,
+                    cloud: true,
+                },
+                component: () => import("@/apps/tat/script.vue"),
             },
             {
                 path: "/member/info",

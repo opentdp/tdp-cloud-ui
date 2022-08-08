@@ -39,8 +39,20 @@ const items: MenuItem[] = [
     },
     {
         icon: "Dish",
-        index: "/tat/index",
+        index: "/tat",
         title: "自动化助手",
+        subs: [
+            {
+                icon: "Dish",
+                index: "/tat/script",
+                title: "命令管理",
+            },
+            {
+                icon: "Dish",
+                index: "/tat/history",
+                title: "历史记录",
+            },
+        ]
     },
     {
         icon: "Wallet",
@@ -67,16 +79,8 @@ const items: MenuItem[] = [
 
 <template>
     <div class="sidebar">
-        <el-menu
-            class="sidebar-el-menu"
-            :default-active="onRoutes"
-            :collapse="layout.collapse"
-            background-color="#324157"
-            text-color="#bfcbd9"
-            active-text-color="#20a0ff"
-            unique-opened
-            router
-        >
+        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="layout.collapse"
+            background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
             <template v-for="(item, index) in items">
                 <template v-if="item.subs">
                     <el-sub-menu :key="index" :index="item.index">
@@ -90,11 +94,8 @@ const items: MenuItem[] = [
                                     <template #title>
                                         {{ subItem.title }}
                                     </template>
-                                    <el-menu-item
-                                        v-for="(threeItem, i) in subItem.subs"
-                                        :key="i"
-                                        :index="threeItem.index"
-                                    >
+                                    <el-menu-item v-for="(threeItem, i) in subItem.subs" :key="i"
+                                        :index="threeItem.index">
                                         {{ threeItem.title }}
                                     </el-menu-item>
                                 </el-sub-menu>
