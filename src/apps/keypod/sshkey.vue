@@ -27,7 +27,7 @@ const formModel = reactive({
 const formRules: FormRules = {
     description: [{ required: true, message: "请输入别名" }],
     publicKey: [{ required: true, message: "请输入公钥" }],
-    privateKey: [{ required: true, message: "请输入密钥" }],
+    privateKey: [{ required: true, message: "请输入私钥" }],
 }
 
 function formSubmit(form: FormInstance | undefined) {
@@ -99,7 +99,7 @@ fetchKeys()
                 <el-form-item prop="publicKey" label="公钥">
                     <el-input v-model="formModel.publicKey" type="textarea" rows="5" />
                 </el-form-item>
-                <el-form-item prop="privateKey" label="密钥">
+                <el-form-item prop="privateKey" label="私钥">
                     <el-input v-model="formModel.privateKey" type="textarea" rows="5" />
                 </el-form-item>
                 <el-form-item>
