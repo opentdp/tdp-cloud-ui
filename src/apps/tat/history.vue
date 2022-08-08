@@ -16,6 +16,7 @@ async function do_update_history_list() {
     if (historyList.value.length == 0) {
         if (need_update_history_list) {
             setTimeout(do_update_history_list, 1000)
+            return
         }
     }
 
@@ -23,6 +24,7 @@ async function do_update_history_list() {
     if (history_task_list.length == 0) {
         if (need_update_history_list) {
             setTimeout(do_update_history_list, 1000)
+            return
         }
     }
 
