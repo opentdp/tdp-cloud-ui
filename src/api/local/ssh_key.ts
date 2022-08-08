@@ -2,15 +2,15 @@ import { HttpClient } from "../basic/http"
 
 export class SSHKeyModel extends HttpClient {
     public create(data: SSHKeyRequest): Promise<SSHKeyResponse> {
-        return this.post("/ssh/key", data)
+        return this.post("/sshkey", data)
     }
 
     public remove(id: number): Promise<SSHKeyResponse> {
-        return this.delete("/ssh/key/" + id)
+        return this.delete("/sshkey/" + id)
     }
 
     public fetch(): Promise<SSHKeyItem[]> {
-        return this.get("/ssh/key")
+        return this.get("/sshkey")
     }
 }
 

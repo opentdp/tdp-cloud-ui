@@ -79,6 +79,9 @@ fetchKeys()
                 <el-table-column prop="PrivateKey" label="私钥" />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
+                        <el-button link icon="Delete" @click="deleteKey(scope.$index)">
+                            绑定主机
+                        </el-button>
                         <el-button link type="danger" icon="Delete" @click="deleteKey(scope.$index)">
                             删除
                         </el-button>
