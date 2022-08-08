@@ -74,7 +74,7 @@ fetchKeys()
             </template>
             <el-table :data="keylist" style="width: 100%">
                 <el-table-column prop="Id" label="序号" width="80" />
-                <el-table-column prop="Description" label="别名" width="160" />
+                <el-table-column prop="Description" label="描述" width="160" />
                 <el-table-column prop="PublicKey" label="公钥" />
                 <el-table-column prop="PrivateKey" label="私钥" />
                 <el-table-column label="操作" width="180" align="center">
@@ -92,15 +92,15 @@ fetchKeys()
                     <b>添加密钥</b>
                 </div>
             </template>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
-                <el-form-item prop="description" label="别名">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="55px">
+                <el-form-item prop="description" label="描述">
                     <el-input v-model="formModel.description" />
                 </el-form-item>
-                <el-form-item prop="publicKey" label="PublicKey">
-                    <el-input v-model="formModel.publicKey" />
+                <el-form-item prop="publicKey" label="公钥">
+                    <el-input v-model="formModel.publicKey" type="textarea" rows="5" />
                 </el-form-item>
-                <el-form-item prop="privateKey" label="PrivateKey">
-                    <el-input v-model="formModel.privateKey" />
+                <el-form-item prop="privateKey" label="密钥">
+                    <el-input v-model="formModel.privateKey" type="textarea" rows="5" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="formSubmit(formRef)">

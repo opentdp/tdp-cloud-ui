@@ -74,7 +74,7 @@ fetchSecrets()
             </template>
             <el-table :data="session.secretList" style="width: 100%">
                 <el-table-column prop="Id" label="序号" width="80" />
-                <el-table-column prop="Description" label="别名" width="160" />
+                <el-table-column prop="Description" label="描述" width="160" />
                 <el-table-column prop="SecretId" label="Secret Id" />
                 <el-table-column prop="SecretKey" label="Secret Key" />
                 <el-table-column label="操作" width="180" align="center">
@@ -98,7 +98,7 @@ fetchSecrets()
                 </div>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
-                <el-form-item prop="description" label="别名">
+                <el-form-item prop="description" label="描述">
                     <el-input v-model="formModel.description" />
                 </el-form-item>
                 <el-form-item prop="secretId" label="SecretId">
