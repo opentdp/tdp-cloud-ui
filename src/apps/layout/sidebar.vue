@@ -56,8 +56,19 @@ const items: MenuItem[] = [
     },
     {
         icon: "Wallet",
-        index: "/keypod/secret",
+        index: "/keypod",
         title: "密钥管理",
+        subs: [
+            {
+                icon: "Wallet",
+                index: "/keypod/secret",
+                title: "CAM 密钥",
+            },
+            {
+                icon: "Wallet",
+                index: "/keypod/sshkey",
+                title: "SSH 密钥",
+            },]
     },
     // {
     //     icon: 'Warning',

@@ -65,7 +65,7 @@ fetchSecrets()
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                密钥管理
+                CAM 密钥
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover" class="mgb10">

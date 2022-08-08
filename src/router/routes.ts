@@ -124,10 +124,19 @@ export const routes: RouteRecordRaw[] = [
                 path: "/keypod/secret",
                 name: "keypod-secret",
                 meta: {
-                    title: "密钥管理",
+                    title: "CAM 密钥",
                     login: true,
                 },
                 component: () => import("@/apps/keypod/secret.vue"),
+            },
+            {
+                path: "/keypod/sshkey",
+                name: "keypod-sshkey",
+                meta: {
+                    title: "SSH 密钥",
+                    login: true,
+                },
+                component: () => import("@/apps/keypod/sshkey.vue"),
             },
             {
                 path: "/error/403",
