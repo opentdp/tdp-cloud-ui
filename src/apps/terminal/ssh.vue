@@ -206,21 +206,21 @@ fetchSSHKeys()
                     </el-form-item>
                     <el-form-item label="验证方式">
                         <el-select v-model="authType">
-                            <el-option label="用户登录" value="0" />
-                            <el-option label="选择私玥" value="1" />
-                            <el-option label="输入私玥" value="2" />
+                            <el-option label="用户密码" value="0" />
+                            <el-option v-if="keylist.length > 0" label="选择私玥" value="2" />
+                            <el-option label="输入私玥" value="4" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="authType == '0'" prop="password" label="密码">
                         <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
-                    <el-form-item v-if="authType == '1'" prop="privateKey" label="私玥">
+                    <el-form-item v-if="authType == '2'" prop="privateKey" label="私玥">
                         <el-select v-model="formModel.privateKey">
                             <el-option v-for="item in keylist" :key="item.Id" :label="item.Description"
                                 :value="item.PrivateKey" />
                         </el-select>
                     </el-form-item>
-                    <el-form-item v-if="authType == '2'" prop="privateKey" label="私钥">
+                    <el-form-item v-if="authType == '4'" prop="privateKey" label="私钥">
                         <el-input v-model="formModel.privateKey" type="textarea"
                             :autosize="{ minRows: 3, maxRows: 10 }" />
                     </el-form-item>
