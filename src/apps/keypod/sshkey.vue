@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
-import { ElMessage, ElMessageBox, FormInstance, FormRules } from "element-plus"
+import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api } from "@/api"
 import { SSHKeyItem } from "@/api/local/ssh_key"
@@ -45,9 +45,6 @@ function formSubmit(form: FormInstance | undefined) {
 // 删除密钥
 
 async function deleteKey(idx: number) {
-    await ElMessageBox.confirm("确定要删除吗？", "提示", {
-        type: "warning",
-    })
     const item = keylist.value[idx]
     await Api.sshkey.remove(item.Id)
     keylist.value.splice(idx, 1)
@@ -79,12 +76,13 @@ fetchKeys()
                 <el-table-column prop="PrivateKey" label="私钥" show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link icon="Delete" @click="deleteKey(scope.$index)">
-                            绑定主机
-                        </el-button>
-                        <el-button link type="danger" icon="Delete" @click="deleteKey(scope.$index)">
-                            删除
-                        </el-button>
+                        <el-popconfirm title="确定删除?" @confirm="deleteKey(scope.$index)">
+                            <template #reference>
+                                <el-button link type="danger" icon="Delete">
+                                    删除
+                                </el-button>
+                            </template>
+                        </el-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>

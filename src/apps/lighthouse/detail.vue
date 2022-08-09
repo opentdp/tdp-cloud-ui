@@ -490,7 +490,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
                         </el-button>
                         <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">
                             <template #reference>
-                                <el-button link type="primary" icon="Delete">
+                                <el-button link type="danger" icon="Delete">
                                     删除
                                 </el-button>
                             </template>
@@ -622,16 +622,16 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-popconfirm title="确定删除?" @confirm="applySnapshot(scope.row)">
+                        <el-popconfirm title="确定回滚?" @confirm="applySnapshot(scope.row)">
                             <template #reference>
-                                <el-button link type="primary" icon="Clock">
+                                <el-button link type="warning" icon="Clock">
                                     回滚
                                 </el-button>
                             </template>
                         </el-popconfirm>
                         <el-popconfirm title="确定删除?" @confirm="deleteSnapshot(scope.row)">
                             <template #reference>
-                                <el-button link type="primary" icon="Delete">
+                                <el-button link type="danger" icon="Delete">
                                     删除
                                 </el-button>
                             </template>

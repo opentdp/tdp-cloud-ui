@@ -124,7 +124,7 @@ onUnmounted(() => {
                         </el-button>
                         <el-popconfirm title="确定删除?" @confirm="onDeleteHistory(scope.row.Id)">
                             <template #reference>
-                                <el-button link type="primary" icon="Delete">
+                                <el-button link type="danger" icon="Delete">
                                     删除
                                 </el-button>
                             </template>
