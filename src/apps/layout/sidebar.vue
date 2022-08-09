@@ -92,35 +92,34 @@ const items: MenuItem[] = [
     <div class="sidebar">
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="layout.collapse"
             background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
-            <template v-for="(item, index) in items">
+            <template v-for="item in items">
                 <template v-if="item.subs">
-                    <el-sub-menu :key="index" :index="item.index">
+                    <el-sub-menu :key="item.index" :index="item.index">
                         <template #title>
                             <component :is="item.icon" class="el-icon" />
                             <span>{{ item.title }}</span>
                         </template>
-                        <template v-for="(subItem, idx) in item.subs">
-                            <template v-if="subItem.subs">
-                                <el-sub-menu :key="idx" :index="subItem.index">
+                        <template v-for="item2 in item.subs">
+                            <template v-if="item2.subs">
+                                <el-sub-menu :key="item2.index" :index="item2.index">
                                     <template #title>
-                                        {{ subItem.title }}
+                                        {{ item2.title }}
                                     </template>
-                                    <el-menu-item v-for="(threeItem, i) in subItem.subs" :key="i"
-                                        :index="threeItem.index">
-                                        {{ threeItem.title }}
+                                    <el-menu-item v-for="item3 in item2.subs" :key="item3.index" :index="item3.index">
+                                        {{ item3.title }}
                                     </el-menu-item>
                                 </el-sub-menu>
                             </template>
                             <template v-else>
-                                <el-menu-item :key="idx" :index="subItem.index">
-                                    {{ subItem.title }}
+                                <el-menu-item :key="item2.index" :index="item2.index">
+                                    {{ item2.title }}
                                 </el-menu-item>
                             </template>
                         </template>
                     </el-sub-menu>
                 </template>
                 <template v-else>
-                    <el-menu-item :key="index" :index="item.index">
+                    <el-menu-item :key="item.index" :index="item.index">
                         <component :is="item.icon" class="el-icon" />
                         <template #title>
                             {{ item.title }}
