@@ -6,12 +6,15 @@ import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api, QApi } from "@/api"
 import { TATItem } from '@/api/local/tat'
+import { SSHKeyItem } from "@/api/local/ssh_key"
 
 import { WebSSH } from "@/helper/webssh"
 
 const route = useRoute()
 
 // 登录服务器
+
+let authType = ref("0")
 
 const formRef = ref<FormInstance>()
 
@@ -146,13 +149,22 @@ function lighthouseSearch(qr: string, cb: (a: unknown[]) => void) {
     cb(rs)
 }
 
+// 获取密钥列表
+
+const keylist = ref<SSHKeyItem[]>([])
+
+async function fetchSSHKeys() {
+    const res = await Api.sshkey.fetch()
+    keylist.value = res
+}
+
 // 执行快捷命令
 
-const cmdList = ref<TATItem[]>([])
+const cmdlist = ref<TATItem[]>([])
 
 async function getTATCommondList() {
     const res = await Api.tat.fetchTATList()
-    cmdList.value = res
+    cmdlist.value = res
 }
 
 function sshExec(cmd: string) {
@@ -166,6 +178,7 @@ function sshExec(cmd: string) {
 
 getLighthouseInstances()
 getTATCommondList()
+fetchSSHKeys()
 </script>
 
 <template>
@@ -180,7 +193,7 @@ getTATCommondList()
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">
             <el-tab-pane label="新建" name="new">
-                <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="66px">
+                <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
                     <el-form-item prop="addr" label="主机">
                         <el-autocomplete v-model="formModel.addr" :fetch-suggestions="lighthouseSearch" clearable>
                             <template #default="{ item }">
@@ -191,10 +204,23 @@ getTATCommondList()
                     <el-form-item prop="user" label="用户名">
                         <el-input v-model="formModel.user" />
                     </el-form-item>
-                    <el-form-item prop="password" label="密码">
+                    <el-form-item label="验证方式">
+                        <el-select v-model="authType">
+                            <el-option label="用户登录" value="0" />
+                            <el-option label="选择私玥" value="1" />
+                            <el-option label="输入私玥" value="2" />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item v-if="authType == '0'" prop="password" label="密码">
                         <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
-                    <el-form-item prop="privateKey" label="私钥">
+                    <el-form-item v-if="authType == '1'" prop="privateKey" label="私玥">
+                        <el-select v-model="formModel.privateKey">
+                            <el-option v-for="item in keylist" :key="item.Id" :label="item.Description"
+                                :value="item.PrivateKey" />
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item v-if="authType == '2'" prop="privateKey" label="私钥">
                         <el-input v-model="formModel.privateKey" type="textarea"
                             :autosize="{ minRows: 3, maxRows: 10 }" />
                     </el-form-item>
@@ -215,7 +241,7 @@ getTATCommondList()
                     <b>快捷命令</b>
                 </div>
             </template>
-            <el-button v-for="item in cmdList" :key="item.Id" @click="sshExec(item.Content)">
+            <el-button v-for="item in cmdlist" :key="item.Id" @click="sshExec(item.Content)">
                 {{ item.Name }}
             </el-button>
         </el-card>
