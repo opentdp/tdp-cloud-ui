@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref, reactive } from "vue"
 import { useRoute } from "vue-router"
 
-import { QApi, Dnspod } from "@/api"
+import { QApi, Dnspod, Api } from "@/api"
 
 const route = useRoute()
 
@@ -15,6 +15,62 @@ async function getRecordList() {
         Domain: domain
     })
     record.value = data
+}
+
+// 编辑记录
+
+const recordBus = reactive({
+    dailog: false,
+    loading: false,
+    model: {
+        Name: "",
+        Type: "",
+        Line: "",
+        Value: "",
+        MX: 0,
+        TTL: 0,
+        Weight: 0,
+        Status: "",
+        Remark: "",
+        LineId: "0",
+        RecordId: 0,
+        UpdatedOn: "",
+        MonitorStatus: "",
+    } as Dnspod.RecordListItem,
+    rules: {
+        Name: [{ required: true, message: "请输入别名" }],
+        Type: [{ required: true, message: "请输入别名" }],
+        Line: [{ required: true, message: "请输入别名" }],
+        Value: [{ required: true, message: "请输入别名" }],
+        MX: [{ required: true, message: "请输入别名" }],
+        TTL: [{ required: true, message: "请输入别名" }],
+        Weight: [{ required: true, message: "请输入别名" }],
+        Status: [{ required: true, message: "请输入别名" }],
+        Remark: [{ required: true, message: "请输入别名" }],
+    }
+})
+
+async function modifyRecordDailog(item: Dnspod.RecordListItem) {
+    Object.assign(recordBus.model, item)
+    recordBus.dailog = true
+}
+
+async function modifyRecord(item: Dnspod.RecordListItem) {
+    recordBus.loading = true
+    const query: Dnspod.ModifyRecordRequest = {
+        Domain: domain,
+        SubDomain: item.Name,
+        RecordType: item.Type,
+        RecordLine: item.Line,
+        Value: item.Value,
+        MX: item.MX || 0,
+        TTL: item.TTL || 0,
+        Weight: item.Weight || 0,
+        RecordId: item.RecordId || 0
+    }
+    await QApi.dnspod.modifyRecord(query)
+    recordBus.dailog = false
+    recordBus.loading = false
 }
 
 getRecordList()
@@ -57,7 +113,48 @@ getRecordList()
                     </template>
                 </el-table-column>
                 <el-table-column prop="Remark" label="备注" min-width="150" />
+                <el-table-column label="操作" width="180" align="center">
+                    <template #default="scope">
+                        <el-button link type="primary" icon="Edit" @click="modifyRecordDailog(scope.row)">
+                            编辑
+                        </el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-card>
+
+        <el-dialog v-model="recordBus.dailog" title="解析" width="400px">
+            <el-form :model="recordBus.model" :rules="recordBus.rules" label-width="88px">
+                <el-form-item prop="Name" label="主机记录">
+                    <el-input v-model="recordBus.model.Name" />
+                </el-form-item>
+                <el-form-item prop="Type" label="记录类型">
+                    <el-input v-model="recordBus.model.Type" />
+                </el-form-item>
+                <el-form-item prop="Line" label="线路类型">
+                    <el-input v-model="recordBus.model.Line" />
+                </el-form-item>
+                <el-form-item prop="Value" label="记录值">
+                    <el-input v-model="recordBus.model.Value" />
+                </el-form-item>
+                <el-form-item prop="Weight" label="权重">
+                    <el-input v-model="recordBus.model.Weight" />
+                </el-form-item>
+                <el-form-item prop="MX" label="MX">
+                    <el-input v-model="recordBus.model.MX" />
+                </el-form-item>
+                <el-form-item prop="TTL" label="TTL">
+                    <el-input v-model="recordBus.model.TTL" />
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button @click="recordBus.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="recordBus.loading" @click="modifyRecord(recordBus.model)">
+                        保存
+                    </el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
