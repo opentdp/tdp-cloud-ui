@@ -15,7 +15,7 @@ export class LighthouseModel extends QCloudClient {
 
     public describeInstances(
         region: string,
-        query?: Lighthouse.DescribeInstancesRequest
+        query: Lighthouse.DescribeInstancesRequest
     ): Promise<Lighthouse.DescribeInstancesResponse> {
         query = Object.assign({ Limit: 100 }, query)
         return this.q({
@@ -26,7 +26,7 @@ export class LighthouseModel extends QCloudClient {
 
     public modifyInstancesAttribute(
         region: string,
-        query?: Lighthouse.ModifyInstancesAttributeRequest
+        query: Lighthouse.ModifyInstancesAttributeRequest
     ): Promise<Lighthouse.ModifyInstancesAttributeResponse> {
         return this.q({
             action: "ModifyInstancesAttribute",
@@ -38,7 +38,7 @@ export class LighthouseModel extends QCloudClient {
 
     public stopInstances(
         region: string,
-        query?: Lighthouse.StopInstancesRequest
+        query: Lighthouse.StopInstancesRequest
     ): Promise<Lighthouse.StopInstancesResponse> {
         return this.q({
             action: "StopInstances",
@@ -48,7 +48,7 @@ export class LighthouseModel extends QCloudClient {
 
     public startInstances(
         region: string,
-        query?: Lighthouse.StartInstancesRequest
+        query: Lighthouse.StartInstancesRequest
     ): Promise<Lighthouse.StartInstancesResponse> {
         return this.q({
             action: "StartInstances",
@@ -58,7 +58,7 @@ export class LighthouseModel extends QCloudClient {
 
     public rebootInstances(
         region: string,
-        query?: Lighthouse.RebootInstancesRequest
+        query: Lighthouse.RebootInstancesRequest
     ): Promise<Lighthouse.RebootInstancesResponse> {
         return this.q({
             action: "RebootInstances",
@@ -70,7 +70,7 @@ export class LighthouseModel extends QCloudClient {
 
     public describeInstanceVncUrl(
         region: string,
-        query?: Lighthouse.DescribeInstanceVncUrlRequest
+        query: Lighthouse.DescribeInstanceVncUrlRequest
     ): Promise<Lighthouse.DescribeInstanceVncUrlResponse> {
         return this.q({
             action: "DescribeInstanceVncUrl",
@@ -188,7 +188,7 @@ export class LighthouseModel extends QCloudClient {
 
     public describeInstancesTrafficPackages(
         region: string,
-        query?: Lighthouse.DescribeInstancesTrafficPackagesRequest
+        query: Lighthouse.DescribeInstancesTrafficPackagesRequest
     ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
         query = Object.assign({ Limit: 100 }, query)
         return this.q({

@@ -2,11 +2,45 @@
 import { ref, reactive } from "vue"
 import { useRoute } from "vue-router"
 
-import { QApi, Dnspod, Api } from "@/api"
+import { QApi, Dnspod } from "@/api"
 
 const route = useRoute()
 
 const domain = route.params.domain as string
+
+// 域名概要
+
+const describe = ref<Dnspod.DescribeDomainResponse>({} as any)
+
+async function getDomain() {
+    const data = await QApi.dnspod.describeDomain({
+        Domain: domain
+    })
+    describe.value = data
+}
+
+// 记录类型列表
+
+const recordType = ref<string[]>([])
+
+async function getRecordType() {
+    const data = await QApi.dnspod.describeRecordType({
+        DomainGrade: describe.value.DomainInfo.Grade
+    })
+    recordType.value = data.TypeList
+}
+
+const recordLine = ref<Dnspod.DescribeRecordLineListResponse>()
+
+async function getRecordLine() {
+    const data = await QApi.dnspod.describeRecordLineList({
+        DomainGrade: describe.value.DomainInfo.Grade,
+        Domain: domain
+    })
+    recordLine.value = data
+}
+
+// 域名记录
 
 const record = ref<Dnspod.DescribeRecordListResponse>()
 
@@ -73,7 +107,12 @@ async function modifyRecord(item: Dnspod.RecordListItem) {
     recordBus.loading = false
 }
 
-getRecordList()
+(async () => {
+    getRecordList()
+    // 获取一些参数
+    await getDomain()
+    getRecordType(), getRecordLine()
+})()
 </script>
 
 <template>
@@ -129,10 +168,14 @@ getRecordList()
                     <el-input v-model="recordBus.model.Name" />
                 </el-form-item>
                 <el-form-item prop="Type" label="记录类型">
-                    <el-input v-model="recordBus.model.Type" />
+                    <el-select v-model="recordBus.model.Type">
+                        <el-option v-for="v in recordType" :key="v" :label="v" :value="v" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item prop="Line" label="线路类型">
-                    <el-input v-model="recordBus.model.Line" />
+                    <el-select v-model="recordBus.model.Line">
+                        <el-option v-for="v in recordLine?.LineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item prop="Value" label="记录值">
                     <el-input v-model="recordBus.model.Value" />

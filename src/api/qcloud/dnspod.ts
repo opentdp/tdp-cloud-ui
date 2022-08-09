@@ -15,7 +15,7 @@ export class DnspodModel extends QCloudClient {
         })
     }
     public describeRecordList(
-        query?: Dnspod.DescribeRecordListRequest
+        query: Dnspod.DescribeRecordListRequest
     ): Promise<Dnspod.DescribeRecordListResponse> {
         return this.q({
             action: "DescribeRecordList",
@@ -23,25 +23,34 @@ export class DnspodModel extends QCloudClient {
         })
     }
 
-    public describeRecordLineList(
-        query?: Dnspod.DescribeRecordLineListRequest
-    ): Promise<Dnspod.DescribeRecordLineListResponse> {
+    public describeDomain(
+        query?: Dnspod.DescribeDomainRequest
+    ): Promise<Dnspod.DescribeDomainResponse> {
         return this.q({
-            action: "DescribeRecordLineList",
+            action: "DescribeDomain",
             query, expiry: 600
         })
     }
+
     public describeRecordType(
-        query?: Dnspod.DescribeRecordTypeRequest
+        query: Dnspod.DescribeRecordTypeRequest
     ): Promise<Dnspod.DescribeRecordTypeResponse> {
         return this.q({
             action: "DescribeRecordType",
             query, expiry: 600
         })
     }
+    public describeRecordLineList(
+        query: Dnspod.DescribeRecordLineListRequest
+    ): Promise<Dnspod.DescribeRecordLineListResponse> {
+        return this.q({
+            action: "DescribeRecordLineList",
+            query, expiry: 600
+        })
+    }
 
     public modifyRecord(
-        query?: Dnspod.ModifyRecordRequest
+        query: Dnspod.ModifyRecordRequest
     ): Promise<Dnspod.ModifyRecordResponse> {
         return this.q({
             action: "ModifyRecord",
