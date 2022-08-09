@@ -45,3 +45,14 @@
 .el-button+.el-tooltip {
     margin-left: 10px;
 }
+
+.button-list {
+    gap: 1rem;
+    grid-gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+
+    .el-button+.el-button {
+        margin-left: 0;
+    }
+}

@@ -76,9 +76,11 @@ onMounted(() => vncInit())
                     <b>快捷命令</b>
                 </div>
             </template>
-            <el-button v-for="item in cmdList" :key="item.Id" @click="vncExec(item.Content)">
-                {{ item.Name }}
-            </el-button>
+            <div class="button-list">
+                <el-button v-for="item in cmdList" :key="item.Id" @click="vncExec(item.Content)">
+                    {{ item.Name }}
+                </el-button>
+            </div>
         </el-card>
     </div>
 </template>

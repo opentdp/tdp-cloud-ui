@@ -235,15 +235,17 @@ fetchSSHKeys()
                 <div :id="item.id" />
             </el-tab-pane>
         </el-tabs>
-        <el-card v-if="curTab.id !== 'new'" shadow="hover">
+        <el-card v-if="curTab.id != 'new'" shadow="hover">
             <template #header>
                 <div class="flex-between">
                     <b>快捷命令</b>
                 </div>
             </template>
-            <el-button v-for="item in cmdlist" :key="item.Id" @click="sshExec(item.Content)">
-                {{ item.Name }}
-            </el-button>
+            <div class="button-list">
+                <el-button v-for="item in cmdlist" :key="item.Id" @click="sshExec(item.Content)">
+                    {{ item.Name }}
+                </el-button>
+            </div>
         </el-card>
     </div>
 </template>
