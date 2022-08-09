@@ -49,11 +49,27 @@ export class DnspodModel extends QCloudClient {
         })
     }
 
+    public createRecord(
+        query: Dnspod.CreateRecordRequest
+    ): Promise<Dnspod.CreateRecordResponse> {
+        return this.q({
+            action: "CreateRecord",
+            query,
+        })
+    }
     public modifyRecord(
         query: Dnspod.ModifyRecordRequest
     ): Promise<Dnspod.ModifyRecordResponse> {
         return this.q({
             action: "ModifyRecord",
+            query,
+        })
+    }
+    public deleteRecord(
+        query: Dnspod.DeleteRecordRequest
+    ): Promise<Dnspod.DeleteRecordResponse> {
+        return this.q({
+            action: "DeleteRecord",
             query,
         })
     }
