@@ -67,43 +67,45 @@ async function refreshInstance() {
 
 ////// 修改实例名
 
-const modifyInstanceNameModel = reactive({
+const modifyInstanceNameBus = reactive({
     dailog: false,
     loading: false,
-    name: ""
+    model: {
+        name: ""
+    }
 })
 
 async function modifyInstanceName() {
-    modifyInstanceNameModel.loading = true
-    if (instance.value && modifyInstanceNameModel.name &&
-        instance.value.InstanceName != modifyInstanceNameModel.name) {
+    modifyInstanceNameBus.loading = true
+    if (instance.value && modifyInstanceNameBus.model.name &&
+        instance.value.InstanceName != modifyInstanceNameBus.model.name) {
         await QApi.lighthouse.modifyInstancesAttribute(region, {
             InstanceIds: [instanceId],
-            InstanceName: modifyInstanceNameModel.name
+            InstanceName: modifyInstanceNameBus.model.name
         })
-        instance.value.InstanceName = modifyInstanceNameModel.name
+        instance.value.InstanceName = modifyInstanceNameBus.model.name
     }
-    modifyInstanceNameModel.dailog = false
-    modifyInstanceNameModel.loading = false
+    modifyInstanceNameBus.dailog = false
+    modifyInstanceNameBus.loading = false
 }
 
 ////// 防火墙管理
 
 const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
 
-interface FirewallRuleModel {
-    dailog: boolean;
-    loading: boolean;
-    index?: number;
-    item: Lighthouse.FirewallRule & {
+interface FirewallRuleBus {
+    dailog: boolean
+    loading: boolean
+    index?: number
+    model: Lighthouse.FirewallRule & {
         AppType?: string
     }
 }
 
-const createFirewallRuleModel = reactive<FirewallRuleModel>({
+const createFirewallRuleBus = reactive<FirewallRuleBus>({
     dailog: false,
     loading: false,
-    item: {
+    model: {
         Protocol: "TCP",
         Port: "",
         CidrBlock: "0.0.0.0/0",
@@ -112,16 +114,16 @@ const createFirewallRuleModel = reactive<FirewallRuleModel>({
     }
 })
 
-const modifyFirewallRuleModel = reactive<FirewallRuleModel>({
+const modifyFirewallRuleBus = reactive<FirewallRuleBus>({
     dailog: false,
     loading: false,
-    item: { Protocol: "" }
+    model: { Protocol: "" }
 })
 
-const modifyFirewallRuleDescriptionModel = reactive<FirewallRuleModel>({
+const modifyFirewallRuleDescriptionBus = reactive<FirewallRuleBus>({
     dailog: false,
     loading: false,
-    item: { Protocol: "" }
+    model: { Protocol: "" }
 })
 
 async function getFirewallRules() {
@@ -132,13 +134,13 @@ async function getFirewallRules() {
 }
 
 async function createFirewallRule() {
-    createFirewallRuleModel.loading = true
+    createFirewallRuleBus.loading = true
     await QApi.lighthouse.createFirewallRules(region, {
         InstanceId: instanceId,
-        FirewallRules: [createFirewallRuleModel.item]
+        FirewallRules: [createFirewallRuleBus.model]
     })
-    createFirewallRuleModel.dailog = false
-    createFirewallRuleModel.loading = false
+    createFirewallRuleBus.dailog = false
+    createFirewallRuleBus.loading = false
     refreshFirewallRules()
 }
 
@@ -146,48 +148,48 @@ async function modifyFirewallRule() {
     if (!firewallRules.value) {
         return
     }
-    modifyFirewallRuleModel.loading = true
+    modifyFirewallRuleBus.loading = true
     await QApi.lighthouse.modifyFirewallRules(region, {
         InstanceId: instanceId,
         FirewallRules: firewallRules.value.FirewallRuleSet.map(
-            (item: FirewallRuleModel["item"], idx) => {
-                if (modifyFirewallRuleModel.index === idx) {
-                    item = Object.assign({}, modifyFirewallRuleModel.item)
+            (item: FirewallRuleBus["model"], idx) => {
+                if (modifyFirewallRuleBus.index === idx) {
+                    item = Object.assign({}, modifyFirewallRuleBus.model)
                 }
                 delete item.AppType
                 return item
             }
         )
     })
-    modifyFirewallRuleModel.dailog = false
-    modifyFirewallRuleModel.loading = false
+    modifyFirewallRuleBus.dailog = false
+    modifyFirewallRuleBus.loading = false
     refreshFirewallRules()
 }
 
 function modifyFirewallRuleDailog(item: Lighthouse.FirewallRule, idx: number) {
-    modifyFirewallRuleModel.item = Object.assign({}, item)
-    modifyFirewallRuleModel.index = idx
-    modifyFirewallRuleModel.dailog = true
+    modifyFirewallRuleBus.model = Object.assign({}, item)
+    modifyFirewallRuleBus.index = idx
+    modifyFirewallRuleBus.dailog = true
 }
 
 async function modifyFirewallRuleDescription() {
-    modifyFirewallRuleDescriptionModel.loading = true
-    delete modifyFirewallRuleDescriptionModel.item.AppType
+    modifyFirewallRuleDescriptionBus.loading = true
+    delete modifyFirewallRuleDescriptionBus.model.AppType
     await QApi.lighthouse.modifyFirewallRuleDescription(region, {
         InstanceId: instanceId,
-        FirewallRule: modifyFirewallRuleDescriptionModel.item
+        FirewallRule: modifyFirewallRuleDescriptionBus.model
     })
-    modifyFirewallRuleDescriptionModel.dailog = false
-    modifyFirewallRuleDescriptionModel.loading = false
+    modifyFirewallRuleDescriptionBus.dailog = false
+    modifyFirewallRuleDescriptionBus.loading = false
     refreshFirewallRules()
 }
 
 function modifyFirewallRuleDescriptionDailog(item: Lighthouse.FirewallRule) {
-    modifyFirewallRuleDescriptionModel.item = Object.assign({}, item)
-    modifyFirewallRuleDescriptionModel.dailog = true
+    modifyFirewallRuleDescriptionBus.model = Object.assign({}, item)
+    modifyFirewallRuleDescriptionBus.dailog = true
 }
 
-async function deleteFirewallRule(item: FirewallRuleModel["item"]) {
+async function deleteFirewallRule(item: FirewallRuleBus["model"]) {
     delete item.AppType
     await QApi.lighthouse.deleteFirewallRules(region, {
         InstanceId: instanceId,
@@ -204,10 +206,12 @@ async function refreshFirewallRules() {
 
 const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
 
-const createSnapshotModel = reactive({
+const createSnapshotBus = reactive({
     dailog: false,
     loading: false,
-    name: ""
+    model: {
+        name: ""
+    }
 })
 
 async function getSnapshots() {
@@ -218,19 +222,19 @@ async function getSnapshots() {
 }
 
 async function createSnapshot() {
-    createSnapshotModel.loading = true
+    createSnapshotBus.loading = true
     await QApi.lighthouse.createInstanceSnapshot(region, {
         InstanceId: instanceId,
-        SnapshotName: createSnapshotModel.name
+        SnapshotName: createSnapshotBus.model.name
     })
-    createSnapshotModel.dailog = false
-    createSnapshotModel.loading = false
+    createSnapshotBus.dailog = false
+    createSnapshotBus.loading = false
     refreshSnapshot()
 }
 
 function createSnapshotDailog() {
-    createSnapshotModel.name = 'Snapshot-' + Date.now()
-    createSnapshotModel.dailog = true
+    createSnapshotBus.model.name = 'Snapshot-' + Date.now()
+    createSnapshotBus.dailog = true
 }
 
 async function applySnapshot(item: Lighthouse.Snapshot) {
@@ -416,7 +420,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
                 </el-descriptions-item>
                 <el-descriptions-item label="实例名">
                     {{ instance.InstanceName }}
-                    <el-button link icon="EditPen" @click="modifyInstanceNameModel.dailog = true" />
+                    <el-button link icon="EditPen" @click="modifyInstanceNameBus.dailog = true" />
                 </el-descriptions-item>
                 <el-descriptions-item label="规格">
                     CPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB
@@ -445,16 +449,16 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
             </el-descriptions>
         </el-card>
 
-        <el-dialog v-model="modifyInstanceNameModel.dailog" title="修改实例名" width="320px">
-            <el-form v-if="instance" :model="modifyInstanceNameModel">
+        <el-dialog v-model="modifyInstanceNameBus.dailog" title="修改实例名" width="320px">
+            <el-form v-if="instance" :model="modifyInstanceNameBus.model">
                 <el-form-item label="实例名">
-                    <el-input v-model="modifyInstanceNameModel.name" :value="instance.InstanceName" />
+                    <el-input v-model="modifyInstanceNameBus.model.name" :value="instance.InstanceName" />
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="modifyInstanceNameModel.dailog = false">取消</el-button>
-                    <el-button type="primary" :loading="modifyInstanceNameModel.loading" @click="modifyInstanceName">保存
+                    <el-button @click="modifyInstanceNameBus.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="modifyInstanceNameBus.loading" @click="modifyInstanceName">保存
                     </el-button>
                 </span>
             </template>
@@ -466,7 +470,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
                     <b>防火墙</b> &nbsp; &nbsp;
                     <small>规则总数: {{ firewallRules.TotalCount }}</small>
                     <div class="flex-auto" />
-                    <el-button type="primary" plain size="small" @click="createFirewallRuleModel.dailog = true">
+                    <el-button type="primary" plain size="small" @click="createFirewallRuleBus.dailog = true">
                         添加规则
                     </el-button>
                 </div>
@@ -500,86 +504,86 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
             </el-table>
         </el-card>
 
-        <el-dialog v-model="createFirewallRuleModel.dailog" title="添加规则" width="320px">
-            <el-form v-if="instance" :model="createFirewallRuleModel">
+        <el-dialog v-model="createFirewallRuleBus.dailog" title="添加规则" width="320px">
+            <el-form v-if="instance" :model="createFirewallRuleBus.model">
                 <el-form-item label="来源">
-                    <el-input v-model="createFirewallRuleModel.item.CidrBlock" />
+                    <el-input v-model="createFirewallRuleBus.model.CidrBlock" />
                 </el-form-item>
                 <el-form-item label="协议">
-                    <el-select v-model="createFirewallRuleModel.item.Protocol">
+                    <el-select v-model="createFirewallRuleBus.model.Protocol">
                         <el-option label="TCP" value="TCP" />
                         <el-option label="UDP" value="UDP" />
                         <el-option label="ICMP" value="ICMP" />
                     </el-select>
                 </el-form-item>
-                <el-form-item v-if="/TCP|UDP/.test(createFirewallRuleModel.item.Protocol)" label="端口">
-                    <el-input v-model="createFirewallRuleModel.item.Port" />
+                <el-form-item v-if="/TCP|UDP/.test(createFirewallRuleBus.model.Protocol)" label="端口">
+                    <el-input v-model="createFirewallRuleBus.model.Port" />
                 </el-form-item>
                 <el-form-item label="策略">
-                    <el-select v-model="createFirewallRuleModel.item.Action">
+                    <el-select v-model="createFirewallRuleBus.model.Action">
                         <el-option label="允许" value="ACCEPT" />
                         <el-option label="拒绝" value="DROP" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input v-model="createFirewallRuleModel.item.FirewallRuleDescription" />
+                    <el-input v-model="createFirewallRuleBus.model.FirewallRuleDescription" />
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="createFirewallRuleModel.dailog = false">取消</el-button>
-                    <el-button type="primary" :loading="createFirewallRuleModel.loading" @click="createFirewallRule">
+                    <el-button @click="createFirewallRuleBus.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="createFirewallRuleBus.loading" @click="createFirewallRule">
                         保存
                     </el-button>
                 </span>
             </template>
         </el-dialog>
 
-        <el-dialog v-model="modifyFirewallRuleModel.dailog" title="修改规则" width="320px">
-            <el-form v-if="instance" :model="modifyFirewallRuleModel">
+        <el-dialog v-model="modifyFirewallRuleBus.dailog" title="修改规则" width="320px">
+            <el-form v-if="instance" :model="modifyFirewallRuleBus.model">
                 <el-form-item label="来源">
-                    <el-input v-model="modifyFirewallRuleModel.item.CidrBlock" />
+                    <el-input v-model="modifyFirewallRuleBus.model.CidrBlock" />
                 </el-form-item>
                 <el-form-item label="协议">
-                    <el-select v-model="modifyFirewallRuleModel.item.Protocol" width="100%">
+                    <el-select v-model="modifyFirewallRuleBus.model.Protocol" width="100%">
                         <el-option label="TCP" value="TCP" />
                         <el-option label="UDP" value="UDP" />
                         <el-option label="ICMP" value="ICMP" />
                     </el-select>
                 </el-form-item>
-                <el-form-item v-if="/TCP|UDP/.test(modifyFirewallRuleModel.item.Protocol)" label="端口">
-                    <el-input v-model="modifyFirewallRuleModel.item.Port" />
+                <el-form-item v-if="/TCP|UDP/.test(modifyFirewallRuleBus.model.Protocol)" label="端口">
+                    <el-input v-model="modifyFirewallRuleBus.model.Port" />
                 </el-form-item>
                 <el-form-item label="策略">
-                    <el-select v-model="modifyFirewallRuleModel.item.Action">
+                    <el-select v-model="modifyFirewallRuleBus.model.Action">
                         <el-option label="允许" value="ACCEPT" />
                         <el-option label="拒绝" value="DROP" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input v-model="modifyFirewallRuleModel.item.FirewallRuleDescription" />
+                    <el-input v-model="modifyFirewallRuleBus.model.FirewallRuleDescription" />
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="modifyFirewallRuleModel.dailog = false">取消</el-button>
-                    <el-button type="primary" :loading="modifyFirewallRuleModel.loading" @click="modifyFirewallRule">
+                    <el-button @click="modifyFirewallRuleBus.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="modifyFirewallRuleBus.loading" @click="modifyFirewallRule">
                         保存
                     </el-button>
                 </span>
             </template>
         </el-dialog>
 
-        <el-dialog v-model="modifyFirewallRuleDescriptionModel.dailog" title="修改备注" width="320px">
-            <el-form v-if="instance" :model="modifyFirewallRuleDescriptionModel">
+        <el-dialog v-model="modifyFirewallRuleDescriptionBus.dailog" title="修改备注" width="320px">
+            <el-form v-if="instance" :model="modifyFirewallRuleDescriptionBus.model">
                 <el-form-item label="备注">
-                    <el-input v-model="modifyFirewallRuleDescriptionModel.item.FirewallRuleDescription" />
+                    <el-input v-model="modifyFirewallRuleDescriptionBus.model.FirewallRuleDescription" />
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="modifyFirewallRuleDescriptionModel.dailog = false">取消</el-button>
-                    <el-button type="primary" :loading="modifyFirewallRuleDescriptionModel.loading"
+                    <el-button @click="modifyFirewallRuleDescriptionBus.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="modifyFirewallRuleDescriptionBus.loading"
                         @click="modifyFirewallRuleDescription">
                         保存
                     </el-button>
@@ -641,16 +645,16 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
             </el-table>
         </el-card>
 
-        <el-dialog v-model="createSnapshotModel.dailog" title="创建快照" width="320px">
-            <el-form v-if="instance" :model="createSnapshotModel">
+        <el-dialog v-model="createSnapshotBus.dailog" title="创建快照" width="320px">
+            <el-form v-if="instance" :model="createSnapshotBus.model">
                 <el-form-item label="名称">
-                    <el-input v-model="createSnapshotModel.name" />
+                    <el-input v-model="createSnapshotBus.model.name" />
                 </el-form-item>
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="createSnapshotModel.dailog = false">取消</el-button>
-                    <el-button type="primary" :loading="createSnapshotModel.loading" @click="createSnapshot">
+                    <el-button @click="createSnapshotBus.dailog = false">取消</el-button>
+                    <el-button type="primary" :loading="createSnapshotBus.loading" @click="createSnapshot">
                         保存
                     </el-button>
                 </span>
