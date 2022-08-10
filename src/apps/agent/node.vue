@@ -5,25 +5,25 @@ import { Api } from "@/api"
 
 const nodeList = ref<{ Ip: string }[]>([])
 
-async function fetchNodes() {
-    const res = await Api.agent.fetch()
+async function getNodes() {
+    const res = await Api.agent.getNodes()
     nodeList.value = res
 }
 
-async function runShell(addr: string) {
-    await Api.agent.shell({
+async function runCommand(addr: string) {
+    await Api.agent.runCommand({
         Addr: addr,
         Payload: {
-            Content: "string",
-            Username: "string",
-            CommandType: "string",
-            WorkingDirectory: "string",
+            Content: "ls -al /",
+            Username: "root",
+            CommandType: "shell",
+            WorkingDirectory: "/root",
             Timeout: 30,
         }
     })
 }
 
-fetchNodes()
+getNodes()
 </script>
 
 <template>
@@ -46,7 +46,7 @@ fetchNodes()
                 <el-table-column prop="Addr" label="地址" />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="View" @click="runShell(scope.row.Addr)">
+                        <el-button link type="primary" icon="View" @click="runCommand(scope.row.Addr)">
                             测试
                         </el-button>
                     </template>

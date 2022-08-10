@@ -1,11 +1,11 @@
 import { HttpClient } from "../basic/http"
 
 export class AgentModel extends HttpClient {
-    public fetch(): Promise<{ Ip: string }[]> {
+    public getNodes(): Promise<{ Ip: string }[]> {
         return this.get("/agent/node")
     }
-    public shell(query: ShellRequest): Promise<[]> {
-        return this.post("/agent/shell", query)
+    public runCommand(query: ShellRequest): Promise<[]> {
+        return this.post("/agent/command", query)
     }
 }
 
