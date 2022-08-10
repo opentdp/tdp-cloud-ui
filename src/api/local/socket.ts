@@ -1,7 +1,7 @@
 import { HttpClient } from "../basic/http"
 
-export class TerminalModel extends HttpClient {
-    public getWebsshWsurl(query: SSHRequest) {
+export class SocketModel extends HttpClient {
+    public getWebsshURL(query: SSHRequest) {
         if (this.session.token) {
             const token = this.session.token
             const keyid = this.session.keyid || 0
@@ -9,7 +9,7 @@ export class TerminalModel extends HttpClient {
         }
 
         const param = this.buildQuery(query)
-        const wsurl = "/wsl/terminal/ssh?" + param
+        const wsurl = "/wsi/ssh?" + param
         const origin = location.origin.replace(/^http/, "ws")
 
         return origin + wsurl

@@ -4,7 +4,7 @@ import { UserModel } from "./local/user"
 import { SecretModel } from "./local/secret"
 import { SSHKeyModel } from "./local/ssh_key"
 import { TATModel } from "./local/tat"
-import { TerminalModel } from "./local/terminal"
+import { SocketModel } from "./local/socket"
 
 import { CamModel } from "./qcloud/cam"
 import { DnspodModel } from "./qcloud/dnspod"
@@ -20,7 +20,7 @@ export const Api = {
     secret: new SecretModel(),
     sshkey: new SSHKeyModel(),
     tat: new TATModel(),
-    terminal: new TerminalModel(),
+    socket: new SocketModel(),
 }
 
 export const QApi = {

@@ -81,7 +81,7 @@ function createTab() {
     // 延迟连接
     changeTab(tab.id)
     setTimeout(() => {
-        const url = Api.terminal.getWebsshWsurl(formModel)
+        const url = Api.socket.getWebsshURL(formModel)
         tab.webssh = new WebSSH(tab.id, url)
     }, 100)
 }
