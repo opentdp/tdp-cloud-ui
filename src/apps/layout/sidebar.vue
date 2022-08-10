@@ -55,6 +55,11 @@ const items: MenuItem[] = [
         ]
     },
     {
+        icon: "Connection",
+        index: "/agent/node",
+        title: "节点管理",
+    },
+    {
         icon: "Wallet",
         index: "/keypod",
         title: "密钥管理",

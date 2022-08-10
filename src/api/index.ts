@@ -1,10 +1,11 @@
 import { CacheModel } from "./local/cache"
 
-import { UserModel } from "./local/user"
+import { AgentModel } from "./local/agent"
 import { SecretModel } from "./local/secret"
+import { SocketModel } from "./local/socket"
 import { SSHKeyModel } from "./local/ssh_key"
 import { TATModel } from "./local/tat"
-import { SocketModel } from "./local/socket"
+import { UserModel } from "./local/user"
 
 import { CamModel } from "./qcloud/cam"
 import { DnspodModel } from "./qcloud/dnspod"
@@ -16,11 +17,13 @@ import { TATModel as QTATModel } from "./qcloud/tat"
 
 export const Api = {
     cache: new CacheModel(),
-    user: new UserModel(),
+
+    agent: new AgentModel(),
     secret: new SecretModel(),
+    socket: new SocketModel(),
     sshkey: new SSHKeyModel(),
     tat: new TATModel(),
-    socket: new SocketModel(),
+    user: new UserModel(),
 }
 
 export const QApi = {
