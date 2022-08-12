@@ -45,13 +45,13 @@ getAgentKey()
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                Agent
+                子节点
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>Agent 列表</b>
+                    <b>子节点列表</b>
                 </div>
             </template>
             <el-table :data="nodeList" style="width: 100%">
@@ -66,6 +66,6 @@ getAgentKey()
             </el-table>
         </el-card>
 
-        <el-alert title="注册方法" type="info" :description="'tdpc -agent ' + agentUrl + agentKey" show-icon />
+        <el-alert title="子节点接入命令" type="success" :description="'tdpc -agent ' + agentUrl + agentKey" show-icon />
     </div>
 </template>
