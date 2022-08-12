@@ -4,10 +4,18 @@ import { ref } from "vue"
 import { Api } from "@/api"
 
 const nodeList = ref<{ Ip: string }[]>([])
+const agentKey = ref("")
+
+const agentUrl = location.origin.replace(/^http/, "ws") + "/wsi/agent/"
 
 async function getNodes() {
     const res = await Api.agent.getNodes()
     nodeList.value = res
+}
+
+async function getAgentKey() {
+    const res = await Api.config.detail("AgentKey")
+    agentKey.value = res.Value
 }
 
 async function runCommand(addr: string) {
@@ -27,6 +35,7 @@ dir
 }
 
 getNodes()
+getAgentKey()
 </script>
 
 <template>
@@ -56,5 +65,7 @@ getNodes()
                 </el-table-column>
             </el-table>
         </el-card>
+
+        <el-alert title="注册方法" type="info" :description="'tdpc -agent ' + agentUrl + agentKey" show-icon />
     </div>
 </template>

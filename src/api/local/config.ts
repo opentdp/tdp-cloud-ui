@@ -5,6 +5,10 @@ export class ConfigModel extends HttpClient {
         return this.get("/config")
     }
 
+    public detail(key: string): Promise<ConfigItem> {
+        return this.get("/config/" + key)
+    }
+
     public create(data: ConfigRequest): Promise<ConfigResponse> {
         return this.post("/config", data)
     }

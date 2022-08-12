@@ -1,6 +1,7 @@
 import { CacheModel } from "./local/cache"
 
 import { AgentModel } from "./local/agent"
+import { ConfigModel } from "./local/config"
 import { SecretModel } from "./local/secret"
 import { SocketModel } from "./local/socket"
 import { SSHKeyModel } from "./local/ssh_key"
@@ -19,6 +20,7 @@ export const Api = {
     cache: new CacheModel(),
 
     agent: new AgentModel(),
+    config: new ConfigModel(),
     secret: new SecretModel(),
     socket: new SocketModel(),
     sshkey: new SSHKeyModel(),
