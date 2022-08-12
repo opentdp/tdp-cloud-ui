@@ -1,7 +1,7 @@
 import { HttpClient } from "../basic/http"
 
 export class SSHKeyModel extends HttpClient {
-    public fetch(): Promise<SSHKeyItem[]> {
+    public list(): Promise<SSHKeyItem[]> {
         return this.get("/sshkey")
     }
 

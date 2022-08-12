@@ -14,7 +14,7 @@ const session = sessionStore()
 
 // 获取密钥列表
 async function getSecret() {
-    const res = await Api.secret.fetch()
+    const res = await Api.secret.list()
     session.setSecrets(res)
 }
 

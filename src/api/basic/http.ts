@@ -70,10 +70,10 @@ export class HttpClient {
             }
         }
         // 发起请求并返回结构数据
-        return this.fetchData(hcp.url, request)
+        return this.newFetch(hcp.url, request)
     }
 
-    protected async fetchData(url: string, req: RequestInit) {
+    protected async newFetch(url: string, req: RequestInit) {
         const body = await fetch(this.api + url, req)
         const data = await body.json()
         // 捕获错误信息

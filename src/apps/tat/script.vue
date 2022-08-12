@@ -13,10 +13,10 @@ const currentRegion = ref("")
 const LHInstances = ref<(Lighthouse.Instance & { region: string })[]>([])
 const instanceRegionMap = new Map<string, string>()
 
-async function fetchTATList() {
+async function getTATList() {
     loading.value = true
     try {
-        const res = await Api.tat.fetchTATList()
+        const res = await Api.tat.getTATList()
         tatList.value = res
     } catch (error) {
         ElMessage.error(error as string)
@@ -62,7 +62,7 @@ async function onNewSave() {
             newForm.value.WorkingDirectory = newForm.value.CommandType == "SHELL" ? "/root" : "C:\\Program Files\\qcloud\\tat_agent\\workdir"
         }
         await Api.tat.newTAT(newForm.value)
-        await fetchTATList()
+        await getTATList()
     }
     catch (error) {
         ElMessage.error(error + "")
@@ -92,7 +92,7 @@ async function onEditSave() {
                 editForm.value.WorkingDirectory = editForm.value.CommandType == "SHELL" ? "/root" : "C:\\Program Files\\qcloud\\tat_agent\\workdir"
             }
             await Api.tat.updateTAT(editForm.value)
-            await fetchTATList()
+            await getTATList()
         }
         catch (error) {
             ElMessage.error(error as string)
@@ -107,7 +107,7 @@ async function onDelete(id: string) {
     loading.value = true
     try {
         await Api.tat.deleteTAT(id)
-        await fetchTATList()
+        await getTATList()
     }
     catch (error) {
         ElMessage.error(error + "")
@@ -171,7 +171,7 @@ async function onDoRun() {
 
 onMounted(async () => {
     try {
-        fetchTATList()
+        getTATList()
         fetchLH()
     } catch (error) {
         ElMessage.error(error as string)

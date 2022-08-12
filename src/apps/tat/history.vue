@@ -45,10 +45,10 @@ async function do_update_history_list() {
     }
 }
 
-async function fetchHistory() {
+async function getHistory() {
     loadingHistory.value = true
     try {
-        historyList.value = await Api.tat.fetchTATHistoryList()
+        historyList.value = await Api.tat.getTATHistoryList()
     } catch (error) {
         ElMessage.error(error as string)
     }
@@ -83,7 +83,7 @@ async function onShowHistory(row: TATHistoryItem) {
 }
 
 onMounted(async () => {
-    fetchHistory()
+    getHistory()
     setTimeout(do_update_history_list, 1000)
 })
 

@@ -26,8 +26,8 @@ async function vncInit() {
 
 const cmdList = ref<TATItem[]>([])
 
-async function fetchTATList() {
-    const res = await Api.tat.fetchTATList()
+async function getTATList() {
+    const res = await Api.tat.getTATList()
     cmdList.value = res
 }
 
@@ -49,7 +49,7 @@ function vncExec(cmd: string) {
     }
 }
 
-fetchTATList()
+getTATList()
 onMounted(() => vncInit())
 </script>
 

@@ -1,7 +1,7 @@
 import { HttpClient } from "../basic/http"
 
 export class ConfigModel extends HttpClient {
-    public fetch(): Promise<ConfigItem[]> {
+    public list(): Promise<ConfigItem[]> {
         return this.get("/config")
     }
 

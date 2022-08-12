@@ -1,7 +1,7 @@
 import { HttpClient } from "../basic/http"
 
 export class TATModel extends HttpClient {
-    public fetchTATList(): Promise<TATItem[]> {
+    public getTATList(): Promise<TATItem[]> {
         return this.get("/tat/script")
     }
 
@@ -25,7 +25,7 @@ export class TATModel extends HttpClient {
         return this.post("/tat/history/", src)
     }
 
-    public fetchTATHistoryList(): Promise<TATHistoryItem[]> {
+    public getTATHistoryList(): Promise<TATHistoryItem[]> {
         return this.get("/tat/history/")
     }
 

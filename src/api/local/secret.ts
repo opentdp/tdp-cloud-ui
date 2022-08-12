@@ -1,7 +1,7 @@
 import { HttpClient } from "../basic/http"
 
 export class SecretModel extends HttpClient {
-    public fetch(): Promise<SecretItem[]> {
+    public list(): Promise<SecretItem[]> {
         return this.get("/secret")
     }
 

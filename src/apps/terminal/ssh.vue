@@ -153,8 +153,8 @@ function lighthouseSearch(qr: string, cb: (a: unknown[]) => void) {
 
 const keylist = ref<SSHKeyItem[]>([])
 
-async function fetchSSHKeys() {
-    const res = await Api.sshkey.fetch()
+async function getSshkeys() {
+    const res = await Api.sshkey.list()
     keylist.value = res
 }
 
@@ -163,7 +163,7 @@ async function fetchSSHKeys() {
 const cmdlist = ref<TATItem[]>([])
 
 async function getTATCommondList() {
-    const res = await Api.tat.fetchTATList()
+    const res = await Api.tat.getTATList()
     cmdlist.value = res
 }
 
@@ -178,7 +178,7 @@ function sshExec(cmd: string) {
 
 getLighthouseInstances()
 getTATCommondList()
-fetchSSHKeys()
+getSshkeys()
 </script>
 
 <template>

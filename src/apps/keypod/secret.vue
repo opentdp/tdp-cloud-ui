@@ -9,8 +9,8 @@ const session = sessionStore()
 
 // 密钥列表
 
-async function fetchSecrets() {
-    const res = await Api.secret.fetch()
+async function getSecrets() {
+    const res = await Api.secret.list()
     session.setSecrets(res)
 }
 
@@ -38,7 +38,7 @@ function formSubmit(form: FormInstance | undefined) {
         }
         await Api.secret.create(formModel)
         formRef.value?.resetFields()
-        fetchSecrets()
+        getSecrets()
     })
 }
 
@@ -50,7 +50,7 @@ async function deleteSecret(idx: number) {
     session.secretList.splice(idx, 1)
 }
 
-fetchSecrets()
+getSecrets()
 </script>
 
 <template>
