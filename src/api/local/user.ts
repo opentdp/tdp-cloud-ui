@@ -19,20 +19,20 @@ export class UserModel extends HttpClient {
 }
 
 export interface LoginRequest {
-    username: string
-    password: string
+    Username: string
+    Password: string
 }
 
 export interface LoginResponse {
-    keyid: number
-    token: string
-    username: string
-    description: string
+    KeyId: number
+    Token: string
+    Username: string
+    Description: string
 }
 
 export interface RegisterRequest {
-    username: string
-    password: string
+    Username: string
+    Password: string
 }
 
 export interface RegisterResponse {
@@ -40,7 +40,7 @@ export interface RegisterResponse {
 }
 
 export interface UpdateInfoRequest {
-    description: string
+    Description: string
 }
 
 export interface UpdateInfoResponse {
@@ -48,8 +48,8 @@ export interface UpdateInfoResponse {
 }
 
 export interface UpdatePasswordRequest {
-    oldPassword: string
-    newPassword: string
+    OldPassword: string
+    NewPassword: string
 }
 
 export interface UpdatePasswordResponse {

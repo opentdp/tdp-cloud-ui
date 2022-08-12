@@ -15,7 +15,7 @@ export class LighthouseModel extends QCloudClient {
 
     public describeInstances(
         region: string,
-        query: Lighthouse.DescribeInstancesRequest
+        query?: Lighthouse.DescribeInstancesRequest
     ): Promise<Lighthouse.DescribeInstancesResponse> {
         query = Object.assign({ Limit: 100 }, query)
         return this.q({

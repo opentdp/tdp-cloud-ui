@@ -10,19 +10,19 @@ const session = sessionStore()
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    oldPassword: "",
-    newPassword: "",
-    newPassword2: "",
+    OldPassword: "",
+    NewPassword: "",
+    NewPassword2: "",
 })
 
 const formRules = ref<FormRules>({
-    oldPassword: [{ required: true, message: "请输入原始密码" }],
-    newPassword: [{ required: true, message: "请输入密码" }],
-    newPassword2: [
+    OldPassword: [{ required: true, message: "请输入原始密码" }],
+    NewPassword: [{ required: true, message: "请输入密码" }],
+    NewPassword2: [
         { required: true, message: "请输入密码" },
         {
             validator: (rule, value, callback) => {
-                if (formModel.newPassword != formModel.newPassword2) {
+                if (formModel.NewPassword != formModel.NewPassword2) {
                     callback(new Error("两次密码不一致"))
                 } else {
                     callback()
@@ -83,14 +83,14 @@ async function formSubmit(form: FormInstance | undefined) {
                         </div>
                     </template>
                     <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
-                        <el-form-item label="原密码" prop="oldPassword">
-                            <el-input v-model="formModel.oldPassword" type="password" autocomplete="off" />
+                        <el-form-item label="原密码" prop="OldPassword">
+                            <el-input v-model="formModel.OldPassword" type="password" autocomplete="off" />
                         </el-form-item>
-                        <el-form-item label="新密码" prop="newPassword">
-                            <el-input v-model="formModel.newPassword" type="password" autocomplete="off" />
+                        <el-form-item label="新密码" prop="NewPassword">
+                            <el-input v-model="formModel.NewPassword" type="password" autocomplete="off" />
                         </el-form-item>
-                        <el-form-item label="新密码" prop="newPassword2">
-                            <el-input v-model="formModel.newPassword2" type="password" autocomplete="off" />
+                        <el-form-item label="新密码" prop="NewPassword2">
+                            <el-input v-model="formModel.NewPassword2" type="password" autocomplete="off" />
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="formSubmit(formRef)">

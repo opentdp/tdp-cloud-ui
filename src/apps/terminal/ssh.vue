@@ -19,27 +19,27 @@ let authType = ref("0")
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    addr: "" + route.params.addr,
-    user: "root",
-    password: "",
-    privateKey: ""
+    Addr: "" + route.params.addr,
+    User: "root",
+    Password: "",
+    PrivateKey: ""
 })
 
 const formRules: FormRules = {
-    addr: [{ required: true, message: "格式 1.1.1.1:22" }],
-    user: [{ required: true, message: "请输入用户名" }],
-    password: [{
+    Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
+    User: [{ required: true, message: "请输入用户名" }],
+    Password: [{
         validator: (rule, value, callback) => {
-            if (!formModel.password && !formModel.privateKey) {
+            if (!formModel.Password && !formModel.PrivateKey) {
                 callback(new Error("密码或公钥至少提供一个"))
             } else {
                 callback()
             }
         }
     }],
-    privateKey: [{
+    PrivateKey: [{
         validator: (rule, value, callback) => {
-            if (!formModel.password && !formModel.privateKey) {
+            if (!formModel.Password && !formModel.PrivateKey) {
                 callback(new Error("密码或公钥至少提供一个"))
             } else {
                 callback()
@@ -75,7 +75,7 @@ const sshTabs = reactive<sshTab[]>([])
 function createTab() {
     const tab: sshTab = {
         id: "tab-" + Date.now(),
-        label: formModel.addr
+        label: formModel.Addr
     }
     sshTabs.push(tab)
     // 延迟连接
@@ -194,15 +194,15 @@ fetchSSHKeys()
         <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">
             <el-tab-pane label="新建" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
-                    <el-form-item prop="addr" label="主机">
-                        <el-autocomplete v-model="formModel.addr" :fetch-suggestions="lighthouseSearch" clearable>
+                    <el-form-item prop="Addr" label="主机">
+                        <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="lighthouseSearch" clearable>
                             <template #default="{ item }">
                                 {{ item.value }} - {{ item.region }}
                             </template>
                         </el-autocomplete>
                     </el-form-item>
-                    <el-form-item prop="user" label="用户名">
-                        <el-input v-model="formModel.user" />
+                    <el-form-item prop="User" label="用户名">
+                        <el-input v-model="formModel.User" />
                     </el-form-item>
                     <el-form-item label="验证方式">
                         <el-select v-model="authType">
@@ -211,17 +211,17 @@ fetchSSHKeys()
                             <el-option label="输入私玥" value="4" />
                         </el-select>
                     </el-form-item>
-                    <el-form-item v-if="authType == '0'" prop="password" label="密码">
-                        <el-input v-model="formModel.password" type="password" @keyup.enter="formSubmit(formRef)" />
+                    <el-form-item v-if="authType == '0'" prop="Password" label="密码">
+                        <el-input v-model="formModel.Password" type="password" @keyup.enter="formSubmit(formRef)" />
                     </el-form-item>
-                    <el-form-item v-if="authType == '2'" prop="privateKey" label="私玥">
-                        <el-select v-model="formModel.privateKey">
+                    <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
+                        <el-select v-model="formModel.PrivateKey">
                             <el-option v-for="item in keylist" :key="item.Id" :label="item.Description"
                                 :value="item.PrivateKey" />
                         </el-select>
                     </el-form-item>
-                    <el-form-item v-if="authType == '4'" prop="privateKey" label="私钥">
-                        <el-input v-model="formModel.privateKey" type="textarea"
+                    <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">
+                        <el-input v-model="formModel.PrivateKey" type="textarea"
                             :autosize="{ minRows: 3, maxRows: 10 }" />
                     </el-form-item>
                     <el-form-item>

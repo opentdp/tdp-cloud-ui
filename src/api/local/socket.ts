@@ -5,7 +5,7 @@ export class SocketModel extends HttpClient {
         if (this.session.token) {
             const token = this.session.token
             const keyid = this.session.keyid || 0
-            query.auth = keyid + ":" + token
+            query.Auth = keyid + ":" + token
         }
 
         const param = this.buildQuery(query)
@@ -17,9 +17,9 @@ export class SocketModel extends HttpClient {
 }
 
 export interface SSHRequest {
-    auth?: string
-    addr: string
-    user: string
-    password?: string
-    privateKey?: string
+    Auth?: string
+    Addr: string
+    User: string
+    Password?: string
+    PrivateKey?: string
 }

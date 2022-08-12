@@ -14,9 +14,12 @@ async function runCommand(addr: string) {
     await Api.agent.runCommand({
         Addr: addr,
         Payload: {
-            Content: "ls -al /",
+            Content: `
+cd /d d:\\
+dir
+            `,
             Username: "root",
-            CommandType: "shell",
+            CommandType: "CMD",
             WorkingDirectory: "/root",
             Timeout: 30,
         }

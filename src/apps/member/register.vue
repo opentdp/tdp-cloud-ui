@@ -10,15 +10,15 @@ const router = useRouter()
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    username: "",
-    password: "",
-    password2: "",
+    Username: "",
+    Password: "",
+    Password2: "",
 })
 
 const formRules: FormRules = {
-    username: [{ required: true, message: "请输入用户名" }],
-    password: [{ required: true, message: "请输入密码" }],
-    password2: [{ required: true, message: "请输入密码" }],
+    Username: [{ required: true, message: "请输入用户名" }],
+    Password: [{ required: true, message: "请输入密码" }],
+    Password2: [{ required: true, message: "请输入密码" }],
 }
 
 function formSubmit(form: FormInstance | undefined) {
@@ -41,8 +41,8 @@ function formSubmit(form: FormInstance | undefined) {
                 TDP Cloud
             </div>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="0px" class="vt-content">
-                <el-form-item prop="username">
-                    <el-input v-model="formModel.username" placeholder="用户名">
+                <el-form-item prop="Username">
+                    <el-input v-model="formModel.Username" placeholder="用户名">
                         <template #prepend>
                             <el-icon>
                                 <User />
@@ -50,8 +50,8 @@ function formSubmit(form: FormInstance | undefined) {
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item prop="password">
-                    <el-input v-model="formModel.password" type="password" placeholder="密码">
+                <el-form-item prop="Password">
+                    <el-input v-model="formModel.Password" type="password" placeholder="密码">
                         <template #prepend>
                             <el-icon>
                                 <Lock />
@@ -59,8 +59,8 @@ function formSubmit(form: FormInstance | undefined) {
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item prop="password2">
-                    <el-input v-model="formModel.password2" type="password" placeholder="确认密码"
+                <el-form-item prop="Password2">
+                    <el-input v-model="formModel.Password2" type="password" placeholder="确认密码"
                         @keyup.enter="formSubmit(formRef)">
                         <template #prepend>
                             <el-icon>

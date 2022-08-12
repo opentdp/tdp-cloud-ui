@@ -19,15 +19,15 @@ async function fetchSecrets() {
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    secretId: "",
-    secretKey: "",
-    description: "",
+    SecretId: "",
+    SecretKey: "",
+    Description: "",
 })
 
 const formRules: FormRules = {
-    description: [{ required: true, message: "请输入别名" }],
-    secretId: [{ required: true, message: "请输入 SecretId" }],
-    secretKey: [{ required: true, message: "请输入 SecretKey" }],
+    SecretId: [{ required: true, message: "请输入 SecretId" }],
+    SecretKey: [{ required: true, message: "请输入 SecretKey" }],
+    Description: [{ required: true, message: "请输入别名" }],
 }
 
 function formSubmit(form: FormInstance | undefined) {
@@ -99,14 +99,14 @@ fetchSecrets()
                 </div>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
-                <el-form-item prop="description" label="描述">
-                    <el-input v-model="formModel.description" />
+                <el-form-item prop="Description" label="描述">
+                    <el-input v-model="formModel.Description" />
                 </el-form-item>
-                <el-form-item prop="secretId" label="SecretId">
-                    <el-input v-model="formModel.secretId" />
+                <el-form-item prop="SecretId" label="SecretId">
+                    <el-input v-model="formModel.SecretId" />
                 </el-form-item>
-                <el-form-item prop="secretKey" label="SecretKey">
-                    <el-input v-model="formModel.secretKey" />
+                <el-form-item prop="SecretKey" label="SecretKey">
+                    <el-input v-model="formModel.SecretKey" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="formSubmit(formRef)">

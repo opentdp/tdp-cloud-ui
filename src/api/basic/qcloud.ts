@@ -6,17 +6,17 @@ export class QCloudClient extends HttpClient {
     protected qService = ""
     protected qVersion = ""
 
-    protected q(q: { action: string, query?: unknown, region?: string, endpoint?: string, expiry?: number }) {
+    protected q(q: QCloudClientParams) {
         const header: HeadersInit = {
-            service: this.qService,
-            version: this.qVersion,
-            action: q.action,
+            Service: this.qService,
+            Version: this.qVersion,
+            Action: q.action,
         }
         if (q.region) {
-            header.region = q.region
+            header.Region = q.region
         }
         if (q.endpoint) {
-            header.endpoint = q.endpoint
+            header.Endpoint = q.endpoint
         }
         const params: HttpClientParams = {
             url: "/",
@@ -31,4 +31,12 @@ export class QCloudClient extends HttpClient {
         }
         return this.rcache(Object.assign(params, { expiry: q.expiry }))
     }
+}
+
+export interface QCloudClientParams {
+    action: string
+    query?: unknown
+    region?: string
+    endpoint?: string
+    expiry?: number
 }

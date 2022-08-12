@@ -19,15 +19,15 @@ async function fetchKeys() {
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    publicKey: "",
-    privateKey: "",
-    description: "",
+    PublicKey: "",
+    PrivateKey: "",
+    Description: "",
 })
 
 const formRules: FormRules = {
-    description: [{ required: true, message: "请输入别名" }],
-    publicKey: [{ required: true, message: "请输入公钥" }],
-    privateKey: [{ required: true, message: "请输入私钥" }],
+    PublicKey: [{ required: true, message: "请输入公钥" }],
+    PrivateKey: [{ required: true, message: "请输入私钥" }],
+    Description: [{ required: true, message: "请输入别名" }],
 }
 
 function formSubmit(form: FormInstance | undefined) {
@@ -94,14 +94,14 @@ fetchKeys()
                 </div>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="55px">
-                <el-form-item prop="description" label="描述">
-                    <el-input v-model="formModel.description" />
+                <el-form-item prop="Description" label="描述">
+                    <el-input v-model="formModel.Description" />
                 </el-form-item>
-                <el-form-item prop="publicKey" label="公钥">
-                    <el-input v-model="formModel.publicKey" type="textarea" rows="5" />
+                <el-form-item prop="PublicKey" label="公钥">
+                    <el-input v-model="formModel.PublicKey" type="textarea" rows="5" />
                 </el-form-item>
-                <el-form-item prop="privateKey" label="私钥">
-                    <el-input v-model="formModel.privateKey" type="textarea" rows="5" />
+                <el-form-item prop="PrivateKey" label="私钥">
+                    <el-input v-model="formModel.PrivateKey" type="textarea" rows="5" />
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="formSubmit(formRef)">

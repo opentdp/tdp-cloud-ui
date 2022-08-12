@@ -10,7 +10,7 @@ const session = sessionStore()
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    description: session.description,
+    Description: session.description,
 })
 
 const formRules = ref<FormRules>({
@@ -36,7 +36,7 @@ function formSubmit(form: FormInstance | undefined) {
             return false
         }
         await Api.user.updateInfo(formModel)
-        session.description = formModel.description
+        session.description = formModel.Description
     })
 }
 </script>
@@ -84,7 +84,7 @@ function formSubmit(form: FormInstance | undefined) {
                             <b>{{ session.username }}</b>
                         </el-form-item>
                         <el-form-item label="个人简介" prop="description">
-                            <el-input v-model="formModel.description" />
+                            <el-input v-model="formModel.Description" />
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="formSubmit(formRef)">
