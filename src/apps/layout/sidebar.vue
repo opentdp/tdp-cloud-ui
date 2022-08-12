@@ -33,11 +33,6 @@ const items: MenuItem[] = [
         title: "轻量服务器",
     },
     {
-        icon: "Connection",
-        index: "/terminal/ssh",
-        title: "SSH 终端",
-    },
-    {
         icon: "Dish",
         index: "/tat",
         title: "自动化助手",
@@ -56,8 +51,8 @@ const items: MenuItem[] = [
     },
     {
         icon: "Connection",
-        index: "/agent/node",
-        title: "节点管理",
+        index: "/terminal/ssh",
+        title: "SSH 终端",
     },
     {
         icon: "Wallet",
@@ -66,14 +61,20 @@ const items: MenuItem[] = [
         subs: [
             {
                 icon: "Wallet",
-                index: "/keypod/secret",
-                title: "CAM 密钥",
+                index: "/keypod/sshkey",
+                title: "SSH 密钥",
             },
             {
                 icon: "Wallet",
-                index: "/keypod/sshkey",
-                title: "SSH 密钥",
-            },]
+                index: "/keypod/secret",
+                title: "CAM 密钥",
+            },
+        ]
+    },
+    {
+        icon: "Switch",
+        index: "/agent/node",
+        title: "节点管理",
     },
     // {
     //     icon: 'Warning',

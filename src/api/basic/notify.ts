@@ -7,7 +7,7 @@ const Message: Record<string, string> = {
 
 export function okNotify(msg: string) {
     msg = Message[msg] || msg
-    ElMessage.info(msg)
+    ElMessage.success(msg)
     return msg
 }
 
