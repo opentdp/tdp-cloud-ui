@@ -1,11 +1,29 @@
 import { HttpClient } from "../basic/http"
 
 export class AgentModel extends HttpClient {
-    public getNodes(): Promise<{ Ip: string }[]> {
+    public getNodes(): Promise<AgentNode[]> {
         return this.get("/agent/node")
     }
     public runCommand(query: ShellRequest): Promise<[]> {
         return this.post("/agent/command", query)
+    }
+}
+
+export interface AgentNode {
+    Addr: string
+    Stat: {
+        CpuPercent: number
+        DiskFree: number
+        DiskTotal: number
+        DiskUsedPercent: number
+        Hostname: string
+        MemoryAvailable: number
+        MemoryPercent: number
+        MemoryTotal: number
+        MemoryUsed: number
+        NetBytesRecv: number
+        NetBytesSent: number
+        OS: string
     }
 }
 
