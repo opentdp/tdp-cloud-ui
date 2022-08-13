@@ -5,8 +5,8 @@ export class ConfigModel extends HttpClient {
         return this.get("/config")
     }
 
-    public detail(key: string): Promise<ConfigItem> {
-        return this.get("/config/" + key)
+    public detail(name: string): Promise<ConfigItem> {
+        return this.get("/config/" + name)
     }
 
     public create(data: ConfigRequest): Promise<ConfigResponse> {
@@ -14,17 +14,19 @@ export class ConfigModel extends HttpClient {
     }
 
     public update(data: ConfigItem): Promise<ConfigResponse> {
-        return this.patch("/config/" + data.Key, data)
+        return this.patch("/config/" + data.Name, data)
     }
 
-    public remove(key: string): Promise<ConfigResponse> {
-        return this.delete("/config/" + key)
+    public remove(name: string): Promise<ConfigResponse> {
+        return this.delete("/config/" + name)
     }
 }
 
 export interface ConfigRequest {
-    Key: string
+    Name: string
     Value: string
+    Module: string
+    Description: string
 }
 
 export interface ConfigResponse {
@@ -33,8 +35,10 @@ export interface ConfigResponse {
 
 export interface ConfigItem {
     Id: number
-    Key: string
+    Name: string
     Value: string
+    Module: string
+    Description: string
     CreatedAt: string
     UpdatedAt: string
 }
