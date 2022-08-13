@@ -1,20 +1,20 @@
 import { HttpClient } from "../basic/http"
 
 export class UserModel extends HttpClient {
-    public login(data: LoginRequest): Promise<LoginResponse> {
-        return this.post("/user/login", data)
+    public login(rq: LoginRequest): Promise<LoginResponse> {
+        return this.post("/user/login", rq)
     }
 
-    public register(data: RegisterRequest): Promise<RegisterResponse> {
-        return this.post("/user/register", data)
+    public register(rq: RegisterRequest): Promise<RegisterResponse> {
+        return this.post("/user/register", rq)
     }
 
-    public updateInfo(data: UpdateInfoRequest): Promise<UpdateInfoResponse> {
-        return this.patch("/user/info", data)
+    public updateInfo(rq: UpdateInfoRequest): Promise<UpdateInfoResponse> {
+        return this.patch("/user/info", rq)
     }
 
-    public updatePassword(data: UpdatePasswordRequest): Promise<UpdatePasswordResponse> {
-        return this.patch("/user/password", data)
+    public updatePassword(rq: UpdatePasswordRequest): Promise<UpdatePasswordResponse> {
+        return this.patch("/user/password", rq)
     }
 }
 

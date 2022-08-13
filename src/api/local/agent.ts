@@ -4,8 +4,8 @@ export class AgentModel extends HttpClient {
     public listNode(): Promise<AgentNode[]> {
         return this.get("/agent/node")
     }
-    public runCommand(query: ShellRequest): Promise<[]> {
-        return this.post("/agent/command", query)
+    public runCommand(rq: ShellRequest): Promise<[]> {
+        return this.post("/agent/command", rq)
     }
 }
 

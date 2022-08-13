@@ -1,16 +1,16 @@
 import { HttpClient } from "../basic/http"
 
 export class TATModel extends HttpClient {
-    public listScript(): Promise<TATItem[]> {
+    public listScript(): Promise<TATScriptItem[]> {
         return this.get("/tat/script")
     }
 
-    public createScript(src: Omit<TATItem, "Id">) {
-        return this.post("/tat/script/", src)
+    public createScript(rq: Omit<TATScriptItem, "Id">) {
+        return this.post("/tat/script/", rq)
     }
 
-    public updateScript(src: TATItem) {
-        return this.patch("/tat/script/" + src.Id, src)
+    public updateScript(rq: TATScriptItem) {
+        return this.patch("/tat/script/" + rq.Id, rq)
     }
 
     public deleteScript(id: string) {
@@ -21,16 +21,12 @@ export class TATModel extends HttpClient {
         return this.get("/tat/history/")
     }
 
-    public createHistory(src: {
-        Name: string,
-        Region: string,
-        InvocationId: string
-    }) {
-        return this.post("/tat/history/", src)
+    public createHistory(rq: { Name: string, Region: string, InvocationId: string }) {
+        return this.post("/tat/history/", rq)
     }
 
-    public updateHistory(id: number, query: { InvocationStatus: string, InvocationResultJson: string }) {
-        return this.patch("/tat/history/" + id, query)
+    public updateHistory(id: number, rq: { InvocationStatus: string, InvocationResultJson: string }) {
+        return this.patch("/tat/history/" + id, rq)
     }
 
     public deleteHistory(id: number) {
@@ -39,7 +35,7 @@ export class TATModel extends HttpClient {
 }
 
 
-export interface TATItem {
+export interface TATScriptItem {
     Id: number
     UserId: number
     Name: string

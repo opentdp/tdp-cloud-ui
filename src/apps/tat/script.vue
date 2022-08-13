@@ -4,9 +4,9 @@ import { ElMessage, ElTable } from "element-plus"
 import { Base64 } from 'js-base64'
 
 import { Api, QApi, Lighthouse } from "@/api"
-import { TATItem } from '@/api/local/tat'
+import { TATScriptItem } from '@/api/local/tat'
 
-const tatList = ref<TATItem[]>([])
+const tatList = ref<TATScriptItem[]>([])
 const loading = ref(false)
 const regionList = ref<{ value: string, label: string }[]>([])
 const currentRegion = ref("")
@@ -44,10 +44,14 @@ async function fetchLH() {
 // New
 
 const newDialogVisible = ref<boolean>(false)
-const newForm = ref<Omit<TATItem, "Id">>({ Name: "", Description: "", Content: "", CommandType: "SHELL", WorkingDirectory: "", Timeout: 60, Username: "", UserId: 0 })
+const newForm = ref<Omit<TATScriptItem, "Id">>({
+    Name: "", Description: "", Content: "", CommandType: "SHELL", WorkingDirectory: "", Timeout: 60, Username: "", UserId: 0
+})
 
 function onNew() {
-    newForm.value = { Name: "", Description: "", Content: "", CommandType: "SHELL", WorkingDirectory: "", Timeout: 60, Username: "", UserId: 0 }
+    newForm.value = {
+        Name: "", Description: "", Content: "", CommandType: "SHELL", WorkingDirectory: "", Timeout: 60, Username: "", UserId: 0
+    }
     newDialogVisible.value = true
 }
 
@@ -73,9 +77,9 @@ async function onNewSave() {
 // Edit
 
 const editDialogVisible = ref<boolean>(false)
-const editForm = ref<TATItem>()
+const editForm = ref<TATScriptItem>()
 
-function onEdit(row: TATItem) {
+function onEdit(row: TATScriptItem) {
     editForm.value = { ...row }
     editDialogVisible.value = true
 }
@@ -129,16 +133,18 @@ interface TATRunIitem {
 }
 
 const runDialogVisible = ref(false)
-const runForm = ref<TATRunIitem>({ CommandType: "", Username: "", Content: "", WorkingDirectory: "", Timeout: 0, InstanceIds: [], Description: "", Name: "" })
+const runForm = ref<TATRunIitem>({
+    CommandType: "", Username: "", Content: "", WorkingDirectory: "", Timeout: 0, InstanceIds: [], Description: "", Name: ""
+})
 
-function onRun(tatItem: TATItem) {
-    runForm.value.Username = tatItem.Username
-    runForm.value.CommandType = tatItem.CommandType
-    runForm.value.Content = tatItem.Content
-    runForm.value.WorkingDirectory = tatItem.WorkingDirectory
-    runForm.value.Timeout = tatItem.Timeout
-    runForm.value.Description = tatItem.Description
-    runForm.value.Name = tatItem.Name
+function onRun(item: TATScriptItem) {
+    runForm.value.Username = item.Username
+    runForm.value.CommandType = item.CommandType
+    runForm.value.Content = item.Content
+    runForm.value.WorkingDirectory = item.WorkingDirectory
+    runForm.value.Timeout = item.Timeout
+    runForm.value.Description = item.Description
+    runForm.value.Name = item.Name
     runDialogVisible.value = true
 }
 

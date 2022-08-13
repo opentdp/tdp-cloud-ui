@@ -5,27 +5,17 @@ export class SSHKeyModel extends HttpClient {
         return this.get("/sshkey")
     }
 
-    public create(data: SSHKeyRequest): Promise<SSHKeyResponse> {
-        return this.post("/sshkey", data)
+    public create(rq: SSHKeyRequest): Promise<SSHKeyResponse> {
+        return this.post("/sshkey", rq)
     }
 
-    public update(data: SSHKeyItem): Promise<SSHKeyResponse> {
-        return this.patch("/secret/" + data.Id, data)
+    public update(rq: SSHKeyItem): Promise<SSHKeyResponse> {
+        return this.patch("/secret/" + rq.Id, rq)
     }
 
     public remove(id: number): Promise<SSHKeyResponse> {
         return this.delete("/sshkey/" + id)
     }
-}
-
-export interface SSHKeyRequest {
-    PublicKey: string
-    PrivateKey: string
-    Description: string
-}
-
-export interface SSHKeyResponse {
-    Message: string
 }
 
 export interface SSHKeyItem {
@@ -36,4 +26,14 @@ export interface SSHKeyItem {
     Description: string
     CreatedAt: string
     UpdatedAt: string
+}
+
+export interface SSHKeyRequest {
+    PublicKey: string
+    PrivateKey: string
+    Description: string
+}
+
+export interface SSHKeyResponse {
+    Message: string
 }

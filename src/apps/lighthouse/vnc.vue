@@ -3,7 +3,7 @@ import { onMounted, ref } from "vue"
 import { useRoute } from "vue-router"
 
 import { Api, QApi } from "@/api"
-import { TATItem } from '@/api/local/tat'
+import { TATScriptItem } from '@/api/local/tat'
 
 const route = useRoute()
 const frame = ref<HTMLIFrameElement>()
@@ -24,7 +24,7 @@ async function vncInit() {
 
 // 执行快捷命令
 
-const cmdlist = ref<TATItem[]>([])
+const cmdlist = ref<TATScriptItem[]>([])
 
 async function getTATScriptList() {
     const res = await Api.tat.listScript()

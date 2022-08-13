@@ -5,27 +5,17 @@ export class SecretModel extends HttpClient {
         return this.get("/secret")
     }
 
-    public create(data: SecretRequest): Promise<SecretResponse> {
-        return this.post("/secret", data)
+    public create(rq: SecretRequest): Promise<SecretResponse> {
+        return this.post("/secret", rq)
     }
 
-    public update(data: SecretItem): Promise<SecretResponse> {
-        return this.patch("/secret/" + data.Id, data)
+    public update(rq: SecretItem): Promise<SecretResponse> {
+        return this.patch("/secret/" + rq.Id, rq)
     }
 
     public remove(id: number): Promise<SecretResponse> {
         return this.delete("/secret/" + id)
     }
-}
-
-export interface SecretRequest {
-    SecretId: string
-    SecretKey: string
-    Description: string
-}
-
-export interface SecretResponse {
-    Message: string
 }
 
 export interface SecretItem {
@@ -36,4 +26,14 @@ export interface SecretItem {
     Description: string
     CreatedAt: string
     UpdatedAt: string
+}
+
+export interface SecretRequest {
+    SecretId: string
+    SecretKey: string
+    Description: string
+}
+
+export interface SecretResponse {
+    Message: string
 }

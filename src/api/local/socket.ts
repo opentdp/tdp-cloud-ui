@@ -1,15 +1,15 @@
 import { HttpClient } from "../basic/http"
 
 export class SocketModel extends HttpClient {
-    public getWebsshURL(query: SSHRequest) {
+    public getWebsshURL(rq: SSHRequest) {
         if (this.session.token) {
             const token = this.session.token
             const keyid = this.session.keyid || 0
-            query.Auth = keyid + ":" + token
+            rq.Auth = keyid + ":" + token
         }
 
-        const param = this.buildQuery(query)
-        const wsurl = "/wsi/ssh?" + param
+        const query = this.buildQuery(rq)
+        const wsurl = "/wsi/ssh?" + query
         const origin = location.origin.replace(/^http/, "ws")
 
         return origin + wsurl
