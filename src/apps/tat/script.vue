@@ -13,10 +13,10 @@ const currentRegion = ref("")
 const LHInstances = ref<(Lighthouse.Instance & { region: string })[]>([])
 const instanceRegionMap = new Map<string, string>()
 
-async function getTATList() {
+async function getTATScriptList() {
     loading.value = true
     try {
-        const res = await Api.tat.getTATList()
+        const res = await Api.tat.listScript()
         tatList.value = res
     } catch (error) {
         ElMessage.error(error as string)
@@ -61,8 +61,8 @@ async function onNewSave() {
         if (newForm.value.WorkingDirectory == "") {
             newForm.value.WorkingDirectory = newForm.value.CommandType == "SHELL" ? "/root" : "C:\\Program Files\\qcloud\\tat_agent\\workdir"
         }
-        await Api.tat.newTAT(newForm.value)
-        await getTATList()
+        await Api.tat.createScript(newForm.value)
+        await getTATScriptList()
     }
     catch (error) {
         ElMessage.error(error + "")
@@ -91,8 +91,8 @@ async function onEditSave() {
             if (editForm.value.WorkingDirectory == "") {
                 editForm.value.WorkingDirectory = editForm.value.CommandType == "SHELL" ? "/root" : "C:\\Program Files\\qcloud\\tat_agent\\workdir"
             }
-            await Api.tat.updateTAT(editForm.value)
-            await getTATList()
+            await Api.tat.updateScript(editForm.value)
+            await getTATScriptList()
         }
         catch (error) {
             ElMessage.error(error as string)
@@ -106,8 +106,8 @@ async function onEditSave() {
 async function onDelete(id: string) {
     loading.value = true
     try {
-        await Api.tat.deleteTAT(id)
-        await getTATList()
+        await Api.tat.deleteScript(id)
+        await getTATScriptList()
     }
     catch (error) {
         ElMessage.error(error + "")
@@ -160,7 +160,7 @@ async function onDoRun() {
                     Timeout: runForm.value.Timeout,
                     InstanceIds: instanceIds,
                 })
-                await Api.tat.newTATHistory({ Name: runForm.value.Name, Region: region, InvocationId: run_res.InvocationId })
+                await Api.tat.createHistory({ Name: runForm.value.Name, Region: region, InvocationId: run_res.InvocationId })
             }))
         }
     } catch (error) {
@@ -171,7 +171,7 @@ async function onDoRun() {
 
 onMounted(async () => {
     try {
-        getTATList()
+        getTATScriptList()
         fetchLH()
     } catch (error) {
         ElMessage.error(error as string)

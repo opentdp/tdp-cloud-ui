@@ -1,23 +1,27 @@
 import { HttpClient } from "../basic/http"
 
 export class TATModel extends HttpClient {
-    public getTATList(): Promise<TATItem[]> {
+    public listScript(): Promise<TATItem[]> {
         return this.get("/tat/script")
     }
 
-    public updateTAT(src: TATItem) {
-        return this.patch("/tat/script/" + src.Id, src)
-    }
-
-    public newTAT(src: Omit<TATItem, "Id">) {
+    public createScript(src: Omit<TATItem, "Id">) {
         return this.post("/tat/script/", src)
     }
 
-    public deleteTAT(id: string) {
+    public updateScript(src: TATItem) {
+        return this.patch("/tat/script/" + src.Id, src)
+    }
+
+    public deleteScript(id: string) {
         return this.delete("/tat/script/" + id)
     }
 
-    public newTATHistory(src: {
+    public listHistory(): Promise<TATHistoryItem[]> {
+        return this.get("/tat/history/")
+    }
+
+    public createHistory(src: {
         Name: string,
         Region: string,
         InvocationId: string
@@ -25,16 +29,12 @@ export class TATModel extends HttpClient {
         return this.post("/tat/history/", src)
     }
 
-    public getTATHistoryList(): Promise<TATHistoryItem[]> {
-        return this.get("/tat/history/")
-    }
-
-    public deleteTATHistory(id: number) {
-        return this.delete("/tat/history/" + id)
-    }
-
-    public updateTATHistory(id: number, query: { InvocationStatus: string, InvocationResultJson: string }) {
+    public updateHistory(id: number, query: { InvocationStatus: string, InvocationResultJson: string }) {
         return this.patch("/tat/history/" + id, query)
+    }
+
+    public deleteHistory(id: number) {
+        return this.delete("/tat/history/" + id)
     }
 }
 

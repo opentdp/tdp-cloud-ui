@@ -162,8 +162,8 @@ async function getSshkeys() {
 
 const cmdlist = ref<TATItem[]>([])
 
-async function getTATCommondList() {
-    const res = await Api.tat.getTATList()
+async function getTATScriptList() {
+    const res = await Api.tat.listScript()
     cmdlist.value = res
 }
 
@@ -177,7 +177,7 @@ function sshExec(cmd: string) {
 ////// 初始化
 
 getLighthouseInstances()
-getTATCommondList()
+getTATScriptList()
 getSshkeys()
 </script>
 

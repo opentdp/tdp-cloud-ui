@@ -31,7 +31,7 @@ async function do_update_history_list() {
     await Promise.all(historyList.value.map(async item => {
         if (item.InvocationStatus == "" || item.InvocationStatus.endsWith("ING")) {
             const his_res = await QApi.tat.describeInvocations(item.Region, { InvocationIds: [item.InvocationId] })
-            await Api.tat.updateTATHistory(item.Id, {
+            await Api.tat.updateHistory(item.Id, {
                 InvocationStatus: his_res.InvocationSet[0].InvocationStatus,
                 InvocationResultJson: JSON.stringify(his_res.InvocationSet[0])
             })
@@ -48,7 +48,7 @@ async function do_update_history_list() {
 async function getHistory() {
     loadingHistory.value = true
     try {
-        historyList.value = await Api.tat.getTATHistoryList()
+        historyList.value = await Api.tat.listHistory()
     } catch (error) {
         ElMessage.error(error as string)
     }
@@ -57,7 +57,7 @@ async function getHistory() {
 
 async function onDeleteHistory(history_id: number) {
     try {
-        await Api.tat.deleteTATHistory(history_id)
+        await Api.tat.deleteHistory(history_id)
         historyList.value = historyList.value.filter(item => item.Id != history_id)
     } catch (error) {
         ElMessage.error(error as string)

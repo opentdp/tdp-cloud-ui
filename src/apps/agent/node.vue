@@ -11,8 +11,8 @@ const agentKey = ref("")
 
 const agentUrl = location.origin.replace(/^http/, "ws") + "/wsi/agent/"
 
-async function getNodes() {
-    const res = await Api.agent.getNodes()
+async function getNodeList() {
+    const res = await Api.agent.listNode()
     nodeList.value = res
 }
 
@@ -37,10 +37,10 @@ dir
     })
 }
 
-getNodes()
+getNodeList()
 getAgentKey()
 
-const timer = setInterval(getNodes, 5000)
+const timer = setInterval(getNodeList, 5000)
 onUnmounted(() => {
     clearInterval(timer)
 })

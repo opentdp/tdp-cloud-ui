@@ -24,11 +24,11 @@ async function vncInit() {
 
 // 执行快捷命令
 
-const cmdList = ref<TATItem[]>([])
+const cmdlist = ref<TATItem[]>([])
 
-async function getTATList() {
-    const res = await Api.tat.getTATList()
-    cmdList.value = res
+async function getTATScriptList() {
+    const res = await Api.tat.listScript()
+    cmdlist.value = res
 }
 
 function vncExec(cmd: string) {
@@ -49,7 +49,7 @@ function vncExec(cmd: string) {
     }
 }
 
-getTATList()
+getTATScriptList()
 onMounted(() => vncInit())
 </script>
 
@@ -77,7 +77,7 @@ onMounted(() => vncInit())
                 </div>
             </template>
             <div class="button-list">
-                <el-button v-for="item in cmdList" :key="item.Id" @click="vncExec(item.Content)">
+                <el-button v-for="item in cmdlist" :key="item.Id" @click="vncExec(item.Content)">
                     {{ item.Name }}
                 </el-button>
             </div>
