@@ -3,7 +3,7 @@ import { ref, reactive } from "vue"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api } from "@/api"
-import { SSHKeyItem } from "@/api/local/ssh_key"
+import { SSHKeyItem } from "@/api/local/sshkey"
 
 const keylist = ref<SSHKeyItem[]>([])
 

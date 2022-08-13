@@ -4,7 +4,7 @@ import { AgentModel } from "./local/agent"
 import { ConfigModel } from "./local/config"
 import { SecretModel } from "./local/secret"
 import { SocketModel } from "./local/socket"
-import { SSHKeyModel } from "./local/ssh_key"
+import { SSHKeyModel } from "./local/sshkey"
 import { TATModel } from "./local/tat"
 import { UserModel } from "./local/user"
 

@@ -6,7 +6,7 @@ import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api, QApi } from "@/api"
 import { TATScriptItem } from '@/api/local/tat'
-import { SSHKeyItem } from "@/api/local/ssh_key"
+import { SSHKeyItem } from "@/api/local/sshkey"
 
 import { WebSSH } from "@/helper/webssh"
 
