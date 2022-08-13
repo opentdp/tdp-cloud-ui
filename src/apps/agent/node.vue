@@ -40,7 +40,7 @@ dir
 getNodeList()
 getAgentKey()
 
-const timer = setInterval(getNodeList, 5000)
+const timer = setInterval(getNodeList, 15000)
 onUnmounted(() => {
     clearInterval(timer)
 })
@@ -72,32 +72,35 @@ onUnmounted(() => {
                 <el-table-column label="CPU">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="scope.row.Stat.CpuPercent.toFixed(2)" status="success" />
+                            :percentage="scope.row.Stat.CpuPercent.toFixed(2)" status="success">
+                            {{ scope.row.Stat.CpuPercent.toFixed(2) }}%，{{ scope.row.Stat.CpuCore }} Cores
+                        </el-progress>
                     </template>
                 </el-table-column>
                 <el-table-column label="内存">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="scope.row.Stat.MemoryPercent.toFixed(2)" status="success" />
+                            :percentage="scope.row.Stat.MemoryUsed/scope.row.Stat.MemoryTotal*100" status="success">
+                            {{ bytesToSize(scope.row.Stat.MemoryUsed) }} / {{ bytesToSize(scope.row.Stat.MemoryTotal) }}
+                        </el-progress>
                     </template>
                 </el-table-column>
-                <el-table-column label="主分区">
+                <el-table-column label="硬盘">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="scope.row.Stat.DiskUsedPercent.toFixed(2)" status="success" />
+                            :percentage="scope.row.Stat.DiskUsed/scope.row.Stat.DiskTotal*100" status="success">
+                            {{ bytesToSize(scope.row.Stat.DiskUsed) }} / {{ bytesToSize(scope.row.Stat.DiskTotal) }}
+                        </el-progress>
                     </template>
                 </el-table-column>
-                <el-table-column label="网络">
+                <el-table-column label="网络 In/Out">
                     <template #default="scope">
-                        In: {{ bytesToSize(scope.row.Stat.NetBytesRecv) }} <br>
-                        Out: {{ bytesToSize(scope.row.Stat.NetBytesSent) }}
+                        {{ bytesToSize(scope.row.Stat.NetBytesRecv) }} / {{ bytesToSize(scope.row.Stat.NetBytesSent) }}
                     </template>
                 </el-table-column>
-                <el-table-column fixed="right" label="操作" width="180">
+                <el-table-column label="运行时间">
                     <template #default="scope">
-                        <el-button link type="primary" icon="View" @click="runCommand(scope.row.Addr)">
-                            测试
-                        </el-button>
+                        {{ (scope.row.Stat.Uptime/86400).toFixed(1) }} 天
                     </template>
                 </el-table-column>
             </el-table>

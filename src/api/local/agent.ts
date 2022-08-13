@@ -1,3 +1,4 @@
+import { number } from "echarts"
 import { HttpClient } from "../basic/http"
 
 export class AgentModel extends HttpClient {
@@ -12,18 +13,17 @@ export class AgentModel extends HttpClient {
 export interface AgentNode {
     Addr: string
     Stat: {
-        CpuPercent: number
-        DiskFree: number
-        DiskTotal: number
-        DiskUsedPercent: number
         Hostname: string
-        MemoryAvailable: number
-        MemoryPercent: number
+        Uptime: number
+        OS: string
+        CpuCore: number
+        CpuPercent: number
         MemoryTotal: number
         MemoryUsed: number
+        DiskTotal: number
+        DiskUsed: number
         NetBytesRecv: number
         NetBytesSent: number
-        OS: string
     }
 }
 
