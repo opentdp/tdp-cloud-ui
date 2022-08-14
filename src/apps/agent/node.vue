@@ -10,12 +10,12 @@ const nodeList = ref<AgentNode[]>([])
 const agentUrl = Api.socket.getAgentURL()
 
 async function getNodeList() {
-    const res = await Api.agent.listNode()
+    const res = await Api.agent.list()
     nodeList.value = res
 }
 
-// async function runCommand(addr: string) {
-//     await Api.agent.runCommand({
+// async function exec(addr: string) {
+//     await Api.agent.exec({
 //         Addr: addr,
 //         Payload: {
 //             Content: `

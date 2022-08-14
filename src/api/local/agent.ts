@@ -1,12 +1,12 @@
-import { number } from "echarts"
 import { HttpClient } from "../basic/http"
 
 export class AgentModel extends HttpClient {
-    public listNode(): Promise<AgentNode[]> {
+    public list(): Promise<AgentNode[]> {
         return this.get("/agent/node")
     }
-    public runCommand(rq: ShellRequest): Promise<[]> {
-        return this.post("/agent/command", rq)
+
+    public exec(rq: ShellRequest): Promise<[]> {
+        return this.post("/agent/exec", rq)
     }
 }
 
