@@ -33,7 +33,7 @@ const items: MenuItem[] = [
         title: "轻量服务器",
     },
     {
-        icon: "Dish",
+        icon: "Coin",
         index: "/tat",
         title: "自动化助手",
         subs: [
@@ -72,7 +72,7 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Mouse",
+        icon: "Cpu",
         index: "/agent/node",
         title: "外部节点",
     },
