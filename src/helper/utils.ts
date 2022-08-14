@@ -23,19 +23,20 @@ export function dateFormat(t: string | number, fmt: string) {
         "q+": Math.floor((d.getMonth() + 3) / 3),
         S: d.getMilliseconds(),
     }
-    if (/(y+)/.test(fmt)) {
-        fmt = fmt.replace(
-            RegExp.$1,
-            (d.getFullYear() + "").substr(4 - RegExp.$1.length)
-        )
+
+    const ry = fmt.match(/y+/)
+    if (ry) {
+        fmt = fmt.replace(ry[0], (d.getFullYear() + "").substring(4 - ry[0].length))
     }
-    for (const k in o) {
-        if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(
-                RegExp.$1,
-                RegExp.$1.length === 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
-            )
+
+    let k: keyof typeof o
+    for (k in o) {
+        const rk = fmt.match(new RegExp(k))
+        if (rk) {
+            const ok = o[k] + ""
+            fmt = fmt.replace(rk[0], rk[0].length === 1 ? ok : ("00" + ok).substring(ok.length))
         }
     }
+
     return fmt
 }
