@@ -45,13 +45,13 @@ onUnmounted(() => {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                子节点
+                外部节点
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>子节点列表</b>
+                    <b>节点列表</b>
                 </div>
             </template>
             <el-table :data="nodeList" style="width: 100%">

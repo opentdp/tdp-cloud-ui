@@ -38,12 +38,12 @@ const items: MenuItem[] = [
         title: "自动化助手",
         subs: [
             {
-                icon: "Dish",
+                icon: "Crop",
                 index: "/tat/script",
                 title: "命令管理",
             },
             {
-                icon: "Dish",
+                icon: "Finished",
                 index: "/tat/history",
                 title: "历史记录",
             },
@@ -55,26 +55,26 @@ const items: MenuItem[] = [
         title: "SSH 终端",
     },
     {
-        icon: "Wallet",
+        icon: "Magnet",
         index: "/keypod",
         title: "密钥管理",
         subs: [
             {
-                icon: "Wallet",
+                icon: "Lock",
                 index: "/keypod/sshkey",
                 title: "SSH 密钥",
             },
             {
-                icon: "Wallet",
+                icon: "PartlyCloudy",
                 index: "/keypod/secret",
                 title: "CAM 密钥",
             },
         ]
     },
     {
-        icon: "Switch",
+        icon: "Mouse",
         index: "/agent/node",
-        title: "节点管理",
+        title: "外部节点",
     },
     // {
     //     icon: 'Warning',
@@ -109,6 +109,7 @@ const items: MenuItem[] = [
                             <template v-if="item2.subs">
                                 <el-sub-menu :key="item2.index" :index="item2.index">
                                     <template #title>
+                                        <component :is="item2.icon" class="el-icon" />
                                         {{ item2.title }}
                                     </template>
                                     <el-menu-item v-for="item3 in item2.subs" :key="item3.index" :index="item3.index">
@@ -118,6 +119,7 @@ const items: MenuItem[] = [
                             </template>
                             <template v-else>
                                 <el-menu-item :key="item2.index" :index="item2.index">
+                                    <component :is="item2.icon" class="el-icon" />
                                     {{ item2.title }}
                                 </el-menu-item>
                             </template>
