@@ -214,7 +214,7 @@ onMounted(async () => {
                 <el-table-column fixed prop="Name" label="名称" />
                 <el-table-column prop="Description" label="描述" />
                 <el-table-column prop="Content" label="命令" min-width="250" show-overflow-tooltip />
-                <el-table-column fixed="right" label="操作" align="center" width="250">
+                <el-table-column fixed="right" label="操作" width="240" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View" @click="onRun(scope.row)">
                             运行

@@ -117,7 +117,7 @@ onUnmounted(() => {
                 <el-table-column prop="InvocationId" label="执行ID" />
                 <el-table-column prop="Name" label="命令名" min-width="150" />Í
                 <el-table-column prop="InvocationStatus" label="执行状态" />
-                <el-table-column fixed="right" label="操作" align="center">
+                <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View" @click="onShowHistory(scope.row)">
                             详情
