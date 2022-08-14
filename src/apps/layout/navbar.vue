@@ -74,7 +74,7 @@ onMounted(() => {
             <div class="header-user-con">
                 <!-- 密钥管理 -->
                 <el-icon v-if="session.secretList.length > 0">
-                    <Wallet />
+                    <PartlyCloudy />
                 </el-icon>
                 <el-dropdown v-if="session.secretList.length > 0" class="user-name" trigger="click"
                     @command="secretDropdown">
