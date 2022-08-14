@@ -7,7 +7,7 @@ import { Api } from "@/api"
 import { AgentNode } from "@/api/local/agent"
 
 const nodeList = ref<AgentNode[]>([])
-const agentKey = ref("")
+const appToken = ref("")
 
 const agentUrl = location.origin.replace(/^http/, "ws") + "/wsi/agent/"
 
@@ -16,9 +16,9 @@ async function getNodeList() {
     nodeList.value = res
 }
 
-async function getAgentKey() {
-    const res = await Api.config.detail("AgentKey")
-    agentKey.value = res.Value
+async function getAppToken() {
+    const res = await Api.user.detail()
+    appToken.value = res.AppToken
 }
 
 async function runCommand(addr: string) {
@@ -38,7 +38,7 @@ dir
 }
 
 getNodeList()
-getAgentKey()
+getAppToken()
 
 const timer = setInterval(getNodeList, 15000)
 onUnmounted(() => {
@@ -106,7 +106,7 @@ onUnmounted(() => {
             </el-table>
         </el-card>
 
-        <el-alert title="子节点接入命令" type="success" :description="'tdpc -agent ' + agentUrl + agentKey" show-icon />
+        <el-alert title="子节点接入命令" type="success" :description="'tdpc -agent ' + agentUrl + appToken" show-icon />
     </div>
 </template>
 

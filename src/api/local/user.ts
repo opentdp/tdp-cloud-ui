@@ -9,6 +9,10 @@ export class UserModel extends HttpClient {
         return this.post("/user/register", rq)
     }
 
+    public detail(): Promise<UserInfoResponse> {
+        return this.get("/user/info")
+    }
+
     public updateInfo(rq: UpdateInfoRequest): Promise<UpdateInfoResponse> {
         return this.patch("/user/info", rq)
     }
@@ -16,6 +20,11 @@ export class UserModel extends HttpClient {
     public updatePassword(rq: UpdatePasswordRequest): Promise<UpdatePasswordResponse> {
         return this.patch("/user/password", rq)
     }
+}
+
+export interface LoginRequest {
+    Username: string
+    Password: string
 }
 
 export interface LoginRequest {
@@ -37,6 +46,13 @@ export interface RegisterRequest {
 
 export interface RegisterResponse {
     Message: string
+}
+
+export interface UserInfoResponse {
+    Id: number
+    Username: string
+    AppToken: string
+    Description: string
 }
 
 export interface UpdateInfoRequest {
