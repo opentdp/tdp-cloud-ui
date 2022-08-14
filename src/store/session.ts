@@ -5,10 +5,13 @@ import type { SecretItem } from "@/api/local/secret"
 export default defineStore("session", {
     state() {
         return {
-            token: "",
+            // 用户信息
             username: "",
+            appToken: "",
             description: "",
             secretList: [] as SecretItem[],
+            // 会话信息
+            token: "",
             keyid: 0,
             keyname: "",
         }

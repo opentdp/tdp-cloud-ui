@@ -1,44 +1,36 @@
 <script lang="ts" setup>
 import { ref, onUnmounted } from "vue"
 
-import { bytesToSize } from "@/helper/utils"
-
 import { Api } from "@/api"
 import { AgentNode } from "@/api/local/agent"
 
-const nodeList = ref<AgentNode[]>([])
-const appToken = ref("")
+import { bytesToSize } from "@/helper/utils"
 
-const agentUrl = location.origin.replace(/^http/, "ws") + "/wsi/agent/"
+const nodeList = ref<AgentNode[]>([])
+const agentUrl = Api.socket.getAgentURL()
 
 async function getNodeList() {
     const res = await Api.agent.listNode()
     nodeList.value = res
 }
 
-async function getAppToken() {
-    const res = await Api.user.detail()
-    appToken.value = res.AppToken
-}
-
-async function runCommand(addr: string) {
-    await Api.agent.runCommand({
-        Addr: addr,
-        Payload: {
-            Content: `
-cd /d d:\\
-dir
-            `,
-            Username: "root",
-            CommandType: "CMD",
-            WorkingDirectory: "/root",
-            Timeout: 30,
-        }
-    })
-}
+// async function runCommand(addr: string) {
+//     await Api.agent.runCommand({
+//         Addr: addr,
+//         Payload: {
+//             Content: `
+// cd /d d:\\
+// dir
+//             `,
+//             Username: "root",
+//             CommandType: "CMD",
+//             WorkingDirectory: "/root",
+//             Timeout: 30,
+//         }
+//     })
+// }
 
 getNodeList()
-getAppToken()
 
 const timer = setInterval(getNodeList, 15000)
 onUnmounted(() => {
@@ -72,7 +64,7 @@ onUnmounted(() => {
                 <el-table-column label="CPU">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="scope.row.Stat.CpuPercent.toFixed(2)" status="success">
+                            :percentage="+scope.row.Stat.CpuPercent.toFixed(2)" status="success">
                             {{ scope.row.Stat.CpuPercent.toFixed(2) }}%，{{ scope.row.Stat.CpuCore }} Cores
                         </el-progress>
                     </template>
@@ -106,7 +98,7 @@ onUnmounted(() => {
             </el-table>
         </el-card>
 
-        <el-alert title="子节点接入命令" type="success" :description="'tdpc -agent ' + agentUrl + appToken" show-icon />
+        <el-alert title="子节点接入命令" type="success" :description="'tdpc -agent ' + agentUrl" show-icon />
     </div>
 </template>
 

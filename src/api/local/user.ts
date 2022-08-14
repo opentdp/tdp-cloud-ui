@@ -34,9 +34,10 @@ export interface LoginRequest {
 
 export interface LoginResponse {
     KeyId: number
-    Token: string
+    AppToken: string
     Username: string
     Description: string
+    SessionToken: string
 }
 
 export interface RegisterRequest {

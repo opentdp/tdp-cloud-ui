@@ -32,8 +32,9 @@ function formSubmit(form: FormInstance | undefined) {
             ElMessage.success("登录成功")
         }
         session.username = data.Username
+        session.appToken = data.AppToken
         session.description = data.Description
-        session.token = data.Token
+        session.token = data.SessionToken
         session.keyid = data.KeyId
         router.push("/")
     })
