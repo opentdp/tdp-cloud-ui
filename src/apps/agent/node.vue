@@ -14,21 +14,22 @@ async function getNodeList() {
     nodeList.value = res
 }
 
-// async function exec(addr: string) {
-//     await Api.agent.exec({
-//         Addr: addr,
-//         Payload: {
-//             Content: `
-// cd /d d:\\
-// dir
-//             `,
-//             Username: "root",
-//             CommandType: "CMD",
-//             WorkingDirectory: "/root",
-//             Timeout: 30,
-//         }
-//     })
-// }
+async function exec(addr: string) {
+    await Api.agent.exec({
+        Addr: addr,
+        Payload: {
+            Name: "test 001",
+            CommandType: "CMD",
+            Content: `
+cd /d d:\\
+dir
+            `,
+            Username: "root",
+            WorkingDirectory: "/root",
+            Timeout: 30,
+        }
+    })
+}
 
 getNodeList()
 
@@ -58,7 +59,7 @@ onUnmounted(() => {
                 <el-table-column prop="RemoteAddr" label="地址" />
                 <el-table-column label="主机名">
                     <template #default="scope">
-                        {{ scope.row.SystemStat.Hostname }}
+                        {{ scope.row.SystemStat.HostName }}
                     </template>
                 </el-table-column>
                 <el-table-column label="CPU">
@@ -93,6 +94,13 @@ onUnmounted(() => {
                 <el-table-column label="运行时间">
                     <template #default="scope">
                         {{ (scope.row.SystemStat.Uptime/86400).toFixed(1) }} 天
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="180" align="center">
+                    <template #default="scope">
+                        <el-button link type="primary" icon="Edit" @click="exec(scope.row.RemoteAddr)">
+                            测试
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>

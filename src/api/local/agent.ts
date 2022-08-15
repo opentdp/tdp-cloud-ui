@@ -14,7 +14,7 @@ export interface AgentNode {
     UserId: number
     RemoteAddr: string
     SystemStat: {
-        Hostname: string
+        HostName: string
         Uptime: number
         OS: string
         CpuCore: number
@@ -31,9 +31,10 @@ export interface AgentNode {
 export interface ShellRequest {
     Addr: string
     Payload: {
+        Name: string
+        CommandType: string
         Content: string
         Username: string
-        CommandType: string
         WorkingDirectory: string
         Timeout: number
     }
