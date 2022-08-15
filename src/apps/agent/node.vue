@@ -55,44 +55,44 @@ onUnmounted(() => {
                 </div>
             </template>
             <el-table :data="nodeList" style="width: 100%">
-                <el-table-column prop="Addr" label="地址" />
+                <el-table-column prop="RemoteAddr" label="地址" />
                 <el-table-column label="主机名">
                     <template #default="scope">
-                        {{ scope.row.Stat.Hostname }}
+                        {{ scope.row.SystemStat.Hostname }}
                     </template>
                 </el-table-column>
                 <el-table-column label="CPU">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="+scope.row.Stat.CpuPercent.toFixed(2)" status="success">
-                            {{ scope.row.Stat.CpuPercent.toFixed(2) }}%，{{ scope.row.Stat.CpuCore }} Cores
+                            :percentage="+scope.row.SystemStat.CpuPercent.toFixed(2)" status="success">
+                            {{ scope.row.SystemStat.CpuPercent.toFixed(2) }}%，{{ scope.row.SystemStat.CpuCore }} Cores
                         </el-progress>
                     </template>
                 </el-table-column>
                 <el-table-column label="内存">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="scope.row.Stat.MemoryUsed/scope.row.Stat.MemoryTotal*100" status="success">
-                            {{ bytesToSize(scope.row.Stat.MemoryUsed) }} / {{ bytesToSize(scope.row.Stat.MemoryTotal) }}
+                            :percentage="scope.row.SystemStat.MemoryUsed/scope.row.SystemStat.MemoryTotal*100" status="success">
+                            {{ bytesToSize(scope.row.SystemStat.MemoryUsed) }} / {{ bytesToSize(scope.row.SystemStat.MemoryTotal) }}
                         </el-progress>
                     </template>
                 </el-table-column>
                 <el-table-column label="硬盘">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="scope.row.Stat.DiskUsed/scope.row.Stat.DiskTotal*100" status="success">
-                            {{ bytesToSize(scope.row.Stat.DiskUsed) }} / {{ bytesToSize(scope.row.Stat.DiskTotal) }}
+                            :percentage="scope.row.SystemStat.DiskUsed/scope.row.SystemStat.DiskTotal*100" status="success">
+                            {{ bytesToSize(scope.row.SystemStat.DiskUsed) }} / {{ bytesToSize(scope.row.SystemStat.DiskTotal) }}
                         </el-progress>
                     </template>
                 </el-table-column>
                 <el-table-column label="网络 In/Out">
                     <template #default="scope">
-                        {{ bytesToSize(scope.row.Stat.NetBytesRecv) }} / {{ bytesToSize(scope.row.Stat.NetBytesSent) }}
+                        {{ bytesToSize(scope.row.SystemStat.NetBytesRecv) }} / {{ bytesToSize(scope.row.SystemStat.NetBytesSent) }}
                     </template>
                 </el-table-column>
                 <el-table-column label="运行时间">
                     <template #default="scope">
-                        {{ (scope.row.Stat.Uptime/86400).toFixed(1) }} 天
+                        {{ (scope.row.SystemStat.Uptime/86400).toFixed(1) }} 天
                     </template>
                 </el-table-column>
             </el-table>

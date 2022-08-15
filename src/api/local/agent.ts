@@ -11,8 +11,9 @@ export class AgentModel extends HttpClient {
 }
 
 export interface AgentNode {
-    Addr: string
-    Stat: {
+    UserId: number
+    RemoteAddr: string
+    SystemStat: {
         Hostname: string
         Uptime: number
         OS: string
