@@ -14,9 +14,9 @@ async function getNodeList() {
     nodeList.value = res
 }
 
-async function exec(addr: string) {
+async function exec(hostId: string) {
     await Api.agent.exec({
-        Addr: addr,
+        HostId: hostId,
         Payload: {
             Name: "test 001",
             CommandType: "CMD",
@@ -98,7 +98,7 @@ onUnmounted(() => {
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="Edit" @click="exec(scope.row.RemoteAddr)">
+                        <el-button link type="primary" icon="Edit" @click="exec(scope.row.HostId)">
                             测试
                         </el-button>
                     </template>

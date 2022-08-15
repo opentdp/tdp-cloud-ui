@@ -11,7 +11,7 @@ export class AgentModel extends HttpClient {
 }
 
 export interface AgentNode {
-    UserId: number
+    HostId: string
     RemoteAddr: string
     SystemStat: {
         HostName: string
@@ -29,7 +29,7 @@ export interface AgentNode {
 }
 
 export interface ShellRequest {
-    Addr: string
+    HostId: string
     Payload: {
         Name: string
         CommandType: string
