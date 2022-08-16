@@ -1,6 +1,9 @@
 
 <script lang="ts" setup>
-import { onUnmounted, ref } from 'vue'
+import { onUnmounted, ref } from "vue"
+
+import VueJsonPretty from "vue-json-pretty"
+import "vue-json-pretty/lib/styles.css"
 
 import { Api } from "@/api"
 import { TaskItem } from "@/api/local/slave"
@@ -61,11 +64,22 @@ onUnmounted(() => {
                 </el-table-column>
                 <el-table-column label="详情" width="60" type="expand">
                     <template #default="scope">
-                        {{ scope.row.Content }}<br><br>
-                        {{ scope.row.Result }}
+                        <vue-json-pretty :data="JSON.parse(scope.row.Content)" />
+                        <pre class="console">{{ JSON.parse(scope.row.Result).Output }}</pre>
                     </template>
                 </el-table-column>
             </el-table>
         </el-card>
     </div>
 </template>
+
+<style lang="scss" scoped>
+.console {
+    padding: 8px;
+    background: #000;
+    color: #fff;
+}
+.vjs-tree {
+    padding: 8px;
+}
+</style>

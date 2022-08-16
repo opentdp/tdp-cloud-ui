@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue"
 import { ElMessage, ElTable } from "element-plus"
 import { Base64 } from 'js-base64'
 
