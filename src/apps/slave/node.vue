@@ -73,6 +73,7 @@ onUnmounted(() => {
             <template #header>
                 <div class="flex-between">
                     <b>节点列表</b>
+                    <small>点击节点可执行快捷命令</small>
                 </div>
             </template>
             <el-table ref="tableRef" :data="nodeList" highlight-current-row

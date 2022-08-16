@@ -67,6 +67,11 @@ const items: MenuItem[] = [
         ]
     },
     {
+        icon: "Connection",
+        index: "/terminal/ssh",
+        title: "SSH 终端",
+    },
+    {
         icon: "Magnet",
         index: "/keypod",
         title: "密钥管理",
@@ -82,11 +87,6 @@ const items: MenuItem[] = [
                 title: "CAM 密钥",
             },
         ]
-    },
-    {
-        icon: "Connection",
-        index: "/terminal/ssh",
-        title: "SSH 终端",
     },
     // {
     //     icon: 'Warning',

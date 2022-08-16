@@ -5,10 +5,10 @@ export class SlaveModel extends HttpClient {
         return this.get("/slave/node")
     }
 
-    public listTask(): Promise<[]> {
+    public listTask(): Promise<TaskItem[]> {
         return this.get("/slave/task")
     }
-    public createTask(rq: ShellRequest): Promise<[]> {
+    public createTask(rq: CreateTaskRequest): Promise<[]> {
         return this.post("/slave/node/exec", rq)
     }
 }
@@ -31,7 +31,20 @@ export interface SlaveNode {
     }
 }
 
-export interface ShellRequest {
+export interface TaskItem {
+    Id: number
+    UserId: number
+    HostId: string
+    HostName: string
+    Subject: string
+    Content: string
+    Status: string
+    Result: string
+    CreatedAt: number
+    UpdatedAt: number
+}
+
+export interface CreateTaskRequest {
     HostId: string
     Payload: {
         Name: string

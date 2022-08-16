@@ -3,20 +3,29 @@
 import { onUnmounted, ref } from 'vue'
 
 import { Api } from "@/api"
+import { TaskItem } from "@/api/local/slave"
 import { dateFormat } from "@/helper/utils"
 
-const taskList = ref([])
+const taskList = ref<TaskItem[]>([])
+const expanded = ref(false)
 
 async function getHistory() {
     const data = await Api.slave.listTask()
     taskList.value = data
 }
 
+async function onExpand(row: TaskItem[], rs: TaskItem[]) {
+    expanded.value = rs.length > 0
+}
+
 // 初始化
 
 getHistory()
 
-const timer = setInterval(getHistory, 5000)
+const timer = setInterval(() => {
+    expanded.value || getHistory()
+}, 5000)
+
 onUnmounted(() => {
     clearInterval(timer)
 })
@@ -40,7 +49,7 @@ onUnmounted(() => {
                     <small>记录总数: {{ taskList.length }}</small>
                 </div>
             </template>
-            <el-table :data="taskList">
+            <el-table :data="taskList" @expand-change="onExpand">
                 <el-table-column prop="Id" label="任务ID" />
                 <el-table-column prop="HostName" label="主机名" />
                 <el-table-column prop="Subject" label="任务名称" />
@@ -48,6 +57,12 @@ onUnmounted(() => {
                 <el-table-column label="更新时间" min-width="80">
                     <template #default="scope">
                         {{ dateFormat(scope.row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
+                    </template>
+                </el-table-column>
+                <el-table-column label="详情" width="60" type="expand">
+                    <template #default="scope">
+                        {{ scope.row.Content }}<br><br>
+                        {{ scope.row.Result }}
                     </template>
                 </el-table-column>
             </el-table>
