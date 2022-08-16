@@ -76,10 +76,19 @@ export const routes: RouteRecordRaw[] = [
                 path: "/slave/node",
                 name: "slave-node",
                 meta: {
-                    title: "节点管理",
+                    title: "子节点-列表",
                     login: true,
                 },
                 component: () => import("@/apps/slave/node.vue"),
+            },
+            {
+                path: "/slave/task",
+                name: "slave-task",
+                meta: {
+                    title: "子节点-任务",
+                    login: true,
+                },
+                component: () => import("@/apps/slave/task.vue"),
             },
             {
                 path: "/terminal/ssh/:addr*",

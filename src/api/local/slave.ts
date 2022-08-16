@@ -5,7 +5,10 @@ export class SlaveModel extends HttpClient {
         return this.get("/slave/node")
     }
 
-    public execTask(rq: ShellRequest): Promise<[]> {
+    public listTask(): Promise<[]> {
+        return this.get("/slave/task")
+    }
+    public createTask(rq: ShellRequest): Promise<[]> {
         return this.post("/slave/node/exec", rq)
     }
 }

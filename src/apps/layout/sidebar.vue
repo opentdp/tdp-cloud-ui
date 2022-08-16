@@ -50,9 +50,21 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Connection",
-        index: "/terminal/ssh",
-        title: "SSH 终端",
+        icon: "Switch",
+        index: "/slave",
+        title: "外部节点",
+        subs: [
+            {
+                icon: "Cpu",
+                index: "/slave/node",
+                title: "节点列表",
+            },
+            {
+                icon: "Finished",
+                index: "/slave/task",
+                title: "任务记录",
+            },
+        ]
     },
     {
         icon: "Magnet",
@@ -72,9 +84,9 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Cpu",
-        index: "/slave/node",
-        title: "外部节点",
+        icon: "Connection",
+        index: "/terminal/ssh",
+        title: "SSH 终端",
     },
     // {
     //     icon: 'Warning',

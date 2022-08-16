@@ -38,7 +38,7 @@ async function getTATScriptList() {
 }
 
 async function nodeExec(script: TATScriptItem) {
-    await Api.slave.execTask({
+    await Api.slave.createTask({
         HostId: currentNode.value.HostId,
         Payload: script
     })
@@ -62,7 +62,7 @@ onUnmounted(() => {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                外部节点
+                子节点
             </el-breadcrumb-item>
         </el-breadcrumb>
 
