@@ -28,9 +28,6 @@ onUnmounted(() => {
             <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
-            <el-breadcrumb-item to="/slave/node">
-                子节点
-            </el-breadcrumb-item>
             <el-breadcrumb-item>
                 任务记录
             </el-breadcrumb-item>

@@ -62,11 +62,11 @@ onUnmounted(() => {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                子节点
+                节点列表
             </el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-alert title="子节点接入命令" type="success" :description="'tdpc --master ' + agentUrl" show-icon />
+        <el-alert title="节点接入命令" type="success" :description="'tdpc --master ' + agentUrl" show-icon />
         <div class="mgb10" />
 
         <el-card shadow="hover" class="mgb10">

@@ -76,7 +76,7 @@ export const routes: RouteRecordRaw[] = [
                 path: "/slave/node",
                 name: "slave-node",
                 meta: {
-                    title: "子节点-列表",
+                    title: "节点列表",
                     login: true,
                 },
                 component: () => import("@/apps/slave/node.vue"),
@@ -85,7 +85,7 @@ export const routes: RouteRecordRaw[] = [
                 path: "/slave/task",
                 name: "slave-task",
                 meta: {
-                    title: "子节点-任务",
+                    title: "任务记录",
                     login: true,
                 },
                 component: () => import("@/apps/slave/task.vue"),
@@ -104,7 +104,7 @@ export const routes: RouteRecordRaw[] = [
                 path: "/tat/history",
                 name: "tat-history",
                 meta: {
-                    title: "自动化助手-历史记录",
+                    title: "历史记录 - 自动化助手",
                     login: true,
                     cloud: true,
                 },
@@ -114,7 +114,7 @@ export const routes: RouteRecordRaw[] = [
                 path: "/tat/script",
                 name: "tat-script",
                 meta: {
-                    title: "自动化助手-命令列表",
+                    title: "命令列表 - 自动化助手",
                     login: true,
                     cloud: true,
                 },
