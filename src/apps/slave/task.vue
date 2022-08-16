@@ -42,8 +42,9 @@ onUnmounted(() => {
             </template>
             <el-table :data="taskList">
                 <el-table-column prop="Id" label="任务ID" />
-                <el-table-column prop="HostName" label="主机名" min-width="150" />
-                <el-table-column prop="Subject" label="任务名称" min-width="150" />
+                <el-table-column prop="HostName" label="主机名" />
+                <el-table-column prop="Subject" label="任务名称" />
+                <el-table-column prop="Status" label="执行状态" />
                 <el-table-column label="更新时间" min-width="80">
                     <template #default="scope">
                         {{ dateFormat(scope.row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}

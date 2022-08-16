@@ -75,7 +75,7 @@ onUnmounted(() => {
                     <b>节点列表</b>
                 </div>
             </template>
-            <el-table ref="tableRef" :data="nodeList" style="width: 100%" highlight-current-row
+            <el-table ref="tableRef" :data="nodeList" highlight-current-row
                 @current-change="setCurrentRow">
                 <el-table-column prop="RemoteAddr" label="地址" />
                 <el-table-column label="主机名">

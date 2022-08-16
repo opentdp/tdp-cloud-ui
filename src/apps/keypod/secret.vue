@@ -69,7 +69,7 @@ getSecrets()
                     <b>密钥列表</b>
                 </div>
             </template>
-            <el-table :data="session.secretList" style="width: 100%">
+            <el-table :data="session.secretList">
                 <el-table-column prop="Id" label="序号" width="80" />
                 <el-table-column prop="Description" label="描述" width="160" />
                 <el-table-column prop="SecretId" label="Secret Id" />
