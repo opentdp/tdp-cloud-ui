@@ -1,16 +1,16 @@
 import { HttpClient } from "../basic/http"
 
-export class AgentModel extends HttpClient {
-    public list(): Promise<AgentNode[]> {
-        return this.get("/agent/node")
+export class SlaveModel extends HttpClient {
+    public listNode(): Promise<SlaveNode[]> {
+        return this.get("/slave/node")
     }
 
-    public exec(rq: ShellRequest): Promise<[]> {
-        return this.post("/agent/exec", rq)
+    public execTask(rq: ShellRequest): Promise<[]> {
+        return this.post("/slave/node/exec", rq)
     }
 }
 
-export interface AgentNode {
+export interface SlaveNode {
     HostId: string
     RemoteAddr: string
     SystemStat: {

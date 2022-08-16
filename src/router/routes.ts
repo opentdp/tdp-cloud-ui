@@ -73,13 +73,13 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/lighthouse/vnc.vue"),
             },
             {
-                path: "/agent/node",
-                name: "agent-node",
+                path: "/slave/node",
+                name: "slave-node",
                 meta: {
                     title: "节点管理",
                     login: true,
                 },
-                component: () => import("@/apps/agent/node.vue"),
+                component: () => import("@/apps/slave/node.vue"),
             },
             {
                 path: "/terminal/ssh/:addr*",

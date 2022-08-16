@@ -73,7 +73,7 @@ const items: MenuItem[] = [
     },
     {
         icon: "Cpu",
-        index: "/agent/node",
+        index: "/slave/node",
         title: "外部节点",
     },
     // {

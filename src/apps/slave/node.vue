@@ -2,20 +2,20 @@
 import { ref, onUnmounted } from "vue"
 
 import { Api } from "@/api"
-import { AgentNode } from "@/api/local/agent"
+import { SlaveNode } from "@/api/local/slave"
 
 import { bytesToSize } from "@/helper/utils"
 
-const nodeList = ref<AgentNode[]>([])
+const nodeList = ref<SlaveNode[]>([])
 const agentUrl = Api.socket.getAgentURL()
 
 async function getNodeList() {
-    const res = await Api.agent.list()
+    const res = await Api.slave.listNode()
     nodeList.value = res
 }
 
 async function exec(hostId: string) {
-    await Api.agent.exec({
+    await Api.slave.execTask({
         HostId: hostId,
         Payload: {
             Name: "test 001",
@@ -106,7 +106,7 @@ onUnmounted(() => {
             </el-table>
         </el-card>
 
-        <el-alert title="子节点接入命令" type="success" :description="'tdpc -agent ' + agentUrl" show-icon />
+        <el-alert title="子节点接入命令" type="success" :description="'tdpc --master ' + agentUrl" show-icon />
     </div>
 </template>
 
