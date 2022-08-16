@@ -65,7 +65,7 @@ onUnmounted(() => {
                 <el-table-column label="详情" width="60" type="expand">
                     <template #default="scope">
                         <vue-json-pretty :data="JSON.parse(scope.row.Content)" />
-                        <pre class="console">{{ JSON.parse(scope.row.Result).Output }}</pre>
+                        <pre class="console">{{ JSON.parse(scope.row.Result).Output || "无输出" }}</pre>
                     </template>
                 </el-table-column>
             </el-table>
@@ -79,6 +79,7 @@ onUnmounted(() => {
     background: #000;
     color: #fff;
 }
+
 .vjs-tree {
     padding: 8px;
 }
