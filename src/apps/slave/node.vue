@@ -1,37 +1,53 @@
 <script lang="ts" setup>
 import { ref, onUnmounted } from "vue"
 
+import { ElTable } from "element-plus"
+
 import { Api } from "@/api"
 import { SlaveNode } from "@/api/local/slave"
+import { TATScriptItem } from '@/api/local/tat'
 
 import { bytesToSize } from "@/helper/utils"
 
-const nodeList = ref<SlaveNode[]>([])
 const agentUrl = Api.socket.getAgentURL()
+
+// 节点列表
+
+const nodeList = ref<SlaveNode[]>([])
 
 async function getNodeList() {
     const res = await Api.slave.listNode()
     nodeList.value = res
 }
 
-async function exec(hostId: string) {
+// 选中一个节点
+
+const currentNode = ref()
+
+function setCurrentRow(n: SlaveNode) {
+    currentNode.value = n
+}
+
+// 执行快捷命令
+
+const cmdlist = ref<TATScriptItem[]>([])
+
+async function getTATScriptList() {
+    const res = await Api.tat.listScript()
+    cmdlist.value = res
+}
+
+async function nodeExec(script: TATScriptItem) {
     await Api.slave.execTask({
-        HostId: hostId,
-        Payload: {
-            Name: "test 001",
-            CommandType: "CMD",
-            Content: `
-cd /d d:\\
-dir
-            `,
-            Username: "root",
-            WorkingDirectory: "/root",
-            Timeout: 30,
-        }
+        HostId: currentNode.value.HostId,
+        Payload: script
     })
 }
 
+// 初始化
+
 getNodeList()
+getTATScriptList()
 
 const timer = setInterval(getNodeList, 15000)
 onUnmounted(() => {
@@ -49,13 +65,18 @@ onUnmounted(() => {
                 外部节点
             </el-breadcrumb-item>
         </el-breadcrumb>
+
+        <el-alert title="子节点接入命令" type="success" :description="'tdpc --master ' + agentUrl" show-icon />
+        <div class="mgb10" />
+
         <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
                     <b>节点列表</b>
                 </div>
             </template>
-            <el-table :data="nodeList" style="width: 100%">
+            <el-table ref="tableRef" :data="nodeList" style="width: 100%" highlight-current-row
+                @current-change="setCurrentRow">
                 <el-table-column prop="RemoteAddr" label="地址" />
                 <el-table-column label="主机名">
                     <template #default="scope">
@@ -73,40 +94,52 @@ onUnmounted(() => {
                 <el-table-column label="内存">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="scope.row.SystemStat.MemoryUsed/scope.row.SystemStat.MemoryTotal*100" status="success">
-                            {{ bytesToSize(scope.row.SystemStat.MemoryUsed) }} / {{ bytesToSize(scope.row.SystemStat.MemoryTotal) }}
+                            :percentage="scope.row.SystemStat.MemoryUsed / scope.row.SystemStat.MemoryTotal * 100"
+                            status="success">
+                            {{ bytesToSize(scope.row.SystemStat.MemoryUsed) }} / {{
+                                    bytesToSize(scope.row.SystemStat.MemoryTotal)
+                            }}
                         </el-progress>
                     </template>
                 </el-table-column>
                 <el-table-column label="硬盘">
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
-                            :percentage="scope.row.SystemStat.DiskUsed/scope.row.SystemStat.DiskTotal*100" status="success">
-                            {{ bytesToSize(scope.row.SystemStat.DiskUsed) }} / {{ bytesToSize(scope.row.SystemStat.DiskTotal) }}
+                            :percentage="scope.row.SystemStat.DiskUsed / scope.row.SystemStat.DiskTotal * 100"
+                            status="success">
+                            {{ bytesToSize(scope.row.SystemStat.DiskUsed) }} / {{
+                                    bytesToSize(scope.row.SystemStat.DiskTotal)
+                            }}
                         </el-progress>
                     </template>
                 </el-table-column>
                 <el-table-column label="网络 In/Out">
                     <template #default="scope">
-                        {{ bytesToSize(scope.row.SystemStat.NetBytesRecv) }} / {{ bytesToSize(scope.row.SystemStat.NetBytesSent) }}
+                        {{ bytesToSize(scope.row.SystemStat.NetBytesRecv) }} / {{
+                                bytesToSize(scope.row.SystemStat.NetBytesSent)
+                        }}
                     </template>
                 </el-table-column>
                 <el-table-column label="运行时间">
                     <template #default="scope">
-                        {{ (scope.row.SystemStat.Uptime/86400).toFixed(1) }} 天
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
-                    <template #default="scope">
-                        <el-button link type="primary" icon="Edit" @click="exec(scope.row.HostId)">
-                            测试
-                        </el-button>
+                        {{ (scope.row.SystemStat.Uptime / 86400).toFixed(1) }} 天
                     </template>
                 </el-table-column>
             </el-table>
         </el-card>
 
-        <el-alert title="子节点接入命令" type="success" :description="'tdpc --master ' + agentUrl" show-icon />
+        <el-card v-if="currentNode?.HostId" shadow="hover">
+            <template #header>
+                <div class="flex-between">
+                    <b>快捷命令</b>
+                </div>
+            </template>
+            <div class="button-list">
+                <el-button v-for="item in cmdlist" :key="item.Id" @click="nodeExec(item)">
+                    {{ item.Name }}
+                </el-button>
+            </div>
+        </el-card>
     </div>
 </template>
 
