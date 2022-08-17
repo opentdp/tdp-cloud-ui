@@ -48,7 +48,7 @@ onUnmounted(() => {
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>历史记录</b> &nbsp; &nbsp;
+                    <b>任务记录</b> &nbsp; &nbsp;
                     <small>记录总数: {{ taskList.length }}</small>
                 </div>
             </template>
