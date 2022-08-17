@@ -185,7 +185,7 @@ async function deleteRecord(recordId: number) {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item to="/dnspod/index">
-                域名列表
+                域名管理
             </el-breadcrumb-item>
             <el-breadcrumb-item>
                 {{ domain || "详情" }}

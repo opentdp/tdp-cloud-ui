@@ -57,7 +57,7 @@ const items: MenuItem[] = [
             {
                 icon: "Cpu",
                 index: "/worker/index",
-                title: "节点列表",
+                title: "节点管理",
             },
             {
                 icon: "Finished",
