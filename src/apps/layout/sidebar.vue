@@ -51,17 +51,17 @@ const items: MenuItem[] = [
     },
     {
         icon: "Switch",
-        index: "/slave",
+        index: "/worker",
         title: "外部节点",
         subs: [
             {
                 icon: "Cpu",
-                index: "/slave/node",
+                index: "/worker/index",
                 title: "节点列表",
             },
             {
                 icon: "Finished",
-                index: "/slave/task",
+                index: "/worker/task",
                 title: "任务记录",
             },
         ]

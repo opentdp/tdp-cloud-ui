@@ -4,7 +4,7 @@ import { ref, onUnmounted } from "vue"
 import { ElTable } from "element-plus"
 
 import { Api } from "@/api"
-import { SlaveNode } from "@/api/local/slave"
+import { Worker } from "@/api/local/worker"
 import { TATScriptItem } from '@/api/local/tat'
 
 import { bytesToSize } from "@/helper/utils"
@@ -13,10 +13,10 @@ const agentUrl = Api.socket.getAgentURL()
 
 // 节点列表
 
-const nodeList = ref<SlaveNode[]>([])
+const nodeList = ref<Worker[]>([])
 
 async function getNodeList() {
-    const res = await Api.slave.listNode()
+    const res = await Api.worker.list()
     nodeList.value = res
 }
 
@@ -24,7 +24,7 @@ async function getNodeList() {
 
 const currentNode = ref()
 
-function setCurrentRow(n: SlaveNode) {
+function setCurrentRow(n: Worker) {
     currentNode.value = n
 }
 
@@ -38,7 +38,7 @@ async function getTATScriptList() {
 }
 
 async function nodeExec(script: TATScriptItem) {
-    await Api.slave.createTask({
+    await Api.worker.exec({
         HostId: currentNode.value.HostId,
         Payload: script
     })
@@ -76,8 +76,7 @@ onUnmounted(() => {
                     <small>点击节点可执行快捷命令</small>
                 </div>
             </template>
-            <el-table ref="tableRef" :data="nodeList" highlight-current-row
-                @current-change="setCurrentRow">
+            <el-table ref="tableRef" :data="nodeList" highlight-current-row @current-change="setCurrentRow">
                 <el-table-column prop="RemoteAddr" label="地址" />
                 <el-table-column label="主机名">
                     <template #default="scope">
@@ -88,7 +87,8 @@ onUnmounted(() => {
                     <template #default="scope">
                         <el-progress :text-inside="true" :stroke-width="26"
                             :percentage="+scope.row.SystemStat.CpuPercent.toFixed(2)" status="success">
-                            {{ scope.row.SystemStat.CpuPercent.toFixed(2) }}%，{{ scope.row.SystemStat.CpuCore }} Cores
+                            {{ scope.row.SystemStat.CpuPercent.toFixed(2) }}%，
+                            {{ scope.row.SystemStat.CpuCore }} Cores
                         </el-progress>
                     </template>
                 </el-table-column>
@@ -97,9 +97,8 @@ onUnmounted(() => {
                         <el-progress :text-inside="true" :stroke-width="26"
                             :percentage="scope.row.SystemStat.MemoryUsed / scope.row.SystemStat.MemoryTotal * 100"
                             status="success">
-                            {{ bytesToSize(scope.row.SystemStat.MemoryUsed) }} / {{
-                                    bytesToSize(scope.row.SystemStat.MemoryTotal)
-                            }}
+                            {{ bytesToSize(scope.row.SystemStat.MemoryUsed) }} /
+                            {{ bytesToSize(scope.row.SystemStat.MemoryTotal) }}
                         </el-progress>
                     </template>
                 </el-table-column>
@@ -108,17 +107,15 @@ onUnmounted(() => {
                         <el-progress :text-inside="true" :stroke-width="26"
                             :percentage="scope.row.SystemStat.DiskUsed / scope.row.SystemStat.DiskTotal * 100"
                             status="success">
-                            {{ bytesToSize(scope.row.SystemStat.DiskUsed) }} / {{
-                                    bytesToSize(scope.row.SystemStat.DiskTotal)
-                            }}
+                            {{ bytesToSize(scope.row.SystemStat.DiskUsed) }} /
+                            {{ bytesToSize(scope.row.SystemStat.DiskTotal) }}
                         </el-progress>
                     </template>
                 </el-table-column>
                 <el-table-column label="网络 In/Out">
                     <template #default="scope">
-                        {{ bytesToSize(scope.row.SystemStat.NetBytesRecv) }} / {{
-                                bytesToSize(scope.row.SystemStat.NetBytesSent)
-                        }}
+                        {{ bytesToSize(scope.row.SystemStat.NetBytesRecv) }} /
+                        {{ bytesToSize(scope.row.SystemStat.NetBytesSent) }}
                     </template>
                 </el-table-column>
                 <el-table-column label="运行时间">

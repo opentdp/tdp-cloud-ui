@@ -73,22 +73,22 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/lighthouse/vnc.vue"),
             },
             {
-                path: "/slave/node",
-                name: "slave-node",
+                path: "/worker/index",
+                name: "worker-index",
                 meta: {
                     title: "节点列表",
                     login: true,
                 },
-                component: () => import("@/apps/slave/node.vue"),
+                component: () => import("@/apps/worker/index.vue"),
             },
             {
-                path: "/slave/task",
-                name: "slave-task",
+                path: "/worker/task",
+                name: "worker-task",
                 meta: {
                     title: "任务记录",
                     login: true,
                 },
-                component: () => import("@/apps/slave/task.vue"),
+                component: () => import("@/apps/worker/task.vue"),
             },
             {
                 path: "/terminal/ssh/:addr*",

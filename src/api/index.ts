@@ -2,11 +2,12 @@ import { CacheModel } from "./local/cache"
 
 import { ConfigModel } from "./local/config"
 import { SecretModel } from "./local/secret"
-import { SlaveModel } from "./local/slave"
 import { SocketModel } from "./local/socket"
 import { SSHKeyModel } from "./local/sshkey"
 import { TATModel } from "./local/tat"
 import { UserModel } from "./local/user"
+import { WorkerModel } from "./local/worker"
+import { WorktaskModel } from "./local/worktask"
 
 import { CamModel } from "./qcloud/cam"
 import { DnspodModel } from "./qcloud/dnspod"
@@ -21,11 +22,12 @@ export const Api = {
 
     config: new ConfigModel(),
     secret: new SecretModel(),
-    slave: new SlaveModel(),
     socket: new SocketModel(),
     sshkey: new SSHKeyModel(),
     tat: new TATModel(),
     user: new UserModel(),
+    worker: new WorkerModel(),
+    worktask: new WorktaskModel(),
 }
 
 export const QApi = {
