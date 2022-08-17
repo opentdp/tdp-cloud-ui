@@ -13,19 +13,19 @@ const agentUrl = Api.socket.getAgentURL()
 
 // 节点列表
 
-const nodeList = ref<Worker[]>([])
+const workerList = ref<Worker[]>([])
 
-async function getNodeList() {
+async function getWorkerList() {
     const res = await Api.worker.list()
-    nodeList.value = res
+    workerList.value = res
 }
 
-// 选中一个节点
+// 选中节点
 
-const currentNode = ref()
+const selectedWorker = ref()
 
 function setCurrentRow(n: Worker) {
-    currentNode.value = n
+    selectedWorker.value = n
 }
 
 // 执行快捷命令
@@ -39,17 +39,17 @@ async function getTATScriptList() {
 
 async function nodeExec(script: TATScriptItem) {
     await Api.worker.exec({
-        HostId: currentNode.value.HostId,
+        HostId: selectedWorker.value.HostId,
         Payload: script
     })
 }
 
 // 初始化
 
-getNodeList()
+getWorkerList()
 getTATScriptList()
 
-const timer = setInterval(getNodeList, 15000)
+const timer = setInterval(getWorkerList, 15000)
 onUnmounted(() => {
     clearInterval(timer)
 })
@@ -76,7 +76,7 @@ onUnmounted(() => {
                     <small>点击节点可执行快捷命令</small>
                 </div>
             </template>
-            <el-table ref="tableRef" :data="nodeList" highlight-current-row @current-change="setCurrentRow">
+            <el-table ref="tableRef" :data="workerList" highlight-current-row @current-change="setCurrentRow">
                 <el-table-column prop="RemoteAddr" label="地址" />
                 <el-table-column label="主机名">
                     <template #default="scope">
@@ -126,7 +126,7 @@ onUnmounted(() => {
             </el-table>
         </el-card>
 
-        <el-card v-if="currentNode?.HostId" shadow="hover">
+        <el-card v-if="selectedWorker?.HostId" shadow="hover">
             <template #header>
                 <div class="flex-between">
                     <b>快捷命令</b>
