@@ -30,11 +30,11 @@ function setCurrentRow(n: Worker) {
 
 // 执行快捷命令
 
-const cmdlist = ref<TATScriptItem[]>([])
+const scriptList = ref<TATScriptItem[]>([])
 
 async function getTATScriptList() {
     const res = await Api.tat.listScript()
-    cmdlist.value = res
+    scriptList.value = res
 }
 
 async function nodeExec(script: TATScriptItem) {
@@ -133,7 +133,7 @@ onUnmounted(() => {
                 </div>
             </template>
             <div class="button-list">
-                <el-button v-for="item in cmdlist" :key="item.Id" @click="nodeExec(item)">
+                <el-button v-for="item in scriptList" :key="item.Id" @click="nodeExec(item)">
                     {{ item.Name }}
                 </el-button>
             </div>

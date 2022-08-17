@@ -160,11 +160,11 @@ async function getSshkeys() {
 
 // 执行快捷命令
 
-const cmdlist = ref<TATScriptItem[]>([])
+const scriptList = ref<TATScriptItem[]>([])
 
 async function getTATScriptList() {
     const res = await Api.tat.listScript()
-    cmdlist.value = res
+    scriptList.value = res
 }
 
 function sshExec(cmd: string) {
@@ -242,7 +242,7 @@ getSshkeys()
                 </div>
             </template>
             <div class="button-list">
-                <el-button v-for="item in cmdlist" :key="item.Id" @click="sshExec(item.Content)">
+                <el-button v-for="item in scriptList" :key="item.Id" @click="sshExec(item.Content)">
                     {{ item.Name }}
                 </el-button>
             </div>
