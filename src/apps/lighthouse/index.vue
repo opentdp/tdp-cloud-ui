@@ -22,6 +22,7 @@ async function getRegions() {
 async function getInstances(region: string) {
     const data = await QApi.lighthouse.describeInstances(region)
     if (data.TotalCount > 0) {
+        regions[region].InstanceCount = data.TotalCount
         data.InstanceSet.forEach((item) => {
             const Zone = item.Zone.replace(/[^1-9]+/, "")
             instances.push({
@@ -66,29 +67,30 @@ getRegions()
             <template #header>
                 <div class="flex-between">
                     <b>实例列表</b>
+                    <div class="flex-auto" />
                     <small>实例总数: {{ instances.length }}</small>
                 </div>
             </template>
-            <el-table v-loading="instances.length == 0" :data="instances" table-layout="fixed">
+            <el-table :data="instances" table-layout="fixed">
                 <el-table-column fixed prop="InstanceName" label="名称" min-width="150" />
                 <el-table-column label="地域" min-width="150">
                     <template #default="scope">
-                        {{ scope.row.Region }}
+                        {{ scope.row.Region }}{{ scope.row.RgZone }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="CPU" label="CPU" min-width="80" />
-                <el-table-column label="内存" min-width="80">
+                <el-table-column prop="CPU" label="CPU" min-width="60" />
+                <el-table-column label="内存" min-width="60">
                     <template #default="scope">
                         {{ scope.row.Memory + " GB" }}
                     </template>
                 </el-table-column>
-                <el-table-column label="系统盘" min-width="100">
+                <el-table-column label="系统盘" min-width="80">
                     <template #default="scope">
                         {{ scope.row.SystemDisk.DiskSize + " GB" }}
                     </template>
                 </el-table-column>
-                <el-table-column prop="PublicAddresses" label="外网 IP" min-width="130" />
-                <el-table-column label="已用 / 流量包" min-width="150">
+                <el-table-column prop="PublicAddresses" label="外网 IP" min-width="120" />
+                <el-table-column label="已用 / 流量包" min-width="180">
                     <template #default="scope">
                         <template v-if="trafficPackages[scope.row.InstanceId]">
                             {{ trafficPackages[scope.row.InstanceId].EasyUsed }} /
