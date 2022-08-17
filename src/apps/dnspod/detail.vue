@@ -196,7 +196,7 @@ async function deleteRecord(recordId: number) {
                 <div class="flex-between">
                     <b>解析列表</b> &nbsp; &nbsp;
                     <small>记录总数: {{ record.RecordCountInfo.TotalCount }}</small>
-                    <div style="flex:auto" />
+                    <div class="flex-auto" />
                     <el-button type="primary" plain size="small" @click="createRecordDailog">
                         添加记录
                     </el-button>

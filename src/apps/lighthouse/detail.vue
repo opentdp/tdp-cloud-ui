@@ -391,7 +391,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
                     <small style="color: #a0cfff;">
                         {{ InstanceStateMap[instance.InstanceState] }}
                     </small>
-                    <div style="flex:auto" />
+                    <div class="flex-auto" />
                     <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
                         :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
                         开机
