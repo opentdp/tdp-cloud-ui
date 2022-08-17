@@ -188,7 +188,7 @@ export class LighthouseModel extends QCloudClient {
 
     public describeInstancesTrafficPackages(
         region: string,
-        query: Lighthouse.DescribeInstancesTrafficPackagesRequest
+        query?: Lighthouse.DescribeInstancesTrafficPackagesRequest
     ): Promise<Lighthouse.DescribeInstancesTrafficPackagesResponse> {
         query = Object.assign({ Limit: 100 }, query)
         return this.q({
@@ -210,4 +210,16 @@ export const InstanceStateMap: Record<string, string> = {
     TERMINATING: "销毁中",
     DELETING: "删除中",
     FREEZING: "冻结中",
+}
+
+export interface LH_Region extends Lighthouse.RegionInfo {
+    InstanceCount: number
+}
+
+export interface LH_Instance extends Lighthouse.Instance {
+    Region: string, RgZone: string
+}
+
+export interface LH_TrafficPackage extends Lighthouse.TrafficPackage {
+    EasyUsed: string, EasyTotal: string
 }
