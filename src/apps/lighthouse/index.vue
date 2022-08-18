@@ -6,6 +6,8 @@ import { LH_Region, LH_Instance, LH_TrafficPackage } from "@/api/qcloud/lighthou
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
 
+const fetchWait = ref(1)
+
 const regions = reactive<Record<string, LH_Region>>({})
 
 const instances = reactive<LH_Instance[]>([])
@@ -15,6 +17,7 @@ const trafficPackages = reactive<Record<string, LH_TrafficPackage>>({})
 
 async function getRegions() {
     const data = await QApi.lighthouse.describeRegions()
+    fetchWait.value = data.TotalCount
     data.RegionSet.forEach((item) => {
         regions[item.Region] = { ...item, InstanceCount: 0 }
         getInstances(item.Region)
@@ -34,8 +37,9 @@ async function getInstances(region: string) {
                 RgZone: Zone ? Zone + "区" : ""
             })
         })
-        getTrafficPackages(region)
+        await getTrafficPackages(region)
     }
+    fetchWait.value--
 }
 
 async function getTrafficPackages(region: string) {
@@ -74,7 +78,7 @@ getRegions()
                     <small>实例总数: {{ instanceTotalCount }}</small>
                 </div>
             </template>
-            <el-table :data="instances" table-layout="fixed">
+            <el-table v-loading="fetchWait && instances.length == 0" :data="instances" table-layout="fixed">
                 <el-table-column fixed prop="InstanceName" label="名称" min-width="150" />
                 <el-table-column label="地域" min-width="150">
                     <template #default="scope">
@@ -121,6 +125,14 @@ getRegions()
                     </template>
                 </el-table-column>
             </el-table>
+            <div v-if="fetchWait && instances.length > 0" v-loading="true" class="loading" />
         </el-card>
     </div>
 </template>
+
+<style lang="scss" scoped>
+div.loading {
+    height: 48px;
+    margin-top: 24px;
+}
+</style>

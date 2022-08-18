@@ -1,14 +1,19 @@
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref, reactive } from "vue"
 
 import { QApi, Dnspod } from "@/api"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
 
-const domainDescribe = ref<Dnspod.DescribeDomainListResponse>()
+const fetchWait = ref(1)
+
+const domains = reactive<Dnspod.DomainListItem[]>([])
+const domainTotalCount = ref(0)
 
 async function getDomainList() {
     const res = await QApi.dnspod.describeDomainList()
-    domainDescribe.value = res
+    domainTotalCount.value = res.DomainCountInfo.AllTotal
+    domains.push(...res.DomainList)
+    fetchWait.value = 0
 }
 
 getDomainList()
@@ -24,14 +29,14 @@ getDomainList()
                 域名管理
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-card v-if="domainDescribe && domainDescribe.DomainCountInfo" shadow="hover">
+        <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
                     <b>域名列表</b>
-                    <small>域名总数: {{ domainDescribe.DomainCountInfo.AllTotal }}</small>
+                    <small>域名总数: {{ domainTotalCount }}</small>
                 </div>
             </template>
-            <el-table :data="domainDescribe.DomainList" table-layout="fixed">
+            <el-table v-loading="fetchWait > 0" :data="domains" table-layout="fixed">
                 <el-table-column fixed prop="Name" label="域名" min-width="150" />
                 <el-table-column label="状态" min-width="80">
                     <template #default="scope">
