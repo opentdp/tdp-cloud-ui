@@ -9,9 +9,10 @@ import { TATScriptItem } from '@/api/local/tat'
 const tatList = ref<TATScriptItem[]>([])
 const loading = ref(false)
 const regionList = ref<{ value: string, label: string }[]>([])
+
 const currentRegion = ref("")
-const LHInstances = ref<(Lighthouse.Instance & { region: string })[]>([])
-const instanceRegionMap = new Map<string, string>()
+const lighthouseList = ref<(Lighthouse.Instance & { region: string })[]>([])
+const lighthouseRegionMap = new Map<string, string>()
 
 async function getTATScriptList() {
     loading.value = true
@@ -34,8 +35,8 @@ async function fetchLH() {
                 currentRegion.value = item.Region
             }
             res.InstanceSet.forEach(instance => {
-                LHInstances.value.push({ ...instance, region: item.Region })
-                instanceRegionMap.set(instance.InstanceId, item.Region)
+                lighthouseList.value.push({ ...instance, region: item.Region })
+                lighthouseRegionMap.set(instance.InstanceId, item.Region)
             })
         }
     }))
@@ -153,10 +154,10 @@ async function onDoRun() {
         if (runForm.value.InstanceIds.length > 0) {
             const regions = new Set<string>()
             runForm.value.InstanceIds.forEach(id => {
-                regions.add(instanceRegionMap.get(id) as string)
+                regions.add(lighthouseRegionMap.get(id) as string)
             })
             await Promise.all(Array.from(regions).map(async region => {
-                const instanceIds = runForm.value.InstanceIds.filter(id => instanceRegionMap.get(id) == region)
+                const instanceIds = runForm.value.InstanceIds.filter(id => lighthouseRegionMap.get(id) == region)
                 const run_res = await QApi.tat.runCommand(region, {
                     Content: Base64.encode(runForm.value.Content),
                     Description: runForm.value.Description,
@@ -323,7 +324,7 @@ onMounted(async () => {
                 </el-form-item>
                 <el-form-item label="选择执行实例">
                     <el-checkbox-group v-model="runForm.InstanceIds">
-                        <el-checkbox v-for="item in LHInstances" :key="item.InstanceId" :label="item.InstanceId">
+                        <el-checkbox v-for="item in lighthouseList" :key="item.InstanceId" :label="item.InstanceId">
                             {{ item.InstanceName }} - {{ item.InstanceId }}
                         </el-checkbox>
                     </el-checkbox-group>

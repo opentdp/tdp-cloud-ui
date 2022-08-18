@@ -8,18 +8,18 @@ import { bytesToSize, dateFormat } from "@/helper/utils"
 
 const fetchWait = ref(1)
 
-const regions = reactive<Record<string, LH_Region>>({})
+const regionList = reactive<Record<string, LH_Region>>({})
 
-const instances = reactive<LH_Instance[]>([])
+const instanceList = reactive<LH_Instance[]>([])
 const instanceTotalCount = ref(0)
 
-const trafficPackages = reactive<Record<string, LH_TrafficPackage>>({})
+const trafficPackageList = reactive<Record<string, LH_TrafficPackage>>({})
 
 async function getRegions() {
     const res = await QApi.lighthouse.describeRegions()
     fetchWait.value = res.TotalCount
     res.RegionSet.forEach((item) => {
-        regions[item.Region] = { ...item, InstanceCount: 0 }
+        regionList[item.Region] = { ...item, InstanceCount: 0 }
         getInstances(item.Region)
     })
 }
@@ -27,13 +27,13 @@ async function getRegions() {
 async function getInstances(region: string) {
     const res = await QApi.lighthouse.describeInstances(region)
     if (res.TotalCount > 0) {
-        regions[region].InstanceCount = res.TotalCount
+        regionList[region].InstanceCount = res.TotalCount
         instanceTotalCount.value += res.TotalCount
         res.InstanceSet.forEach((item) => {
             const Zone = item.Zone.replace(/[^1-9]+/, "")
-            instances.push({
+            instanceList.push({
                 ...item,
-                Region: regions[region].RegionName,
+                Region: regionList[region].RegionName,
                 RgZone: Zone ? Zone + "区" : ""
             })
         })
@@ -46,7 +46,7 @@ async function getTrafficPackages(region: string) {
     const res = await QApi.lighthouse.describeInstancesTrafficPackages(region)
     if (res.TotalCount > 0) {
         res.InstanceTrafficPackageSet.forEach((item) => {
-            trafficPackages[item.InstanceId] = {
+            trafficPackageList[item.InstanceId] = {
                 ...item.TrafficPackageSet[0],
                 EasyUsed: bytesToSize(item.TrafficPackageSet[0].TrafficUsed),
                 EasyTotal: bytesToSize(item.TrafficPackageSet[0].TrafficPackageTotal)
@@ -78,7 +78,7 @@ getRegions()
                     <small>实例总数: {{ instanceTotalCount }}</small>
                 </div>
             </template>
-            <el-table v-loading="fetchWait && instances.length == 0" :data="instances" table-layout="fixed">
+            <el-table v-loading="fetchWait && instanceList.length == 0" :data="instanceList" table-layout="fixed">
                 <el-table-column fixed prop="InstanceName" label="名称" min-width="150" />
                 <el-table-column label="地域" min-width="150">
                     <template #default="scope">
@@ -99,9 +99,9 @@ getRegions()
                 <el-table-column prop="PublicAddresses" label="外网 IP" min-width="120" />
                 <el-table-column label="已用 / 流量包" min-width="180">
                     <template #default="scope">
-                        <template v-if="trafficPackages[scope.row.InstanceId]">
-                            {{ trafficPackages[scope.row.InstanceId].EasyUsed }} /
-                            {{ trafficPackages[scope.row.InstanceId].EasyTotal }}
+                        <template v-if="trafficPackageList[scope.row.InstanceId]">
+                            {{ trafficPackageList[scope.row.InstanceId].EasyUsed }} /
+                            {{ trafficPackageList[scope.row.InstanceId].EasyTotal }}
                         </template>
                     </template>
                 </el-table-column>
@@ -125,7 +125,7 @@ getRegions()
                     </template>
                 </el-table-column>
             </el-table>
-            <div v-if="fetchWait && instances.length > 0" v-loading="true" class="loading" />
+            <div v-if="fetchWait && instanceList.length > 0" v-loading="true" class="loading" />
         </el-card>
     </div>
 </template>

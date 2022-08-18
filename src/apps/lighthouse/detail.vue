@@ -384,6 +384,10 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
             </el-breadcrumb-item>
         </el-breadcrumb>
 
+        <el-card v-if="!instance" v-loading="true" class="mgb10">
+            <h1>Loading</h1>
+        </el-card>
+
         <el-card v-if="instance" shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
@@ -661,11 +665,11 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
             </template>
         </el-dialog>
 
-        <el-card shadow="hover">
+        <el-card v-if="trafficPackage" shadow="hover">
             <template #header>
                 <div class="flex-between">
                     <b>外网出流量</b>
-                    <small v-if="trafficPackage">
+                    <small>
                         流量包:
                         {{ bytesToSize(trafficPackage.TrafficUsed) }} /
                         {{ bytesToSize(trafficPackage.TrafficPackageTotal) }}

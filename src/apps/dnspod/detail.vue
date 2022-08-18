@@ -30,25 +30,27 @@ async function getRecordType() {
     recordType.value = res.TypeList
 }
 
-const recordLine = ref<Dnspod.DescribeRecordLineListResponse>()
+const recordLineList = ref<Dnspod.LineInfo[]>()
 
 async function getRecordLine() {
     const res = await QApi.dnspod.describeRecordLineList({
         DomainGrade: domainInfo.value.Grade,
         Domain: domain
     })
-    recordLine.value = res
+    recordLineList.value = res.LineList
 }
 
 // 域名记录
 
-const record = ref<Dnspod.DescribeRecordListResponse>()
+const recordList = ref<Dnspod.RecordListItem[]>()
+const recordCountInfo = ref<Dnspod.RecordCountInfo>()
 
 async function getRecordList() {
     const res = await QApi.dnspod.describeRecordList({
         Domain: domain
     })
-    record.value = res
+    recordList.value = res.RecordList
+    recordCountInfo.value = res.RecordCountInfo
 }
 
 async function refreshRecordList() {
@@ -195,14 +197,14 @@ async function deleteRecord(recordId: number) {
             <template #header>
                 <div class="flex-between">
                     <b>解析列表</b> &nbsp; &nbsp;
-                    <small>记录总数: {{ record?.RecordCountInfo.TotalCount || 0 }}</small>
+                    <small>记录总数: {{ recordCountInfo?.TotalCount || 0 }}</small>
                     <div class="flex-auto" />
                     <el-button type="primary" plain size="small" @click="createRecordDailog">
                         添加记录
                     </el-button>
                 </div>
             </template>
-            <el-table v-loading="!record" :data="record?.RecordList" table-layout="fixed">
+            <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
                 <el-table-column fixed prop="Name" label="主机记录" min-width="100" />
                 <el-table-column prop="Type" label="记录类型" min-width="100" />
                 <el-table-column prop="Line" label="线路类型" min-width="100" />
@@ -248,7 +250,7 @@ async function deleteRecord(recordId: number) {
                 </el-form-item>
                 <el-form-item prop="Line" label="线路类型">
                     <el-select v-model="createRecordBus.model.Line">
-                        <el-option v-for="v in recordLine?.LineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
+                        <el-option v-for="v in recordLineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
                     </el-select>
                 </el-form-item>
                 <el-form-item prop="Value" label="记录值">
@@ -286,7 +288,7 @@ async function deleteRecord(recordId: number) {
                 </el-form-item>
                 <el-form-item prop="Line" label="线路类型">
                     <el-select v-model="modifyRecordBus.model.Line">
-                        <el-option v-for="v in recordLine?.LineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
+                        <el-option v-for="v in recordLineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
                     </el-select>
                 </el-form-item>
                 <el-form-item prop="Value" label="记录值">

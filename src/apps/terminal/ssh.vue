@@ -70,14 +70,14 @@ const curTab = reactive({
     id: "new", label: ""
 })
 
-const sshTabs = reactive<sshTab[]>([])
+const tabList = reactive<sshTab[]>([])
 
 function createTab() {
     const tab: sshTab = {
         id: "tab-" + Date.now(),
         label: formModel.Addr
     }
-    sshTabs.push(tab)
+    tabList.push(tab)
     // 延迟连接
     changeTab(tab.id)
     setTimeout(() => {
@@ -87,9 +87,9 @@ function createTab() {
 }
 
 function indexTab(id: string) {
-    for (let i = 0; i < sshTabs.length; i++) {
-        if (sshTabs[i].id === id) {
-            return { index: i, tab: sshTabs[i] }
+    for (let i = 0; i < tabList.length; i++) {
+        if (tabList[i].id === id) {
+            return { index: i, tab: tabList[i] }
         }
     }
 }
@@ -107,16 +107,16 @@ function removeTab(id: string) {
     }
     const { index, tab } = target
     if (curTab.id === id) {
-        const next = sshTabs[index + 1] || sshTabs[index - 1]
+        const next = tabList[index + 1] || tabList[index - 1]
         changeTab(next ? next.id : "new")
     }
     tab.webssh?.dispose()
-    sshTabs.splice(index, 1)
+    tabList.splice(index, 1)
 }
 
 // 获取实例列表
 
-const lighthouseInstances = reactive<
+const lighthouseList = reactive<
     {
         ipAddresse: string
         platformType: string
@@ -124,12 +124,12 @@ const lighthouseInstances = reactive<
     }[]
 >([])
 
-async function getLighthouseInstances() {
+async function getLighthouseList() {
     const res = await QApi.lighthouse.describeRegions()
     res.RegionSet.forEach(async (region) => {
         const res = await QApi.lighthouse.describeInstances(region.Region)
         res.InstanceSet.forEach(instance => {
-            lighthouseInstances.push({
+            lighthouseList.push({
                 regionName: region.RegionName,
                 ipAddresse: instance.PublicAddresses[0],
                 platformType: instance.PlatformType
@@ -138,9 +138,9 @@ async function getLighthouseInstances() {
     })
 }
 
-function lighthouseSearch(qr: string, cb: (a: unknown[]) => void) {
+function lighthouseFilter(qr: string, cb: (a: unknown[]) => void) {
     const rs: unknown[] = []
-    lighthouseInstances.forEach((item) => {
+    lighthouseList.forEach((item) => {
         if (item.platformType === "LINUX_UNIX"
             && (item.ipAddresse + item.regionName).includes(qr)) {
             rs.push({ value: item.ipAddresse, region: item.regionName })
@@ -151,11 +151,11 @@ function lighthouseSearch(qr: string, cb: (a: unknown[]) => void) {
 
 // 获取密钥列表
 
-const keylist = ref<SSHKeyItem[]>([])
+const sshkeyList = ref<SSHKeyItem[]>([])
 
-async function getSshkeys() {
+async function getSshkeyList() {
     const res = await Api.sshkey.list()
-    keylist.value = res
+    sshkeyList.value = res
 }
 
 // 执行快捷命令
@@ -176,9 +176,9 @@ function sshExec(cmd: string) {
 
 ////// 初始化
 
-getLighthouseInstances()
+getLighthouseList()
 getTATScriptList()
-getSshkeys()
+getSshkeyList()
 </script>
 
 <template>
@@ -195,7 +195,7 @@ getSshkeys()
             <el-tab-pane label="新建" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
                     <el-form-item prop="Addr" label="主机">
-                        <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="lighthouseSearch" clearable>
+                        <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="lighthouseFilter" clearable>
                             <template #default="{ item }">
                                 {{ item.value }} - {{ item.region }}
                             </template>
@@ -207,7 +207,7 @@ getSshkeys()
                     <el-form-item label="验证方式">
                         <el-select v-model="authType">
                             <el-option label="用户密码" value="0" />
-                            <el-option v-if="keylist.length > 0" label="选择私玥" value="2" />
+                            <el-option v-if="sshkeyList.length > 0" label="选择私玥" value="2" />
                             <el-option label="输入私玥" value="4" />
                         </el-select>
                     </el-form-item>
@@ -216,7 +216,7 @@ getSshkeys()
                     </el-form-item>
                     <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
                         <el-select v-model="formModel.PrivateKey">
-                            <el-option v-for="item in keylist" :key="item.Id" :label="item.Description"
+                            <el-option v-for="item in sshkeyList" :key="item.Id" :label="item.Description"
                                 :value="item.PrivateKey" />
                         </el-select>
                     </el-form-item>
@@ -231,7 +231,7 @@ getSshkeys()
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
-            <el-tab-pane v-for="item in sshTabs" :key="item.id" :name="item.id" :label="item.label" closable>
+            <el-tab-pane v-for="item in tabList" :key="item.id" :name="item.id" :label="item.label" closable>
                 <div :id="item.id" />
             </el-tab-pane>
         </el-tabs>

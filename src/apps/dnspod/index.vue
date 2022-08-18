@@ -6,13 +6,13 @@ import { DomainStatusMap } from "@/api/qcloud/dnspod"
 
 const fetchWait = ref(1)
 
-const domains = reactive<Dnspod.DomainListItem[]>([])
+const domainList = reactive<Dnspod.DomainListItem[]>([])
 const domainTotalCount = ref(0)
 
 async function getDomainList() {
     const res = await QApi.dnspod.describeDomainList()
     domainTotalCount.value = res.DomainCountInfo.AllTotal
-    domains.push(...res.DomainList)
+    domainList.push(...res.DomainList)
     fetchWait.value = 0
 }
 
@@ -36,7 +36,7 @@ getDomainList()
                     <small>域名总数: {{ domainTotalCount }}</small>
                 </div>
             </template>
-            <el-table v-loading="fetchWait > 0" :data="domains" table-layout="fixed">
+            <el-table v-loading="fetchWait > 0" :data="domainList" table-layout="fixed">
                 <el-table-column fixed prop="Name" label="域名" min-width="150" />
                 <el-table-column label="状态" min-width="80">
                     <template #default="scope">
