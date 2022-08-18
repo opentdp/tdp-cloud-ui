@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive } from "vue"
+import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
 import { LH_Region, LH_Instance, LH_TrafficPackage } from "@/api/qcloud/lighthouse"
@@ -9,6 +9,8 @@ import { bytesToSize, dateFormat } from "@/helper/utils"
 const regions = reactive<Record<string, LH_Region>>({})
 
 const instances = reactive<LH_Instance[]>([])
+const instanceTotalCount = ref(0)
+
 const trafficPackages = reactive<Record<string, LH_TrafficPackage>>({})
 
 async function getRegions() {
@@ -23,6 +25,7 @@ async function getInstances(region: string) {
     const data = await QApi.lighthouse.describeInstances(region)
     if (data.TotalCount > 0) {
         regions[region].InstanceCount = data.TotalCount
+        instanceTotalCount.value += data.TotalCount
         data.InstanceSet.forEach((item) => {
             const Zone = item.Zone.replace(/[^1-9]+/, "")
             instances.push({
@@ -68,7 +71,7 @@ getRegions()
                 <div class="flex-between">
                     <b>实例列表</b>
                     <div class="flex-auto" />
-                    <small>实例总数: {{ instances.length }}</small>
+                    <small>实例总数: {{ instanceTotalCount }}</small>
                 </div>
             </template>
             <el-table :data="instances" table-layout="fixed">
