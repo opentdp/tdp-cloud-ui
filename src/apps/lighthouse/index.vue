@@ -16,20 +16,20 @@ const instanceTotalCount = ref(0)
 const trafficPackages = reactive<Record<string, LH_TrafficPackage>>({})
 
 async function getRegions() {
-    const data = await QApi.lighthouse.describeRegions()
-    fetchWait.value = data.TotalCount
-    data.RegionSet.forEach((item) => {
+    const res = await QApi.lighthouse.describeRegions()
+    fetchWait.value = res.TotalCount
+    res.RegionSet.forEach((item) => {
         regions[item.Region] = { ...item, InstanceCount: 0 }
         getInstances(item.Region)
     })
 }
 
 async function getInstances(region: string) {
-    const data = await QApi.lighthouse.describeInstances(region)
-    if (data.TotalCount > 0) {
-        regions[region].InstanceCount = data.TotalCount
-        instanceTotalCount.value += data.TotalCount
-        data.InstanceSet.forEach((item) => {
+    const res = await QApi.lighthouse.describeInstances(region)
+    if (res.TotalCount > 0) {
+        regions[region].InstanceCount = res.TotalCount
+        instanceTotalCount.value += res.TotalCount
+        res.InstanceSet.forEach((item) => {
             const Zone = item.Zone.replace(/[^1-9]+/, "")
             instances.push({
                 ...item,
@@ -43,9 +43,9 @@ async function getInstances(region: string) {
 }
 
 async function getTrafficPackages(region: string) {
-    const data = await QApi.lighthouse.describeInstancesTrafficPackages(region)
-    if (data.TotalCount > 0) {
-        data.InstanceTrafficPackageSet.forEach((item) => {
+    const res = await QApi.lighthouse.describeInstancesTrafficPackages(region)
+    if (res.TotalCount > 0) {
+        res.InstanceTrafficPackageSet.forEach((item) => {
             trafficPackages[item.InstanceId] = {
                 ...item.TrafficPackageSet[0],
                 EasyUsed: bytesToSize(item.TrafficPackageSet[0].TrafficUsed),

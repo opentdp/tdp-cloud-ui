@@ -10,13 +10,13 @@ const domain = route.params.domain as string
 
 // 域名概要
 
-const describe = ref<Dnspod.DescribeDomainResponse>({} as any)
+const domainInfo = ref<Dnspod.DomainInfo>({} as Dnspod.DomainInfo)
 
 async function getDomain() {
-    const data = await QApi.dnspod.describeDomain({
+    const res = await QApi.dnspod.describeDomain({
         Domain: domain
     })
-    describe.value = data
+    domainInfo.value = res.DomainInfo
 }
 
 // 记录类型列表
@@ -24,20 +24,20 @@ async function getDomain() {
 const recordType = ref<string[]>([])
 
 async function getRecordType() {
-    const data = await QApi.dnspod.describeRecordType({
-        DomainGrade: describe.value.DomainInfo.Grade
+    const res = await QApi.dnspod.describeRecordType({
+        DomainGrade: domainInfo.value.Grade
     })
-    recordType.value = data.TypeList
+    recordType.value = res.TypeList
 }
 
 const recordLine = ref<Dnspod.DescribeRecordLineListResponse>()
 
 async function getRecordLine() {
-    const data = await QApi.dnspod.describeRecordLineList({
-        DomainGrade: describe.value.DomainInfo.Grade,
+    const res = await QApi.dnspod.describeRecordLineList({
+        DomainGrade: domainInfo.value.Grade,
         Domain: domain
     })
-    recordLine.value = data
+    recordLine.value = res
 }
 
 // 域名记录
@@ -45,10 +45,10 @@ async function getRecordLine() {
 const record = ref<Dnspod.DescribeRecordListResponse>()
 
 async function getRecordList() {
-    const data = await QApi.dnspod.describeRecordList({
+    const res = await QApi.dnspod.describeRecordList({
         Domain: domain
     })
-    record.value = data
+    record.value = res
 }
 
 async function refreshRecordList() {
@@ -191,18 +191,18 @@ async function deleteRecord(recordId: number) {
                 {{ domain || "详情" }}
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-card v-if="record" shadow="hover" class="mgb10">
+        <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
                     <b>解析列表</b> &nbsp; &nbsp;
-                    <small>记录总数: {{ record.RecordCountInfo.TotalCount }}</small>
+                    <small>记录总数: {{ record?.RecordCountInfo.TotalCount || 0 }}</small>
                     <div class="flex-auto" />
                     <el-button type="primary" plain size="small" @click="createRecordDailog">
                         添加记录
                     </el-button>
                 </div>
             </template>
-            <el-table :data="record.RecordList" table-layout="fixed">
+            <el-table v-loading="!record" :data="record?.RecordList" table-layout="fixed">
                 <el-table-column fixed prop="Name" label="主机记录" min-width="100" />
                 <el-table-column prop="Type" label="记录类型" min-width="100" />
                 <el-table-column prop="Line" label="线路类型" min-width="100" />

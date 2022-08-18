@@ -13,12 +13,12 @@ const region = zone.replace(/-\d$/, "")
 const instanceId = route.params.instanceId as string
 
 async function vncInit() {
-    const data = await QApi.lighthouse.describeInstanceVncUrl(region, {
+    const res = await QApi.lighthouse.describeInstanceVncUrl(region, {
         InstanceId: instanceId,
     })
     if (frame.value) {
         const vnc = '/api/qcloud/vnc?InstanceVncUrl='
-        frame.value.src = vnc + data.InstanceVncUrl
+        frame.value.src = vnc + res.InstanceVncUrl
     }
 }
 

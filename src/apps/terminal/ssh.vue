@@ -125,10 +125,10 @@ const lighthouseInstances = reactive<
 >([])
 
 async function getLighthouseInstances() {
-    const data = await QApi.lighthouse.describeRegions()
-    data.RegionSet.forEach(async (region) => {
-        const data = await QApi.lighthouse.describeInstances(region.Region)
-        data.InstanceSet.forEach(instance => {
+    const res = await QApi.lighthouse.describeRegions()
+    res.RegionSet.forEach(async (region) => {
+        const res = await QApi.lighthouse.describeInstances(region.Region)
+        res.InstanceSet.forEach(instance => {
             lighthouseInstances.push({
                 regionName: region.RegionName,
                 ipAddresse: instance.PublicAddresses[0],

@@ -20,10 +20,10 @@ const instanceId = route.params.instanceId as string
 const instance = ref<Lighthouse.Instance>()
 
 async function getInstance() {
-    const data = await QApi.lighthouse.describeInstances(region, {
+    const res = await QApi.lighthouse.describeInstances(region, {
         InstanceIds: [instanceId],
     })
-    instance.value = data.InstanceSet[0]
+    instance.value = res.InstanceSet[0]
 }
 
 ////// 电源管理
@@ -127,10 +127,10 @@ const modifyFirewallRuleDescriptionBus = reactive<FirewallRuleBus>({
 })
 
 async function getFirewallRules() {
-    const data = await QApi.lighthouse.describeFirewallRules(region, {
+    const res = await QApi.lighthouse.describeFirewallRules(region, {
         InstanceId: instanceId,
     })
-    firewallRules.value = data
+    firewallRules.value = res
 }
 
 async function createFirewallRule() {
@@ -215,10 +215,10 @@ const createSnapshotBus = reactive({
 })
 
 async function getSnapshots() {
-    const data = await QApi.lighthouse.describeSnapshots(region, {
+    const res = await QApi.lighthouse.describeSnapshots(region, {
         Filters: [{ Name: "instance-id", Values: [instanceId] }],
     })
-    snapshots.value = data
+    snapshots.value = res
 }
 
 async function createSnapshot() {
@@ -266,14 +266,14 @@ const trafficPackage = ref<Lighthouse.TrafficPackage>()
 const outtrafficChart = ref<EChartsOption>()
 
 async function getTrafficPackage() {
-    const data = await QApi.lighthouse.describeInstancesTrafficPackages(region, {
+    const res = await QApi.lighthouse.describeInstancesTrafficPackages(region, {
         InstanceIds: [instanceId],
     })
-    trafficPackage.value = data.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
+    trafficPackage.value = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
 }
 
 async function getLighthouseOuttraffic() {
-    const data = await QApi.monitor.getMonitorData(region, {
+    const res = await QApi.monitor.getMonitorData(region, {
         Namespace: "QCE/LIGHTHOUSE",
         MetricName: "LighthouseOuttraffic",
         Instances: [
@@ -290,10 +290,10 @@ async function getLighthouseOuttraffic() {
         StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
         EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
     })
-    const xdata = data.DataPoints[0].Timestamps.map(t => {
+    const data = res.DataPoints[0].Timestamps.map(t => {
         return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
     })
-    outtrafficChart.value = getOuttrafficChartConfig(xdata, data.DataPoints[0].Values)
+    outtrafficChart.value = getOuttrafficChartConfig(data, res.DataPoints[0].Values)
 }
 
 function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {

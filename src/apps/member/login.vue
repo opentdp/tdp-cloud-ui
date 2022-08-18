@@ -27,15 +27,15 @@ function formSubmit(form: FormInstance | undefined) {
             ElMessage.error("请检查表单")
             return false
         }
-        const data = await Api.user.login(formModel)
-        if (data.Username) {
+        const res = await Api.user.login(formModel)
+        if (res.Username) {
             ElMessage.success("登录成功")
         }
-        session.username = data.Username
-        session.appToken = data.AppToken
-        session.description = data.Description
-        session.token = data.SessionToken
-        session.keyid = data.KeyId
+        session.username = res.Username
+        session.appToken = res.AppToken
+        session.description = res.Description
+        session.token = res.SessionToken
+        session.keyid = res.KeyId
         router.push("/")
     })
 }

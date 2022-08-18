@@ -25,15 +25,15 @@ async function getTATScriptList() {
 }
 
 async function fetchLH() {
-    const data = await QApi.lighthouse.describeRegions()
-    await Promise.all(data.RegionSet.map(async item => {
-        const data = await QApi.lighthouse.describeInstances(item.Region)
-        if (data.TotalCount > 0) {
+    const res = await QApi.lighthouse.describeRegions()
+    await Promise.all(res.RegionSet.map(async item => {
+        const res = await QApi.lighthouse.describeInstances(item.Region)
+        if (res.TotalCount > 0) {
             regionList.value.push({ value: item.Region, label: item.RegionName })
             if (currentRegion.value === '') {
                 currentRegion.value = item.Region
             }
-            data.InstanceSet.forEach(instance => {
+            res.InstanceSet.forEach(instance => {
                 LHInstances.value.push({ ...instance, region: item.Region })
                 instanceRegionMap.set(instance.InstanceId, item.Region)
             })
