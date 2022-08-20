@@ -94,11 +94,20 @@ export const routes: RouteRecordRaw[] = [
                 path: "/terminal/ssh/:addr*",
                 name: "terminal-ssh",
                 meta: {
-                    title: "SSH 终端",
+                    title: "SSH 连接",
                     login: true,
                     cloud: true,
                 },
                 component: () => import("@/apps/terminal/ssh.vue"),
+            },
+            {
+                path: "/terminal/sshkey",
+                name: "terminal-sshkey",
+                meta: {
+                    title: "SSH 密钥",
+                    login: true,
+                },
+                component: () => import("@/apps/terminal/sshkey.vue"),
             },
             {
                 path: "/tat/history",
@@ -142,19 +151,10 @@ export const routes: RouteRecordRaw[] = [
                 path: "/keypod/secret",
                 name: "keypod-secret",
                 meta: {
-                    title: "CAM 密钥",
+                    title: "腾讯云 CAM",
                     login: true,
                 },
                 component: () => import("@/apps/keypod/secret.vue"),
-            },
-            {
-                path: "/keypod/sshkey",
-                name: "keypod-sshkey",
-                meta: {
-                    title: "SSH 密钥",
-                    login: true,
-                },
-                component: () => import("@/apps/keypod/sshkey.vue"),
             },
             {
                 path: "/error/403",

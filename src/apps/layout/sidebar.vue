@@ -52,7 +52,7 @@ const items: MenuItem[] = [
     {
         icon: "Switch",
         index: "/worker",
-        title: "外部节点",
+        title: "超级节点",
         subs: [
             {
                 icon: "Cpu",
@@ -67,26 +67,26 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Connection",
-        index: "/terminal/ssh",
-        title: "SSH 终端",
-    },
-    {
         icon: "Magnet",
-        index: "/keypod",
-        title: "密钥管理",
+        index: "/terminal",
+        title: "SSH 连接",
         subs: [
             {
-                icon: "Lock",
-                index: "/keypod/sshkey",
-                title: "SSH 密钥",
+                icon: "Connection",
+                index: "/terminal/ssh",
+                title: "SSH 终端",
             },
             {
-                icon: "PartlyCloudy",
-                index: "/keypod/secret",
-                title: "CAM 密钥",
+                icon: "Lock",
+                index: "/terminal/sshkey",
+                title: "SSH 密钥",
             },
         ]
+    },
+    {
+        icon: "PartlyCloudy",
+        index: "/keypod/secret",
+        title: "腾讯云 CAM",
     },
     // {
     //     icon: 'Warning',

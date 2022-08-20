@@ -60,7 +60,7 @@ getSecrets()
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                CAM 密钥
+                腾讯云 CAM
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover" class="mgb10">
