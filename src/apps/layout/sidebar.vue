@@ -69,7 +69,7 @@ const items: MenuItem[] = [
     {
         icon: "Magnet",
         index: "/terminal",
-        title: "SSH 连接",
+        title: "SSH 管理",
         subs: [
             {
                 icon: "Connection",
