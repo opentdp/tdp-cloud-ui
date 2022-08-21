@@ -50,9 +50,9 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Switch",
+        icon: "Magnet",
         index: "/worker",
-        title: "超级节点",
+        title: "边缘节点",
         subs: [
             {
                 icon: "Cpu",
@@ -67,7 +67,7 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Magnet",
+        icon: "Switch",
         index: "/terminal",
         title: "SSH 管理",
         subs: [
