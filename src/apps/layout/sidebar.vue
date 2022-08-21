@@ -69,12 +69,12 @@ const items: MenuItem[] = [
     {
         icon: "Switch",
         index: "/terminal",
-        title: "SSH 管理",
+        title: "SSH 终端",
         subs: [
             {
                 icon: "Connection",
                 index: "/terminal/ssh",
-                title: "SSH 终端",
+                title: "SSH 连接",
             },
             {
                 icon: "Lock",

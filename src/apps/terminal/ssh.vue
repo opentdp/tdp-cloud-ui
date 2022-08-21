@@ -188,7 +188,7 @@ getSshkeyList()
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                SSH 终端
+                SSH 连接
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">

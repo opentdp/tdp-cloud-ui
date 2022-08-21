@@ -94,7 +94,7 @@ export const routes: RouteRecordRaw[] = [
                 path: "/terminal/ssh/:addr*",
                 name: "terminal-ssh",
                 meta: {
-                    title: "SSH 终端",
+                    title: "SSH 连接",
                     login: true,
                     cloud: true,
                 },
