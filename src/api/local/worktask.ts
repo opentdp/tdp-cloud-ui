@@ -12,9 +12,22 @@ export interface TaskItem {
     HostId: string
     HostName: string
     Subject: string
-    Content: string
     Status: string
-    Result: string
+    Request: TaskRequest
+    Response: TaskResponse
     CreatedAt: number
     UpdatedAt: number
+}
+
+export interface TaskRequest {
+    CommandType: string
+    Content: string
+    Name: string
+    Timeout: number
+    Username: string
+    WorkingDirectory: string
+}
+
+export interface TaskResponse {
+    Output: string
 }

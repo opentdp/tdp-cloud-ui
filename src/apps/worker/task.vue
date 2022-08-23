@@ -64,8 +64,12 @@ onUnmounted(() => {
                 </el-table-column>
                 <el-table-column label="详情" width="60" type="expand">
                     <template #default="scope">
-                        <vue-json-pretty :data="JSON.parse(scope.row.Content)" />
-                        <pre class="console">{{ JSON.parse(scope.row.Result).Output || "无输出" }}</pre>
+                        <div class="detail">
+                            <h3>请求信息</h3>
+                            <vue-json-pretty :data="scope.row.Request" />
+                            <h3>响应内容</h3>
+                            <pre class="console">{{ scope.row.Response.Output || "无" }}</pre>
+                        </div>
                     </template>
                 </el-table-column>
             </el-table>
@@ -74,13 +78,14 @@ onUnmounted(() => {
 </template>
 
 <style lang="scss" scoped>
-.console {
-    padding: 8px;
-    background: #000;
-    color: #fff;
-}
+.detail {
+    margin: -8px 0;
+    padding: 0 8px;
 
-.vjs-tree {
-    padding: 8px;
+    .console {
+        padding: 8px;
+        background: #000;
+        color: #fff;
+    }
 }
 </style>
