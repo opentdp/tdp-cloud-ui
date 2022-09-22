@@ -73,22 +73,22 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/lighthouse/vnc.vue"),
             },
             {
-                path: "/worker/index",
-                name: "worker-index",
+                path: "/podhub/index",
+                name: "podhub-index",
                 meta: {
                     title: "节点列表",
                     login: true,
                 },
-                component: () => import("@/apps/worker/index.vue"),
+                component: () => import("@/apps/podhub/index.vue"),
             },
             {
-                path: "/worker/task",
-                name: "worker-task",
+                path: "/podhub/task",
+                name: "podhub-task",
                 meta: {
                     title: "任务记录",
                     login: true,
                 },
-                component: () => import("@/apps/worker/task.vue"),
+                component: () => import("@/apps/podhub/task.vue"),
             },
             {
                 path: "/terminal/ssh/:addr*",

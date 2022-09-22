@@ -1,12 +1,12 @@
 import { HttpClient } from "../basic/http"
 
-export class WorkerModel extends HttpClient {
+export class PodhubModel extends HttpClient {
     public list(): Promise<Worker[]> {
-        return this.get("/worker")
+        return this.get("/podhub")
     }
 
     public exec(rq: WorkserExecRequest): Promise<[]> {
-        return this.post("/worker/exec", rq)
+        return this.post("/podhub/exec", rq)
     }
 }
 

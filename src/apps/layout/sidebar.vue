@@ -51,17 +51,17 @@ const items: MenuItem[] = [
     },
     {
         icon: "Magnet",
-        index: "/worker",
+        index: "/podhub",
         title: "边缘节点",
         subs: [
             {
                 icon: "Cpu",
-                index: "/worker/index",
+                index: "/podhub/index",
                 title: "节点管理",
             },
             {
                 icon: "Finished",
-                index: "/worker/task",
+                index: "/podhub/task",
                 title: "任务记录",
             },
         ]

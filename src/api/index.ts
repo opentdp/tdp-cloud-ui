@@ -1,12 +1,12 @@
 import { CacheModel } from "./local/cache"
 
 import { ConfigModel } from "./local/config"
+import { PodhubModel } from "./local/podhub"
 import { SecretModel } from "./local/secret"
 import { SocketModel } from "./local/socket"
 import { SSHKeyModel } from "./local/sshkey"
 import { TATModel } from "./local/tat"
 import { UserModel } from "./local/user"
-import { WorkerModel } from "./local/worker"
 import { WorktaskModel } from "./local/worktask"
 
 import { CamModel } from "./qcloud/cam"
@@ -21,12 +21,12 @@ export const Api = {
     cache: new CacheModel(),
 
     config: new ConfigModel(),
+    podhub: new PodhubModel(),
     secret: new SecretModel(),
     socket: new SocketModel(),
     sshkey: new SSHKeyModel(),
     tat: new TATModel(),
     user: new UserModel(),
-    worker: new WorkerModel(),
     worktask: new WorktaskModel(),
 }
 
