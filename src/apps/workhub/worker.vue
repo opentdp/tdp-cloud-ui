@@ -64,7 +64,7 @@ onUnmounted(() => {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                节点管理
+                子节点
             </el-breadcrumb-item>
         </el-breadcrumb>
 

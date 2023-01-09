@@ -71,25 +71,6 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/podhub/workhub",
-                name: "podhub-workhub",
-                meta: {
-                    title: "节点列表",
-                    login: true,
-                },
-                component: () => import("@/apps/podhub/workhub.vue"),
-            },
-            {
-                path: "/podhub/worktask",
-                name: "podhub-worktask",
-                meta: {
-                    title: "任务记录",
-                    login: true,
-                },
-                component: () => import("@/apps/podhub/worktask.vue"),
-            },
-            //////
-            {
                 path: "/terminal/ssh/:addr*",
                 name: "terminal-ssh",
                 meta: {
@@ -144,6 +125,25 @@ export const routes: RouteRecordRaw[] = [
                     login: true,
                 },
                 component: () => import("@/apps/member/password.vue"),
+            },
+            //////
+            {
+                path: "/workhub/worker",
+                name: "workhub-worker",
+                meta: {
+                    title: "子节点",
+                    login: true,
+                },
+                component: () => import("@/apps/workhub/worker.vue"),
+            },
+            {
+                path: "/workhub/worktask",
+                name: "workhub-worktask",
+                meta: {
+                    title: "任务记录",
+                    login: true,
+                },
+                component: () => import("@/apps/workhub/worktask.vue"),
             },
             //////
             {

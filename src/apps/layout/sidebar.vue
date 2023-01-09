@@ -54,23 +54,6 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Magnet",
-        index: "/podhub",
-        title: "边缘节点",
-        subs: [
-            {
-                icon: "Cpu",
-                index: "/podhub/workhub",
-                title: "节点管理",
-            },
-            {
-                icon: "Finished",
-                index: "/podhub/worktask",
-                title: "任务记录",
-            },
-        ]
-    },
-    {
         icon: "Switch",
         index: "/terminal",
         title: "SSH 终端",
@@ -88,9 +71,26 @@ const items: MenuItem[] = [
         ]
     },
     {
+        icon: "Magnet",
+        index: "/workhub",
+        title: "边缘节点",
+        subs: [
+            {
+                icon: "Cpu",
+                index: "/workhub/worker",
+                title: "子节点",
+            },
+            {
+                icon: "Finished",
+                index: "/workhub/worktask",
+                title: "任务记录",
+            },
+        ]
+    },
+    {
         icon: "Switch",
-        index: "/terminal",
-        title: "厂商管理",
+        index: "/vendor",
+        title: "云上资源",
         subs: [
             {
                 icon: "PartlyCloudy",
