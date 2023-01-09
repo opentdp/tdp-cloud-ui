@@ -24,18 +24,23 @@ export class MachineModel extends HttpClient {
 
 export interface MachineItem {
     Id: number
-    Name: string
-    Value: string
-    Module: string
+    UserId: number
+    VendorId: number
+    HostName: string
+    Address: string
+    Status: string
+    CloudData: string
     Description: string
     CreatedAt: string
     UpdatedAt: string
 }
 
 export interface MachineRequest {
-    Name: string
-    Value: string
-    Module: string
+    VendorId: number
+    HostName: string
+    Address: string
+    Status: string
+    CloudData: string
     Description: string
 }
 

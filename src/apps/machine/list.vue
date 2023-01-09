@@ -41,29 +41,7 @@ getMachineList()
                 </div>
             </template>
             <el-table v-loading="fetchWait" :data="machineList" table-layout="fixed">
-                <el-table-column fixed prop="InstanceName" label="名称" min-width="150" />
-                <el-table-column label="地域" min-width="150">
-                    <template #default="scope">
-                        {{ scope.row.Region }}{{ scope.row.RgZone }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="CPU" label="CPU" min-width="60" />
-                <el-table-column label="内存" min-width="60">
-                    <template #default="scope">
-                        {{ scope.row.Memory + " GB" }}
-                    </template>
-                </el-table-column>
-                <el-table-column label="系统盘" min-width="80">
-                    <template #default="scope">
-                        {{ scope.row.SystemDisk.DiskSize + " GB" }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="PublicAddresses" label="外网 IP" min-width="120" />
-                <el-table-column label="到期时间" min-width="100">
-                    <template #default="scope">
-                        {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
-                    </template>
-                </el-table-column>
+                <el-table-column fixed prop="HostName" label="名称" min-width="150" />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="Connection">

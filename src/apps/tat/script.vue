@@ -3,8 +3,9 @@ import { ref, onMounted } from "vue"
 import { ElMessage, ElTable } from "element-plus"
 import { Base64 } from 'js-base64'
 
-import { Api, QApi, Lighthouse } from "@/api"
+import { Api, QApi } from "@/api"
 import { TATScriptItem } from '@/api/local/tat'
+import { Lighthouse } from "@/api/qcloud/typings"
 
 const tatList = ref<TATScriptItem[]>([])
 const loading = ref(false)

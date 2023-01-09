@@ -3,8 +3,9 @@ import { ref, reactive, defineProps } from "vue"
 
 import { EChartsOption } from "echarts"
 
-import { Api, QApi, Lighthouse } from "@/api"
+import { Api, QApi } from "@/api"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"
+import { Lighthouse } from "@/api/qcloud/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
 

@@ -8,7 +8,7 @@ const fetchWait = ref(1)
 const domainList = reactive<DomainItem[]>([])
 
 async function getDomainList() {
-    const res = await Api.machine.list()
+    const res = await Api.domain.list()
     domainList.push(...res)
     fetchWait.value = 0
 }

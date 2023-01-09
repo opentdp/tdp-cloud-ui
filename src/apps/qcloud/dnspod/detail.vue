@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref, reactive, defineProps } from "vue"
 
-import { Api, QApi, Dnspod } from "@/api"
+import { Api, QApi } from "@/api"
+import { Dnspod } from "@/api/qcloud/typings"
 
 // 初始化
 

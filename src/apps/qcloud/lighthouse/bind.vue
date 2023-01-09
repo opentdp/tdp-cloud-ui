@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, reactive, defineProps } from "vue"
 
-import { QApi } from "@/api"
+import { Api, QApi } from "@/api"
 import { LH_Region, LH_Instance } from "@/api/qcloud/lighthouse"
 
 import { dateFormat } from "@/helper/utils"
@@ -49,6 +49,20 @@ async function getInstances(region: string) {
     fetchWait.value--
 }
 
+// 绑定主机
+
+function addMachine(item: LH_Instance) {
+    const query = {
+        VendorId: +props.vid,
+        HostName: item.InstanceName,
+        Address: item.PublicAddresses[0],
+        Status: "",
+        CloudData: JSON.stringify(item),
+        Description: "",
+    }
+    Api.machine.create(query)
+}
+
 // 加载数据
 
 getRegions()
@@ -89,10 +103,8 @@ getRegions()
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="View">
-                        <router-link :to="'/lighthouse/detail/' + scope.row.Zone + '/' + scope.row.InstanceId">
-                            导入
-                        </router-link>
+                    <el-button link type="primary" icon="View" @click="addMachine(scope.row)">
+                        导入
                     </el-button>
                 </template>
             </el-table-column>

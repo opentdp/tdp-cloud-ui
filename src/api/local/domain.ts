@@ -24,19 +24,22 @@ export class DomainModel extends HttpClient {
 
 export interface DomainItem {
     Id: number
-    Name: string
-    Value: string
-    Module: string
-    Description: string
+    UserId: number
+    VendorId: number,
+    Name: string,
+    Status: string,
+    CloudData: string,
+    Description: string,
     CreatedAt: string
     UpdatedAt: string
 }
 
 export interface DomainRequest {
-    Name: string
-    Value: string
-    Module: string
-    Description: string
+    VendorId: number,
+    Name: string,
+    Status: string,
+    CloudData: string,
+    Description: string,
 }
 
 export interface DomainResponse {

@@ -4,8 +4,9 @@ import { onMounted, onUnmounted, ref } from "vue"
 import { ElMessage, ElTable } from "element-plus"
 import { Base64 } from 'js-base64'
 
-import { Api, QApi, TAT } from "@/api"
+import { Api, QApi } from "@/api"
 import { TATHistoryItem } from '@/api/local/tat'
+import { TAT } from "@/api/qcloud/typings"
 
 const historyList = ref<TATHistoryItem[]>([])
 const loadingHistory = ref(false)

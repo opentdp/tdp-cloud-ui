@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { ref, reactive, defineProps } from "vue"
 
-import { QApi, Dnspod } from "@/api"
+import { Api, QApi } from "@/api"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
+import { Dnspod } from "@/api/qcloud/typings"
+import json5 from "json5";
 
 // 初始化
 
@@ -24,6 +26,19 @@ async function getDomainList() {
     domainTotalCount.value = res.DomainCountInfo.AllTotal
     domainList.push(...res.DomainList)
     fetchWait.value = 0
+}
+
+// 绑定域名
+
+function addDomian(item: Dnspod.DomainListItem) {
+    const query = {
+        VendorId: +props.vid,
+        Name: item.Name,
+        Status: "",
+        CloudData: JSON.stringify(item),
+        Description: "",
+    }
+    Api.domain.create(query)
 }
 
 // 加载数据
@@ -57,10 +72,8 @@ getDomainList()
             <el-table-column prop="VipEndAt" label="套餐有效期" min-width="180" />
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="View">
-                        <router-link :to="'/dnspod/detail/' + scope.row.Name">
-                            导入
-                        </router-link>
+                    <el-button link type="primary" icon="View" @click="addDomian(scope.row)">
+                        导入
                     </el-button>
                 </template>
             </el-table-column>
