@@ -6,8 +6,12 @@ import { ElMessage, FormInstance, FormRules } from "element-plus"
 import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
+// 初始化
+
 const router = useRouter()
 const session = sessionStore()
+
+// 构造表单
 
 const formRef = ref<FormInstance>()
 
@@ -20,6 +24,8 @@ const formRules: FormRules = {
     Username: [{ required: true, message: "请输入用户名" }],
     Password: [{ required: true, message: "请输入密码" }],
 }
+
+// 提交表单
 
 function formSubmit(form: FormInstance | undefined) {
     form && form.validate(async valid => {

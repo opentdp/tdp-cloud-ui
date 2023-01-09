@@ -5,7 +5,11 @@ import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api } from "@/api"
 
+// 初始化
+
 const router = useRouter()
+
+// 构造表单
 
 const formRef = ref<FormInstance>()
 
@@ -20,6 +24,8 @@ const formRules: FormRules = {
     Password: [{ required: true, message: "请输入密码" }],
     Password2: [{ required: true, message: "请输入密码" }],
 }
+
+// 提交表单
 
 function formSubmit(form: FormInstance | undefined) {
     form && form.validate(async valid => {

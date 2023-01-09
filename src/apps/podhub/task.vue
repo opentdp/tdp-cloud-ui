@@ -9,6 +9,8 @@ import { Api } from "@/api"
 import { TaskItem } from "@/api/local/worktask"
 import { dateFormat } from "@/helper/utils"
 
+// 获取列表
+
 const taskList = ref<TaskItem[]>([])
 const expanded = ref(false)
 
@@ -21,7 +23,7 @@ async function onExpand(row: TaskItem[], rs: TaskItem[]) {
     expanded.value = rs.length > 0
 }
 
-// 初始化
+// 加载数据
 
 getHistory()
 

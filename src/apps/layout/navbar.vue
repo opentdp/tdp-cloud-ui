@@ -6,16 +6,20 @@ import { Api } from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
+// 初始化
+
 const router = useRouter()
 const layout = layoutStore()
 const session = sessionStore()
 
 // 侧边栏折叠
+
 function collapseChange() {
     layout.setCollapse(!layout.collapse)
 }
 
 // 用户名下拉菜单选择事件
+
 function userDropdown(data: string) {
     switch (data) {
         case "delcache":
@@ -34,6 +38,8 @@ function userDropdown(data: string) {
             break
     }
 }
+
+// 加载数据
 
 onMounted(() => {
     // 小屏自动折叠

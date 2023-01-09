@@ -1,10 +1,21 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
+import { useRoute } from "vue-router"
 
 import { QApi } from "@/api"
 import { LH_Region, LH_Instance, LH_TrafficPackage } from "@/api/qcloud/lighthouse"
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
+
+// 初始化
+
+const route = useRoute()
+
+QApi.lighthouse.vendor(
+    route.params.vid as string
+)
+
+// 获取列表
 
 const fetchWait = ref(1)
 
@@ -55,7 +66,7 @@ async function getTrafficPackages(region: string) {
     }
 }
 
-// 初始化
+// 加载数据
 
 getRegions()
 </script>

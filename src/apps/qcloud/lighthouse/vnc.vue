@@ -5,12 +5,21 @@ import { useRoute } from "vue-router"
 import { Api, QApi } from "@/api"
 import { TATScriptItem } from '@/api/local/tat'
 
+// 初始化
+
 const route = useRoute()
-const frame = ref<HTMLIFrameElement>()
+
+QApi.lighthouse.vendor(
+    route.params.vid as string
+)
 
 const zone = route.params.zone as string
 const region = zone.replace(/-\d$/, "")
 const instanceId = route.params.instanceId as string
+
+// 加载VNC框架
+
+const frame = ref<HTMLIFrameElement>()
 
 async function vncInit() {
     const res = await QApi.lighthouse.describeInstanceVncUrl(region, {
@@ -48,6 +57,8 @@ function vncExec(cmd: string) {
         }, 500)
     }
 }
+
+// 加载数据
 
 getTATScriptList()
 onMounted(() => vncInit())

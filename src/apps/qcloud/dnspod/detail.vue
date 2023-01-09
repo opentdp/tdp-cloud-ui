@@ -4,7 +4,13 @@ import { useRoute } from "vue-router"
 
 import { Api, QApi, Dnspod } from "@/api"
 
+// 初始化
+
 const route = useRoute()
+
+QApi.dnspod.vendor(
+    route.params.vid as string
+)
 
 const domain = route.params.domain as string
 
@@ -171,6 +177,8 @@ async function deleteRecord(recordId: number) {
     await QApi.dnspod.deleteRecord(query)
     await refreshRecordList()
 }
+
+// 加载数据
 
 (async () => {
     getRecordList()

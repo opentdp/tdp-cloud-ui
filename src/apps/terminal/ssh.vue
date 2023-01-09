@@ -10,6 +10,8 @@ import { SSHKeyItem } from "@/api/local/sshkey"
 
 import { WebSSH } from "@/helper/webssh"
 
+// 初始化
+
 const route = useRoute()
 
 // 登录服务器
@@ -174,7 +176,7 @@ function sshExec(cmd: string) {
     }
 }
 
-////// 初始化
+// 加载数据
 
 getLighthouseList()
 getTATScriptList()

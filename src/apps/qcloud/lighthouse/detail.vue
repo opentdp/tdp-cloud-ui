@@ -9,13 +9,19 @@ import { InstanceStateMap } from "@/api/qcloud/lighthouse"
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
 
+// 初始化
+
 const route = useRoute()
+
+QApi.lighthouse.vendor(
+    route.params.vid as string
+)
 
 const zone = route.params.zone as string
 const region = zone.replace(/-\d$/, "")
 const instanceId = route.params.instanceId as string
 
-////// 实例信息
+// 实例信息
 
 const instance = ref<Lighthouse.Instance>()
 
@@ -26,7 +32,7 @@ async function getInstance() {
     instance.value = res.InstanceSet[0]
 }
 
-////// 电源管理
+// 电源管理
 
 async function stopInstance() {
     if (instance.value) {
@@ -65,7 +71,7 @@ async function refreshInstance() {
     }
 }
 
-////// 修改实例名
+// 修改实例名
 
 const modifyInstanceNameBus = reactive({
     dailog: false,
@@ -89,7 +95,7 @@ async function modifyInstanceName() {
     modifyInstanceNameBus.loading = false
 }
 
-////// 防火墙管理
+// 防火墙管理
 
 const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
 
@@ -202,7 +208,7 @@ async function refreshFirewallRules() {
     Api.cache.clear(), await getFirewallRules()
 }
 
-////// 快照管理
+// 快照管理
 
 const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
 
@@ -259,7 +265,7 @@ async function refreshSnapshot() {
     }
 }
 
-////// 流量包信息
+// 流量包信息
 
 const trafficPackage = ref<Lighthouse.TrafficPackage>()
 
@@ -359,7 +365,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
     }
 }
 
-////// 初始化
+// 加载数据
 
 (async () => {
     await getInstance()

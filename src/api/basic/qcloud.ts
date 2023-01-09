@@ -35,8 +35,8 @@ export class QCloudClient extends HttpClient {
         return this.rcache(Object.assign(params, { expiry: q.expiry }))
     }
 
-    public vendor(id: number) {
-        this.vendorId = id
+    public vendor(id: number | string) {
+        this.vendorId = +id
         return this
     }
 }

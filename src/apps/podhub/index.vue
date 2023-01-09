@@ -9,6 +9,8 @@ import { TATScriptItem } from '@/api/local/tat'
 
 import { bytesToSize } from "@/helper/utils"
 
+// 初始化
+
 const agentUrl = Api.socket.getAgentURL()
 
 // 节点列表
@@ -44,7 +46,7 @@ async function nodeExec(script: TATScriptItem) {
     })
 }
 
-// 初始化
+// 加载数据
 
 getWorkerList()
 getTATScriptList()

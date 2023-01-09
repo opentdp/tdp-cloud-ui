@@ -5,6 +5,8 @@ import { ElMessage, FormInstance, FormRules } from "element-plus"
 import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
+// 初始化
+
 const session = sessionStore()
 
 // 厂商列表
@@ -51,6 +53,8 @@ async function deleteSecret(idx: number) {
     await Api.vendor.remove(item.Id)
     session.vendorList.splice(idx, 1)
 }
+
+// 加载数据
 
 getSecrets()
 </script>

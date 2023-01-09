@@ -1,8 +1,19 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue"
+import { useRoute } from "vue-router"
 
 import { QApi, Dnspod } from "@/api"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
+
+// 初始化
+
+const route = useRoute()
+
+QApi.dnspod.vendor(
+    route.params.vid as string
+)
+
+// 获取列表
 
 const fetchWait = ref(1)
 
@@ -15,6 +26,8 @@ async function getDomainList() {
     domainList.push(...res.DomainList)
     fetchWait.value = 0
 }
+
+// 加载数据
 
 getDomainList()
 </script>

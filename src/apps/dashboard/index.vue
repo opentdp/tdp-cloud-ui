@@ -1,14 +1,26 @@
 <script lang="ts" setup>
-import { ref } from "vue"
+import { reactive } from "vue"
 
-import { QApi, Cam } from "@/api"
+import { Api } from "@/api"
 
-const accountSummary = ref<Cam.GetAccountSummaryResponse>()
+const summary = reactive({
+    domain: 0,
+    machine: 0,
+    vendor: 0,
+})
 
 async function getAccountSummary() {
-    const res = await QApi.cam.getAccountSummary()
-    accountSummary.value = res
+    const domains = await Api.domain.list()
+    summary.domain = domains.length
+
+    const machines = await Api.machine.list()
+    summary.machine = machines.length
+
+    const vendors = await Api.vendor.list()
+    summary.vendor = vendors.length
 }
+
+// 加载数据
 
 getAccountSummary()
 </script>
@@ -16,43 +28,43 @@ getAccountSummary()
 <template>
     <div>
         <el-row :gutter="20">
-            <el-col v-if="accountSummary" :span="8">
+            <el-col>
                 <el-card class="mgb10" shadow="hover" :body-style="{ padding: '0px' }">
-                    <div class="grid-content grid-con-1">
+                    <div class="grid-content grid-con-2">
                         <el-icon class="grid-con-icon">
-                            <UserFilled />
+                            <Connection />
                         </el-icon>
                         <div class="grid-cont-right">
                             <div class="grid-num">
-                                {{ accountSummary.User }}
+                                {{ summary.vendor }}
                             </div>
-                            <div>子账户</div>
+                            <div>供应商</div>
+                        </div>
+                    </div>
+                </el-card>
+                <el-card class="mgb10" shadow="hover" :body-style="{ padding: '0px' }">
+                    <div class="grid-content grid-con-1">
+                        <el-icon class="grid-con-icon">
+                            <Lightning />
+                        </el-icon>
+                        <div class="grid-cont-right">
+                            <div class="grid-num">
+                                {{ summary.domain }}
+                            </div>
+                            <div>域名</div>
                         </div>
                     </div>
                 </el-card>
                 <el-card class="mgb10" shadow="hover" :body-style="{ padding: '0px' }">
                     <div class="grid-content grid-con-3">
                         <el-icon class="grid-con-icon">
-                            <Lightning />
+                            <Monitor />
                         </el-icon>
                         <div class="grid-cont-right">
                             <div class="grid-num">
-                                {{ accountSummary.Policies }}
+                                {{ summary.machine }}
                             </div>
-                            <div>策略</div>
-                        </div>
-                    </div>
-                </el-card>
-                <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                    <div class="grid-content grid-con-2">
-                        <el-icon class="grid-con-icon">
-                            <Discount />
-                        </el-icon>
-                        <div class="grid-cont-right">
-                            <div class="grid-num">
-                                {{ accountSummary.Roles }}
-                            </div>
-                            <div>角色</div>
+                            <div>主机</div>
                         </div>
                     </div>
                 </el-card>

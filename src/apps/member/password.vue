@@ -5,7 +5,11 @@ import { ElMessage, FormRules, FormInstance } from "element-plus"
 import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
+// 初始化
+
 const session = sessionStore()
+
+// 构造表单
 
 const formRef = ref<FormInstance>()
 
@@ -31,6 +35,8 @@ const formRules = ref<FormRules>({
         },
     ],
 })
+
+// 提交表单
 
 async function formSubmit(form: FormInstance | undefined) {
     form && form.validate(async valid => {

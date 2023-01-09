@@ -4,10 +4,14 @@ import { useRoute } from "vue-router"
 
 import layoutStore from "@/store/layout"
 
+// 初始化
+
 const route = useRoute()
 const layout = layoutStore()
 
 const onRoutes = computed(() => route.path)
+
+// 菜单数据
 
 interface MenuItem {
     icon: string
@@ -20,17 +24,17 @@ const items: MenuItem[] = [
     {
         icon: "HomeFilled",
         index: "/dashboard",
-        title: "系统首页",
+        title: "首页",
     },
     {
         icon: "Lightning",
-        index: "/dnspod/index",
+        index: "/domain/list",
         title: "域名解析",
     },
     {
         icon: "Monitor",
-        index: "/lighthouse/index",
-        title: "轻量服务器",
+        index: "/machine/list",
+        title: "主机管理",
     },
     {
         icon: "Coin",
