@@ -7,6 +7,7 @@ export const routes: RouteRecordRaw[] = [
         path: "/",
         redirect: "/dashboard",
     },
+    //////
     {
         path: "/",
         name: "home",
@@ -21,6 +22,7 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/dashboard/index.vue"),
             },
+            //////
             {
                 path: "/domain/list",
                 name: "domain-list",
@@ -31,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/domain/list.vue"),
             },
             {
-                path: "/domain/detail/:vendor/:domain",
+                path: "/domain/detail/:vid/:domain",
                 name: "domain-detail",
                 meta: {
                     title: "域名详情",
@@ -39,6 +41,7 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/domain/detail.vue"),
             },
+            //////
             {
                 path: "/machine/list",
                 name: "machine-list",
@@ -49,7 +52,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/machine/list.vue"),
             },
             {
-                path: "/machine/detail/:vendor/:zone/:instanceId",
+                path: "/machine/detail/:vid/:zone/:instanceId",
                 name: "machine-detail",
                 meta: {
                     title: "主机详情",
@@ -58,7 +61,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/machine/detail.vue"),
             },
             {
-                path: "/machine/vnc/:vendor/:zone/:instanceId",
+                path: "/machine/vnc/:vid/:zone/:instanceId",
                 name: "machine-vnc",
                 meta: {
                     title: "主机 VNC",
@@ -66,6 +69,7 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/machine/vnc.vue"),
             },
+            //////
             {
                 path: "/podhub/index",
                 name: "podhub-index",
@@ -84,6 +88,7 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/podhub/task.vue"),
             },
+            //////
             {
                 path: "/terminal/ssh/:addr*",
                 name: "terminal-ssh",
@@ -102,6 +107,7 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/terminal/sshkey.vue"),
             },
+            //////
             {
                 path: "/tat/history",
                 name: "tat-history",
@@ -120,6 +126,7 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/tat/script.vue"),
             },
+            //////
             {
                 path: "/member/info",
                 name: "member-info",
@@ -138,6 +145,7 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/member/password.vue"),
             },
+            //////
             {
                 path: "/vendor/qcloud",
                 name: "vendor-secret",
@@ -147,6 +155,17 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/vendor/qcloud.vue"),
             },
+            //////
+            {
+                path: "/qcloud/import/:vid",
+                name: "qcloud-import",
+                meta: {
+                    title: "腾讯云 - 导入资源",
+                    login: true,
+                },
+                component: () => import("@/apps/qcloud/import.vue"),
+            },
+            //////
             {
                 path: "/error/403",
                 name: "error-403",
@@ -167,6 +186,7 @@ export const routes: RouteRecordRaw[] = [
             },
         ],
     },
+    //////
     {
         path: "/member/login",
         name: "member-login",
@@ -183,6 +203,7 @@ export const routes: RouteRecordRaw[] = [
         },
         component: () => import("@/apps/member/register.vue"),
     },
+    //////
     {
         path: "/:catchAll(.*)",
         name: "NotFound",

@@ -38,7 +38,7 @@ getAccountSummary()
                             <div class="grid-num">
                                 {{ summary.vendor }}
                             </div>
-                            <div>供应商</div>
+                            <div>厂商</div>
                         </div>
                     </div>
                 </el-card>

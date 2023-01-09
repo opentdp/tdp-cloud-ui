@@ -78,10 +78,16 @@ getSecrets()
             <el-table :data="session.vendorList">
                 <el-table-column prop="Id" label="序号" width="80" />
                 <el-table-column prop="Description" label="描述" width="160" />
+                <el-table-column prop="Provider" label="厂商" />
                 <el-table-column prop="SecretId" label="Secret Id" />
                 <el-table-column prop="SecretKey" label="Secret Key" />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
+                        <el-button link type="primary" icon="View">
+                            <router-link :to="'/qcloud/import/' + scope.row.Id">
+                                导入
+                            </router-link>
+                        </el-button>
                         <el-popconfirm title="确定删除?" @confirm="deleteSecret(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">

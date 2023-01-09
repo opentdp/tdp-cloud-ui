@@ -1,29 +1,32 @@
 <script lang="ts" setup>
-import { onMounted, ref } from "vue"
-import { useRoute } from "vue-router"
+import { ref, defineProps, onMounted } from "vue"
 
 import { Api, QApi } from "@/api"
 import { TATScriptItem } from '@/api/local/tat'
 
 // 初始化
 
-const route = useRoute()
+const props = defineProps<{
+    vid: string,
+    zone: string,
+    instanceId: string,
+}>()
 
-QApi.lighthouse.vendor(
-    route.params.vid as string
-)
+QApi.lighthouse.vendor(props.vid)
 
-const zone = route.params.zone as string
-const region = zone.replace(/-\d$/, "")
-const instanceId = route.params.instanceId as string
+// 获取区域
+
+const region = () => {
+    return props.zone.replace(/-\d$/, "")
+}
 
 // 加载VNC框架
 
 const frame = ref<HTMLIFrameElement>()
 
 async function vncInit() {
-    const res = await QApi.lighthouse.describeInstanceVncUrl(region, {
-        InstanceId: instanceId,
+    const res = await QApi.lighthouse.describeInstanceVncUrl(region(), {
+        InstanceId: props.instanceId,
     })
     if (frame.value) {
         const vnc = '/api/qcloud/vnc?InstanceVncUrl='

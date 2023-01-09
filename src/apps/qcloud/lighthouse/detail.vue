@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRoute } from "vue-router"
+import { ref, reactive, defineProps } from "vue"
 
 import { EChartsOption } from "echarts"
 
@@ -11,23 +10,27 @@ import { bytesToSize, dateFormat } from "@/helper/utils"
 
 // 初始化
 
-const route = useRoute()
+const props = defineProps<{
+    vid: string,
+    zone: string,
+    instanceId: string,
+}>()
 
-QApi.lighthouse.vendor(
-    route.params.vid as string
-)
+QApi.lighthouse.vendor(props.vid)
 
-const zone = route.params.zone as string
-const region = zone.replace(/-\d$/, "")
-const instanceId = route.params.instanceId as string
+// 获取区域
+
+const region = () => {
+    return props.zone.replace(/-\d$/, "")
+}
 
 // 实例信息
 
 const instance = ref<Lighthouse.Instance>()
 
 async function getInstance() {
-    const res = await QApi.lighthouse.describeInstances(region, {
-        InstanceIds: [instanceId],
+    const res = await QApi.lighthouse.describeInstances(region(), {
+        InstanceIds: [props.instanceId],
     })
     instance.value = res.InstanceSet[0]
 }
@@ -38,8 +41,8 @@ async function stopInstance() {
     if (instance.value) {
         instance.value.InstanceState = "STOPPING"
     }
-    await QApi.lighthouse.stopInstances(region, {
-        InstanceIds: [instanceId],
+    await QApi.lighthouse.stopInstances(region(), {
+        InstanceIds: [props.instanceId],
     })
     setTimeout(refreshInstance, 1500)
 }
@@ -48,8 +51,8 @@ async function startInstance() {
     if (instance.value) {
         instance.value.InstanceState = "STARTING"
     }
-    await QApi.lighthouse.startInstances(region, {
-        InstanceIds: [instanceId],
+    await QApi.lighthouse.startInstances(region(), {
+        InstanceIds: [props.instanceId],
     })
     setTimeout(refreshInstance, 1500)
 }
@@ -58,8 +61,8 @@ async function rebootInstance() {
     if (instance.value) {
         instance.value.InstanceState = "REBOOTING"
     }
-    await QApi.lighthouse.rebootInstances(region, {
-        InstanceIds: [instanceId],
+    await QApi.lighthouse.rebootInstances(region(), {
+        InstanceIds: [props.instanceId],
     })
     setTimeout(refreshInstance, 1500)
 }
@@ -85,8 +88,8 @@ async function modifyInstanceName() {
     modifyInstanceNameBus.loading = true
     if (instance.value && modifyInstanceNameBus.model.name &&
         instance.value.InstanceName != modifyInstanceNameBus.model.name) {
-        await QApi.lighthouse.modifyInstancesAttribute(region, {
-            InstanceIds: [instanceId],
+        await QApi.lighthouse.modifyInstancesAttribute(region(), {
+            InstanceIds: [props.instanceId],
             InstanceName: modifyInstanceNameBus.model.name
         })
         instance.value.InstanceName = modifyInstanceNameBus.model.name
@@ -133,16 +136,16 @@ const modifyFirewallRuleDescriptionBus = reactive<FirewallRuleBus>({
 })
 
 async function getFirewallRules() {
-    const res = await QApi.lighthouse.describeFirewallRules(region, {
-        InstanceId: instanceId,
+    const res = await QApi.lighthouse.describeFirewallRules(region(), {
+        InstanceId: props.instanceId,
     })
     firewallRules.value = res
 }
 
 async function createFirewallRule() {
     createFirewallRuleBus.loading = true
-    await QApi.lighthouse.createFirewallRules(region, {
-        InstanceId: instanceId,
+    await QApi.lighthouse.createFirewallRules(region(), {
+        InstanceId: props.instanceId,
         FirewallRules: [createFirewallRuleBus.model]
     })
     createFirewallRuleBus.dailog = false
@@ -155,8 +158,8 @@ async function modifyFirewallRule() {
         return
     }
     modifyFirewallRuleBus.loading = true
-    await QApi.lighthouse.modifyFirewallRules(region, {
-        InstanceId: instanceId,
+    await QApi.lighthouse.modifyFirewallRules(region(), {
+        InstanceId: props.instanceId,
         FirewallRules: firewallRules.value.FirewallRuleSet.map(
             (item: FirewallRuleBus["model"], idx) => {
                 if (modifyFirewallRuleBus.index === idx) {
@@ -181,8 +184,8 @@ function modifyFirewallRuleDailog(item: Lighthouse.FirewallRule, idx: number) {
 async function modifyFirewallRuleDescription() {
     modifyFirewallRuleDescriptionBus.loading = true
     delete modifyFirewallRuleDescriptionBus.model.AppType
-    await QApi.lighthouse.modifyFirewallRuleDescription(region, {
-        InstanceId: instanceId,
+    await QApi.lighthouse.modifyFirewallRuleDescription(region(), {
+        InstanceId: props.instanceId,
         FirewallRule: modifyFirewallRuleDescriptionBus.model
     })
     modifyFirewallRuleDescriptionBus.dailog = false
@@ -197,8 +200,8 @@ function modifyFirewallRuleDescriptionDailog(item: Lighthouse.FirewallRule) {
 
 async function deleteFirewallRule(item: FirewallRuleBus["model"]) {
     delete item.AppType
-    await QApi.lighthouse.deleteFirewallRules(region, {
-        InstanceId: instanceId,
+    await QApi.lighthouse.deleteFirewallRules(region(), {
+        InstanceId: props.instanceId,
         FirewallRules: [item]
     })
     refreshFirewallRules()
@@ -221,16 +224,16 @@ const createSnapshotBus = reactive({
 })
 
 async function getSnapshots() {
-    const res = await QApi.lighthouse.describeSnapshots(region, {
-        Filters: [{ Name: "instance-id", Values: [instanceId] }],
+    const res = await QApi.lighthouse.describeSnapshots(region(), {
+        Filters: [{ Name: "instance-id", Values: [props.instanceId] }],
     })
     snapshots.value = res
 }
 
 async function createSnapshot() {
     createSnapshotBus.loading = true
-    await QApi.lighthouse.createInstanceSnapshot(region, {
-        InstanceId: instanceId,
+    await QApi.lighthouse.createInstanceSnapshot(region(), {
+        InstanceId: props.instanceId,
         SnapshotName: createSnapshotBus.model.name
     })
     createSnapshotBus.dailog = false
@@ -244,15 +247,15 @@ function createSnapshotDailog() {
 }
 
 async function applySnapshot(item: Lighthouse.Snapshot) {
-    await QApi.lighthouse.applyInstanceSnapshot(region, {
-        InstanceId: instanceId,
+    await QApi.lighthouse.applyInstanceSnapshot(region(), {
+        InstanceId: props.instanceId,
         SnapshotId: item.SnapshotId
     })
     refreshInstance()
 }
 
 async function deleteSnapshot(item: Lighthouse.Snapshot) {
-    await QApi.lighthouse.deleteSnapshots(region, {
+    await QApi.lighthouse.deleteSnapshots(region(), {
         SnapshotIds: [item.SnapshotId],
     })
     refreshSnapshot()
@@ -272,14 +275,14 @@ const trafficPackage = ref<Lighthouse.TrafficPackage>()
 const outtrafficChart = ref<EChartsOption>()
 
 async function getTrafficPackage() {
-    const res = await QApi.lighthouse.describeInstancesTrafficPackages(region, {
-        InstanceIds: [instanceId],
+    const res = await QApi.lighthouse.describeInstancesTrafficPackages(region(), {
+        InstanceIds: [props.instanceId],
     })
     trafficPackage.value = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
 }
 
 async function getLighthouseOuttraffic() {
-    const res = await QApi.monitor.getMonitorData(region, {
+    const res = await QApi.monitor.getMonitorData(region(), {
         Namespace: "QCE/LIGHTHOUSE",
         MetricName: "LighthouseOuttraffic",
         Instances: [
@@ -287,7 +290,7 @@ async function getLighthouseOuttraffic() {
                 Dimensions: [
                     {
                         Name: "InstanceId",
-                        Value: instanceId,
+                        Value: props.instanceId,
                     },
                 ],
             },
