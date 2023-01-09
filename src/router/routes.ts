@@ -71,22 +71,22 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/podhub/index",
-                name: "podhub-index",
+                path: "/podhub/workhub",
+                name: "podhub-workhub",
                 meta: {
                     title: "节点列表",
                     login: true,
                 },
-                component: () => import("@/apps/podhub/index.vue"),
+                component: () => import("@/apps/podhub/workhub.vue"),
             },
             {
-                path: "/podhub/task",
-                name: "podhub-task",
+                path: "/podhub/worktask",
+                name: "podhub-worktask",
                 meta: {
                     title: "任务记录",
                     login: true,
                 },
-                component: () => import("@/apps/podhub/task.vue"),
+                component: () => import("@/apps/podhub/worktask.vue"),
             },
             //////
             {

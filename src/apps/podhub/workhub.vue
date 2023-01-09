@@ -4,7 +4,7 @@ import { ref, onUnmounted } from "vue"
 import { ElTable } from "element-plus"
 
 import { Api } from "@/api"
-import { Worker } from "@/api/local/podhub"
+import { WorkerItem } from "@/api/local/workhub"
 import { TATScriptItem } from '@/api/local/tat'
 
 import { bytesToSize } from "@/helper/utils"
@@ -15,10 +15,10 @@ const agentUrl = Api.socket.getAgentURL()
 
 // 节点列表
 
-const workerList = ref<Worker[]>([])
+const workerList = ref<WorkerItem[]>([])
 
 async function getWorkerList() {
-    const res = await Api.podhub.list()
+    const res = await Api.workhub.list()
     workerList.value = res
 }
 
@@ -40,7 +40,7 @@ async function getTATScriptList() {
 }
 
 async function nodeExec(script: TATScriptItem) {
-    await Api.podhub.exec({
+    await Api.workhub.exec({
         HostId: selectedWorker.value.HostId,
         Payload: script
     })

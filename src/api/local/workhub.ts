@@ -1,16 +1,16 @@
 import { HttpClient } from "../basic/http"
 
-export class PodhubModel extends HttpClient {
-    public list(): Promise<Worker[]> {
-        return this.get("/podhub")
+export class WorkhubModel extends HttpClient {
+    public list(): Promise<WorkerItem[]> {
+        return this.get("/workhub")
     }
 
     public exec(rq: WorkserExecRequest): Promise<[]> {
-        return this.post("/podhub/exec", rq)
+        return this.post("/workhub/exec", rq)
     }
 }
 
-export interface Worker {
+export interface WorkerItem {
     HostId: string
     RemoteAddr: string
     SystemStat: {

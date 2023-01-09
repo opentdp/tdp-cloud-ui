@@ -60,12 +60,12 @@ const items: MenuItem[] = [
         subs: [
             {
                 icon: "Cpu",
-                index: "/podhub/index",
+                index: "/podhub/workhub",
                 title: "节点管理",
             },
             {
                 icon: "Finished",
-                index: "/podhub/task",
+                index: "/podhub/worktask",
                 title: "任务记录",
             },
         ]
