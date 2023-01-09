@@ -35,7 +35,6 @@ function formSubmit(form: FormInstance | undefined) {
         session.appToken = res.AppToken
         session.description = res.Description
         session.token = res.SessionToken
-        session.keyid = res.KeyId
         router.push("/")
     })
 }

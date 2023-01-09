@@ -6,28 +6,13 @@ import { Api } from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
-import type { SecretItem } from "@/api/local/secret"
-
 const router = useRouter()
 const layout = layoutStore()
 const session = sessionStore()
 
-// 获取密钥列表
-async function getSecret() {
-    const res = await Api.secret.list()
-    session.setSecrets(res)
-}
-
 // 侧边栏折叠
 function collapseChange() {
     layout.setCollapse(!layout.collapse)
-}
-
-// 密钥下拉菜单选择事件
-function secretDropdown(data: SecretItem) {
-    session.keyname = data.Description
-    session.keyid = data.Id
-    location.reload()
 }
 
 // 用户名下拉菜单选择事件
@@ -51,7 +36,6 @@ function userDropdown(data: string) {
 }
 
 onMounted(() => {
-    getSecret()
     // 小屏自动折叠
     if (document.body.clientWidth < 1000) {
         collapseChange()
@@ -72,26 +56,6 @@ onMounted(() => {
         </div>
         <div class="header-right">
             <div class="header-user-con">
-                <!-- 密钥管理 -->
-                <el-icon v-if="session.secretList.length > 0">
-                    <PartlyCloudy />
-                </el-icon>
-                <el-dropdown v-if="session.secretList.length > 0" class="user-name" trigger="click"
-                    @command="secretDropdown">
-                    <span class="el-dropdown-link">
-                        &nbsp;{{ session.keyname || "请选择" }}&nbsp;
-                        <el-icon>
-                            <CaretBottom />
-                        </el-icon>
-                    </span>
-                    <template #dropdown>
-                        <el-dropdown-menu>
-                            <el-dropdown-item v-for="item in session.secretList" :key="item.Id" :command="item">
-                                {{ item.Description }}
-                            </el-dropdown-item>
-                        </el-dropdown-menu>
-                    </template>
-                </el-dropdown>
                 <!-- 用户头像 -->
                 <div class="user-avator">
                     <img src="@/assets/img/avatar.jpg">

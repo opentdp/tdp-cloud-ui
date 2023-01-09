@@ -33,44 +33,42 @@ export class HttpClient {
         return this.request({ method: "PATCH", url, query })
     }
 
-    protected async rcache(hcp: HttpClientParams & { expiry: number }) {
-        let res = this.cached.get(hcp)
+    protected async rcache(req: HttpRequest & { expiry: number }) {
+        let res = this.cached.get(req)
         if (!res) {
-            res = await this.request(hcp)
-            this.cached.set(hcp, res, hcp.expiry)
+            res = await this.request(req)
+            this.cached.set(req, res, req.expiry)
         }
         return res
     }
 
-    protected async request(hcp: HttpClientParams) {
+    protected async request(req: HttpRequest) {
         // 构造请求头
         const headers: HeadersInit = {
             Accept: "application/json",
         }
-        if (hcp.header) {
-            Object.assign(headers, hcp.header)
+        if (req.header) {
+            Object.assign(headers, req.header)
         }
         if (this.session.token) {
-            const token = this.session.token
-            const keyid = this.session.keyid || 0
-            headers.Authorization = keyid + ":" + token
+            headers.Authorization = this.session.token
         }
         // 构造请求参数
         const request: RequestInit = {
-            method: hcp.method,
+            method: req.method,
             headers
         }
-        if (hcp.query) {
-            if (/GET|DELETE/.test(hcp.method)) {
-                hcp.url += "?" + this.buildQuery(hcp.query)
+        if (req.query) {
+            if (/GET|DELETE/.test(req.method)) {
+                req.url += "?" + this.buildQuery(req.query)
             }
-            else if (/PATCH|POST/.test(hcp.method)) {
-                request.body = JSON.stringify(hcp.query)
+            else if (/PATCH|POST/.test(req.method)) {
+                request.body = JSON.stringify(req.query)
                 headers["Content-Type"] = "application/json"
             }
         }
         // 发起请求并返回结构数据
-        return this.newFetch(hcp.url, request)
+        return this.newFetch(req.url, request)
     }
 
     protected async newFetch(url: string, req: RequestInit) {
@@ -120,7 +118,7 @@ export class HttpClient {
     }
 }
 
-export interface HttpClientParams {
+export interface HttpRequest {
     url: string
     header?: HeadersInit
     method: "GET" | "DELETE" | "POST" | "PATCH"

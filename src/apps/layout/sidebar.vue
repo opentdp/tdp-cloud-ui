@@ -84,10 +84,17 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "PartlyCloudy",
-        index: "/keypod/secret",
-        title: "腾讯云 CAM",
-    },
+        icon: "Switch",
+        index: "/terminal",
+        title: "厂商管理",
+        subs: [
+            {
+                icon: "PartlyCloudy",
+                index: "/vendor/qcloud",
+                title: "腾讯云",
+            },
+        ]
+    }
     // {
     //     icon: 'Warning',
     //     index: '7',

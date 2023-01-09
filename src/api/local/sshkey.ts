@@ -10,7 +10,7 @@ export class SSHKeyModel extends HttpClient {
     }
 
     public update(rq: SSHKeyItem): Promise<SSHKeyResponse> {
-        return this.patch("/secret/" + rq.Id, rq)
+        return this.patch("/sshkey/" + rq.Id, rq)
     }
 
     public remove(id: number): Promise<SSHKeyResponse> {

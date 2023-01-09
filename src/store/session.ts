@@ -1,39 +1,24 @@
 import { defineStore } from "pinia"
 
-import type { SecretItem } from "@/api/local/secret"
+import type { VendorItem } from "@/api/local/vendor"
 
 export default defineStore("session", {
     state() {
         return {
+            // 会话信息
+            token: "",
             // 用户信息
             username: "",
             appToken: "",
             description: "",
-            secretList: [] as SecretItem[],
-            // 会话信息
-            token: "",
-            keyid: 0,
-            keyname: "",
+            vendorList: [] as VendorItem[],
         }
     },
     actions: {
-        // 更新密钥列表
-        setSecrets(data: SecretItem[]) {
-            this.secretList = data
-            if (data.length > 0) {
-                this.useSecret(this.keyid > 0 ? this.keyid : data[0].Id)
-            }
-        },
-        // 设置当前密钥
-        useSecret(id: number) {
-            for (const item of this.secretList) {
-                if (id - item.Id === 0) {
-                    this.keyname = item.Description
-                    this.keyid = item.Id
-                    break
-                }
-            }
-        },
+        // 更新厂商列表
+        setVendor(data: VendorItem[]) {
+            this.vendorList = data
+        }
     },
     persist: {
         enabled: true,

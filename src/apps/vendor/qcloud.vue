@@ -7,26 +7,28 @@ import sessionStore from "@/store/session"
 
 const session = sessionStore()
 
-// 密钥列表
+// 厂商列表
 
 async function getSecrets() {
-    const res = await Api.secret.list()
-    session.setSecrets(res)
+    const res = await Api.vendor.list()
+    session.setVendor(res)
 }
 
-// 添加密钥
+// 添加厂商
 
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
     SecretId: "",
     SecretKey: "",
+    Provider: "qcloud",
     Description: "",
 })
 
 const formRules: FormRules = {
-    SecretId: [{ required: true, message: "请输入 SecretId" }],
-    SecretKey: [{ required: true, message: "请输入 SecretKey" }],
+    SecretId: [{ required: true, message: "请输入 Secret Id" }],
+    SecretKey: [{ required: true, message: "请输入 Secret Key" }],
+    Provider: [{ required: true, message: "请选择厂商" }],
     Description: [{ required: true, message: "请输入别名" }],
 }
 
@@ -36,18 +38,18 @@ function formSubmit(form: FormInstance | undefined) {
             ElMessage.error("请检查表单")
             return false
         }
-        await Api.secret.create(formModel)
+        await Api.vendor.create(formModel)
         formRef.value?.resetFields()
         getSecrets()
     })
 }
 
-// 删除密钥
+// 删除厂商
 
 async function deleteSecret(idx: number) {
-    const item = session.secretList[idx]
-    await Api.secret.remove(item.Id)
-    session.secretList.splice(idx, 1)
+    const item = session.vendorList[idx]
+    await Api.vendor.remove(item.Id)
+    session.vendorList.splice(idx, 1)
 }
 
 getSecrets()
@@ -60,16 +62,16 @@ getSecrets()
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                腾讯云 CAM
+                腾讯云
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>密钥列表</b>
+                    <b>厂商列表</b>
                 </div>
             </template>
-            <el-table :data="session.secretList">
+            <el-table :data="session.vendorList">
                 <el-table-column prop="Id" label="序号" width="80" />
                 <el-table-column prop="Description" label="描述" width="160" />
                 <el-table-column prop="SecretId" label="Secret Id" />
@@ -90,22 +92,25 @@ getSecrets()
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>添加密钥</b>
+                    <b>添加厂商</b>
                     <el-button class="button" text icon="Position">
                         <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云密钥" target="_blank">
-                            操作指南
+                            腾讯云操作指南
                         </a>
                     </el-button>
                 </div>
             </template>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
+                <el-form-item prop="Provider" label="厂商">
+                    <el-input v-model="formModel.Provider" readonly />
+                </el-form-item>
                 <el-form-item prop="Description" label="描述">
                     <el-input v-model="formModel.Description" />
                 </el-form-item>
-                <el-form-item prop="SecretId" label="SecretId">
+                <el-form-item prop="SecretId" label="Secret Id">
                     <el-input v-model="formModel.SecretId" />
                 </el-form-item>
-                <el-form-item prop="SecretKey" label="SecretKey">
+                <el-form-item prop="SecretKey" label="Secret Key">
                     <el-input v-model="formModel.SecretKey" />
                 </el-form-item>
                 <el-form-item>

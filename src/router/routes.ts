@@ -18,7 +18,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "系统首页",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/dashboard/index.vue"),
             },
@@ -28,7 +27,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "域名解析",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/dnspod/index.vue"),
             },
@@ -38,7 +36,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "域名详情",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/dnspod/detail.vue"),
             },
@@ -48,7 +45,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "轻量服务器",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/lighthouse/index.vue"),
             },
@@ -58,7 +54,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "轻量服务器详情",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/lighthouse/detail.vue"),
             },
@@ -68,7 +63,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "轻量服务器 VNC",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/lighthouse/vnc.vue"),
             },
@@ -96,7 +90,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "SSH 连接",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/terminal/ssh.vue"),
             },
@@ -115,7 +108,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "历史记录 - 自动化助手",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/tat/history.vue"),
             },
@@ -125,7 +117,6 @@ export const routes: RouteRecordRaw[] = [
                 meta: {
                     title: "命令列表 - 自动化助手",
                     login: true,
-                    cloud: true,
                 },
                 component: () => import("@/apps/tat/script.vue"),
             },
@@ -148,13 +139,13 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/member/password.vue"),
             },
             {
-                path: "/keypod/secret",
-                name: "keypod-secret",
+                path: "/vendor/qcloud",
+                name: "vendor-secret",
                 meta: {
-                    title: "腾讯云 CAM",
+                    title: "腾讯云 - 厂商",
                     login: true,
                 },
-                component: () => import("@/apps/keypod/secret.vue"),
+                component: () => import("@/apps/vendor/qcloud.vue"),
             },
             {
                 path: "/error/403",

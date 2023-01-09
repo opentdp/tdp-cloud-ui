@@ -33,7 +33,6 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-    KeyId: number
     AppToken: string
     Username: string
     Description: string

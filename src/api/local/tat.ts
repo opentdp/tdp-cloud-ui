@@ -50,7 +50,7 @@ export interface TATScriptItem {
 export interface TATHistoryItem {
     Id: number
     UserId: number
-    KeyId: number
+    VendorId: number
     Name: string
     Region: string
     InvocationId: string
