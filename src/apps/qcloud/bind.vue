@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router"
 
-import vDnspod from './dnspod/import.vue'
-import vLighthouse from './lighthouse/import.vue'
+import vDnspod from './dnspod/bind.vue'
+import vLighthouse from './lighthouse/bind.vue'
 
 // 初始化
 

@@ -84,7 +84,7 @@ getSecrets()
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">
-                            <router-link :to="'/qcloud/import/' + scope.row.Id">
+                            <router-link :to="'/qcloud/bind/' + scope.row.Id">
                                 导入
                             </router-link>
                         </el-button>

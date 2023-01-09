@@ -68,35 +68,19 @@ onMounted(() => vncInit())
 </script>
 
 <template>
-    <div class="vnc-wrap">
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
-                首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item to="/lighthouse/index">
-                轻量服务器
-            </el-breadcrumb-item>
-            <el-breadcrumb-item :to="'/lighthouse/detail/' + zone + '/' + instanceId">
-                {{ instanceId }}
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
-                VNC 终端
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <iframe ref="frame" frameborder="no" class="mgb10" />
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>快捷命令</b>
-                </div>
-            </template>
-            <div class="button-list">
-                <el-button v-for="item in scriptList" :key="item.Id" @click="vncExec(item.Content)">
-                    {{ item.Name }}
-                </el-button>
+    <iframe ref="frame" frameborder="no" class="mgb10" />
+    <el-card shadow="hover">
+        <template #header>
+            <div class="flex-between">
+                <b>快捷命令</b>
             </div>
-        </el-card>
-    </div>
+        </template>
+        <div class="button-list">
+            <el-button v-for="item in scriptList" :key="item.Id" @click="vncExec(item.Content)">
+                {{ item.Name }}
+            </el-button>
+        </div>
+    </el-card>
 </template>
 
 <style lang="scss" scoped>

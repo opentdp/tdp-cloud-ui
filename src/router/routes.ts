@@ -157,13 +157,13 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/qcloud/import/:vid",
-                name: "qcloud-import",
+                path: "/qcloud/bind/:vid",
+                name: "qcloud-bind",
                 meta: {
-                    title: "腾讯云 - 导入资源",
+                    title: "腾讯云 - 绑定资源",
                     login: true,
                 },
-                component: () => import("@/apps/qcloud/import.vue"),
+                component: () => import("@/apps/qcloud/bind.vue"),
             },
             //////
             {
