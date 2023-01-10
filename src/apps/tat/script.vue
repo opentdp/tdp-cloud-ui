@@ -159,7 +159,7 @@ async function onDoRun() {
             })
             await Promise.all(Array.from(regions).map(async region => {
                 const instanceIds = runForm.value.InstanceIds.filter(id => lighthouseRegionMap.get(id) == region)
-                const run_res = await QApi.tat.runCommand(region, {
+                const res = await QApi.tat.runCommand(region, {
                     Content: Base64.encode(runForm.value.Content),
                     Description: runForm.value.Description,
                     CommandName: runForm.value.Name,
@@ -168,7 +168,7 @@ async function onDoRun() {
                     Timeout: runForm.value.Timeout,
                     InstanceIds: instanceIds,
                 })
-                await Api.tat.createHistory({ Name: runForm.value.Name, Region: region, InvocationId: run_res.InvocationId })
+                await Api.tat.createHistory({ Name: runForm.value.Name, Region: region, InvocationId: res.InvocationId })
             }))
         }
     } catch (error) {

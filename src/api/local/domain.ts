@@ -5,8 +5,8 @@ export class DomainModel extends HttpClient {
         return this.get("/domain")
     }
 
-    public detail(name: string): Promise<DomainItem> {
-        return this.get("/domain/" + name)
+    public detail(id: number): Promise<DomainItem> {
+        return this.get("/domain/" + id)
     }
 
     public create(rq: DomainRequest): Promise<DomainResponse> {

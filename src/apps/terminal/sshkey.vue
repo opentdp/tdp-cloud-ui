@@ -9,7 +9,7 @@ const keylist = ref<SSHKeyItem[]>([])
 
 // 密钥列表
 
-async function getSshkeys() {
+async function getSshkeyList() {
     const res = await Api.sshkey.list()
     keylist.value = res
 }
@@ -38,7 +38,7 @@ function formSubmit(form: FormInstance | undefined) {
         }
         await Api.sshkey.create(formModel)
         formRef.value?.resetFields()
-        getSshkeys()
+        getSshkeyList()
     })
 }
 
@@ -50,7 +50,9 @@ async function deleteKey(idx: number) {
     keylist.value.splice(idx, 1)
 }
 
-getSshkeys()
+// 加载数据
+
+getSshkeyList()
 </script>
 
 <template>

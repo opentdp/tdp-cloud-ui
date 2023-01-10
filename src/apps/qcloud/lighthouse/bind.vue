@@ -23,16 +23,16 @@ const regionList = reactive<Record<string, Lighthouse.RegionInfo>>({})
 const instanceList = reactive<Lighthouse.Instance[]>([])
 const instanceCount = ref(0)
 
-async function getRegions() {
+async function getRegionList() {
     const res = await QApi.lighthouse.describeRegions()
     fetchWait.value = res.TotalCount
     res.RegionSet.forEach((item) => {
         regionList[item.Region] = item
-        getInstances(item.Region)
+        getInstanceList(item.Region)
     })
 }
 
-async function getInstances(region: string) {
+async function getInstanceList(region: string) {
     const res = await QApi.lighthouse.describeInstances(region)
     if (res.TotalCount > 0) {
         instanceCount.value += res.TotalCount
@@ -64,7 +64,7 @@ function addMachine(item: Lighthouse.Instance) {
 
 // 加载数据
 
-getRegions()
+getRegionList()
 </script>
 
 <template>

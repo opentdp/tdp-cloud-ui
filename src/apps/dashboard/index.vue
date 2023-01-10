@@ -10,14 +10,14 @@ const summary = reactive({
 })
 
 async function getAccountSummary() {
-    const domains = await Api.domain.list()
-    summary.domain = domains.length
+    const domainList = await Api.domain.list()
+    summary.domain = domainList.length
 
-    const machines = await Api.machine.list()
-    summary.machine = machines.length
+    const machineList = await Api.machine.list()
+    summary.machine = machineList.length
 
-    const vendors = await Api.vendor.list()
-    summary.vendor = vendors.length
+    const vendorList = await Api.vendor.list()
+    summary.vendor = vendorList.length
 }
 
 // 加载数据

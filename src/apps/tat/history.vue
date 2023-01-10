@@ -29,18 +29,20 @@ async function do_update_history_list() {
         }
     }
 
-    await Promise.all(historyList.value.map(async item => {
-        if (item.InvocationStatus == "" || item.InvocationStatus.endsWith("ING")) {
-            const his_res = await QApi.tat.describeInvocations(item.Region, { InvocationIds: [item.InvocationId] })
-            await Api.tat.updateHistory(item.Id, {
-                InvocationStatus: his_res.InvocationSet[0].InvocationStatus,
-                InvocationResultJson: JSON.stringify(his_res.InvocationSet[0])
-            })
-            item.InvocationStatus = his_res.InvocationSet[0].InvocationStatus
-            item.InvocationResultJson = JSON.stringify(his_res.InvocationSet[0])
-        }
-    })
+    await Promise.all(
+        historyList.value.map(async item => {
+            if (item.InvocationStatus == "" || item.InvocationStatus.endsWith("ING")) {
+                const res = await QApi.tat.describeInvocations(item.Region, { InvocationIds: [item.InvocationId] })
+                await Api.tat.updateHistory(item.Id, {
+                    InvocationStatus: res.InvocationSet[0].InvocationStatus,
+                    InvocationResultJson: JSON.stringify(res.InvocationSet[0])
+                })
+                item.InvocationStatus = res.InvocationSet[0].InvocationStatus
+                item.InvocationResultJson = JSON.stringify(res.InvocationSet[0])
+            }
+        })
     )
+
     if (need_update_history_list) {
         setTimeout(do_update_history_list, 1000)
     }
@@ -49,7 +51,8 @@ async function do_update_history_list() {
 async function getHistory() {
     loadingHistory.value = true
     try {
-        historyList.value = await Api.tat.listHistory()
+        const res = await Api.tat.listHistory()
+        historyList.value = res
     } catch (error) {
         ElMessage.error(error as string)
     }
@@ -75,11 +78,11 @@ async function onShowHistory(row: TATHistoryItem) {
     taskDetail.value = []
     if (row.InvocationResultJson != "") {
         historyDetail.value = JSON.parse(row.InvocationResultJson)
-        const task_res = await QApi.tat.describeInvocationTasks(row.Region, {
+        const res = await QApi.tat.describeInvocationTasks(row.Region, {
             InvocationTaskIds: historyDetail.value?.InvocationTaskBasicInfoSet.map(item => item.InvocationTaskId),
             HideOutput: false
         })
-        taskDetail.value = task_res.InvocationTaskSet
+        taskDetail.value = res.InvocationTaskSet
     }
 }
 

@@ -4,7 +4,7 @@ import { ref, reactive } from "vue"
 import { Api } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
-// 主机列表
+// 域名列表
 
 const fetchWait = ref(1)
 const domainList = reactive<DomainItem[]>([])
@@ -15,7 +15,7 @@ async function getDomainList() {
     fetchWait.value = 0
 }
 
-// 删除主机
+// 删除域名
 
 async function deleteDomain(idx: number) {
     const item = domainList[idx]
@@ -46,7 +46,8 @@ getDomainList()
                 </div>
             </template>
             <el-table v-loading="fetchWait > 0" :data="domainList" table-layout="fixed">
-                <el-table-column fixed prop="Name" label="域名" min-width="150" />
+                <el-table-column fixed prop="Name" label="域名" min-width="120" />
+                <el-table-column prop="Model" label="来源" />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">

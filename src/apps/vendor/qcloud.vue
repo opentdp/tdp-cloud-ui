@@ -11,7 +11,7 @@ const session = sessionStore()
 
 // 厂商列表
 
-async function getSecrets() {
+async function getSecretList() {
     const res = await Api.vendor.list()
     session.setVendor(res)
 }
@@ -42,7 +42,7 @@ function formSubmit(form: FormInstance | undefined) {
         }
         await Api.vendor.create(formModel)
         formRef.value?.resetFields()
-        getSecrets()
+        getSecretList()
     })
 }
 
@@ -56,7 +56,7 @@ async function deleteSecret(idx: number) {
 
 // 加载数据
 
-getSecrets()
+getSecretList()
 </script>
 
 <template>

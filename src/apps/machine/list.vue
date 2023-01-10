@@ -47,9 +47,10 @@ getMachineList()
                 </div>
             </template>
             <el-table v-loading="fetchWait" :data="machineList" table-layout="fixed">
-                <el-table-column fixed prop="HostName" label="名称" min-width="150" />
-                <el-table-column fixed prop="IpAddress" label="IP 地址" min-width="150" />
-                <el-table-column fixed prop="Region" label="地域" />
+                <el-table-column fixed prop="HostName" label="名称" min-width="120" />
+                <el-table-column prop="IpAddress" label="IP 地址" />
+                <el-table-column prop="Region" label="地域" />
+                <el-table-column prop="Model" label="来源" />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">

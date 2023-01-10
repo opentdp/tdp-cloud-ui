@@ -101,7 +101,7 @@ async function modifyInstanceName() {
 
 // 防火墙管理
 
-const firewallRules = ref<Lighthouse.DescribeFirewallRulesResponse>()
+const firewallRuleList = ref<Lighthouse.DescribeFirewallRulesResponse>()
 
 interface FirewallRuleBus {
     dailog: boolean
@@ -136,11 +136,11 @@ const modifyFirewallRuleDescriptionBus = reactive<FirewallRuleBus>({
     model: { Protocol: "" }
 })
 
-async function getFirewallRules() {
+async function getFirewallRuleList() {
     const res = await QApi.lighthouse.describeFirewallRules(region(), {
         InstanceId: props.instanceId,
     })
-    firewallRules.value = res
+    firewallRuleList.value = res
 }
 
 async function createFirewallRule() {
@@ -155,13 +155,13 @@ async function createFirewallRule() {
 }
 
 async function modifyFirewallRule() {
-    if (!firewallRules.value) {
+    if (!firewallRuleList.value) {
         return
     }
     modifyFirewallRuleBus.loading = true
     await QApi.lighthouse.modifyFirewallRules(region(), {
         InstanceId: props.instanceId,
-        FirewallRules: firewallRules.value.FirewallRuleSet.map(
+        FirewallRules: firewallRuleList.value.FirewallRuleSet.map(
             (item: FirewallRuleBus["model"], idx) => {
                 if (modifyFirewallRuleBus.index === idx) {
                     item = Object.assign({}, modifyFirewallRuleBus.model)
@@ -209,12 +209,12 @@ async function deleteFirewallRule(item: FirewallRuleBus["model"]) {
 }
 
 async function refreshFirewallRules() {
-    Api.cache.clear(), await getFirewallRules()
+    Api.cache.clear(), await getFirewallRuleList()
 }
 
 // 快照管理
 
-const snapshots = ref<Lighthouse.DescribeSnapshotsResponse>()
+const snapshotList = ref<Lighthouse.DescribeSnapshotsResponse>()
 
 const createSnapshotBus = reactive({
     dailog: false,
@@ -224,11 +224,11 @@ const createSnapshotBus = reactive({
     }
 })
 
-async function getSnapshots() {
+async function getSnapshotList() {
     const res = await QApi.lighthouse.describeSnapshots(region(), {
         Filters: [{ Name: "instance-id", Values: [props.instanceId] }],
     })
-    snapshots.value = res
+    snapshotList.value = res
 }
 
 async function createSnapshot() {
@@ -263,8 +263,8 @@ async function deleteSnapshot(item: Lighthouse.Snapshot) {
 }
 
 async function refreshSnapshot() {
-    Api.cache.clear(), await getSnapshots()
-    if (snapshots.value?.SnapshotSet.find((item) => item.Percent < 100)) {
+    Api.cache.clear(), await getSnapshotList()
+    if (snapshotList.value?.SnapshotSet.find((item) => item.Percent < 100)) {
         setTimeout(refreshSnapshot, 1500)
     }
 }
@@ -373,8 +373,8 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
 
 (async () => {
     await getInstance()
-    getSnapshots()
-    getFirewallRules()
+    getSnapshotList()
+    getFirewallRuleList()
     getTrafficPackage()
     getLighthouseOuttraffic()
 })()
@@ -461,18 +461,18 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
         </template>
     </el-dialog>
 
-    <el-card v-if="firewallRules" shadow="hover" class="mgb10">
+    <el-card v-if="firewallRuleList" shadow="hover" class="mgb10">
         <template #header>
             <div class="flex-between">
                 <b>防火墙</b> &nbsp; &nbsp;
-                <small>规则总数: {{ firewallRules.TotalCount }}</small>
+                <small>规则总数: {{ firewallRuleList.TotalCount }}</small>
                 <div class="flex-auto" />
                 <el-button type="primary" plain size="small" @click="createFirewallRuleBus.dailog = true">
                     添加规则
                 </el-button>
             </div>
         </template>
-        <el-table :data="firewallRules.FirewallRuleSet" table-layout="fixed">
+        <el-table :data="firewallRuleList.FirewallRuleSet" table-layout="fixed">
             <el-table-column prop="CidrBlock" label="来源" min-width="150" />
             <el-table-column prop="Protocol" label="协议" min-width="100" />
             <el-table-column prop="Port" label="端口" min-width="120" />
@@ -588,18 +588,18 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
         </template>
     </el-dialog>
 
-    <el-card v-if="snapshots" shadow="hover" class="mgb10">
+    <el-card v-if="snapshotList" shadow="hover" class="mgb10">
         <template #header>
             <div class="flex-between">
                 <b>快照</b> &nbsp; &nbsp;
-                <small>快照总数: {{ snapshots.TotalCount }}</small>
+                <small>快照总数: {{ snapshotList.TotalCount }}</small>
                 <div class="flex-auto" />
                 <el-button type="primary" plain size="small" @click="createSnapshotDailog">
                     创建快照
                 </el-button>
             </div>
         </template>
-        <el-table :data="snapshots.SnapshotSet" table-layout="fixed">
+        <el-table :data="snapshotList.SnapshotSet" table-layout="fixed">
             <el-table-column fixed prop="SnapshotName" label="名称" min-width="200" />
             <el-table-column label="容量" min-width="100">
                 <template #default="scope">
