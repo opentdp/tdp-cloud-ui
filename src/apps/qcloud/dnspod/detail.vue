@@ -8,20 +8,23 @@ import { Dnspod } from "@/api/qcloud/typings"
 
 const props = defineProps<{
     vid: number,
-    name: string,
+    meta: Dnspod.DomainListItem,
 }>()
 
 QApi.dnspod.vendor(props.vid)
 
 // 域名概要
 
-const domainInfo = ref<Dnspod.DomainInfo>({} as Dnspod.DomainInfo)
+const domainInfo = reactive({
+    Domain: props.meta.Name,
+    Grade: props.meta.Grade,
+} as Dnspod.DomainInfo)
 
 async function getDomain() {
     const res = await QApi.dnspod.describeDomain({
-        Domain: props.name
+        Domain: domainInfo.Domain
     })
-    domainInfo.value = res.DomainInfo
+    Object.assign(domainInfo, res.DomainInfo)
 }
 
 // 记录类型列表
@@ -30,7 +33,7 @@ const recordType = ref<string[]>([])
 
 async function getRecordType() {
     const res = await QApi.dnspod.describeRecordType({
-        DomainGrade: domainInfo.value.Grade
+        DomainGrade: domainInfo.Grade
     })
     recordType.value = res.TypeList
 }
@@ -39,8 +42,8 @@ const recordLineList = ref<Dnspod.LineInfo[]>()
 
 async function getRecordLine() {
     const res = await QApi.dnspod.describeRecordLineList({
-        DomainGrade: domainInfo.value.Grade,
-        Domain: props.name
+        DomainGrade: domainInfo.Grade,
+        Domain: domainInfo.Domain
     })
     recordLineList.value = res.LineList
 }
@@ -52,7 +55,7 @@ const recordCountInfo = ref<Dnspod.RecordCountInfo>()
 
 async function getRecordList() {
     const res = await QApi.dnspod.describeRecordList({
-        Domain: props.name
+        Domain: domainInfo.Domain
     })
     recordList.value = res.RecordList
     recordCountInfo.value = res.RecordCountInfo
@@ -107,7 +110,7 @@ async function createRecord() {
     createRecordBus.loading = true
     const item = createRecordBus.model
     const query: Dnspod.CreateRecordRequest = {
-        Domain: props.name,
+        Domain: domainInfo.Domain,
         SubDomain: item.Name,
         RecordType: item.Type,
         RecordLine: item.Line,
@@ -150,7 +153,7 @@ async function modifyRecord() {
     modifyRecordBus.loading = true
     const item = modifyRecordBus.model
     const query: Dnspod.ModifyRecordRequest = {
-        Domain: props.name,
+        Domain: domainInfo.Domain,
         SubDomain: item.Name,
         RecordType: item.Type,
         RecordLine: item.Line,
@@ -170,7 +173,7 @@ async function modifyRecord() {
 
 async function deleteRecord(recordId: number) {
     const query: Dnspod.DeleteRecordRequest = {
-        Domain: props.name,
+        Domain: domainInfo.Domain,
         RecordId: recordId
     }
     await QApi.dnspod.deleteRecord(query)
@@ -180,10 +183,10 @@ async function deleteRecord(recordId: number) {
 // 加载数据
 
 (async () => {
+    getDomain()
     getRecordList()
-    // 获取一些参数
-    await getDomain()
-    getRecordType(), getRecordLine()
+    getRecordType()
+    getRecordLine()
 })()
 </script>
 

@@ -41,7 +41,7 @@ getDomain(domainId)
         </el-breadcrumb>
         <div v-loading="fetchWait" class="loading" />
         <div v-if="domain.Model == 'qcloud/dnspod'">
-            <DnspodDetail :vid="domain.VendorId" :domain="domain.Name" />
+            <DnspodDetail :vid="domain.VendorId" :meta="domain.CloudMeta" />
         </div>
     </div>
 </template>
