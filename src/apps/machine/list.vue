@@ -4,8 +4,6 @@ import { ref, reactive } from "vue"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-import { dateFormat } from "@/helper/utils"
-
 // 主机列表
 
 const fetchWait = ref(1)
