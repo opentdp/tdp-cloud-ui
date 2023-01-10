@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import { useRoute } from "vue-router"
 
-import vDnspod from './dnspod/bind.vue'
-import vLighthouse from './lighthouse/bind.vue'
+import DnspodBind from './dnspod/bind.vue'
+import LighthouseBind from './lighthouse/bind.vue'
 
 // 初始化
 
 const route = useRoute()
 
-const vid = route.params.vid as string
+const vid = +route.params.vid
 </script>
 
 <template>
@@ -24,8 +24,8 @@ const vid = route.params.vid as string
                 导入资源
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <vLighthouse :vid="vid" />
+        <LighthouseBind :vid="vid" />
         <div class="mgb10" />
-        <vDnspod :vid="vid" />
+        <DnspodBind :vid="vid" />
     </div>
 </template>

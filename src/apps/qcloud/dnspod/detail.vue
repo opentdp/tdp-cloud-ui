@@ -7,11 +7,11 @@ import { Dnspod } from "@/api/qcloud/typings"
 // 初始化
 
 const props = defineProps<{
-    vid: string,
-    domain: string,
+    vid: number,
+    name: string,
 }>()
 
-QApi.lighthouse.vendor(props.vid)
+QApi.dnspod.vendor(props.vid)
 
 // 域名概要
 
@@ -19,7 +19,7 @@ const domainInfo = ref<Dnspod.DomainInfo>({} as Dnspod.DomainInfo)
 
 async function getDomain() {
     const res = await QApi.dnspod.describeDomain({
-        Domain: props.domain
+        Domain: props.name
     })
     domainInfo.value = res.DomainInfo
 }
@@ -40,7 +40,7 @@ const recordLineList = ref<Dnspod.LineInfo[]>()
 async function getRecordLine() {
     const res = await QApi.dnspod.describeRecordLineList({
         DomainGrade: domainInfo.value.Grade,
-        Domain: props.domain
+        Domain: props.name
     })
     recordLineList.value = res.LineList
 }
@@ -52,7 +52,7 @@ const recordCountInfo = ref<Dnspod.RecordCountInfo>()
 
 async function getRecordList() {
     const res = await QApi.dnspod.describeRecordList({
-        Domain: props.domain
+        Domain: props.name
     })
     recordList.value = res.RecordList
     recordCountInfo.value = res.RecordCountInfo
@@ -107,7 +107,7 @@ async function createRecord() {
     createRecordBus.loading = true
     const item = createRecordBus.model
     const query: Dnspod.CreateRecordRequest = {
-        Domain: props.domain,
+        Domain: props.name,
         SubDomain: item.Name,
         RecordType: item.Type,
         RecordLine: item.Line,
@@ -150,7 +150,7 @@ async function modifyRecord() {
     modifyRecordBus.loading = true
     const item = modifyRecordBus.model
     const query: Dnspod.ModifyRecordRequest = {
-        Domain: props.domain,
+        Domain: props.name,
         SubDomain: item.Name,
         RecordType: item.Type,
         RecordLine: item.Line,
@@ -170,7 +170,7 @@ async function modifyRecord() {
 
 async function deleteRecord(recordId: number) {
     const query: Dnspod.DeleteRecordRequest = {
-        Domain: props.domain,
+        Domain: props.name,
         RecordId: recordId
     }
     await QApi.dnspod.deleteRecord(query)

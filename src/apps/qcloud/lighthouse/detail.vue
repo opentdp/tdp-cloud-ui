@@ -12,9 +12,8 @@ import { bytesToSize, dateFormat } from "@/helper/utils"
 // 初始化
 
 const props = defineProps<{
-    vid: string,
-    zone: string,
-    instanceId: string,
+    vid: number,
+    meta: Lighthouse.Instance,
 }>()
 
 QApi.lighthouse.vendor(props.vid)
@@ -22,55 +21,49 @@ QApi.lighthouse.vendor(props.vid)
 // 获取区域
 
 const region = () => {
-    return props.zone.replace(/-\d$/, "")
+    return props.meta.Zone.replace(/-\d$/, "")
 }
 
 // 实例信息
 
-const instance = ref<Lighthouse.Instance>()
+const instance = reactive(props.meta)
 
 async function getInstance() {
     const res = await QApi.lighthouse.describeInstances(region(), {
-        InstanceIds: [props.instanceId],
+        InstanceIds: [instance.InstanceId],
     })
-    instance.value = res.InstanceSet[0]
+    Object.assign(instance, res.InstanceSet[0])
 }
 
 // 电源管理
 
 async function stopInstance() {
-    if (instance.value) {
-        instance.value.InstanceState = "STOPPING"
-    }
+    instance.InstanceState = "STOPPING"
     await QApi.lighthouse.stopInstances(region(), {
-        InstanceIds: [props.instanceId],
+        InstanceIds: [instance.InstanceId],
     })
     setTimeout(refreshInstance, 1500)
 }
 
 async function startInstance() {
-    if (instance.value) {
-        instance.value.InstanceState = "STARTING"
-    }
+    instance.InstanceState = "STARTING"
     await QApi.lighthouse.startInstances(region(), {
-        InstanceIds: [props.instanceId],
+        InstanceIds: [instance.InstanceId],
     })
     setTimeout(refreshInstance, 1500)
 }
 
 async function rebootInstance() {
-    if (instance.value) {
-        instance.value.InstanceState = "REBOOTING"
-    }
+    instance.InstanceState = "REBOOTING"
     await QApi.lighthouse.rebootInstances(region(), {
-        InstanceIds: [props.instanceId],
+        InstanceIds: [instance.InstanceId],
     })
     setTimeout(refreshInstance, 1500)
 }
 
 async function refreshInstance() {
     Api.cache.clear(), await getInstance()
-    if (instance.value?.InstanceState.match(/ING$/)) {
+    if (instance.InstanceState.match(/ING$/)) {
         setTimeout(refreshInstance, 1500)
     }
 }
@@ -87,13 +80,12 @@ const modifyInstanceNameBus = reactive({
 
 async function modifyInstanceName() {
     modifyInstanceNameBus.loading = true
-    if (instance.value && modifyInstanceNameBus.model.name &&
-        instance.value.InstanceName != modifyInstanceNameBus.model.name) {
+    if (modifyInstanceNameBus.model.name && instance.InstanceName != modifyInstanceNameBus.model.name) {
         await QApi.lighthouse.modifyInstancesAttribute(region(), {
-            InstanceIds: [props.instanceId],
+            InstanceIds: [instance.InstanceId],
             InstanceName: modifyInstanceNameBus.model.name
         })
-        instance.value.InstanceName = modifyInstanceNameBus.model.name
+        instance.InstanceName = modifyInstanceNameBus.model.name
     }
     modifyInstanceNameBus.dailog = false
     modifyInstanceNameBus.loading = false
@@ -138,7 +130,7 @@ const modifyFirewallRuleDescriptionBus = reactive<FirewallRuleBus>({
 
 async function getFirewallRuleList() {
     const res = await QApi.lighthouse.describeFirewallRules(region(), {
-        InstanceId: props.instanceId,
+        InstanceId: instance.InstanceId,
     })
     firewallRuleList.value = res
 }
@@ -146,7 +138,7 @@ async function getFirewallRuleList() {
 async function createFirewallRule() {
     createFirewallRuleBus.loading = true
     await QApi.lighthouse.createFirewallRules(region(), {
-        InstanceId: props.instanceId,
+        InstanceId: instance.InstanceId,
         FirewallRules: [createFirewallRuleBus.model]
     })
     createFirewallRuleBus.dailog = false
@@ -160,7 +152,7 @@ async function modifyFirewallRule() {
     }
     modifyFirewallRuleBus.loading = true
     await QApi.lighthouse.modifyFirewallRules(region(), {
-        InstanceId: props.instanceId,
+        InstanceId: instance.InstanceId,
         FirewallRules: firewallRuleList.value.FirewallRuleSet.map(
             (item: FirewallRuleBus["model"], idx) => {
                 if (modifyFirewallRuleBus.index === idx) {
@@ -186,7 +178,7 @@ async function modifyFirewallRuleDescription() {
     modifyFirewallRuleDescriptionBus.loading = true
     delete modifyFirewallRuleDescriptionBus.model.AppType
     await QApi.lighthouse.modifyFirewallRuleDescription(region(), {
-        InstanceId: props.instanceId,
+        InstanceId: instance.InstanceId,
         FirewallRule: modifyFirewallRuleDescriptionBus.model
     })
     modifyFirewallRuleDescriptionBus.dailog = false
@@ -202,7 +194,7 @@ function modifyFirewallRuleDescriptionDailog(item: Lighthouse.FirewallRule) {
 async function deleteFirewallRule(item: FirewallRuleBus["model"]) {
     delete item.AppType
     await QApi.lighthouse.deleteFirewallRules(region(), {
-        InstanceId: props.instanceId,
+        InstanceId: instance.InstanceId,
         FirewallRules: [item]
     })
     refreshFirewallRules()
@@ -226,7 +218,7 @@ const createSnapshotBus = reactive({
 
 async function getSnapshotList() {
     const res = await QApi.lighthouse.describeSnapshots(region(), {
-        Filters: [{ Name: "instance-id", Values: [props.instanceId] }],
+        Filters: [{ Name: "instance-id", Values: [instance.InstanceId] }],
     })
     snapshotList.value = res
 }
@@ -234,7 +226,7 @@ async function getSnapshotList() {
 async function createSnapshot() {
     createSnapshotBus.loading = true
     await QApi.lighthouse.createInstanceSnapshot(region(), {
-        InstanceId: props.instanceId,
+        InstanceId: instance.InstanceId,
         SnapshotName: createSnapshotBus.model.name
     })
     createSnapshotBus.dailog = false
@@ -249,7 +241,7 @@ function createSnapshotDailog() {
 
 async function applySnapshot(item: Lighthouse.Snapshot) {
     await QApi.lighthouse.applyInstanceSnapshot(region(), {
-        InstanceId: props.instanceId,
+        InstanceId: instance.InstanceId,
         SnapshotId: item.SnapshotId
     })
     refreshInstance()
@@ -277,7 +269,7 @@ const outtrafficChart = ref<EChartsOption>()
 
 async function getTrafficPackage() {
     const res = await QApi.lighthouse.describeInstancesTrafficPackages(region(), {
-        InstanceIds: [props.instanceId],
+        InstanceIds: [instance.InstanceId],
     })
     trafficPackage.value = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
 }
@@ -291,7 +283,7 @@ async function getLighthouseOuttraffic() {
                 Dimensions: [
                     {
                         Name: "InstanceId",
-                        Value: props.instanceId,
+                        Value: instance.InstanceId,
                     },
                 ],
             },
@@ -402,7 +394,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
                     重启
                 </el-button>
                 <el-button v-if="instance.InstanceState == 'RUNNING'" type="primary" plain size="small">
-                    <router-link :to="'/lighthouse/vnc/' + zone + '/' + instanceId">
+                    <router-link :to="'/qcloud/lighthouse/vnc/' + instance.Zone + '/' + instance.InstanceId">
                         VNC 终端
                     </router-link>
                 </el-button>

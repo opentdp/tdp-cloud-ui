@@ -5,8 +5,8 @@ export class MachineModel extends HttpClient {
         return this.get("/machine")
     }
 
-    public detail(name: string): Promise<MachineItem> {
-        return this.get("/machine/" + name)
+    public detail(id: number): Promise<MachineItem> {
+        return this.get("/machine/" + id)
     }
 
     public create(rq: MachineRequest): Promise<MachineResponse> {

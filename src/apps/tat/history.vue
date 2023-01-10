@@ -9,7 +9,7 @@ import { TATHistoryItem } from '@/api/local/tat'
 import { TAT } from "@/api/qcloud/typings"
 
 const historyList = ref<TATHistoryItem[]>([])
-const loadingHistory = ref(false)
+const fetchWait = ref(false)
 
 let need_update_history_list = true
 
@@ -49,14 +49,14 @@ async function do_update_history_list() {
 }
 
 async function getHistory() {
-    loadingHistory.value = true
+    fetchWait.value = true
     try {
         const res = await Api.tat.listHistory()
         historyList.value = res
     } catch (error) {
         ElMessage.error(error as string)
     }
-    loadingHistory.value = false
+    fetchWait.value = false
 }
 
 async function onDeleteHistory(history_id: number) {
@@ -117,7 +117,7 @@ onUnmounted(() => {
                     <small>记录总数: {{ historyList.length }}</small>
                 </div>
             </template>
-            <el-table v-loading="loadingHistory" :data="historyList">
+            <el-table v-loading="fetchWait" :data="historyList">
                 <el-table-column prop="InvocationId" label="执行ID" />
                 <el-table-column prop="Name" label="命令名" min-width="150" />Í
                 <el-table-column prop="InvocationStatus" label="执行状态" />

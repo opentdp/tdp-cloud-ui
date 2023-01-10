@@ -68,14 +68,6 @@ getMachineList()
                     </template>
                 </el-table-column>
             </el-table>
-            <div v-if="fetchWait && machineList.length > 0" v-loading="true" class="loading" />
         </el-card>
     </div>
 </template>
-
-<style lang="scss" scoped>
-div.loading {
-    height: 48px;
-    margin-top: 24px;
-}
-</style>

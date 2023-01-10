@@ -9,7 +9,7 @@ import { dateFormat } from "@/helper/utils"
 // 初始化
 
 const props = defineProps<{
-    vid: string,
+    vid: number,
 }>()
 
 QApi.lighthouse.vendor(props.vid)
@@ -50,7 +50,7 @@ function parseRegion(s: string) {
 
 function addMachine(item: Lighthouse.Instance) {
     Api.machine.create({
-        VendorId: +props.vid,
+        VendorId: props.vid,
         HostName: item.InstanceName,
         IpAddress: item.PublicAddresses[0],
         Region: parseRegion(item.Zone),
@@ -108,13 +108,5 @@ getRegionList()
                 </template>
             </el-table-column>
         </el-table>
-        <div v-if="fetchWait && instanceList.length > 0" v-loading="true" class="loading" />
     </el-card>
 </template>
-
-<style lang="scss" scoped>
-div.loading {
-    height: 48px;
-    margin-top: 24px;
-}
-</style>

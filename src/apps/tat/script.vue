@@ -8,7 +8,7 @@ import { TATScriptItem } from '@/api/local/tat'
 import { Lighthouse } from "@/api/qcloud/typings"
 
 const tatList = ref<TATScriptItem[]>([])
-const loading = ref(false)
+const fetchWait = ref(false)
 const regionList = ref<{ value: string, label: string }[]>([])
 
 const currentRegion = ref("")
@@ -16,14 +16,14 @@ const lighthouseList = ref<(Lighthouse.Instance & { region: string })[]>([])
 const lighthouseRegionMap = new Map<string, string>()
 
 async function getTATScriptList() {
-    loading.value = true
+    fetchWait.value = true
     try {
         const res = await Api.tat.listScript()
         tatList.value = res
     } catch (error) {
         ElMessage.error(error as string)
     }
-    loading.value = false
+    fetchWait.value = false
 }
 
 async function fetchLH() {
@@ -59,7 +59,7 @@ function onNew() {
 
 async function onNewSave() {
     newDialogVisible.value = false
-    loading.value = true
+    fetchWait.value = true
     try {
         if (newForm.value.Username == "") {
             newForm.value.Username = newForm.value.CommandType == "SHELL" ? "root" : "System"
@@ -73,7 +73,7 @@ async function onNewSave() {
     catch (error) {
         ElMessage.error(error + "")
     }
-    loading.value = false
+    fetchWait.value = false
 }
 
 // Edit
@@ -89,7 +89,7 @@ function onEdit(row: TATScriptItem) {
 async function onEditSave() {
     if (editForm.value) {
         editDialogVisible.value = false
-        loading.value = true
+        fetchWait.value = true
         try {
             if (editForm.value.Username == "") {
                 editForm.value.Username = editForm.value.CommandType == "SHELL" ? "root" : "System"
@@ -104,13 +104,13 @@ async function onEditSave() {
             ElMessage.error(error as string)
         }
     }
-    loading.value = false
+    fetchWait.value = false
 }
 
 // Delete
 
 async function onDelete(id: string) {
-    loading.value = true
+    fetchWait.value = true
     try {
         await Api.tat.deleteScript(id)
         await getTATScriptList()
@@ -118,7 +118,7 @@ async function onDelete(id: string) {
     catch (error) {
         ElMessage.error(error + "")
     }
-    loading.value = false
+    fetchWait.value = false
 }
 
 // Run
@@ -212,7 +212,7 @@ onMounted(async () => {
                     </el-button>
                 </div>
             </template>
-            <el-table v-loading="loading" :data="tatList" row-key="Id">
+            <el-table v-fetchWait="fetchWait" :data="tatList" row-key="Id">
                 <el-table-column fixed prop="Name" label="名称" />
                 <el-table-column prop="Description" label="描述" />
                 <el-table-column prop="Content" label="命令" min-width="250" show-overflow-tooltip />

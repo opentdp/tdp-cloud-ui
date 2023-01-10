@@ -8,7 +8,7 @@ import { Dnspod } from "@/api/qcloud/typings"
 // 初始化
 
 const props = defineProps<{
-    vid: string,
+    vid: number,
 }>()
 
 QApi.dnspod.vendor(props.vid)
@@ -31,7 +31,7 @@ async function getDomainList() {
 
 function addDomian(item: Dnspod.DomainListItem) {
     Api.domain.create({
-        VendorId: +props.vid,
+        VendorId: props.vid,
         Name: item.Name,
         Model: "qcloud/dnspod",
         CloudId: item.DomainId + '',
