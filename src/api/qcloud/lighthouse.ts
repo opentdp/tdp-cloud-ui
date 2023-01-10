@@ -211,15 +211,3 @@ export const InstanceStateMap: Record<string, string> = {
     DELETING: "删除中",
     FREEZING: "冻结中",
 }
-
-export interface LH_Region extends Lighthouse.RegionInfo {
-    InstanceCount: number
-}
-
-export interface LH_Instance extends Lighthouse.Instance {
-    Region: string, RgZone: string
-}
-
-export interface LH_TrafficPackage extends Lighthouse.TrafficPackage {
-    EasyUsed: string, EasyTotal: string
-}

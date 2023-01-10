@@ -4,7 +4,6 @@ import { ref, reactive, defineProps } from "vue"
 import { Api, QApi } from "@/api"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
 import { Dnspod } from "@/api/qcloud/typings"
-import json5 from "json5";
 
 // 初始化
 
@@ -31,14 +30,15 @@ async function getDomainList() {
 // 绑定域名
 
 function addDomian(item: Dnspod.DomainListItem) {
-    const query = {
+    Api.domain.create({
         VendorId: +props.vid,
         Name: item.Name,
-        Status: "",
-        CloudData: JSON.stringify(item),
+        Model: "qcloud/dnspod",
+        CloudId: item.DomainId + '',
+        CloudMeta: JSON.stringify(item),
         Description: "",
-    }
-    Api.domain.create(query)
+        Status: "",
+    })
 }
 
 // 加载数据

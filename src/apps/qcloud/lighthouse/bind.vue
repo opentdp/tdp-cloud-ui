@@ -2,7 +2,7 @@
 import { ref, reactive, defineProps } from "vue"
 
 import { Api, QApi } from "@/api"
-import { LH_Region, LH_Instance } from "@/api/qcloud/lighthouse"
+import { Lighthouse } from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/utils"
 
@@ -18,16 +18,16 @@ QApi.lighthouse.vendor(props.vid)
 
 const fetchWait = ref(1)
 
-const regionList = reactive<Record<string, LH_Region>>({})
+const regionList = reactive<Record<string, Lighthouse.RegionInfo>>({})
 
-const instanceList = reactive<LH_Instance[]>([])
-const instanceTotalCount = ref(0)
+const instanceList = reactive<Lighthouse.Instance[]>([])
+const instanceCount = ref(0)
 
 async function getRegions() {
     const res = await QApi.lighthouse.describeRegions()
     fetchWait.value = res.TotalCount
     res.RegionSet.forEach((item) => {
-        regionList[item.Region] = { ...item, InstanceCount: 0 }
+        regionList[item.Region] = item
         getInstances(item.Region)
     })
 }
@@ -35,32 +35,31 @@ async function getRegions() {
 async function getInstances(region: string) {
     const res = await QApi.lighthouse.describeInstances(region)
     if (res.TotalCount > 0) {
-        regionList[region].InstanceCount = res.TotalCount
-        instanceTotalCount.value += res.TotalCount
-        res.InstanceSet.forEach((item) => {
-            const Zone = item.Zone.replace(/[^1-9]+/, "")
-            instanceList.push({
-                ...item,
-                Region: regionList[region].RegionName,
-                RgZone: Zone ? Zone + "区" : ""
-            })
-        })
+        instanceCount.value += res.TotalCount
+        instanceList.push(...res.InstanceSet)
     }
     fetchWait.value--
 }
 
+function parseRegion(s: string) {
+    const [r, z] = s.replace(/-(\d+)$/, ':$1').split(':')
+    return regionList[r].RegionName + (r ? " " + z + "区" : "")
+}
+
 // 绑定主机
 
-function addMachine(item: LH_Instance) {
-    const query = {
+function addMachine(item: Lighthouse.Instance) {
+    Api.machine.create({
         VendorId: +props.vid,
         HostName: item.InstanceName,
-        Address: item.PublicAddresses[0],
-        Status: "",
-        CloudData: JSON.stringify(item),
+        IpAddress: item.PublicAddresses[0],
+        Region: parseRegion(item.Zone),
+        Model: "qcloud/lighthouse",
+        CloudId: item.InstanceId,
+        CloudMeta: JSON.stringify(item),
         Description: "",
-    }
-    Api.machine.create(query)
+        Status: "",
+    })
 }
 
 // 加载数据
@@ -74,14 +73,14 @@ getRegions()
             <div class="flex-between">
                 <b>实例列表</b>
                 <div class="flex-auto" />
-                <small>实例总数: {{ instanceTotalCount }}</small>
+                <small>实例总数: {{ instanceCount }}</small>
             </div>
         </template>
         <el-table v-loading="fetchWait && instanceList.length == 0" :data="instanceList" table-layout="fixed">
             <el-table-column fixed prop="InstanceName" label="名称" min-width="150" />
             <el-table-column label="地域" min-width="120">
                 <template #default="scope">
-                    {{ scope.row.Region }}{{ scope.row.RgZone }}
+                    {{ parseRegion(scope.row.Zone) }}
                 </template>
             </el-table-column>
             <el-table-column prop="CPU" label="CPU" min-width="60" />

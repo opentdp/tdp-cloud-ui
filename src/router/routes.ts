@@ -33,7 +33,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/domain/list.vue"),
             },
             {
-                path: "/domain/detail/:vid/:domain",
+                path: "/domain/detail/:id",
                 name: "domain-detail",
                 meta: {
                     title: "域名详情",
@@ -52,7 +52,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/machine/list.vue"),
             },
             {
-                path: "/machine/detail/:vid/:zone/:instanceId",
+                path: "/machine/detail/:id",
                 name: "machine-detail",
                 meta: {
                     title: "主机详情",
@@ -61,7 +61,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/machine/detail.vue"),
             },
             {
-                path: "/machine/vnc/:vid/:zone/:instanceId",
+                path: "/machine/vnc/:id",
                 name: "machine-vnc",
                 meta: {
                     title: "主机 VNC",

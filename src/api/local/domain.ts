@@ -14,32 +14,36 @@ export class DomainModel extends HttpClient {
     }
 
     public update(rq: DomainItem): Promise<DomainResponse> {
-        return this.patch("/domain/" + rq.Name, rq)
+        return this.patch("/domain/" + rq.Id, rq)
     }
 
-    public remove(name: string): Promise<DomainResponse> {
-        return this.delete("/domain/" + name)
+    public remove(id: number): Promise<DomainResponse> {
+        return this.delete("/domain/" + id)
     }
 }
 
 export interface DomainItem {
     Id: number
     UserId: number
-    VendorId: number,
-    Name: string,
-    Status: string,
-    CloudData: string,
-    Description: string,
+    VendorId: number
+    Name: string
+    Model: "" | "qcloud/dnspod"
+    CloudId: string
+    CloudMeta: Record<string, any>
+    Description: string
+    Status: string
     CreatedAt: string
     UpdatedAt: string
 }
 
 export interface DomainRequest {
-    VendorId: number,
-    Name: string,
-    Status: string,
-    CloudData: string,
-    Description: string,
+    VendorId: number
+    Name: string
+    Model: "" | "qcloud/dnspod"
+    CloudId: string
+    CloudMeta: string
+    Description: string
+    Status: string
 }
 
 export interface DomainResponse {

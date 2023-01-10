@@ -15,6 +15,14 @@ async function getMachineList() {
     fetchWait.value = 0
 }
 
+// 删除主机
+
+async function deleteMachine(idx: number) {
+    const item = machineList[idx]
+    await Api.machine.remove(item.Id)
+    machineList.splice(idx, 1)
+}
+
 // 加载数据
 
 getMachineList()
@@ -40,13 +48,22 @@ getMachineList()
             </template>
             <el-table v-loading="fetchWait" :data="machineList" table-layout="fixed">
                 <el-table-column fixed prop="HostName" label="名称" min-width="150" />
-                <el-table-column fixed="right" label="操作" width="90" align="center">
+                <el-table-column fixed prop="IpAddress" label="IP 地址" min-width="150" />
+                <el-table-column fixed prop="Region" label="地域" />
+                <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">
-                            <router-link :to="'/lighthouse/detail/' + scope.row.Zone + '/' + scope.row.InstanceId">
+                            <router-link :to="'/machine/detail/' + scope.row.Id">
                                 管理
                             </router-link>
                         </el-button>
+                        <el-popconfirm title="确定删除?" @confirm="deleteMachine(scope.$index)">
+                            <template #reference>
+                                <el-button link type="danger" icon="Delete">
+                                    删除
+                                </el-button>
+                            </template>
+                        </el-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>

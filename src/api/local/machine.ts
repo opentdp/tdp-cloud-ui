@@ -14,11 +14,11 @@ export class MachineModel extends HttpClient {
     }
 
     public update(rq: MachineItem): Promise<MachineResponse> {
-        return this.patch("/machine/" + rq.Name, rq)
+        return this.patch("/machine/" + rq.Id, rq)
     }
 
-    public remove(name: string): Promise<MachineResponse> {
-        return this.delete("/machine/" + name)
+    public remove(id: number): Promise<MachineResponse> {
+        return this.delete("/machine/" + id)
     }
 }
 
@@ -27,10 +27,13 @@ export interface MachineItem {
     UserId: number
     VendorId: number
     HostName: string
-    Address: string
-    Status: string
-    CloudData: string
+    IpAddress: string
+    Region: string
+    Model: "" | "qcloud/lighthouse"
+    CloudId: string
+    CloudMeta: Record<string, any>
     Description: string
+    Status: string
     CreatedAt: string
     UpdatedAt: string
 }
@@ -38,10 +41,13 @@ export interface MachineItem {
 export interface MachineRequest {
     VendorId: number
     HostName: string
-    Address: string
-    Status: string
-    CloudData: string
+    IpAddress: string
+    Region: string
+    Model: "" | "qcloud/lighthouse"
+    CloudId: string
+    CloudMeta: string
     Description: string
+    Status: string
 }
 
 export interface MachineResponse {
