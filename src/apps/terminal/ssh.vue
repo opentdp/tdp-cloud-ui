@@ -14,6 +14,8 @@ import { WebSSH } from "@/helper/webssh"
 
 const route = useRoute()
 
+const ipAddress = route.params.addr as string
+
 // 登录服务器
 
 let authType = ref("0")
@@ -21,7 +23,7 @@ let authType = ref("0")
 const formRef = ref<FormInstance>()
 
 const formModel = reactive({
-    Addr: "" + route.params.addr,
+    Addr: ipAddress,
     User: "root",
     Password: "",
     PrivateKey: ""
@@ -120,7 +122,7 @@ function removeTab(id: string) {
 
 const lighthouseList = reactive<
     {
-        ipAddresse: string
+        ipAddress: string
         platformType: string
         regionName: string
     }[]
@@ -133,7 +135,7 @@ async function getLighthouseList() {
         res.InstanceSet.forEach(instance => {
             lighthouseList.push({
                 regionName: region.RegionName,
-                ipAddresse: instance.PublicAddresses[0],
+                ipAddress: instance.PublicAddresses[0],
                 platformType: instance.PlatformType
             })
         })
@@ -144,8 +146,8 @@ function lighthouseFilter(qr: string, cb: (a: unknown[]) => void) {
     const rs: unknown[] = []
     lighthouseList.forEach((item) => {
         if (item.platformType === "LINUX_UNIX"
-            && (item.ipAddresse + item.regionName).includes(qr)) {
-            rs.push({ value: item.ipAddresse, region: item.regionName })
+            && (item.ipAddress + item.regionName).includes(qr)) {
+            rs.push({ value: item.ipAddress, region: item.regionName })
         }
     })
     cb(rs)
