@@ -58,7 +58,7 @@ function addMachine(item: Lighthouse.Instance) {
         CloudId: item.InstanceId,
         CloudMeta: JSON.stringify(item),
         Description: "",
-        Status: "",
+        Status: "{}",
     })
 }
 

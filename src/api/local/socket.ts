@@ -5,7 +5,7 @@ export class SocketModel extends HttpClient {
         const token = this.session.appToken
 
         const origin = location.origin.replace(/^http/, "ws")
-        const wsurl = "/wsi/" + token + "/agent"
+        const wsurl = "/wsi/" + token + "/worker"
 
         return origin + wsurl
     }

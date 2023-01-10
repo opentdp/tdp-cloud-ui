@@ -37,7 +37,7 @@ function addDomian(item: Dnspod.DomainListItem) {
         CloudId: item.DomainId + '',
         CloudMeta: JSON.stringify(item),
         Description: "",
-        Status: "",
+        Status: "{}",
     })
 }
 
