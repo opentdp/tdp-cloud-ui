@@ -61,6 +61,15 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/machine/detail.vue"),
             },
             {
+                path: "/machine/worktask",
+                name: "machine-worktask",
+                meta: {
+                    title: "任务记录",
+                    login: true,
+                },
+                component: () => import("@/apps/machine/worktask.vue"),
+            },
+            {
                 path: "/machine/vnc/:id",
                 name: "machine-vnc",
                 meta: {
@@ -128,25 +137,6 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/workhub/worker",
-                name: "workhub-worker",
-                meta: {
-                    title: "子节点",
-                    login: true,
-                },
-                component: () => import("@/apps/workhub/worker.vue"),
-            },
-            {
-                path: "/workhub/worktask",
-                name: "workhub-worktask",
-                meta: {
-                    title: "任务记录",
-                    login: true,
-                },
-                component: () => import("@/apps/workhub/worktask.vue"),
-            },
-            //////
-            {
                 path: "/vendor/qcloud",
                 name: "vendor-secret",
                 meta: {
@@ -154,6 +144,15 @@ export const routes: RouteRecordRaw[] = [
                     login: true,
                 },
                 component: () => import("@/apps/vendor/qcloud.vue"),
+            },
+            {
+                path: "/vendor/worker",
+                name: "vendor-worker",
+                meta: {
+                    title: "子节点",
+                    login: true,
+                },
+                component: () => import("@/apps/vendor/worker.vue"),
             },
             //////
             {

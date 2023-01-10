@@ -33,8 +33,20 @@ const items: MenuItem[] = [
     },
     {
         icon: "Monitor",
-        index: "/machine/list",
+        index: "/machine",
         title: "主机管理",
+        subs: [
+            {
+                icon: "Monitor",
+                index: "/machine/list",
+                title: "主机列表",
+            },
+            {
+                icon: "Finished",
+                index: "/machine/worktask",
+                title: "任务记录",
+            },
+        ]
     },
     {
         icon: "Coin",
@@ -71,27 +83,15 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Magnet",
-        index: "/workhub",
-        title: "边缘节点",
-        subs: [
-            {
-                icon: "Cpu",
-                index: "/workhub/worker",
-                title: "子节点",
-            },
-            {
-                icon: "Finished",
-                index: "/workhub/worktask",
-                title: "任务记录",
-            },
-        ]
-    },
-    {
         icon: "Switch",
         index: "/vendor",
         title: "云上资源",
         subs: [
+            {
+                icon: "Cpu",
+                index: "/vendor/worker",
+                title: "子节点",
+            },
             {
                 icon: "PartlyCloudy",
                 index: "/vendor/qcloud",
