@@ -22,9 +22,9 @@ export interface TaskScriptItem {
     Id: number
     UserId: number
     Name: string
+    Username: string
     Description: string
     Content: string
-    Username: string
     CommandType: string
     WorkDirectory: string
     Timeout: number
@@ -32,9 +32,9 @@ export interface TaskScriptItem {
 
 export interface TaskScriptRequest {
     Name: string
+    Username: string
     Description: string
     Content: string
-    Username: string
     CommandType: string
     WorkDirectory: string
     Timeout: number

@@ -16,6 +16,7 @@ const domainId = +route.params.id
 // 获取域名
 
 const fetchWait = ref(1)
+
 const domain = reactive({} as DomainItem)
 
 async function getDomain(id: number) {

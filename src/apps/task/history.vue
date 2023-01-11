@@ -11,13 +11,16 @@ import { dateFormat } from "@/helper/utils"
 
 // 获取列表
 
-const taskList = ref<TaskHistoryItem[]>([])
-const expanded = ref(false)
+const historyList = ref<TaskHistoryItem[]>([])
 
 async function getHistory() {
     const res = await Api.taskHistory.list()
-    taskList.value = res
+    historyList.value = res
 }
+
+// 展开检测
+
+const expanded = ref(false)
 
 async function onExpand(row: TaskHistoryItem[], rs: TaskHistoryItem[]) {
     expanded.value = rs.length > 0
@@ -46,15 +49,14 @@ onUnmounted(() => {
                 任务记录
             </el-breadcrumb-item>
         </el-breadcrumb>
-
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
                     <b>任务记录</b> &nbsp; &nbsp;
-                    <small>记录总数: {{ taskList.length }}</small>
+                    <small>记录总数: {{ historyList.length }}</small>
                 </div>
             </template>
-            <el-table :data="taskList" @expand-change="onExpand">
+            <el-table :data="historyList" @expand-change="onExpand">
                 <el-table-column prop="Id" label="任务ID" />
                 <el-table-column prop="HostName" label="主机名" />
                 <el-table-column prop="Subject" label="任务名称" />

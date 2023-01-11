@@ -7,6 +7,7 @@ import { DomainItem } from "@/api/local/domain"
 // 域名列表
 
 const fetchWait = ref(1)
+
 const domainList = reactive<DomainItem[]>([])
 
 async function getDomainList() {

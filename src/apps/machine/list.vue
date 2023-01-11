@@ -7,6 +7,7 @@ import { MachineItem } from "@/api/local/machine"
 // 主机列表
 
 const fetchWait = ref(1)
+
 const machineList = reactive<MachineItem[]>([])
 
 async function getMachineList() {

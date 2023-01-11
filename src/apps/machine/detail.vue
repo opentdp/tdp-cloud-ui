@@ -16,6 +16,7 @@ const machineId = +route.params.id
 // 获取域名
 
 const fetchWait = ref(1)
+
 const machine = reactive({} as MachineItem)
 
 async function getMachine(id: number) {
