@@ -11,7 +11,7 @@ import { bytesToSize } from "@/helper/utils"
 
 // 初始化
 
-const agentUrl = Api.socket.getAgentURL()
+const workerUrl = Api.socket.getWorkerURL()
 
 // 节点列表
 
@@ -68,7 +68,7 @@ onUnmounted(() => {
             </el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-alert title="节点接入命令" type="success" :description="'tdpc --master ' + agentUrl" show-icon />
+        <el-alert title="节点接入命令" type="success" :description="'tdpc worker --remote ' + workerUrl" show-icon />
         <div class="mgb10" />
 
         <el-card shadow="hover" class="mgb10">

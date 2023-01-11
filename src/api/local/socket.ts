@@ -1,7 +1,7 @@
 import { HttpClient } from "../basic/http"
 
 export class SocketModel extends HttpClient {
-    public getAgentURL() {
+    public getWorkerURL() {
         const token = this.session.appToken
 
         const origin = location.origin.replace(/^http/, "ws")
