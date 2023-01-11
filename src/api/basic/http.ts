@@ -124,3 +124,7 @@ export interface HttpRequest {
     method: "GET" | "DELETE" | "POST" | "PATCH"
     query?: unknown
 }
+
+export interface HttpMessage {
+    Message: string
+}

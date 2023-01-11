@@ -1,4 +1,4 @@
-import { HttpClient } from "../basic/http"
+import { HttpClient, HttpMessage } from "../basic/http"
 
 export class DomainModel extends HttpClient {
     public list(): Promise<DomainItem[]> {
@@ -9,15 +9,15 @@ export class DomainModel extends HttpClient {
         return this.get("/domain/" + id)
     }
 
-    public create(rq: DomainRequest): Promise<DomainResponse> {
+    public create(rq: DomainRequest): Promise<HttpMessage> {
         return this.post("/domain", rq)
     }
 
-    public update(rq: DomainItem): Promise<DomainResponse> {
+    public update(rq: DomainItem): Promise<HttpMessage> {
         return this.patch("/domain/" + rq.Id, rq)
     }
 
-    public remove(id: number): Promise<DomainResponse> {
+    public remove(id: number): Promise<HttpMessage> {
         return this.delete("/domain/" + id)
     }
 }
@@ -44,8 +44,4 @@ export interface DomainRequest {
     CloudMeta: string
     Description: string
     Status: string
-}
-
-export interface DomainResponse {
-    Message: string
 }

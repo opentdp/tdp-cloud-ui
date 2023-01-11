@@ -5,7 +5,7 @@ import { useRoute } from "vue-router"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api, QApi } from "@/api"
-import { TATScriptItem } from '@/api/local/tat'
+import { TaskScriptItem } from '@/api/local/task_script'
 import { SSHKeyItem } from "@/api/local/sshkey"
 
 import { WebSSH } from "@/helper/webssh"
@@ -164,10 +164,10 @@ async function getSshkeyList() {
 
 // 执行快捷命令
 
-const scriptList = ref<TATScriptItem[]>([])
+const scriptList = ref<TaskScriptItem[]>([])
 
 async function getTATScriptList() {
-    const res = await Api.tat.listScript()
+    const res = await Api.taskScript.list()
     scriptList.value = res
 }
 

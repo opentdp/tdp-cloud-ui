@@ -1,11 +1,11 @@
-import { HttpClient } from "../basic/http"
+import { HttpClient, HttpMessage } from "../basic/http"
 
 export class UserModel extends HttpClient {
     public login(rq: LoginRequest): Promise<LoginResponse> {
         return this.post("/user/login", rq)
     }
 
-    public register(rq: RegisterRequest): Promise<RegisterResponse> {
+    public register(rq: RegisterRequest): Promise<HttpMessage> {
         return this.post("/user/register", rq)
     }
 
@@ -13,11 +13,11 @@ export class UserModel extends HttpClient {
         return this.get("/user/info")
     }
 
-    public updateInfo(rq: UpdateInfoRequest): Promise<UpdateInfoResponse> {
+    public updateInfo(rq: UpdateInfoRequest): Promise<HttpMessage> {
         return this.patch("/user/info", rq)
     }
 
-    public updatePassword(rq: UpdatePasswordRequest): Promise<UpdatePasswordResponse> {
+    public updatePassword(rq: UpdatePasswordRequest): Promise<HttpMessage> {
         return this.patch("/user/password", rq)
     }
 }
@@ -44,10 +44,6 @@ export interface RegisterRequest {
     Password: string
 }
 
-export interface RegisterResponse {
-    Message: string
-}
-
 export interface UserInfoResponse {
     Id: number
     Username: string
@@ -59,15 +55,7 @@ export interface UpdateInfoRequest {
     Description: string
 }
 
-export interface UpdateInfoResponse {
-    Message: string
-}
-
 export interface UpdatePasswordRequest {
     OldPassword: string
     NewPassword: string
-}
-
-export interface UpdatePasswordResponse {
-    Message: string
 }

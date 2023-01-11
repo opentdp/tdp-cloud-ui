@@ -35,7 +35,7 @@ export interface WorkserExecRequest {
         CommandType: string
         Content: string
         Username: string
-        WorkingDirectory: string
+        WorkDirectory: string
         Timeout: number
     }
 }

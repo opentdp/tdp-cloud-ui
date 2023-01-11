@@ -6,20 +6,20 @@ import VueJsonPretty from "vue-json-pretty"
 import "vue-json-pretty/lib/styles.css"
 
 import { Api } from "@/api"
-import { TaskItem } from "@/api/local/worktask"
+import { TaskHistoryItem } from "@/api/local/task_history"
 import { dateFormat } from "@/helper/utils"
 
 // 获取列表
 
-const taskList = ref<TaskItem[]>([])
+const taskList = ref<TaskHistoryItem[]>([])
 const expanded = ref(false)
 
 async function getHistory() {
-    const res = await Api.worktask.listTask()
+    const res = await Api.taskHistory.list()
     taskList.value = res
 }
 
-async function onExpand(row: TaskItem[], rs: TaskItem[]) {
+async function onExpand(row: TaskHistoryItem[], rs: TaskHistoryItem[]) {
     expanded.value = rs.length > 0
 }
 

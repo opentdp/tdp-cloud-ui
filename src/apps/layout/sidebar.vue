@@ -33,34 +33,22 @@ const items: MenuItem[] = [
     },
     {
         icon: "Monitor",
-        index: "/machine",
+        index: "/machine/list",
         title: "主机管理",
-        subs: [
-            {
-                icon: "Monitor",
-                index: "/machine/list",
-                title: "主机列表",
-            },
-            {
-                icon: "Finished",
-                index: "/machine/worktask",
-                title: "任务记录",
-            },
-        ]
     },
     {
         icon: "Coin",
-        index: "/tat",
-        title: "自动化助手",
+        index: "/task",
+        title: "快捷命令",
         subs: [
             {
                 icon: "Crop",
-                index: "/tat/script",
+                index: "/task/script",
                 title: "命令管理",
             },
             {
                 icon: "Finished",
-                index: "/tat/history",
+                index: "/task/history",
                 title: "历史记录",
             },
         ]

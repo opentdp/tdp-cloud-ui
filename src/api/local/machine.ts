@@ -1,4 +1,4 @@
-import { HttpClient } from "../basic/http"
+import { HttpClient, HttpMessage } from "../basic/http"
 
 export class MachineModel extends HttpClient {
     public list(): Promise<MachineItem[]> {
@@ -9,15 +9,15 @@ export class MachineModel extends HttpClient {
         return this.get("/machine/" + id)
     }
 
-    public create(rq: MachineRequest): Promise<MachineResponse> {
+    public create(rq: MachineRequest): Promise<HttpMessage> {
         return this.post("/machine", rq)
     }
 
-    public update(rq: MachineItem): Promise<MachineResponse> {
+    public update(rq: MachineItem): Promise<HttpMessage> {
         return this.patch("/machine/" + rq.Id, rq)
     }
 
-    public remove(id: number): Promise<MachineResponse> {
+    public remove(id: number): Promise<HttpMessage> {
         return this.delete("/machine/" + id)
     }
 }
@@ -48,8 +48,4 @@ export interface MachineRequest {
     CloudMeta: string
     Description: string
     Status: string
-}
-
-export interface MachineResponse {
-    Message: string
 }

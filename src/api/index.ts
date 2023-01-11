@@ -7,11 +7,11 @@ import { DomainModel } from "./local/domain"
 import { MachineModel } from "./local/machine"
 import { SocketModel } from "./local/socket"
 import { SSHKeyModel } from "./local/sshkey"
-import { TATModel } from "./local/tat"
+import { TaskHistoryModel } from "./local/task_history"
+import { TaskScriptModel } from "./local/task_script"
 import { UserModel } from "./local/user"
 import { VendorModel } from "./local/vendor"
 import { WorkhubModel } from "./local/workhub"
-import { WorktaskModel } from "./local/worktask"
 
 export const Api = {
     cache: new CacheModel(),
@@ -21,11 +21,11 @@ export const Api = {
     machine: new MachineModel(),
     socket: new SocketModel(),
     sshkey: new SSHKeyModel(),
-    tat: new TATModel(),
+    taskHistory: new TaskHistoryModel(),
+    taskScript: new TaskScriptModel(),
     user: new UserModel(),
     vendor: new VendorModel(),
     workhub: new WorkhubModel(),
-    worktask: new WorktaskModel(),
 }
 
 // 导出 QCloud 接口

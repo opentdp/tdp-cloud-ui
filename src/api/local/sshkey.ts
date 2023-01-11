@@ -1,19 +1,19 @@
-import { HttpClient } from "../basic/http"
+import { HttpClient, HttpMessage } from "../basic/http"
 
 export class SSHKeyModel extends HttpClient {
     public list(): Promise<SSHKeyItem[]> {
         return this.get("/sshkey")
     }
 
-    public create(rq: SSHKeyRequest): Promise<SSHKeyResponse> {
+    public create(rq: SSHKeyRequest): Promise<HttpMessage> {
         return this.post("/sshkey", rq)
     }
 
-    public update(rq: SSHKeyItem): Promise<SSHKeyResponse> {
+    public update(rq: SSHKeyItem): Promise<HttpMessage> {
         return this.patch("/sshkey/" + rq.Id, rq)
     }
 
-    public remove(id: number): Promise<SSHKeyResponse> {
+    public remove(id: number): Promise<HttpMessage> {
         return this.delete("/sshkey/" + id)
     }
 }
@@ -32,8 +32,4 @@ export interface SSHKeyRequest {
     PublicKey: string
     PrivateKey: string
     Description: string
-}
-
-export interface SSHKeyResponse {
-    Message: string
 }

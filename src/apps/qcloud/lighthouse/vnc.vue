@@ -2,7 +2,7 @@
 import { ref, defineProps, onMounted } from "vue"
 
 import { Api, QApi } from "@/api"
-import { TATScriptItem } from '@/api/local/tat'
+import { TaskScriptItem } from '@/api/local/task_script'
 
 // 初始化
 
@@ -36,10 +36,10 @@ async function vncInit() {
 
 // 执行快捷命令
 
-const scriptList = ref<TATScriptItem[]>([])
+const scriptList = ref<TaskScriptItem[]>([])
 
 async function getTATScriptList() {
-    const res = await Api.tat.listScript()
+    const res = await Api.taskScript.list()
     scriptList.value = res
 }
 

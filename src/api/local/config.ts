@@ -1,4 +1,4 @@
-import { HttpClient } from "../basic/http"
+import { HttpClient, HttpMessage } from "../basic/http"
 
 export class ConfigModel extends HttpClient {
     public list(): Promise<ConfigItem[]> {
@@ -9,15 +9,15 @@ export class ConfigModel extends HttpClient {
         return this.get("/config/" + name)
     }
 
-    public create(rq: ConfigRequest): Promise<ConfigResponse> {
+    public create(rq: ConfigRequest): Promise<HttpMessage> {
         return this.post("/config", rq)
     }
 
-    public update(rq: ConfigItem): Promise<ConfigResponse> {
+    public update(rq: ConfigItem): Promise<HttpMessage> {
         return this.patch("/config/" + rq.Name, rq)
     }
 
-    public remove(name: string): Promise<ConfigResponse> {
+    public remove(name: string): Promise<HttpMessage> {
         return this.delete("/config/" + name)
     }
 }
@@ -37,8 +37,4 @@ export interface ConfigRequest {
     Value: string
     Module: string
     Description: string
-}
-
-export interface ConfigResponse {
-    Message: string
 }

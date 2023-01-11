@@ -5,7 +5,7 @@ import { ElTable } from "element-plus"
 
 import { Api } from "@/api"
 import { WorkerItem } from "@/api/local/workhub"
-import { TATScriptItem } from '@/api/local/tat'
+import { TaskScriptItem } from '@/api/local/task_script'
 
 import { bytesToSize } from "@/helper/utils"
 
@@ -32,14 +32,14 @@ function setCurrentRow(n: Worker) {
 
 // 执行快捷命令
 
-const scriptList = ref<TATScriptItem[]>([])
+const scriptList = ref<TaskScriptItem[]>([])
 
 async function getTATScriptList() {
-    const res = await Api.tat.listScript()
+    const res = await Api.taskScript.list()
     scriptList.value = res
 }
 
-async function nodeExec(script: TATScriptItem) {
+async function nodeExec(script: TaskScriptItem) {
     await Api.workhub.exec({
         HostId: selectedWorker.value.HostId,
         Payload: script

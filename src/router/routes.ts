@@ -61,15 +61,6 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/machine/detail.vue"),
             },
             {
-                path: "/machine/worktask",
-                name: "machine-worktask",
-                meta: {
-                    title: "任务记录",
-                    login: true,
-                },
-                component: () => import("@/apps/machine/worktask.vue"),
-            },
-            {
                 path: "/machine/vnc/:id",
                 name: "machine-vnc",
                 meta: {
@@ -77,6 +68,25 @@ export const routes: RouteRecordRaw[] = [
                     login: true,
                 },
                 component: () => import("@/apps/machine/vnc.vue"),
+            },
+            //////
+            {
+                path: "/task/history",
+                name: "task-history",
+                meta: {
+                    title: "任务记录",
+                    login: true,
+                },
+                component: () => import("@/apps/task/history.vue"),
+            },
+            {
+                path: "/task/script",
+                name: "task-script",
+                meta: {
+                    title: "脚本管理",
+                    login: true,
+                },
+                component: () => import("@/apps/task/script.vue"),
             },
             //////
             {
@@ -96,25 +106,6 @@ export const routes: RouteRecordRaw[] = [
                     login: true,
                 },
                 component: () => import("@/apps/terminal/sshkey.vue"),
-            },
-            //////
-            {
-                path: "/tat/history",
-                name: "tat-history",
-                meta: {
-                    title: "历史记录 - 自动化助手",
-                    login: true,
-                },
-                component: () => import("@/apps/tat/history.vue"),
-            },
-            {
-                path: "/tat/script",
-                name: "tat-script",
-                meta: {
-                    title: "命令列表 - 自动化助手",
-                    login: true,
-                },
-                component: () => import("@/apps/tat/script.vue"),
             },
             //////
             {

@@ -1,58 +1,36 @@
 <script lang="ts" setup>
 import { ref, onMounted } from "vue"
 import { ElMessage, ElTable } from "element-plus"
-import { Base64 } from 'js-base64'
 
-import { Api, QApi } from "@/api"
-import { TATScriptItem } from '@/api/local/tat'
-import { Lighthouse } from "@/api/qcloud/typings"
+import { Api } from "@/api"
+import { TaskScriptItem } from '@/api/local/task_script'
 
-const tatList = ref<TATScriptItem[]>([])
+// 获取命令列表
+
 const fetchWait = ref(false)
-const regionList = ref<{ value: string, label: string }[]>([])
+const scriptList = ref<TaskScriptItem[]>([])
 
-const currentRegion = ref("")
-const lighthouseList = ref<(Lighthouse.Instance & { region: string })[]>([])
-const lighthouseRegionMap = new Map<string, string>()
-
-async function getTATScriptList() {
+async function getTaskScriptList() {
     fetchWait.value = true
     try {
-        const res = await Api.tat.listScript()
-        tatList.value = res
+        const res = await Api.taskScript.list()
+        scriptList.value = res
     } catch (error) {
         ElMessage.error(error as string)
     }
     fetchWait.value = false
 }
 
-async function fetchLH() {
-    const res = await QApi.lighthouse.describeRegions()
-    await Promise.all(res.RegionSet.map(async item => {
-        const res = await QApi.lighthouse.describeInstances(item.Region)
-        if (res.TotalCount > 0) {
-            regionList.value.push({ value: item.Region, label: item.RegionName })
-            if (currentRegion.value === '') {
-                currentRegion.value = item.Region
-            }
-            res.InstanceSet.forEach(instance => {
-                lighthouseList.value.push({ ...instance, region: item.Region })
-                lighthouseRegionMap.set(instance.InstanceId, item.Region)
-            })
-        }
-    }))
-}
-
-// New
+// 新建命令
 
 const newDialogVisible = ref<boolean>(false)
-const newForm = ref<Omit<TATScriptItem, "Id">>({
-    Name: "", Description: "", Content: "", CommandType: "SHELL", WorkingDirectory: "", Timeout: 60, Username: "", UserId: 0
+const newForm = ref<Omit<TaskScriptItem, "Id">>({
+    Name: "", Description: "", Content: "", CommandType: "SHELL", WorkDirectory: "", Timeout: 60, Username: "", UserId: 0
 })
 
 function onNew() {
     newForm.value = {
-        Name: "", Description: "", Content: "", CommandType: "SHELL", WorkingDirectory: "", Timeout: 60, Username: "", UserId: 0
+        Name: "", Description: "", Content: "", CommandType: "SHELL", WorkDirectory: "", Timeout: 60, Username: "", UserId: 0
     }
     newDialogVisible.value = true
 }
@@ -64,11 +42,11 @@ async function onNewSave() {
         if (newForm.value.Username == "") {
             newForm.value.Username = newForm.value.CommandType == "SHELL" ? "root" : "System"
         }
-        if (newForm.value.WorkingDirectory == "") {
-            newForm.value.WorkingDirectory = newForm.value.CommandType == "SHELL" ? "/root" : "C:\\Program Files\\qcloud\\tat_agent\\workdir"
+        if (newForm.value.WorkDirectory == "") {
+            newForm.value.WorkDirectory = newForm.value.CommandType == "SHELL" ? "/root" : "C:\\"
         }
-        await Api.tat.createScript(newForm.value)
-        await getTATScriptList()
+        await Api.taskScript.createScript(newForm.value)
+        await getTaskScriptList()
     }
     catch (error) {
         ElMessage.error(error + "")
@@ -76,12 +54,12 @@ async function onNewSave() {
     fetchWait.value = false
 }
 
-// Edit
+// 编辑命令
 
 const editDialogVisible = ref<boolean>(false)
-const editForm = ref<TATScriptItem>()
+const editForm = ref<TaskScriptItem>()
 
-function onEdit(row: TATScriptItem) {
+function onEdit(row: TaskScriptItem) {
     editForm.value = { ...row }
     editDialogVisible.value = true
 }
@@ -94,11 +72,11 @@ async function onEditSave() {
             if (editForm.value.Username == "") {
                 editForm.value.Username = editForm.value.CommandType == "SHELL" ? "root" : "System"
             }
-            if (editForm.value.WorkingDirectory == "") {
-                editForm.value.WorkingDirectory = editForm.value.CommandType == "SHELL" ? "/root" : "C:\\Program Files\\qcloud\\tat_agent\\workdir"
+            if (editForm.value.WorkDirectory == "") {
+                editForm.value.WorkDirectory = editForm.value.CommandType == "SHELL" ? "/root" : "C:\\"
             }
-            await Api.tat.updateScript(editForm.value)
-            await getTATScriptList()
+            await Api.taskScript.update(editForm.value)
+            await getTaskScriptList()
         }
         catch (error) {
             ElMessage.error(error as string)
@@ -107,13 +85,13 @@ async function onEditSave() {
     fetchWait.value = false
 }
 
-// Delete
+// 删除命令
 
-async function onDelete(id: string) {
+async function onDelete(id: number) {
     fetchWait.value = true
     try {
-        await Api.tat.deleteScript(id)
-        await getTATScriptList()
+        await Api.taskScript.remove(id)
+        await getTaskScriptList()
     }
     catch (error) {
         ElMessage.error(error + "")
@@ -121,66 +99,11 @@ async function onDelete(id: string) {
     fetchWait.value = false
 }
 
-// Run
-
-interface TATRunIitem {
-    CommandType: string
-    Username: string
-    Content: string
-    WorkingDirectory: string
-    Timeout: number
-    InstanceIds: string[]
-    Description: string
-    Name: string
-}
-
-const runDialogVisible = ref(false)
-const runForm = ref<TATRunIitem>({
-    CommandType: "", Username: "", Content: "", WorkingDirectory: "", Timeout: 0, InstanceIds: [], Description: "", Name: ""
-})
-
-function onRun(item: TATScriptItem) {
-    runForm.value.Username = item.Username
-    runForm.value.CommandType = item.CommandType
-    runForm.value.Content = item.Content
-    runForm.value.WorkingDirectory = item.WorkingDirectory
-    runForm.value.Timeout = item.Timeout
-    runForm.value.Description = item.Description
-    runForm.value.Name = item.Name
-    runDialogVisible.value = true
-}
-
-async function onDoRun() {
-    try {
-        if (runForm.value.InstanceIds.length > 0) {
-            const regions = new Set<string>()
-            runForm.value.InstanceIds.forEach(id => {
-                regions.add(lighthouseRegionMap.get(id) as string)
-            })
-            await Promise.all(Array.from(regions).map(async region => {
-                const instanceIds = runForm.value.InstanceIds.filter(id => lighthouseRegionMap.get(id) == region)
-                const res = await QApi.tat.runCommand(region, {
-                    Content: Base64.encode(runForm.value.Content),
-                    Description: runForm.value.Description,
-                    CommandName: runForm.value.Name,
-                    Username: runForm.value.Username,
-                    WorkingDirectory: runForm.value.WorkingDirectory,
-                    Timeout: runForm.value.Timeout,
-                    InstanceIds: instanceIds,
-                })
-                await Api.tat.createHistory({ Name: runForm.value.Name, Region: region, InvocationId: res.InvocationId })
-            }))
-        }
-    } catch (error) {
-        ElMessage.error(error as string)
-    }
-    runDialogVisible.value = false
-}
+// 加载数据
 
 onMounted(async () => {
     try {
-        getTATScriptList()
-        fetchLH()
+        getTaskScriptList()
     } catch (error) {
         ElMessage.error(error as string)
     }
@@ -194,9 +117,6 @@ onMounted(async () => {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                自动化助手
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
                 命令管理
             </el-breadcrumb-item>
         </el-breadcrumb>
@@ -205,22 +125,19 @@ onMounted(async () => {
             <template #header>
                 <div class="flex-between">
                     <b>命令列表</b> &nbsp; &nbsp;
-                    <small>命令总数: {{ tatList.length }}</small>
+                    <small>命令总数: {{ scriptList.length }}</small>
                     <div class="flex-auto" />
                     <el-button type="primary" plain size="small" icon="Plus" @click="onNew">
                         添加
                     </el-button>
                 </div>
             </template>
-            <el-table v-fetchWait="fetchWait" :data="tatList" row-key="Id">
+            <el-table v-fetchWait="fetchWait" :data="scriptList" row-key="Id">
                 <el-table-column fixed prop="Name" label="名称" />
                 <el-table-column prop="Description" label="描述" />
                 <el-table-column prop="Content" label="命令" min-width="250" show-overflow-tooltip />
                 <el-table-column fixed="right" label="操作" width="240" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="View" @click="onRun(scope.row)">
-                            运行
-                        </el-button>
                         <el-button link type="primary" icon="Edit" @click="onEdit(scope.row)">
                             修改
                         </el-button>
@@ -251,8 +168,8 @@ onMounted(async () => {
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="执行路径">
-                    <el-input v-model="newForm.WorkingDirectory"
-                        :placeholder="newForm.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\Program Files\\qcloud\\tat_agent\\workdir'" />
+                    <el-input v-model="newForm.WorkDirectory"
+                        :placeholder="newForm.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\'" />
                 </el-form-item>
                 <el-form-item label="执行用户">
                     <el-input v-model="newForm.Username"
@@ -289,8 +206,8 @@ onMounted(async () => {
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="执行路径">
-                    <el-input v-model="editForm.WorkingDirectory"
-                        :placeholder="editForm.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\Program Files\\qcloud\\tat_agent\\workdir'" />
+                    <el-input v-model="editForm.WorkDirectory"
+                        :placeholder="editForm.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\'" />
                 </el-form-item>
                 <el-form-item label="执行用户">
                     <el-input v-model="editForm.Username"
@@ -308,33 +225,6 @@ onMounted(async () => {
                 <span class="dialog-footer">
                     <el-button @click="editDialogVisible = false">取消</el-button>
                     <el-button type="primary" @click="onEditSave">保存</el-button>
-                </span>
-            </template>
-        </el-dialog>
-
-        <el-dialog v-model="runDialogVisible" title="运行命令">
-            <el-form :model="runForm" label-width="120px">
-                <el-form-item label="命令">
-                    <el-input v-model="runForm.Content" type="textarea" rows="5" />
-                </el-form-item>
-                <el-form-item label="执行用户">
-                    <el-input v-model="runForm.Username" />
-                </el-form-item>
-                <el-form-item label="执行路径">
-                    <el-input v-model="runForm.WorkingDirectory" />
-                </el-form-item>
-                <el-form-item label="选择执行实例">
-                    <el-checkbox-group v-model="runForm.InstanceIds">
-                        <el-checkbox v-for="item in lighthouseList" :key="item.InstanceId" :label="item.InstanceId">
-                            {{ item.InstanceName }} - {{ item.InstanceId }}
-                        </el-checkbox>
-                    </el-checkbox-group>
-                </el-form-item>
-            </el-form>
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button @click="runDialogVisible = false">取消</el-button>
-                    <el-button type="primary" @click="onDoRun">运行</el-button>
                 </span>
             </template>
         </el-dialog>
