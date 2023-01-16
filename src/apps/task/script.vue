@@ -5,8 +5,8 @@ import { ElTable } from "element-plus"
 import { Api } from "@/api"
 import { TaskScriptItem } from "@/api/local/task_script"
 
-import CreateScript from "./script/create.vue"
-import UpdateScript from "./script/update.vue"
+import CreateScript from "./script_create.vue"
+import UpdateScript from "./script_update.vue"
 
 // 初始化
 
@@ -66,7 +66,7 @@ getScriptList()
                 <el-table-column prop="Content" label="脚本" min-width="250" show-overflow-tooltip />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="Edit" @click="updateModal?.open()">
+                        <el-button link type="primary" icon="Edit" @click="updateModal?.open(scope.row)">
                             修改
                         </el-button>
                         <el-popconfirm title="确定删除?" @confirm="removeScript(scope.row.Id)">
@@ -82,6 +82,6 @@ getScriptList()
         </el-card>
 
         <CreateScript ref="createModal" @submit="getScriptList" />
-        <UpdateScript ref="UpdateScript" @submit="getScriptList" />
+        <UpdateScript ref="updateModal" @submit="getScriptList" />
     </div>
 </template>

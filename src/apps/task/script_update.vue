@@ -2,30 +2,18 @@
 import { ref, reactive, defineExpose } from "vue"
 
 import { Api } from "@/api"
-import { TaskScriptRequest } from '@/api/local/task_script'
+import { TaskScriptItem } from '@/api/local/task_script'
 
 // 初始化
 
-const dailog = ref(0)
-const loading = ref(0)
+const dailog = ref(false)
+const loading = ref(false)
 
 const emits = defineEmits(['submit'])
 
-const modelDefault: TaskScriptRequest = {
-    Name: "",
-    Username: "",
-    Description: "",
-    Content: "",
-    CommandType: "SHELL",
-    WorkDirectory: "",
-    Timeout: 60,
-}
-
 // 创建表单
 
-const formModel = reactive(
-    Object.assign({}, modelDefault)
-)
+const formModel = reactive({} as TaskScriptItem)
 
 const formRules = reactive({
     Name: [{ required: true, message: "请输入名称" }],
@@ -37,48 +25,47 @@ const formRules = reactive({
     Timeout: [{ required: true, message: "请输入超时时间" }],
 })
 
+// 提交表单
+
 async function formSubmit() {
-    loading.value = 1
-    const item = formModel
-    const query: TaskScriptRequest = {
-        Name: item.Name,
-        Username: item.Username,
-        Description: item.Description,
-        Content: item.Content,
-        CommandType: item.CommandType,
-        WorkDirectory: item.WorkDirectory,
-        Timeout: item.Timeout || 0,
+    loading.value = false
+    if (formModel.Username == "") {
+        formModel.Username = formModel.CommandType == "SHELL" ? "root" : "System"
     }
-    await Api.taskScript.create(query)
-    loading.value = 0
-    dailog.value = 0
+    if (formModel.WorkDirectory == "") {
+        formModel.WorkDirectory = formModel.CommandType == "SHELL" ? "/root" : "C:\\"
+    }
+    await Api.taskScript.update(formModel)
+    loading.value = false
+    dailog.value = false
     emits("submit")
 }
 
-async function openDailog() {
-    Object.assign(formModel, modelDefault)
-    dailog.value = 1
-}
+// 导出属性
 
 defineExpose({
-    open: openDailog
+    open: (data: TaskScriptItem) => {
+        dailog.value = true
+        loading.value = false
+        Object.assign(formModel, data)
+    }
 })
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close title="添加脚本" width="600px">
+    <el-dialog v-model="dailog" destroy-on-close title="修改脚本" width="600px">
         <el-form :model="formModel" :rules="formRules" label-width="100px" label-suffix=":">
+            <el-form-item label="名称">
+                <el-input v-model="formModel.Name" :maxlength="60" />
+            </el-form-item>
+            <el-form-item label="描述：">
+                <el-input v-model="formModel.Description" :maxlength="120" />
+            </el-form-item>
             <el-form-item label="脚本类型">
                 <el-radio-group v-model="formModel.CommandType">
                     <el-radio label="SHELL" />
                     <el-radio label="POWERSHELL" />
                 </el-radio-group>
-            </el-form-item>
-            <el-form-item label="名称">
-                <el-input v-model="formModel.Name" :maxlength="60" />
-            </el-form-item>
-            <el-form-item label="描述">
-                <el-input v-model="formModel.Description" :maxlength="120" />
             </el-form-item>
             <el-form-item label="执行路径">
                 <el-input v-model="formModel.WorkDirectory"
@@ -88,7 +75,7 @@ defineExpose({
                 <el-input v-model="formModel.Username"
                     :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 root' : '非必填，默认为 System'" />
             </el-form-item>
-            <el-form-item label="脚本内容">
+            <el-form-item label="脚本">
                 <el-input v-model="formModel.Content" type="textarea" rows="5" />
             </el-form-item>
             <el-form-item label="超时时间">
@@ -98,10 +85,8 @@ defineExpose({
         </el-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dailog = 0">取消</el-button>
-                <el-button type="primary" :loading="loading" @click="formSubmit">
-                    保存
-                </el-button>
+                <el-button @click="dailog = false">取消</el-button>
+                <el-button type="primary" @click="formSubmit">保存</el-button>
             </span>
         </template>
     </el-dialog>
