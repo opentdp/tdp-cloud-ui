@@ -12,8 +12,6 @@ const props = defineProps<{
     instance: Lighthouse.Instance,
 }>()
 
-const instance = reactive(props.instance)
-
 // 获取区域
 
 const region = () => {
@@ -26,7 +24,7 @@ const snapshotList = ref<Lighthouse.DescribeSnapshotsResponse>()
 
 async function getSnapshotList() {
     const res = await QApi.lighthouse.describeSnapshots(region(), {
-        Filters: [{ Name: "instance-id", Values: [instance.InstanceId] }],
+        Filters: [{ Name: "instance-id", Values: [props.instance.InstanceId] }],
     })
     snapshotList.value = res
 }
@@ -44,7 +42,7 @@ const createSnapshotBus = reactive({
 async function createSnapshot() {
     createSnapshotBus.loading = true
     await QApi.lighthouse.createInstanceSnapshot(region(), {
-        InstanceId: instance.InstanceId,
+        InstanceId: props.instance.InstanceId,
         SnapshotName: createSnapshotBus.model.name
     })
     createSnapshotBus.dailog = false
@@ -61,7 +59,7 @@ function createSnapshotDailog() {
 
 async function applySnapshot(item: Lighthouse.Snapshot) {
     await QApi.lighthouse.applyInstanceSnapshot(region(), {
-        InstanceId: instance.InstanceId,
+        InstanceId: props.instance.InstanceId,
         SnapshotId: item.SnapshotId
     })
     // refreshInstance()

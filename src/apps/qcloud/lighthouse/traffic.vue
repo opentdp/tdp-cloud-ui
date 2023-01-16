@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, reactive, defineProps } from "vue"
+import { ref, defineProps } from "vue"
 
 import { EChartsOption } from "echarts"
 
@@ -13,8 +13,6 @@ import { bytesToSize, dateFormat } from "@/helper/utils"
 const props = defineProps<{
     instance: Lighthouse.Instance,
 }>()
-
-const instance = reactive(props.instance)
 
 // 获取区域
 
@@ -30,7 +28,7 @@ const outtrafficChart = ref<EChartsOption>()
 
 async function getTrafficPackage() {
     const res = await QApi.lighthouse.describeInstancesTrafficPackages(region(), {
-        InstanceIds: [instance.InstanceId],
+        InstanceIds: [props.instance.InstanceId],
     })
     trafficPackage.value = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
 }
@@ -44,7 +42,7 @@ async function getLighthouseOuttraffic() {
                 Dimensions: [
                     {
                         Name: "InstanceId",
-                        Value: instance.InstanceId,
+                        Value: props.instance.InstanceId,
                     },
                 ],
             },

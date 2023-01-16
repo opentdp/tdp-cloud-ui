@@ -10,8 +10,6 @@ const props = defineProps<{
     instance: Lighthouse.Instance,
 }>()
 
-const instance = reactive(props.instance)
-
 interface FirewallRuleBus {
     dailog: boolean
     loading: boolean
@@ -33,7 +31,7 @@ const firewallRuleList = ref<Lighthouse.DescribeFirewallRulesResponse>()
 
 async function getFirewallRuleList() {
     const res = await QApi.lighthouse.describeFirewallRules(region(), {
-        InstanceId: instance.InstanceId,
+        InstanceId: props.instance.InstanceId,
     })
     firewallRuleList.value = res
 }
@@ -55,7 +53,7 @@ const createFirewallRuleBus = reactive<FirewallRuleBus>({
 async function createFirewallRule() {
     createFirewallRuleBus.loading = true
     await QApi.lighthouse.createFirewallRules(region(), {
-        InstanceId: instance.InstanceId,
+        InstanceId: props.instance.InstanceId,
         FirewallRules: [createFirewallRuleBus.model]
     })
     createFirewallRuleBus.dailog = false
@@ -77,7 +75,7 @@ async function modifyFirewallRule() {
     }
     modifyFirewallRuleBus.loading = true
     await QApi.lighthouse.modifyFirewallRules(region(), {
-        InstanceId: instance.InstanceId,
+        InstanceId: props.instance.InstanceId,
         FirewallRules: firewallRuleList.value.FirewallRuleSet.map(
             (item: FirewallRuleBus["model"], idx) => {
                 if (modifyFirewallRuleBus.index === idx) {
@@ -111,7 +109,7 @@ async function modifyFirewallRuleDescription() {
     modifyFirewallRuleDescriptionBus.loading = true
     delete modifyFirewallRuleDescriptionBus.model.AppType
     await QApi.lighthouse.modifyFirewallRuleDescription(region(), {
-        InstanceId: instance.InstanceId,
+        InstanceId: props.instance.InstanceId,
         FirewallRule: modifyFirewallRuleDescriptionBus.model
     })
     modifyFirewallRuleDescriptionBus.dailog = false
@@ -129,7 +127,7 @@ function modifyFirewallRuleDescriptionDailog(item: Lighthouse.FirewallRule) {
 async function deleteFirewallRule(item: FirewallRuleBus["model"]) {
     delete item.AppType
     await QApi.lighthouse.deleteFirewallRules(region(), {
-        InstanceId: instance.InstanceId,
+        InstanceId: props.instance.InstanceId,
         FirewallRules: [item]
     })
     getFirewallRuleList()
