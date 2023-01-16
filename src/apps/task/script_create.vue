@@ -13,7 +13,7 @@ const emits = defineEmits(['submit'])
 
 // 创建表单
 
-const modelData = {
+const modelData: TaskScriptRequest = {
     Name: "",
     Username: "",
     Description: "",

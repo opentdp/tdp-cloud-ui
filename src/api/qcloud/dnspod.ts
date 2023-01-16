@@ -11,7 +11,7 @@ export class DnspodModel extends QCloudClient {
     ): Promise<Dnspod.DescribeDomainListResponse> {
         return this.q({
             action: "DescribeDomainList",
-            query, expiry: 600
+            query
         })
     }
     public describeRecordList(
@@ -19,7 +19,7 @@ export class DnspodModel extends QCloudClient {
     ): Promise<Dnspod.DescribeRecordListResponse> {
         return this.q({
             action: "DescribeRecordList",
-            query, expiry: 600
+            query
         })
     }
 
@@ -28,7 +28,7 @@ export class DnspodModel extends QCloudClient {
     ): Promise<Dnspod.DescribeDomainResponse> {
         return this.q({
             action: "DescribeDomain",
-            query, expiry: 600
+            query
         })
     }
 

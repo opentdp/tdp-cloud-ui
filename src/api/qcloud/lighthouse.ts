@@ -20,7 +20,7 @@ export class LighthouseModel extends QCloudClient {
         query = Object.assign({ Limit: 100 }, query)
         return this.q({
             action: "DescribeInstances",
-            region, query, expiry: 600
+            region, query
         })
     }
 
@@ -87,7 +87,7 @@ export class LighthouseModel extends QCloudClient {
         query = Object.assign({ Limit: 100 }, query)
         return this.q({
             action: "DescribeSnapshots",
-            region, query, expiry: 600
+            region, query
         })
     }
 
@@ -140,7 +140,7 @@ export class LighthouseModel extends QCloudClient {
         query = Object.assign({ Limit: 100 }, query)
         return this.q({
             action: "DescribeFirewallRules",
-            region, query, expiry: 600
+            region, query
         })
     }
 

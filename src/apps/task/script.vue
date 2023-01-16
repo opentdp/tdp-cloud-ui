@@ -5,13 +5,13 @@ import { ElTable } from "element-plus"
 import { Api } from "@/api"
 import { TaskScriptItem } from "@/api/local/task_script"
 
-import CreateScript from "./script_create.vue"
-import UpdateScript from "./script_update.vue"
+import ScriptCreate from "./script_create.vue"
+import ScriptUpdate from "./script_update.vue"
 
 // 初始化
 
-const createModal = ref<InstanceType<typeof CreateScript>>()
-const updateModal = ref<InstanceType<typeof UpdateScript>>()
+const createModal = ref<InstanceType<typeof ScriptCreate>>()
+const updateModal = ref<InstanceType<typeof ScriptUpdate>>()
 
 // 获取脚本列表
 
@@ -81,7 +81,7 @@ getScriptList()
             </el-table>
         </el-card>
 
-        <CreateScript ref="createModal" @submit="getScriptList" />
-        <UpdateScript ref="updateModal" @submit="getScriptList" />
+        <ScriptCreate ref="createModal" @submit="getScriptList" />
+        <ScriptUpdate ref="updateModal" @submit="getScriptList" />
     </div>
 </template>

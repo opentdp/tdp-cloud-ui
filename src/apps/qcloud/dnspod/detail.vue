@@ -4,6 +4,9 @@ import { ref, reactive, defineProps } from "vue"
 import { Api, QApi } from "@/api"
 import { Dnspod } from "@/api/qcloud/typings"
 
+import RecordCreate from './record_create.vue'
+import RecordUpdate from './record_update.vue'
+
 // 初始化
 
 const props = defineProps<{
@@ -12,6 +15,9 @@ const props = defineProps<{
 }>()
 
 QApi.dnspod.vendor(props.vid)
+
+const createModal = ref<InstanceType<typeof RecordCreate>>()
+const updateModal = ref<InstanceType<typeof RecordUpdate>>()
 
 // 域名概要
 
@@ -38,7 +44,7 @@ async function getRecordType() {
     recordType.value = res.TypeList
 }
 
-const recordLineList = ref<Dnspod.LineInfo[]>()
+const recordLineList = ref<Dnspod.LineInfo[]>([])
 
 async function getRecordLine() {
     const res = await QApi.dnspod.describeRecordLineList({
@@ -64,109 +70,6 @@ async function getRecordList() {
 async function refreshRecordList() {
     Api.cache.clear()
     await getRecordList()
-}
-
-// 添加记录
-
-const recordDefault: Dnspod.RecordListItem = {
-    Name: "",
-    Type: "",
-    Line: "",
-    Value: "",
-    MX: 0,
-    TTL: 0,
-    Weight: 0,
-    Status: "",
-    Remark: "",
-    LineId: "0",
-    RecordId: 0,
-    UpdatedOn: "",
-    MonitorStatus: "",
-}
-
-const createRecordBus = reactive({
-    dailog: false,
-    loading: false,
-    model: Object.assign({}, recordDefault),
-    rules: {
-        Name: [{ required: true, message: "请输入别名" }],
-        Type: [{ required: true, message: "请输入别名" }],
-        Line: [{ required: true, message: "请输入别名" }],
-        Value: [{ required: true, message: "请输入别名" }],
-        MX: [{ required: true, message: "请输入别名" }],
-        TTL: [{ required: true, message: "请输入别名" }],
-        Weight: [{ required: true, message: "请输入别名" }],
-        Status: [{ required: true, message: "请输入别名" }],
-        Remark: [{ required: true, message: "请输入别名" }],
-    }
-})
-
-async function createRecordDailog() {
-    Object.assign(createRecordBus.model, recordDefault)
-    createRecordBus.dailog = true
-}
-
-async function createRecord() {
-    createRecordBus.loading = true
-    const item = createRecordBus.model
-    const query: Dnspod.CreateRecordRequest = {
-        Domain: domainInfo.Domain,
-        SubDomain: item.Name,
-        RecordType: item.Type,
-        RecordLine: item.Line,
-        Value: item.Value,
-        MX: item.MX || 0,
-        TTL: item.TTL || 0,
-        Weight: item.Weight || 0
-    }
-    await QApi.dnspod.createRecord(query)
-    await refreshRecordList()
-    createRecordBus.dailog = false
-    createRecordBus.loading = false
-}
-
-// 编辑记录
-
-const modifyRecordBus = reactive({
-    dailog: false,
-    loading: false,
-    model: Object.assign({}, recordDefault),
-    rules: {
-        Name: [{ required: true, message: "请输入别名" }],
-        Type: [{ required: true, message: "请输入别名" }],
-        Line: [{ required: true, message: "请输入别名" }],
-        Value: [{ required: true, message: "请输入别名" }],
-        MX: [{ required: true, message: "请输入别名" }],
-        TTL: [{ required: true, message: "请输入别名" }],
-        Weight: [{ required: true, message: "请输入别名" }],
-        Status: [{ required: true, message: "请输入别名" }],
-        Remark: [{ required: true, message: "请输入别名" }],
-    }
-})
-
-async function modifyRecordDailog(item: Dnspod.RecordListItem) {
-    Object.assign(modifyRecordBus.model, item)
-    modifyRecordBus.dailog = true
-}
-
-async function modifyRecord() {
-    modifyRecordBus.loading = true
-    const item = modifyRecordBus.model
-    const query: Dnspod.ModifyRecordRequest = {
-        Domain: domainInfo.Domain,
-        SubDomain: item.Name,
-        RecordType: item.Type,
-        RecordLine: item.Line,
-        Value: item.Value,
-        MX: item.MX || 0,
-        TTL: item.TTL || 0,
-        Weight: item.Weight || 0,
-        RecordId: item.RecordId || 0
-    }
-    await QApi.dnspod.modifyRecord(query)
-    await refreshRecordList()
-    modifyRecordBus.dailog = false
-    modifyRecordBus.loading = false
 }
 
 // 删除记录
@@ -197,7 +100,8 @@ async function deleteRecord(recordId: number) {
                 <b>解析列表</b> &nbsp; &nbsp;
                 <small>记录总数: {{ recordCountInfo?.TotalCount || 0 }}</small>
                 <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createRecordDailog">
+                <el-button type="primary" plain size="small"
+                    @click="createModal?.open(domainInfo.Domain, recordType, recordLineList)">
                     添加记录
                 </el-button>
             </div>
@@ -221,7 +125,8 @@ async function deleteRecord(recordId: number) {
             <el-table-column prop="Remark" label="备注" min-width="150" />
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="modifyRecordDailog(scope.row)">
+                    <el-button link type="primary" icon="Edit"
+                        @click="updateModal?.open(scope.row, domainInfo.Domain, recordType, recordLineList)">
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteRecord(scope.row.RecordId)">
@@ -234,81 +139,8 @@ async function deleteRecord(recordId: number) {
                 </template>
             </el-table-column>
         </el-table>
+
+        <RecordCreate ref="createModal" @submit="getRecordList" />
+        <RecordUpdate ref="updateModal" @submit="getRecordList" />
     </el-card>
-
-    <el-dialog v-model="createRecordBus.dailog" destroy-on-close title="添加记录" width="400px">
-        <el-form :model="createRecordBus.model" :rules="createRecordBus.rules" label-width="88px">
-            <el-form-item prop="Name" label="主机记录">
-                <el-input v-model="createRecordBus.model.Name" />
-            </el-form-item>
-            <el-form-item prop="Type" label="记录类型">
-                <el-select v-model="createRecordBus.model.Type">
-                    <el-option v-for="v in recordType" :key="v" :label="v" :value="v" />
-                </el-select>
-            </el-form-item>
-            <el-form-item prop="Line" label="线路类型">
-                <el-select v-model="createRecordBus.model.Line">
-                    <el-option v-for="v in recordLineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
-                </el-select>
-            </el-form-item>
-            <el-form-item prop="Value" label="记录值">
-                <el-input v-model="createRecordBus.model.Value" />
-            </el-form-item>
-            <el-form-item prop="Weight" label="权重">
-                <el-input v-model="createRecordBus.model.Weight" />
-            </el-form-item>
-            <el-form-item prop="MX" label="MX">
-                <el-input v-model="createRecordBus.model.MX" />
-            </el-form-item>
-            <el-form-item prop="TTL" label="TTL">
-                <el-input v-model="createRecordBus.model.TTL" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="createRecordBus.dailog = false">取消</el-button>
-                <el-button type="primary" :loading="createRecordBus.loading" @click="createRecord">
-                    保存
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
-
-    <el-dialog v-model="modifyRecordBus.dailog" destroy-on-close title="更新记录" width="400px">
-        <el-form :model="modifyRecordBus.model" :rules="modifyRecordBus.rules" label-width="88px">
-            <el-form-item prop="Name" label="主机记录">
-                <el-input v-model="modifyRecordBus.model.Name" />
-            </el-form-item>
-            <el-form-item prop="Type" label="记录类型">
-                <el-select v-model="modifyRecordBus.model.Type">
-                    <el-option v-for="v in recordType" :key="v" :label="v" :value="v" />
-                </el-select>
-            </el-form-item>
-            <el-form-item prop="Line" label="线路类型">
-                <el-select v-model="modifyRecordBus.model.Line">
-                    <el-option v-for="v in recordLineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
-                </el-select>
-            </el-form-item>
-            <el-form-item prop="Value" label="记录值">
-                <el-input v-model="modifyRecordBus.model.Value" />
-            </el-form-item>
-            <el-form-item prop="Weight" label="权重">
-                <el-input v-model="modifyRecordBus.model.Weight" />
-            </el-form-item>
-            <el-form-item prop="MX" label="MX">
-                <el-input v-model="modifyRecordBus.model.MX" />
-            </el-form-item>
-            <el-form-item prop="TTL" label="TTL">
-                <el-input v-model="modifyRecordBus.model.TTL" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="modifyRecordBus.dailog = false">取消</el-button>
-                <el-button type="primary" :loading="modifyRecordBus.loading" @click="modifyRecord">
-                    保存
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
 </template>
