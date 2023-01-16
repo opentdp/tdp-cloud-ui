@@ -57,31 +57,9 @@ async function deleteRecord(recordId: number) {
     getRecordList()
 }
 
-// 记录类型列表
-
-const recordType = ref<string[]>([])
-const recordLineList = ref<Dnspod.LineInfo[]>([])
-
-async function getRecordType() {
-    const res = await QApi.dnspod.describeRecordType({
-        DomainGrade: domainInfo.Grade
-    })
-    recordType.value = res.TypeList
-}
-
-async function getRecordLine() {
-    const res = await QApi.dnspod.describeRecordLineList({
-        DomainGrade: domainInfo.Grade,
-        Domain: domainInfo.Domain
-    })
-    recordLineList.value = res.LineList
-}
-
 // 加载数据
 getDomain()
 getRecordList()
-getRecordType()
-getRecordLine()
 </script>
 
 <template>
@@ -91,8 +69,7 @@ getRecordLine()
                 <b>解析列表</b> &nbsp; &nbsp;
                 <small>记录总数: {{ recordCountInfo?.TotalCount || 0 }}</small>
                 <div class="flex-auto" />
-                <el-button type="primary" plain size="small"
-                    @click="createModal?.open(domainInfo.Domain, recordType, recordLineList)">
+                <el-button type="primary" plain size="small" @click="createModal?.open(domainInfo)">
                     添加记录
                 </el-button>
             </div>
@@ -116,8 +93,7 @@ getRecordLine()
             <el-table-column prop="Remark" label="备注" min-width="150" />
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit"
-                        @click="updateModal?.open(scope.row, domainInfo.Domain, recordType, recordLineList)">
+                    <el-button link type="primary" icon="Edit" @click="updateModal?.open(domainInfo, scope.row)">
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteRecord(scope.row.RecordId)">

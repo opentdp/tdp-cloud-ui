@@ -11,9 +11,7 @@ const loading = ref(false)
 
 const emits = defineEmits(['submit'])
 
-let domainName = ref("")
-let recordType = ref<string[]>([])
-let recordLineList = ref<Dnspod.LineInfo[]>([])
+const domainInfo = reactive({} as Dnspod.DomainInfo)
 
 // 创建表单
 
@@ -36,7 +34,7 @@ const formRules = reactive({
 async function formSubmit() {
     loading.value = false
     const query: Dnspod.ModifyRecordRequest = {
-        Domain: domainName.value,
+        Domain: domainInfo.Domain,
         SubDomain: formModel.Name,
         RecordType: formModel.Type,
         RecordLine: formModel.Line,
@@ -52,16 +50,37 @@ async function formSubmit() {
     emits("submit")
 }
 
+// 记录类型及线路
+
+const recordType = ref<string[]>([])
+const recordLineList = ref<Dnspod.LineInfo[]>([])
+
+async function getRecordType() {
+    const res = await QApi.dnspod.describeRecordType({
+        DomainGrade: domainInfo.Grade
+    })
+    recordType.value = res.TypeList
+}
+
+async function getRecordLine() {
+    const res = await QApi.dnspod.describeRecordLineList({
+        DomainGrade: domainInfo.Grade,
+        Domain: domainInfo.Domain
+    })
+    recordLineList.value = res.LineList
+}
+
 // 导出属性
 
 defineExpose({
-    open: (data: Dnspod.RecordListItem, name: string, rType: string[], rLineList: Dnspod.LineInfo[]) => {
+    open: (info: Dnspod.DomainInfo, record: Dnspod.RecordListItem) => {
         dailog.value = true
         loading.value = false
-        domainName.value = name
-        recordType.value = rType
-        recordLineList.value = rLineList
-        Object.assign(formModel, data)
+        Object.assign(domainInfo, info)
+        Object.assign(formModel, record)
+        // 加载数据
+        recordType.value.length === 0 && getRecordType()
+        recordLineList.value.length === 0 && getRecordLine()
     }
 })
 </script>
