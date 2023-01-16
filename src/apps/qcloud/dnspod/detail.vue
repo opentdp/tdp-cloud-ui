@@ -33,27 +33,6 @@ async function getDomain() {
     Object.assign(domainInfo, res.DomainInfo)
 }
 
-// 记录类型列表
-
-const recordType = ref<string[]>([])
-
-async function getRecordType() {
-    const res = await QApi.dnspod.describeRecordType({
-        DomainGrade: domainInfo.Grade
-    })
-    recordType.value = res.TypeList
-}
-
-const recordLineList = ref<Dnspod.LineInfo[]>([])
-
-async function getRecordLine() {
-    const res = await QApi.dnspod.describeRecordLineList({
-        DomainGrade: domainInfo.Grade,
-        Domain: domainInfo.Domain
-    })
-    recordLineList.value = res.LineList
-}
-
 // 域名记录
 
 const recordList = ref<Dnspod.RecordListItem[]>()
@@ -83,14 +62,31 @@ async function deleteRecord(recordId: number) {
     await refreshRecordList()
 }
 
-// 加载数据
+// 记录类型列表
 
-(async () => {
-    getDomain()
-    getRecordList()
-    getRecordType()
-    getRecordLine()
-})()
+const recordType = ref<string[]>([])
+const recordLineList = ref<Dnspod.LineInfo[]>([])
+
+async function getRecordType() {
+    const res = await QApi.dnspod.describeRecordType({
+        DomainGrade: domainInfo.Grade
+    })
+    recordType.value = res.TypeList
+}
+
+async function getRecordLine() {
+    const res = await QApi.dnspod.describeRecordLineList({
+        DomainGrade: domainInfo.Grade,
+        Domain: domainInfo.Domain
+    })
+    recordLineList.value = res.LineList
+}
+
+// 加载数据
+getDomain()
+getRecordList()
+getRecordType()
+getRecordLine()
 </script>
 
 <template>
