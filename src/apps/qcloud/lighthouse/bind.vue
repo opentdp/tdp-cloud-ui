@@ -16,7 +16,7 @@ QApi.lighthouse.vendor(props.vid)
 
 // 获取列表
 
-const fetchWait = ref(1)
+const loading = ref(1)
 
 const regionList = reactive<Record<string, Lighthouse.RegionInfo>>({})
 
@@ -25,7 +25,7 @@ const instanceCount = ref(0)
 
 async function getRegionList() {
     const res = await QApi.lighthouse.describeRegions()
-    fetchWait.value = res.TotalCount
+    loading.value = res.TotalCount
     res.RegionSet.forEach((item) => {
         regionList[item.Region] = item
         getInstanceList(item.Region)
@@ -38,7 +38,7 @@ async function getInstanceList(region: string) {
         instanceCount.value += res.TotalCount
         instanceList.push(...res.InstanceSet)
     }
-    fetchWait.value--
+    loading.value--
 }
 
 function parseRegion(s: string) {
@@ -76,7 +76,7 @@ getRegionList()
                 <small>实例总数: {{ instanceCount }}</small>
             </div>
         </template>
-        <el-table v-loading="fetchWait && instanceList.length == 0" :data="instanceList" table-layout="fixed">
+        <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
             <el-table-column fixed prop="InstanceName" label="名称" min-width="150" />
             <el-table-column label="地域" min-width="120">
                 <template #default="scope">

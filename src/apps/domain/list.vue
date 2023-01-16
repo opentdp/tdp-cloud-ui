@@ -6,14 +6,14 @@ import { DomainItem } from "@/api/local/domain"
 
 // 域名列表
 
-const fetchWait = ref(1)
+const loading = ref(1)
 
 const domainList = reactive<DomainItem[]>([])
 
 async function getDomainList() {
     const res = await Api.domain.list()
     domainList.push(...res)
-    fetchWait.value = 0
+    loading.value = 0
 }
 
 // 删除域名
@@ -46,7 +46,7 @@ getDomainList()
                     <small>域名总数: {{ domainList.length }}</small>
                 </div>
             </template>
-            <el-table v-loading="fetchWait > 0" :data="domainList" table-layout="fixed">
+            <el-table v-loading="loading > 0" :data="domainList" table-layout="fixed">
                 <el-table-column fixed prop="Name" label="域名" min-width="120" />
                 <el-table-column prop="Model" label="来源" />
                 <el-table-column fixed="right" label="操作" width="180" align="center">

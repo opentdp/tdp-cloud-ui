@@ -15,14 +15,14 @@ const domainId = +route.params.id
 
 // 获取域名
 
-const fetchWait = ref(1)
+const loading = ref(1)
 
 const domain = reactive({} as DomainItem)
 
 async function getDomain(id: number) {
     const res = await Api.domain.detail(id)
     Object.assign(domain, res)
-    fetchWait.value = 0
+    loading.value = 0
 }
 
 // 加载数据
@@ -40,7 +40,7 @@ getDomain(domainId)
                 域名管理
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-loading="fetchWait" class="loading" />
+        <div v-loading="loading" class="loading" />
         <div v-if="domain.Model == 'qcloud/dnspod'">
             <DnspodDetail :vid="domain.VendorId" :meta="domain.CloudMeta" />
         </div>

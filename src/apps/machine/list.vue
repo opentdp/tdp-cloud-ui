@@ -6,14 +6,14 @@ import { MachineItem } from "@/api/local/machine"
 
 // 主机列表
 
-const fetchWait = ref(1)
+const loading = ref(1)
 
 const machineList = reactive<MachineItem[]>([])
 
 async function getMachineList() {
     const res = await Api.machine.list()
     machineList.push(...res)
-    fetchWait.value = 0
+    loading.value = 0
 }
 
 // 删除主机
@@ -47,7 +47,7 @@ getMachineList()
                     <small>实例总数: {{ machineList.length }}</small>
                 </div>
             </template>
-            <el-table v-loading="fetchWait" :data="machineList" table-layout="fixed">
+            <el-table v-loading="loading" :data="machineList" table-layout="fixed">
                 <el-table-column fixed prop="HostName" label="名称" min-width="120" />
                 <el-table-column prop="IpAddress" label="IP 地址" />
                 <el-table-column prop="Region" label="地域" />

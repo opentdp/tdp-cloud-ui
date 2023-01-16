@@ -15,21 +15,21 @@ const updateModal = ref<InstanceType<typeof UpdateScript>>()
 
 // 获取脚本列表
 
-const fetchWait = ref(1)
+const loading = ref(1)
 
 const scriptList = ref<TaskScriptItem[]>([])
 
 async function getScriptList() {
-    fetchWait.value = 1
+    loading.value = 1
     const res = await Api.taskScript.list()
     scriptList.value = res
-    fetchWait.value = 0
+    loading.value = 0
 }
 
 // 删除脚本
 
 async function removeScript(id: number) {
-    fetchWait.value = 1
+    loading.value = 1
     await Api.taskScript.remove(id)
     await getScriptList()
 }
@@ -60,7 +60,7 @@ getScriptList()
                     </el-button>
                 </div>
             </template>
-            <el-table v-loading="fetchWait" :data="scriptList">
+            <el-table v-loading="loading" :data="scriptList">
                 <el-table-column fixed prop="Name" label="名称" />
                 <el-table-column prop="Description" label="描述" />
                 <el-table-column prop="Content" label="脚本" min-width="250" show-overflow-tooltip />

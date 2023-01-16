@@ -15,14 +15,14 @@ const machineId = +route.params.id
 
 // 获取域名
 
-const fetchWait = ref(1)
+const loading = ref(1)
 
 const machine = reactive({} as MachineItem)
 
 async function getMachine(id: number) {
     const res = await Api.machine.detail(id)
     Object.assign(machine, res)
-    fetchWait.value = 0
+    loading.value = 0
 }
 
 // 加载数据
@@ -40,7 +40,7 @@ getMachine(machineId)
                 域名管理
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-loading="fetchWait" class="loading" />
+        <div v-loading="loading" class="loading" />
         <div v-if="machine.Model == 'qcloud/lighthouse'">
             <LighthouseDetail :vid="machine.VendorId" :meta="machine.CloudMeta" />
         </div>
