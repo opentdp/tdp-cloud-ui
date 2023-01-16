@@ -48,6 +48,7 @@ getDomainList()
             </template>
             <el-table v-loading="loading > 0" :data="domainList" table-layout="fixed">
                 <el-table-column fixed prop="Name" label="域名" min-width="120" />
+                <el-table-column prop="NSList" label="NS 服务器" />
                 <el-table-column prop="Model" label="来源" />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">

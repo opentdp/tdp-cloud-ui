@@ -33,6 +33,7 @@ function addDomian(item: Dnspod.DomainListItem) {
     Api.domain.create({
         VendorId: props.vid,
         Name: item.Name,
+        NSList: item.EffectiveDNS.join(","),
         Model: "qcloud/dnspod",
         CloudId: item.DomainId + '',
         CloudMeta: JSON.stringify(item),

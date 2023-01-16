@@ -27,6 +27,7 @@ export interface DomainItem {
     UserId: number
     VendorId: number
     Name: string
+    NSList: string
     Model: "" | "qcloud/dnspod"
     CloudId: string
     CloudMeta: Record<string, any>
@@ -39,6 +40,7 @@ export interface DomainItem {
 export interface DomainRequest {
     VendorId: number
     Name: string
+    NSList: string
     Model: "" | "qcloud/dnspod"
     CloudId: string
     CloudMeta: string
