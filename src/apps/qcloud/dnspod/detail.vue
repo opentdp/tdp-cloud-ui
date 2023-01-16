@@ -236,7 +236,7 @@ async function deleteRecord(recordId: number) {
         </el-table>
     </el-card>
 
-    <el-dialog v-model="createRecordBus.dailog" title="添加记录" width="400px">
+    <el-dialog v-model="createRecordBus.dailog" destroy-on-close title="添加记录" width="400px">
         <el-form :model="createRecordBus.model" :rules="createRecordBus.rules" label-width="88px">
             <el-form-item prop="Name" label="主机记录">
                 <el-input v-model="createRecordBus.model.Name" />
@@ -274,7 +274,7 @@ async function deleteRecord(recordId: number) {
         </template>
     </el-dialog>
 
-    <el-dialog v-model="modifyRecordBus.dailog" title="更新记录" width="400px">
+    <el-dialog v-model="modifyRecordBus.dailog" destroy-on-close title="更新记录" width="400px">
         <el-form :model="modifyRecordBus.model" :rules="modifyRecordBus.rules" label-width="88px">
             <el-form-item prop="Name" label="主机记录">
                 <el-input v-model="modifyRecordBus.model.Name" />

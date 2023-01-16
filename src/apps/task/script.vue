@@ -3,7 +3,15 @@ import { ref } from "vue"
 import { ElTable } from "element-plus"
 
 import { Api } from "@/api"
-import { TaskScriptItem } from '@/api/local/task_script'
+import { TaskScriptItem } from "@/api/local/task_script"
+
+import CreateScript from "./script/create.vue"
+import UpdateScript from "./script/update.vue"
+
+// 初始化
+
+const createModal = ref<InstanceType<typeof CreateScript>>()
+const updateModal = ref<InstanceType<typeof UpdateScript>>()
 
 // 获取脚本列表
 
@@ -47,7 +55,7 @@ getScriptList()
                     <b>脚本列表</b> &nbsp; &nbsp;
                     <small>脚本总数: {{ scriptList.length }}</small>
                     <div class="flex-auto" />
-                    <el-button type="primary" plain size="small" icon="Plus">
+                    <el-button type="primary" plain size="small" icon="Plus" @click="createModal?.open()">
                         添加
                     </el-button>
                 </div>
@@ -58,7 +66,7 @@ getScriptList()
                 <el-table-column prop="Content" label="脚本" min-width="250" show-overflow-tooltip />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="Edit">
+                        <el-button link type="primary" icon="Edit" @click="updateModal?.open()">
                             修改
                         </el-button>
                         <el-popconfirm title="确定删除?" @confirm="removeScript(scope.row.Id)">
@@ -72,5 +80,8 @@ getScriptList()
                 </el-table-column>
             </el-table>
         </el-card>
+
+        <CreateScript ref="createModal" @submit="getScriptList" />
+        <UpdateScript ref="UpdateScript" @submit="getScriptList" />
     </div>
 </template>

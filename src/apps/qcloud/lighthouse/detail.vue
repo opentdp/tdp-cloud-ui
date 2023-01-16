@@ -438,7 +438,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
         </el-descriptions>
     </el-card>
 
-    <el-dialog v-model="modifyInstanceNameBus.dailog" title="修改实例名" width="400px">
+    <el-dialog v-model="modifyInstanceNameBus.dailog" destroy-on-close title="修改实例名" width="400px">
         <el-form v-if="instance" :model="modifyInstanceNameBus.model">
             <el-form-item label="实例名">
                 <el-input v-model="modifyInstanceNameBus.model.name" :value="instance.InstanceName" />
@@ -447,7 +447,8 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="modifyInstanceNameBus.dailog = false">取消</el-button>
-                <el-button type="primary" :loading="modifyInstanceNameBus.loading" @click="modifyInstanceName">保存
+                <el-button type="primary" :loading="modifyInstanceNameBus.loading" @click="modifyInstanceName">
+                    保存
                 </el-button>
             </span>
         </template>
@@ -493,7 +494,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
         </el-table>
     </el-card>
 
-    <el-dialog v-model="createFirewallRuleBus.dailog" title="添加规则" width="400px">
+    <el-dialog v-model="createFirewallRuleBus.dailog" destroy-on-close title="添加规则" width="400px">
         <el-form v-if="instance" :model="createFirewallRuleBus.model">
             <el-form-item label="来源">
                 <el-input v-model="createFirewallRuleBus.model.CidrBlock" />
@@ -528,7 +529,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
         </template>
     </el-dialog>
 
-    <el-dialog v-model="modifyFirewallRuleBus.dailog" title="修改规则" width="400px">
+    <el-dialog v-model="modifyFirewallRuleBus.dailog" destroy-on-close title="修改规则" width="400px">
         <el-form v-if="instance" :model="modifyFirewallRuleBus.model">
             <el-form-item label="来源">
                 <el-input v-model="modifyFirewallRuleBus.model.CidrBlock" />
@@ -563,7 +564,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
         </template>
     </el-dialog>
 
-    <el-dialog v-model="modifyFirewallRuleDescriptionBus.dailog" title="修改备注" width="400px">
+    <el-dialog v-model="modifyFirewallRuleDescriptionBus.dailog" destroy-on-close title="修改备注" width="400px">
         <el-form v-if="instance" :model="modifyFirewallRuleDescriptionBus.model">
             <el-form-item label="备注">
                 <el-input v-model="modifyFirewallRuleDescriptionBus.model.FirewallRuleDescription" />
@@ -634,7 +635,7 @@ function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOpti
         </el-table>
     </el-card>
 
-    <el-dialog v-model="createSnapshotBus.dailog" title="创建快照" width="400px">
+    <el-dialog v-model="createSnapshotBus.dailog" destroy-on-close title="创建快照" width="400px">
         <el-form v-if="instance" :model="createSnapshotBus.model">
             <el-form-item label="名称">
                 <el-input v-model="createSnapshotBus.model.name" />
