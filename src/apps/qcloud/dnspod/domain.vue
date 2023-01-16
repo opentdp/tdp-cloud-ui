@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, reactive, defineProps } from "vue"
 
-import { Api, QApi } from "@/api"
+import { QApi } from "@/api"
 import { Dnspod } from "@/api/qcloud/typings"
 
 import RecordCreate from './record_create.vue'
@@ -46,11 +46,6 @@ async function getRecordList() {
     recordCountInfo.value = res.RecordCountInfo
 }
 
-async function refreshRecordList() {
-    Api.cache.clear()
-    await getRecordList()
-}
-
 // 删除记录
 
 async function deleteRecord(recordId: number) {
@@ -59,7 +54,7 @@ async function deleteRecord(recordId: number) {
         RecordId: recordId
     }
     await QApi.dnspod.deleteRecord(query)
-    await refreshRecordList()
+    getRecordList()
 }
 
 // 记录类型列表

@@ -5,7 +5,7 @@ import { useRoute } from "vue-router"
 import { Api } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
-import DnspodDetail from '../qcloud/dnspod/detail.vue'
+import DnspodDomain from '../qcloud/dnspod/domain.vue'
 
 // 初始化
 
@@ -42,7 +42,7 @@ getDomain(domainId)
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
         <div v-if="domain.Model == 'qcloud/dnspod'">
-            <DnspodDetail :vid="domain.VendorId" :meta="domain.CloudMeta" />
+            <DnspodDomain :vid="domain.VendorId" :meta="domain.CloudMeta" />
         </div>
     </div>
 </template>

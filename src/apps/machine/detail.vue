@@ -5,7 +5,7 @@ import { useRoute } from "vue-router"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-import LighthouseDetail from '../qcloud/lighthouse/detail.vue'
+import LighthouseInstance from '../qcloud/lighthouse/instance.vue'
 
 // 初始化
 
@@ -42,7 +42,7 @@ getMachine(machineId)
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
         <div v-if="machine.Model == 'qcloud/lighthouse'">
-            <LighthouseDetail :vid="machine.VendorId" :meta="machine.CloudMeta" />
+            <LighthouseInstance :vid="machine.VendorId" :meta="machine.CloudMeta" />
         </div>
     </div>
 </template>
