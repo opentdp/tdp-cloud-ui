@@ -13,23 +13,22 @@ import ScriptUpdate from "./script_update.vue"
 const createModal = ref<InstanceType<typeof ScriptCreate>>()
 const updateModal = ref<InstanceType<typeof ScriptUpdate>>()
 
-// 获取脚本列表
+const loading = ref(true)
 
-const loading = ref(1)
+// 获取脚本列表
 
 const scriptList = ref<TaskScriptItem[]>([])
 
 async function getScriptList() {
-    loading.value = 1
     const res = await Api.taskScript.list()
     scriptList.value = res
-    loading.value = 0
+    loading.value = false
 }
 
 // 删除脚本
 
 async function removeScript(id: number) {
-    loading.value = 1
+    loading.value = true
     await Api.taskScript.remove(id)
     await getScriptList()
 }

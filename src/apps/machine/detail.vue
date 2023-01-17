@@ -13,16 +13,16 @@ const route = useRoute()
 
 const machineId = +route.params.id
 
-// 获取域名
+// 获取主机
 
-const loading = ref(1)
+const loading = ref(true)
 
 const machine = reactive({} as MachineItem)
 
 async function getMachine(id: number) {
     const res = await Api.machine.detail(id)
     Object.assign(machine, res)
-    loading.value = 0
+    loading.value = false
 }
 
 // 加载数据
@@ -37,7 +37,7 @@ getMachine(machineId)
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                域名管理
+                主机详情
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />

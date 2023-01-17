@@ -118,7 +118,7 @@ function removeTab(id: string) {
     tabList.splice(index, 1)
 }
 
-// 获取实例列表
+// 获取主机列表
 
 const lighthouseList = reactive<
     {

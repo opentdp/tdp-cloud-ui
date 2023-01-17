@@ -126,7 +126,7 @@ getInstance()
                     重启
                 </el-button>
                 <el-button v-if="instance.InstanceState == 'RUNNING'" type="primary" plain size="small">
-                    <router-link :to="'/qcloud/lighthouse/vnc/' + instance.Zone + '/' + instance.InstanceId">
+                    <router-link :to="'/machine/vnc/' + instance.Zone + '/' + instance.InstanceId">
                         VNC 终端
                     </router-link>
                 </el-button>

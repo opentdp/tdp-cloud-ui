@@ -8,6 +8,8 @@ import { dateFormat } from "@/helper/utils"
 
 // 初始化
 
+const loading = ref(1)
+
 const props = defineProps<{
     vid: number,
 }>()
@@ -15,8 +17,6 @@ const props = defineProps<{
 QApi.lighthouse.vendor(props.vid)
 
 // 获取列表
-
-const loading = ref(1)
 
 const regionList = reactive<Record<string, Lighthouse.RegionInfo>>({})
 

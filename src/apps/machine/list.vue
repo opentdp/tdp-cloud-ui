@@ -4,16 +4,18 @@ import { ref, reactive } from "vue"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-// 主机列表
+// 初始化
 
-const loading = ref(1)
+const loading = ref(true)
+
+// 主机列表
 
 const machineList = reactive<MachineItem[]>([])
 
 async function getMachineList() {
     const res = await Api.machine.list()
     machineList.push(...res)
-    loading.value = 0
+    loading.value = false
 }
 
 // 删除主机
@@ -36,15 +38,15 @@ getMachineList()
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                主机管理
+                主机列表
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>实例列表</b>
+                    <b>主机列表</b>
                     <div class="flex-auto" />
-                    <small>实例总数: {{ machineList.length }}</small>
+                    <small>主机总数: {{ machineList.length }}</small>
                 </div>
             </template>
             <el-table v-loading="loading" :data="machineList" table-layout="fixed">

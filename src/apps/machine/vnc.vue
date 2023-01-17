@@ -3,31 +3,31 @@ import { ref, reactive } from "vue"
 import { useRoute } from "vue-router"
 
 import { Api } from "@/api"
-import { DomainItem } from "@/api/local/domain"
+import { MachineItem } from "@/api/local/machine"
 
-import DnspodDomain from '../qcloud/dnspod/domain.vue'
+import LighthouseVNC from '../qcloud/lighthouse/vnc.vue'
 
 // 初始化
 
 const route = useRoute()
 
-const domainId = +route.params.id
+const machineId = +route.params.id
 
 const loading = ref(true)
 
-// 获取域名
+// 获取主机
 
-const domain = reactive({} as DomainItem)
+const machine = reactive({} as MachineItem)
 
-async function getDomain(id: number) {
-    const res = await Api.domain.detail(id)
-    Object.assign(domain, res)
+async function getMachine(id: number) {
+    const res = await Api.machine.detail(id)
+    Object.assign(machine, res)
     loading.value = false
 }
 
 // 加载数据
 
-getDomain(domainId)
+getMachine(machineId)
 </script>
 
 <template>
@@ -37,12 +37,12 @@ getDomain(domainId)
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                域名管理
+                VNC 控制台
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
-        <div v-if="domain.Model == 'qcloud/dnspod'">
-            <DnspodDomain :vid="domain.VendorId" :meta="domain.CloudMeta" />
+        <div v-if="machine.Model == 'qcloud/lighthouse'">
+            <LighthouseVNC :vid="machine.VendorId" :meta="machine.CloudMeta" />
         </div>
     </div>
 </template>
