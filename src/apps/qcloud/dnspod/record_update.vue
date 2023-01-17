@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, reactive, defineExpose } from "vue"
+import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
 import { Dnspod } from "@/api/qcloud/typings"

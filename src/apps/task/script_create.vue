@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, reactive, defineExpose } from "vue"
+import { ref, reactive } from "vue"
 
 import { Api } from "@/api"
 import { TaskScriptRequest } from '@/api/local/task_script'

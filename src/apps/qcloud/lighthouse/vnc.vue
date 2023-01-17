@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, defineProps, onMounted } from "vue"
+import { ref, onMounted } from "vue"
 
 import { Api, QApi } from "@/api"
 import { TaskScriptItem } from '@/api/local/task_script'

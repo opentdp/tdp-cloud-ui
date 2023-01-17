@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, reactive, defineProps } from "vue"
+import { ref, reactive } from "vue"
 
 import { Api, QApi } from "@/api"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"

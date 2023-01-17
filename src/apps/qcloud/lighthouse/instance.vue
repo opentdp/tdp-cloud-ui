@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { reactive, defineProps } from "vue"
+import { reactive } from "vue"
 
 import { QApi } from "@/api"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"

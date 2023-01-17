@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, reactive, defineProps } from "vue"
+import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
 import { Lighthouse } from "@/api/qcloud/typings"
@@ -11,6 +11,8 @@ import { dateFormat } from "@/helper/utils"
 const props = defineProps<{
     instance: Lighthouse.Instance,
 }>()
+
+const emits = defineEmits(['reload'])
 
 // 获取区域
 
