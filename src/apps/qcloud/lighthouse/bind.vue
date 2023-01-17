@@ -53,6 +53,7 @@ function addMachine(item: Lighthouse.Instance) {
         VendorId: props.vid,
         HostName: item.InstanceName,
         IpAddress: item.PublicAddresses[0],
+        OSType: item.PlatformType,
         Region: parseRegion(item.Zone),
         Model: "qcloud/lighthouse",
         CloudId: item.InstanceId,

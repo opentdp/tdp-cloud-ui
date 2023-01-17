@@ -28,8 +28,9 @@ export interface MachineItem {
     VendorId: number
     HostName: string
     IpAddress: string
+    OSType: string
     Region: string
-    Model: "" | "qcloud/lighthouse"
+    Model: "worker" | "qcloud/lighthouse"
     CloudId: string
     CloudMeta: Record<string, any>
     Description: string
@@ -42,8 +43,9 @@ export interface MachineRequest {
     VendorId: number
     HostName: string
     IpAddress: string
+    OSType: string
     Region: string
-    Model: "" | "qcloud/lighthouse"
+    Model: "worker" | "qcloud/lighthouse"
     CloudId: string
     CloudMeta: string
     Description: string
