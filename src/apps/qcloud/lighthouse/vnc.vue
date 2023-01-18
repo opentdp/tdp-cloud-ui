@@ -38,7 +38,7 @@ async function vncInit() {
 
 const scriptList = ref<TaskScriptItem[]>([])
 
-async function getTATScriptList() {
+async function getScriptList() {
     const res = await Api.taskScript.list()
     scriptList.value = res
 }
@@ -63,7 +63,7 @@ function vncExec(cmd: string) {
 
 // 加载数据
 
-getTATScriptList()
+getScriptList()
 onMounted(() => vncInit())
 </script>
 

@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
+import { DomainItem } from "@/api/local/domain"
 import { Dnspod } from "@/api/qcloud/typings"
 
 import RecordCreate from './record_create.vue'
@@ -11,7 +12,7 @@ import RecordUpdate from './record_update.vue'
 
 const props = defineProps<{
     vid: number,
-    meta: Dnspod.DomainListItem,
+    meta: DomainItem,
 }>()
 
 QApi.dnspod.vendor(props.vid)
@@ -23,7 +24,7 @@ const updateModal = ref<InstanceType<typeof RecordUpdate>>()
 
 const domainInfo = reactive({
     Domain: props.meta.Name,
-    Grade: props.meta.Grade,
+    Grade: props.meta.CloudMeta.Grade,
 } as Dnspod.DomainInfo)
 
 async function getDomain() {

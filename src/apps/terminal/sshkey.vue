@@ -6,6 +6,8 @@ import { ElMessage, FormInstance, FormRules } from "element-plus"
 import { Api } from "@/api"
 import { SSHKeyItem } from "@/api/local/sshkey"
 
+// 初始化
+
 const keylist = ref<SSHKeyItem[]>([])
 
 // 密钥列表

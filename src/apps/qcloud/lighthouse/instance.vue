@@ -2,6 +2,7 @@
 import { reactive } from "vue"
 
 import { QApi } from "@/api"
+import { MachineItem } from "@/api/local/machine"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"
 import { Lighthouse } from "@/api/qcloud/typings"
 
@@ -15,7 +16,7 @@ import Traffic from './traffic.vue'
 
 const props = defineProps<{
     vid: number,
-    meta: Lighthouse.Instance,
+    meta: MachineItem,
 }>()
 
 QApi.lighthouse.vendor(props.vid)
@@ -23,12 +24,12 @@ QApi.lighthouse.vendor(props.vid)
 // 获取区域
 
 const region = () => {
-    return props.meta.Zone.replace(/-\d$/, "")
+    return props.meta.CloudMeta.Zone.replace(/-\d$/, "")
 }
 
 // 实例信息
 
-const instance = reactive(props.meta)
+const instance = reactive(props.meta.CloudMeta as Lighthouse.Instance)
 
 async function getInstance() {
     const res = await QApi.lighthouse.describeInstances(region(), {
@@ -126,7 +127,7 @@ getInstance()
                     重启
                 </el-button>
                 <el-button v-if="instance.InstanceState == 'RUNNING'" type="primary" plain size="small">
-                    <router-link :to="'/machine/vnc/' + instance.Zone + '/' + instance.InstanceId">
+                    <router-link :to="'/machine/vnc/' + meta.Id">
                         VNC 终端
                     </router-link>
                 </el-button>

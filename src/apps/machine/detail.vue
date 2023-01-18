@@ -42,7 +42,7 @@ getMachine(machineId)
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
         <div v-if="machine.Model == 'qcloud/lighthouse'">
-            <LighthouseInstance :vid="machine.VendorId" :meta="machine.CloudMeta" />
+            <LighthouseInstance :vid="machine.VendorId" :meta="machine" />
         </div>
     </div>
 </template>
