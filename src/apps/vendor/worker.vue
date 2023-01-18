@@ -5,7 +5,6 @@ import { ElTable } from "element-plus"
 
 import { Api } from "@/api"
 import { WorkerItem } from "@/api/local/workhub"
-import { TaskScriptItem } from '@/api/local/task_script'
 
 import { bytesToSize } from "@/helper/utils"
 
@@ -22,34 +21,9 @@ async function getWorkerList() {
     workerList.value = res
 }
 
-// 选中节点
-
-const selectedWorker = ref()
-
-function setCurrentRow(n: Worker) {
-    selectedWorker.value = n
-}
-
-// 执行快捷命令
-
-const scriptList = ref<TaskScriptItem[]>([])
-
-async function getTATScriptList() {
-    const res = await Api.taskScript.list()
-    scriptList.value = res
-}
-
-async function nodeExec(script: TaskScriptItem) {
-    await Api.workhub.exec({
-        HostId: selectedWorker.value.HostId,
-        Payload: script
-    })
-}
-
 // 加载数据
 
 getWorkerList()
-getTATScriptList()
 
 const timer = setInterval(getWorkerList, 15000)
 onUnmounted(() => {
@@ -74,11 +48,10 @@ onUnmounted(() => {
         <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>节点列表</b>
-                    <small>点击节点可执行快捷命令</small>
+                    <b>在线节点</b>
                 </div>
             </template>
-            <el-table ref="tableRef" :data="workerList" highlight-current-row @current-change="setCurrentRow">
+            <el-table ref="tableRef" :data="workerList" highlight-current-row>
                 <el-table-column prop="RemoteAddr" label="地址" />
                 <el-table-column label="主机名">
                     <template #default="scope">
@@ -126,19 +99,6 @@ onUnmounted(() => {
                     </template>
                 </el-table-column>
             </el-table>
-        </el-card>
-
-        <el-card v-if="selectedWorker?.HostId" shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>快捷命令</b>
-                </div>
-            </template>
-            <div class="button-list">
-                <el-button v-for="item in scriptList" :key="item.Id" @click="nodeExec(item)">
-                    {{ item.Name }}
-                </el-button>
-            </div>
         </el-card>
     </div>
 </template>
