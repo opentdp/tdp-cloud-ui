@@ -11,11 +11,10 @@ import RecordUpdate from './record_update.vue'
 // 初始化
 
 const props = defineProps<{
-    vid: number,
     meta: DomainItem,
 }>()
 
-QApi.dnspod.vendor(props.vid)
+QApi.dnspod.vendor(props.meta.VendorId)
 
 const createModal = ref<InstanceType<typeof RecordCreate>>()
 const updateModal = ref<InstanceType<typeof RecordUpdate>>()

@@ -13,9 +13,9 @@ const route = useRoute()
 
 const machineId = +route.params.id
 
-// 获取主机
-
 const loading = ref(true)
+
+// 获取主机
 
 const machine = reactive({} as MachineItem)
 
@@ -42,7 +42,7 @@ getMachine(machineId)
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
         <div v-if="machine.Model == 'qcloud/lighthouse'">
-            <LighthouseInstance :vid="machine.VendorId" :meta="machine" />
+            <LighthouseInstance :meta="machine" />
         </div>
     </div>
 </template>

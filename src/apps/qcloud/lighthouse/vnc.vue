@@ -2,22 +2,21 @@
 import { ref, onMounted } from "vue"
 
 import { Api, QApi } from "@/api"
+import { MachineItem } from "@/api/local/machine"
 import { TaskScriptItem } from '@/api/local/task_script'
 
 // 初始化
 
 const props = defineProps<{
-    vid: string,
-    zone: string,
-    instanceId: string,
+    meta: MachineItem,
 }>()
 
-QApi.lighthouse.vendor(props.vid)
+QApi.lighthouse.vendor(props.meta.VendorId)
 
 // 获取区域
 
 const region = () => {
-    return props.zone.replace(/-\d$/, "")
+    return props.meta.CloudMeta.Zone.replace(/-\d$/, "")
 }
 
 // 加载VNC框架
@@ -26,7 +25,7 @@ const frame = ref<HTMLIFrameElement>()
 
 async function vncInit() {
     const res = await QApi.lighthouse.describeInstanceVncUrl(region(), {
-        InstanceId: props.instanceId,
+        InstanceId: props.meta.CloudId,
     })
     if (frame.value) {
         const vnc = '/api/qcloud/vnc?InstanceVncUrl='

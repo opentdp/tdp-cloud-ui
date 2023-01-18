@@ -15,11 +15,10 @@ import Traffic from './traffic.vue'
 // 初始化
 
 const props = defineProps<{
-    vid: number,
     meta: MachineItem,
 }>()
 
-QApi.lighthouse.vendor(props.vid)
+QApi.lighthouse.vendor(props.meta.VendorId)
 
 // 获取区域
 
