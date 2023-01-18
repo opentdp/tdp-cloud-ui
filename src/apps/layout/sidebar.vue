@@ -54,12 +54,12 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "FullScreen",
+        icon: "Connection",
         index: "/terminal",
         title: "SSH 终端",
         subs: [
             {
-                icon: "Connection",
+                icon: "Link",
                 index: "/terminal/ssh",
                 title: "SSH 连接",
             },
