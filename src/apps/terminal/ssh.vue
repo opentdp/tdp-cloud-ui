@@ -4,9 +4,10 @@ import { useRoute } from "vue-router"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { Api, QApi } from "@/api"
-import { TaskScriptItem } from '@/api/local/task_script'
+import { Api } from "@/api"
+import { MachineItem } from "@/api/local/machine"
 import { SSHKeyItem } from "@/api/local/sshkey"
+import { TaskScriptItem } from '@/api/local/task_script'
 
 import { WebSSH } from "@/helper/webssh"
 
@@ -15,52 +16,6 @@ import { WebSSH } from "@/helper/webssh"
 const route = useRoute()
 
 const ipAddress = route.params.addr as string
-
-// 登录服务器
-
-let authType = ref("0")
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    Addr: ipAddress,
-    User: "root",
-    Password: "",
-    PrivateKey: ""
-})
-
-const formRules: FormRules = {
-    Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
-    User: [{ required: true, message: "请输入用户名" }],
-    Password: [{
-        validator: (rule, value, callback) => {
-            if (!formModel.Password && !formModel.PrivateKey) {
-                callback(new Error("密码或公钥至少提供一个"))
-            } else {
-                callback()
-            }
-        }
-    }],
-    PrivateKey: [{
-        validator: (rule, value, callback) => {
-            if (!formModel.Password && !formModel.PrivateKey) {
-                callback(new Error("密码或公钥至少提供一个"))
-            } else {
-                callback()
-            }
-        }
-    }],
-}
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        createTab()
-    })
-}
 
 // 管理标签页
 
@@ -118,36 +73,66 @@ function removeTab(id: string) {
     tabList.splice(index, 1)
 }
 
-// 获取主机列表
+// 登录服务器
 
-const lighthouseList = reactive<
-    {
-        ipAddress: string
-        platformType: string
-        regionName: string
-    }[]
->([])
+let authType = ref("0")
 
-async function getLighthouseList() {
-    const res = await QApi.lighthouse.describeRegions()
-    res.RegionSet.forEach(async (region) => {
-        const res = await QApi.lighthouse.describeInstances(region.Region)
-        res.InstanceSet.forEach(instance => {
-            lighthouseList.push({
-                regionName: region.RegionName,
-                ipAddress: instance.PublicAddresses[0],
-                platformType: instance.PlatformType
-            })
-        })
+const formRef = ref<FormInstance>()
+
+const formModel = reactive({
+    Addr: ipAddress,
+    User: "root",
+    Password: "",
+    PrivateKey: ""
+})
+
+const formRules: FormRules = {
+    Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
+    User: [{ required: true, message: "请输入用户名" }],
+    Password: [{
+        validator: (rule, value, callback) => {
+            if (!formModel.Password && !formModel.PrivateKey) {
+                callback(new Error("密码或公钥至少提供一个"))
+            } else {
+                callback()
+            }
+        }
+    }],
+    PrivateKey: [{
+        validator: (rule, value, callback) => {
+            if (!formModel.Password && !formModel.PrivateKey) {
+                callback(new Error("密码或公钥至少提供一个"))
+            } else {
+                callback()
+            }
+        }
+    }],
+}
+
+function formSubmit(form: FormInstance | undefined) {
+    form && form.validate(valid => {
+        if (!valid) {
+            ElMessage.error("请检查表单")
+            return false
+        }
+        createTab()
     })
 }
 
-function lighthouseFilter(qr: string, cb: (a: unknown[]) => void) {
+// 获取主机列表
+
+const machineList = reactive([] as MachineItem[])
+
+async function getMachineList() {
+    const res = await Api.machine.list()
+    machineList.push(...res)
+}
+
+function machineFilter(qr: string, cb: (a: unknown[]) => void) {
     const rs: unknown[] = []
-    lighthouseList.forEach((item) => {
-        if (item.platformType === "LINUX_UNIX"
-            && (item.ipAddress + item.regionName).includes(qr)) {
-            rs.push({ value: item.ipAddress, region: item.regionName })
+    machineList.forEach((item) => {
+        if (item.OSType === "LINUX_UNIX" && (item.IpAddress + item.Region).includes(qr)) {
+            rs.push({ value: item.IpAddress, region: item.Region })
         }
     })
     cb(rs)
@@ -166,7 +151,7 @@ async function getSshkeyList() {
 
 const scriptList = ref<TaskScriptItem[]>([])
 
-async function getTATScriptList() {
+async function getScriptList() {
     const res = await Api.taskScript.list()
     scriptList.value = res
 }
@@ -180,9 +165,9 @@ function sshExec(cmd: string) {
 
 // 加载数据
 
-getLighthouseList()
-getTATScriptList()
+getMachineList()
 getSshkeyList()
+getScriptList()
 </script>
 
 <template>
@@ -199,7 +184,7 @@ getSshkeyList()
             <el-tab-pane label="新建" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
                     <el-form-item prop="Addr" label="主机">
-                        <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="lighthouseFilter" clearable>
+                        <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="machineFilter" clearable>
                             <template #default="{ item }">
                                 {{ item.value }} - {{ item.region }}
                             </template>
