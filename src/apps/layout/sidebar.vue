@@ -54,7 +54,7 @@ const items: MenuItem[] = [
         ]
     },
     {
-        icon: "Switch",
+        icon: "FullScreen",
         index: "/terminal",
         title: "SSH 终端",
         subs: [
@@ -73,7 +73,7 @@ const items: MenuItem[] = [
     {
         icon: "Switch",
         index: "/vendor",
-        title: "云上资源",
+        title: "绑定资源",
         subs: [
             {
                 icon: "Cpu",
