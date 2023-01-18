@@ -82,11 +82,9 @@ function formSubmit(form: FormInstance | undefined) {
                     </el-button>
                 </div>
                 <div class="register-btn">
-                    <el-button>
-                        <router-link to="/member/login">
-                            登录
-                        </router-link>
-                    </el-button>
+                    <router-link to="/member/login">
+                        <el-button>登录</el-button>
+                    </router-link>
                 </div>
             </el-form>
         </div>
