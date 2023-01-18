@@ -110,6 +110,11 @@ const formRules: FormRules = {
 }
 
 function formSubmit(form: FormInstance | undefined) {
+    if (authType.value === "0") {
+        formModel.PrivateKey = ""
+    } else {
+        formModel.Password = ""
+    }
     form && form.validate(valid => {
         if (!valid) {
             ElMessage.error("请检查表单")
