@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { ref } from "vue"
-import { ElTable } from "element-plus"
 
 import { Api } from "@/api"
 import { TaskScriptItem } from "@/api/local/task_script"

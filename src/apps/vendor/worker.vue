@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { ref, onUnmounted } from "vue"
 
-import { ElTable } from "element-plus"
-
 import { Api } from "@/api"
 import { WorkerItem } from "@/api/local/workhub"
 
