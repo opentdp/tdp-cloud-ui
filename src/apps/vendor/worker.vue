@@ -27,7 +27,7 @@ function addMachine(item: WorkerItem) {
     Api.machine.create({
         VendorId: 0,
         HostName: item.HostName || item.SystemStat.HostName,
-        IpAddress: item.RemoteAddr,
+        IpAddress: item.RemoteAddr.replace(/:\d+$/, ''),
         OSType: item.OSType || item.SystemStat.OS,
         Region: "",
         Model: "worker",
