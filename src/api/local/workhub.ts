@@ -5,13 +5,15 @@ export class WorkhubModel extends HttpClient {
         return this.get("/workhub")
     }
 
-    public exec(rq: WorkserExecRequest): Promise<[]> {
+    public exec(rq: WorkerExecRequest): Promise<[]> {
         return this.post("/workhub/exec", rq)
     }
 }
 
 export interface WorkerItem {
+    OSType: string
     HostId: string
+    HostName: string
     RemoteAddr: string
     SystemStat: {
         HostName: string
@@ -28,7 +30,7 @@ export interface WorkerItem {
     }
 }
 
-export interface WorkserExecRequest {
+export interface WorkerExecRequest {
     HostId: string
     Payload: {
         Name: string

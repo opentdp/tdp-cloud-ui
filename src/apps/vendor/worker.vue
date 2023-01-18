@@ -21,6 +21,23 @@ async function getWorkerList() {
     workerList.value = res
 }
 
+// 绑定主机
+
+function addMachine(item: WorkerItem) {
+    Api.machine.create({
+        VendorId: 0,
+        HostName: item.HostName || item.SystemStat.HostName,
+        IpAddress: item.RemoteAddr,
+        OSType: item.OSType || item.SystemStat.OS,
+        Region: "",
+        Model: "worker",
+        CloudId: item.HostId,
+        CloudMeta: JSON.stringify(item.SystemStat),
+        Description: "",
+        Status: "{}",
+    })
+}
+
 // 加载数据
 
 getWorkerList()
@@ -96,6 +113,13 @@ onUnmounted(() => {
                 <el-table-column label="运行时间">
                     <template #default="scope">
                         {{ (scope.row.SystemStat.Uptime / 86400).toFixed(1) }} 天
+                    </template>
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="90" align="center">
+                    <template #default="scope">
+                        <el-button link type="primary" icon="View" @click="addMachine(scope.row)">
+                            导入
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
