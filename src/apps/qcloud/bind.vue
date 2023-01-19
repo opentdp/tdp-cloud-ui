@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { reactive } from "vue"
 import { useRoute } from "vue-router"
 
 import DnspodBind from './dnspod/bind.vue'
@@ -9,6 +10,12 @@ import LighthouseBind from './lighthouse/bind.vue'
 const route = useRoute()
 
 const vid = +route.params.vid
+
+// 管理标签页
+
+const curTab = reactive({
+    id: "lighthouse", label: ""
+})
 </script>
 
 <template>
@@ -24,8 +31,14 @@ const vid = +route.params.vid
                 导入资源
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <LighthouseBind :vid="vid" />
-        <div class="mgb10" />
-        <DnspodBind :vid="vid" />
+        <el-tabs v-model="curTab.id" type="border-card" class="mgb10">
+            <el-tab-pane label="轻量服务器" name="lighthouse">
+                <LighthouseBind :vid="vid" />
+            </el-tab-pane>
+            <el-tab-pane label="域名解析" name="dnspod">
+                <DnspodBind :vid="vid" />
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
+c
