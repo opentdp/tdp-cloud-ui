@@ -41,7 +41,7 @@ function formSubmit(form: FormInstance | undefined) {
         session.appid = res.AppId
         session.username = res.Username
         session.description = res.Description
-        session.token = res.SessionToken
+        session.token = res.Token
         router.push("/")
     })
 }

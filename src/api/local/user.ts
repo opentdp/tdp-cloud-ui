@@ -36,7 +36,7 @@ export interface LoginResponse {
     AppId: string
     Username: string
     Description: string
-    SessionToken: string
+    Token: string
 }
 
 export interface RegisterRequest {
