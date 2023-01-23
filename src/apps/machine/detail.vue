@@ -5,6 +5,7 @@ import { useRoute } from "vue-router"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
+import WokerMachine from '@/provider/worker/machine.vue'
 import LighthouseInstance from '@/provider/qcloud/lighthouse/instance.vue'
 
 // 初始化
@@ -43,6 +44,9 @@ getMachine(machineId)
         <div v-loading="loading" class="loading" />
         <div v-if="machine.Model == 'qcloud/lighthouse'">
             <LighthouseInstance :meta="machine" />
+        </div>
+        <div v-if="machine.Model == 'worker/machine'">
+            <WokerMachine :meta="machine" />
         </div>
     </div>
 </template>

@@ -30,7 +30,7 @@ export interface MachineItem {
     IpAddress: string
     OSType: string
     Region: string
-    Model: "local/worker" | "qcloud/lighthouse"
+    Model: "worker/machine" | "qcloud/lighthouse"
     CloudId: string
     CloudMeta: Record<string, any>
     Description: string
@@ -45,7 +45,7 @@ export interface MachineRequest {
     IpAddress: string
     OSType: string
     Region: string
-    Model: "local/worker" | "qcloud/lighthouse"
+    Model: "worker/machine" | "qcloud/lighthouse"
     CloudId: string
     CloudMeta: string
     Description: string

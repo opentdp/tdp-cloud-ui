@@ -84,7 +84,7 @@ getSecretList()
                 <el-table-column prop="SecretKey" label="密钥 KEY" />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="View">
+                        <el-button v-if="scope.row.Provider == 'qcloud'" link type="primary" icon="View">
                             <router-link :to="'/vendor/qcloud/' + scope.row.Id">
                                 导入
                             </router-link>
@@ -105,7 +105,7 @@ getSecretList()
             <template #header>
                 <div class="flex-between">
                     <b>添加密钥</b>
-                    <el-button class="button" text icon="Position">
+                    <el-button v-if="formModel.Provider == 'qcloud'" class="button" text icon="Position">
                         <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云CAM" target="_blank">
                             腾讯云操作指南
                         </a>
