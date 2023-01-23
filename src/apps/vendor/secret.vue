@@ -106,7 +106,7 @@ getSecretList()
                 <div class="flex-between">
                     <b>添加密钥</b>
                     <el-button v-if="formModel.Provider == 'qcloud'" class="button" text icon="Position">
-                        <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云CAM" target="_blank">
+                        <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云账号" target="_blank">
                             腾讯云操作指南
                         </a>
                     </el-button>
