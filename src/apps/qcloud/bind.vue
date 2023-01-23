@@ -31,7 +31,7 @@ const curTab = reactive({
                 导入资源
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-tabs v-model="curTab.id" type="border-card" class="mgb10">
+        <el-tabs v-model="curTab.id" type="border-card">
             <el-tab-pane label="轻量服务器" name="lighthouse">
                 <LighthouseBind :vid="vid" />
             </el-tab-pane>

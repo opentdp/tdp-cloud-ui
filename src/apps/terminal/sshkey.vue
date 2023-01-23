@@ -68,7 +68,7 @@ getSshkeyList()
                 SSH 密钥
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-card shadow="hover" class="mgb10">
+        <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
                     <b>密钥列表</b>
@@ -92,6 +92,7 @@ getSshkeyList()
                 </el-table-column>
             </el-table>
         </el-card>
+        <div class="space-10" />
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">

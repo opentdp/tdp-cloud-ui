@@ -105,7 +105,7 @@ getInstance()
 </script>
 
 <template>
-    <el-card v-if="instance" shadow="hover" class="mgb10">
+    <el-card v-if="instance" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>实例信息</b> &nbsp; &nbsp;
@@ -186,7 +186,10 @@ getInstance()
         </template>
     </el-dialog>
 
+    <div class="space-10" />
     <Firwwall :instance="instance" />
+    <div class="space-10" />
     <Snapshot :instance="instance" />
+    <div class="space-10" />
     <Traffic :instance="instance" />
 </template>

@@ -91,7 +91,7 @@ getSnapshotList()
 </script>
 
 <template>
-    <el-card v-if="snapshotList" shadow="hover" class="mgb10">
+    <el-card v-if="snapshotList" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>快照</b> &nbsp; &nbsp;

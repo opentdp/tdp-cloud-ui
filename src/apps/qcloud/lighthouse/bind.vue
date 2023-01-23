@@ -69,7 +69,7 @@ getRegionList()
 </script>
 
 <template>
-    <el-card shadow="hover" class="mgb10">
+    <el-card shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>实例列表</b>

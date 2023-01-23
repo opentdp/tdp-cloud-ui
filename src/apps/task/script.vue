@@ -47,7 +47,7 @@ getScriptList()
                 脚本管理
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-card shadow="hover" class="mgb10">
+        <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
                     <b>脚本列表</b> &nbsp; &nbsp;

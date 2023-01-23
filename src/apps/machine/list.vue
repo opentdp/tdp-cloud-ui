@@ -41,7 +41,7 @@ getMachineList()
                 主机管理
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-card shadow="hover" class="mgb10">
+        <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
                     <b>主机列表</b>

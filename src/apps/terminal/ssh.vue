@@ -185,7 +185,7 @@ getScriptList()
                 SSH 连接
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">
+        <el-tabs v-model="curTab.id" type="border-card" @tab-change="changeTab" @tab-remove="removeTab">
             <el-tab-pane label="新会话" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
                     <el-form-item prop="Addr" label="主机">
@@ -229,6 +229,7 @@ getScriptList()
                 <div :id="item.id" />
             </el-tab-pane>
         </el-tabs>
+        <div class="space-10" />
         <el-card v-if="curTab.id != 'new'" shadow="hover">
             <template #header>
                 <div class="flex-between">

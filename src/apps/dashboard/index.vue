@@ -29,7 +29,7 @@ getAccountSummary()
     <div>
         <el-row :gutter="20">
             <el-col>
-                <el-card class="mgb10" shadow="hover" :body-style="{ padding: '0px' }">
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
                     <div class="grid-content grid-con-2">
                         <el-icon class="grid-con-icon">
                             <Connection />
@@ -42,7 +42,8 @@ getAccountSummary()
                         </div>
                     </div>
                 </el-card>
-                <el-card class="mgb10" shadow="hover" :body-style="{ padding: '0px' }">
+                <div class="space-10" />
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
                     <div class="grid-content grid-con-1">
                         <el-icon class="grid-con-icon">
                             <Lightning />
@@ -55,7 +56,8 @@ getAccountSummary()
                         </div>
                     </div>
                 </el-card>
-                <el-card class="mgb10" shadow="hover" :body-style="{ padding: '0px' }">
+                <div class="space-10" />
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
                     <div class="grid-content grid-con-3">
                         <el-icon class="grid-con-icon">
                             <Monitor />

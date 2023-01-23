@@ -67,7 +67,7 @@ onMounted(() => vncInit())
 </script>
 
 <template>
-    <iframe ref="frame" frameborder="no" class="mgb10" />
+    <iframe ref="frame" frameborder="no" />
     <el-card shadow="hover">
         <template #header>
             <div class="flex-between">

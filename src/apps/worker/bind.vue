@@ -43,7 +43,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <el-card shadow="hover" class="mgb10">
+    <el-card shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>在线节点</b>

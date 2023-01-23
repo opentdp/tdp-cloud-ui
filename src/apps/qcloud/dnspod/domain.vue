@@ -63,7 +63,7 @@ getRecordList()
 </script>
 
 <template>
-    <el-card shadow="hover" class="mgb10">
+    <el-card shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>解析列表</b> &nbsp; &nbsp;

@@ -139,7 +139,7 @@ getFirewallRuleList()
 </script>
 
 <template>
-    <el-card v-if="firewallRuleList" shadow="hover" class="mgb10">
+    <el-card v-if="firewallRuleList" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>防火墙</b> &nbsp; &nbsp;

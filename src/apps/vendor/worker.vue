@@ -27,8 +27,8 @@ const workerUrl = Api.socket.getWorkerURL()
                 <p>wget -qO- http://tdp.icu/worker-linux | sh -</p>
             </template>
         </el-alert>
-        <div class="mgb10" />
 
+        <div class="space-10" />
         <WorkerBind />
     </div>
 </template>
