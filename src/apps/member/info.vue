@@ -90,6 +90,9 @@ function formSubmit(form: FormInstance | undefined) {
                         <el-form-item label="用户名">
                             <b>{{ session.username }}</b>
                         </el-form-item>
+                        <el-form-item label="App Id">
+                            {{ session.appid }}
+                        </el-form-item>
                         <el-form-item label="个人简介" prop="description">
                             <el-input v-model="formModel.Description" />
                         </el-form-item>
