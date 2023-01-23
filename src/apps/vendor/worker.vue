@@ -2,7 +2,7 @@
 
 import { Api } from "@/api"
 
-import WorkerBind from "../worker/bind.vue"
+import WorkerBind from "@/provider/worker/bind.vue"
 
 // 初始化
 

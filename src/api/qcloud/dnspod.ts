@@ -1,4 +1,4 @@
-import { QCloudClient } from "../basic/qcloud"
+import { QCloudClient } from "@/api/basic/qcloud"
 
 import { Dnspod } from "./typings"
 

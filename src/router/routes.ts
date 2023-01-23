@@ -137,6 +137,15 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/vendor/secret.vue"),
             },
             {
+                path: "/vendor/qcloud/:vid",
+                name: "qcloud-bind",
+                meta: {
+                    title: "腾讯云",
+                    login: true,
+                },
+                component: () => import("@/apps/vendor/qcloud.vue"),
+            },
+            {
                 path: "/vendor/worker",
                 name: "vendor-worker",
                 meta: {
@@ -144,16 +153,6 @@ export const routes: RouteRecordRaw[] = [
                     login: true,
                 },
                 component: () => import("@/apps/vendor/worker.vue"),
-            },
-            //////
-            {
-                path: "/qcloud/bind/:vid",
-                name: "qcloud-bind",
-                meta: {
-                    title: "腾讯云",
-                    login: true,
-                },
-                component: () => import("@/apps/qcloud/bind.vue"),
             },
             //////
             {

@@ -2,8 +2,8 @@
 import { reactive } from "vue"
 import { useRoute } from "vue-router"
 
-import DnspodBind from './dnspod/bind.vue'
-import LighthouseBind from './lighthouse/bind.vue'
+import DnspodBind from '@/provider/qcloud/dnspod/bind.vue'
+import LighthouseBind from '@/provider/qcloud/lighthouse/bind.vue'
 
 // 初始化
 

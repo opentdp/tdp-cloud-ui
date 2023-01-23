@@ -5,7 +5,7 @@ import { useRoute } from "vue-router"
 import { Api } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
-import DnspodDomain from '../qcloud/dnspod/domain.vue'
+import DnspodDomain from '@/provider/qcloud/dnspod/domain.vue'
 
 // 初始化
 

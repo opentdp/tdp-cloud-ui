@@ -1,4 +1,4 @@
-import { HttpClient } from "../basic/http"
+import { HttpClient } from "@/api/basic/http"
 
 export class TaskHistoryModel extends HttpClient {
     public list(): Promise<TaskHistoryItem[]> {

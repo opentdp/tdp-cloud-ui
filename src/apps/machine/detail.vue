@@ -5,7 +5,7 @@ import { useRoute } from "vue-router"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-import LighthouseInstance from '../qcloud/lighthouse/instance.vue'
+import LighthouseInstance from '@/provider/qcloud/lighthouse/instance.vue'
 
 // 初始化
 

@@ -5,7 +5,7 @@ import { useRoute } from "vue-router"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-import LighthouseVNC from '../qcloud/lighthouse/vnc.vue'
+import LighthouseVNC from '@/provider/qcloud/lighthouse/vnc.vue'
 
 // 初始化
 

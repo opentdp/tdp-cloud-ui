@@ -1,4 +1,4 @@
-import { HttpClient, HttpMessage } from "../basic/http"
+import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class MachineModel extends HttpClient {
     public list(): Promise<MachineItem[]> {

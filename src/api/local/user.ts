@@ -1,4 +1,4 @@
-import { HttpClient, HttpMessage } from "../basic/http"
+import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class UserModel extends HttpClient {
     public login(rq: LoginRequest): Promise<LoginResponse> {
