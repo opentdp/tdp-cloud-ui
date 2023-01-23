@@ -44,7 +44,7 @@ const items: MenuItem[] = [
             {
                 icon: "Crop",
                 index: "/task/script",
-                title: "命令管理",
+                title: "脚本管理",
             },
             {
                 icon: "Finished",
