@@ -186,7 +186,7 @@ getScriptList()
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card" class="mgb10" @tab-change="changeTab" @tab-remove="removeTab">
-            <el-tab-pane label="新建" name="new">
+            <el-tab-pane label="新会话" name="new">
                 <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
                     <el-form-item prop="Addr" label="主机">
                         <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="machineFilter" clearable>

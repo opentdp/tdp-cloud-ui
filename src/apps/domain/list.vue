@@ -38,7 +38,7 @@ getDomainList()
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                域名列表
+                域名管理
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover">

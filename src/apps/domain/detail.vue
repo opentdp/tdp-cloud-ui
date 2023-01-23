@@ -37,7 +37,7 @@ getDomain(domainId)
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                域名管理
+                解析管理
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
