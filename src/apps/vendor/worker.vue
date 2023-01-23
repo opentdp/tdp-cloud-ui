@@ -24,7 +24,7 @@ const workerUrl = Api.socket.getWorkerURL()
         <el-alert title="节点接入命令" type="warning">
             <template #default>
                 <p>export TDP_EXEC_ARGS="--remote {{ workerUrl }}"</p>
-                <p>wget -qO- http://tdp.icu/worker-install | sh -</p>
+                <p>wget -qO- http://tdp.icu/worker-linux | sh -</p>
             </template>
         </el-alert>
         <div class="mgb10" />
