@@ -24,7 +24,7 @@ function addMachine(item: WorkerItem) {
         IpAddress: item.RemoteAddr.replace(/:\d+$/, ''),
         OSType: item.OSType || item.SystemStat.OS,
         Region: "",
-        Model: "worker/machine",
+        Model: "local/worker",
         CloudId: item.HostId,
         CloudMeta: JSON.stringify(item.SystemStat),
         Description: "",
