@@ -38,8 +38,8 @@ function formSubmit(form: FormInstance | undefined) {
         if (res.Username) {
             ElMessage.success("登录成功")
         }
+        session.appid = res.AppId
         session.username = res.Username
-        session.appToken = res.AppToken
         session.description = res.Description
         session.token = res.SessionToken
         router.push("/")

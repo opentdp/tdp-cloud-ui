@@ -8,8 +8,8 @@ export default defineStore("session", {
             // 会话信息
             token: "",
             // 用户信息
+            appid: "",
             username: "",
-            appToken: "",
             description: "",
             vendorList: [] as VendorItem[],
         }

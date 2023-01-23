@@ -33,7 +33,7 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-    AppToken: string
+    AppId: string
     Username: string
     Description: string
     SessionToken: string
@@ -46,8 +46,8 @@ export interface RegisterRequest {
 
 export interface UserInfoResponse {
     Id: number
+    AppId: string
     Username: string
-    AppToken: string
     Description: string
 }
 
