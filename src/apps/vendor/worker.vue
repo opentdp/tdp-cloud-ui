@@ -57,7 +57,12 @@ onUnmounted(() => {
             </el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-alert title="节点接入命令" type="success" :description="'tdpc worker --remote ' + workerUrl" show-icon />
+        <el-alert title="节点接入命令" type="warning">
+            <template #default>
+                <p>export TDP_EXEC_ARGS="--remote {{ workerUrl }}"</p>
+                <p>wget -qO- http://tdp.icu/worker-install | sh -</p>
+            </template>
+        </el-alert>
         <div class="mgb10" />
 
         <el-card shadow="hover" class="mgb10">
