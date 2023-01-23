@@ -27,9 +27,6 @@ const curTab = reactive({
             <el-breadcrumb-item>
                 腾讯云
             </el-breadcrumb-item>
-            <el-breadcrumb-item>
-                导入资源
-            </el-breadcrumb-item>
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
             <el-tab-pane label="轻量服务器" name="lighthouse">

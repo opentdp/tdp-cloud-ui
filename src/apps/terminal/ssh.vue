@@ -88,7 +88,7 @@ const formModel = reactive({
 
 const formRules: FormRules = {
     Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
-    User: [{ required: true, message: "请输入用户名" }],
+    User: [{ required: true, message: "用户名 不能为空" }],
     Password: [{
         validator: (rule, value, callback) => {
             if (!formModel.Password && !formModel.PrivateKey) {

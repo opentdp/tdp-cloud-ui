@@ -29,9 +29,10 @@ const formModel = reactive({
 })
 
 const formRules: FormRules = {
-    SecretId: [{ required: true, message: "请输入 Secret Id" }],
-    SecretKey: [{ required: true, message: "请输入 Secret Key" }],
-    Description: [{ required: true, message: "请输入描述或别名" }],
+    SecretId: [{ required: true, message: "密钥 ID 不能为空" }],
+    SecretKey: [{ required: true, message: "密钥 KEY 不能为空" }],
+    Provider: [{ required: true, message: "云厂商 不能为空" }],
+    Description: [{ required: true, message: "描述或别名 不能为空" }],
 }
 
 function formSubmit(form: FormInstance | undefined) {
@@ -66,20 +67,21 @@ getSecretList()
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                腾讯云
+                公有云
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>CAM 列表</b>
+                    <b>密钥列表</b>
                 </div>
             </template>
             <el-table :data="session.vendorList">
                 <el-table-column prop="Id" label="序号" width="80" />
                 <el-table-column prop="Description" label="描述" width="160" />
-                <el-table-column prop="SecretId" label="Secret Id" />
-                <el-table-column prop="SecretKey" label="Secret Key" />
+                <el-table-column prop="Provider" label="厂商" />
+                <el-table-column prop="SecretId" label="密钥 ID" />
+                <el-table-column prop="SecretKey" label="密钥 KEY" />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">
@@ -102,7 +104,7 @@ getSecretList()
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>添加 CAM</b>
+                    <b>添加密钥</b>
                     <el-button class="button" text icon="Position">
                         <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云CAM" target="_blank">
                             腾讯云操作指南
@@ -111,13 +113,16 @@ getSecretList()
                 </div>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
+                <el-form-item prop="Provider" label="厂商">
+                    <el-input v-model="formModel.Provider" readonly />
+                </el-form-item>
                 <el-form-item prop="Description" label="描述">
                     <el-input v-model="formModel.Description" />
                 </el-form-item>
-                <el-form-item prop="SecretId" label="Secret Id">
+                <el-form-item prop="SecretId" label="密钥 ID">
                     <el-input v-model="formModel.SecretId" />
                 </el-form-item>
-                <el-form-item prop="SecretKey" label="Secret Key">
+                <el-form-item prop="SecretKey" label="密钥 KEY">
                     <el-input v-model="formModel.SecretKey" />
                 </el-form-item>
                 <el-form-item>

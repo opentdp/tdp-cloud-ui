@@ -22,8 +22,8 @@ const formModel = reactive({
 })
 
 const formRules: FormRules = {
-    Username: [{ required: true, message: "请输入用户名" }],
-    Password: [{ required: true, message: "请输入密码" }],
+    Username: [{ required: true, message: "用户名 不能为空" }],
+    Password: [{ required: true, message: "密码 不能为空" }],
 }
 
 // 提交表单

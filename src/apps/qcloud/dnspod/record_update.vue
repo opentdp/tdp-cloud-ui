@@ -18,15 +18,15 @@ const domainInfo = reactive({} as Dnspod.DomainInfo)
 const formModel = reactive({} as Dnspod.RecordListItem)
 
 const formRules = reactive({
-    Name: [{ required: true, message: "请输入别名" }],
-    Type: [{ required: true, message: "请输入别名" }],
-    Line: [{ required: true, message: "请输入别名" }],
-    Value: [{ required: true, message: "请输入别名" }],
-    MX: [{ required: true, message: "请输入别名" }],
-    TTL: [{ required: true, message: "请输入别名" }],
-    Weight: [{ required: true, message: "请输入别名" }],
-    Status: [{ required: true, message: "请输入别名" }],
-    Remark: [{ required: true, message: "请输入别名" }],
+    Name: [{ required: true, message: "别名 不能为空" }],
+    Type: [{ required: true, message: "别名 不能为空" }],
+    Line: [{ required: true, message: "别名 不能为空" }],
+    Value: [{ required: true, message: "别名 不能为空" }],
+    MX: [{ required: true, message: "别名 不能为空" }],
+    TTL: [{ required: true, message: "别名 不能为空" }],
+    Weight: [{ required: true, message: "别名 不能为空" }],
+    Status: [{ required: true, message: "别名 不能为空" }],
+    Remark: [{ required: true, message: "别名 不能为空" }],
 })
 
 // 提交表单

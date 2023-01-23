@@ -21,10 +21,10 @@ const formModel = reactive({
 })
 
 const formRules = ref<FormRules>({
-    OldPassword: [{ required: true, message: "请输入原始密码" }],
-    NewPassword: [{ required: true, message: "请输入密码" }],
+    OldPassword: [{ required: true, message: "原始密码 不能为空" }],
+    NewPassword: [{ required: true, message: "密码 不能为空" }],
     NewPassword2: [
-        { required: true, message: "请输入密码" },
+        { required: true, message: "密码 不能为空" },
         {
             validator: (rule, value, callback) => {
                 if (formModel.NewPassword != formModel.NewPassword2) {

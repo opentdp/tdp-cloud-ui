@@ -28,9 +28,9 @@ const formModel = reactive({
 })
 
 const formRules: FormRules = {
-    PublicKey: [{ required: true, message: "请输入公钥" }],
-    PrivateKey: [{ required: true, message: "请输入私钥" }],
-    Description: [{ required: true, message: "请输入别名" }],
+    PublicKey: [{ required: true, message: "公钥 不能为空" }],
+    PrivateKey: [{ required: true, message: "私钥 不能为空" }],
+    Description: [{ required: true, message: "别名 不能为空" }],
 }
 
 function formSubmit(form: FormInstance | undefined) {

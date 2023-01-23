@@ -73,7 +73,7 @@ const items: MenuItem[] = [
     {
         icon: "Switch",
         index: "/vendor",
-        title: "绑定资源",
+        title: "资产管理",
         subs: [
             {
                 icon: "Cpu",
@@ -82,8 +82,8 @@ const items: MenuItem[] = [
             },
             {
                 icon: "PartlyCloudy",
-                index: "/vendor/qcloud",
-                title: "腾讯云",
+                index: "/vendor/secret",
+                title: "公有云",
             },
         ]
     }
