@@ -31,8 +31,7 @@ const formModel = reactive({
 const formRules: FormRules = {
     SecretId: [{ required: true, message: "请输入 Secret Id" }],
     SecretKey: [{ required: true, message: "请输入 Secret Key" }],
-    Provider: [{ required: true, message: "请选择厂商" }],
-    Description: [{ required: true, message: "请输入别名" }],
+    Description: [{ required: true, message: "请输入描述或别名" }],
 }
 
 function formSubmit(form: FormInstance | undefined) {
@@ -73,13 +72,12 @@ getSecretList()
         <el-card shadow="hover" class="mgb10">
             <template #header>
                 <div class="flex-between">
-                    <b>厂商列表</b>
+                    <b>CAM 列表</b>
                 </div>
             </template>
             <el-table :data="session.vendorList">
                 <el-table-column prop="Id" label="序号" width="80" />
                 <el-table-column prop="Description" label="描述" width="160" />
-                <el-table-column prop="Provider" label="厂商" />
                 <el-table-column prop="SecretId" label="Secret Id" />
                 <el-table-column prop="SecretKey" label="Secret Key" />
                 <el-table-column label="操作" width="180" align="center">
@@ -103,18 +101,15 @@ getSecretList()
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>添加厂商</b>
+                    <b>添加 CAM</b>
                     <el-button class="button" text icon="Position">
-                        <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云密钥" target="_blank">
+                        <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云CAM" target="_blank">
                             腾讯云操作指南
                         </a>
                     </el-button>
                 </div>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
-                <el-form-item prop="Provider" label="厂商">
-                    <el-input v-model="formModel.Provider" readonly />
-                </el-form-item>
                 <el-form-item prop="Description" label="描述">
                     <el-input v-model="formModel.Description" />
                 </el-form-item>
