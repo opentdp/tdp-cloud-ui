@@ -11,7 +11,7 @@ const props = defineProps<{
     instance: Qcloud.Lighthouse.Instance,
 }>()
 
-const emits = defineEmits(['reload'])
+const emits = defineEmits(['change'])
 
 // 获取区域
 
@@ -49,6 +49,7 @@ async function createSnapshot() {
     createSnapshotBus.dailog = false
     createSnapshotBus.loading = false
     refreshSnapshot()
+    emits("change")
 }
 
 function createSnapshotDailog() {
@@ -63,7 +64,7 @@ async function applySnapshot(item: Qcloud.Lighthouse.Snapshot) {
         InstanceId: props.instance.InstanceId,
         SnapshotId: item.SnapshotId
     })
-    // refreshInstance()
+    emits("change")
 }
 
 // 删除快照
