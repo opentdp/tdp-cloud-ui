@@ -43,3 +43,4 @@ export const QApi = {
     monitor: new MonitorModel(),
     tat: new QTATModel(),
 }
+

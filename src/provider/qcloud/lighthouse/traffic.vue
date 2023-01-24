@@ -4,6 +4,7 @@ import { ref } from "vue"
 import { EChartsOption } from "echarts"
 
 import { QApi } from "@/api"
+import { Qcloud } from "@/api/qcloud/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
 

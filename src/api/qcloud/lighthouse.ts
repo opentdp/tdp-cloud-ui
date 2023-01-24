@@ -1,5 +1,7 @@
 import { QcloudClient } from "@/api/basic/qcloud"
 
+import { Qcloud } from './typings'
+
 export class LighthouseModel extends QcloudClient {
     protected qService = "lighthouse"
     protected qVersion = "2020-03-24"

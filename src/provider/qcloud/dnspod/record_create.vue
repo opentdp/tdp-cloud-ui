@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
+import { Qcloud } from "@/api/qcloud/typings"
 
 // 初始化
 
@@ -10,11 +11,11 @@ const loading = ref(false)
 
 const emits = defineEmits(['submit'])
 
-const domainInfo = reactive({} as Dnspod.DomainInfo)
+const domainInfo = reactive({} as Qcloud.Dnspod.DomainInfo)
 
 // 创建表单
 
-const modelData: Dnspod.RecordListItem = {
+const modelData: Qcloud.Dnspod.RecordListItem = {
     Name: "",
     Type: "",
     Line: "",

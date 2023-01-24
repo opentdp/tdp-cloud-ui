@@ -1,5 +1,7 @@
 import { QcloudClient } from "@/api/basic/qcloud"
 
+import { Qcloud } from './typings'
+
 export class MonitorModel extends QcloudClient {
     protected qService = "monitor"
     protected qVersion = "2018-07-24"

@@ -2,8 +2,9 @@
 import { reactive } from "vue"
 
 import { QApi } from "@/api"
-import { MachineItem } from "@/api/local/machine"
+import { Qcloud } from "@/api/qcloud/typings"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"
+import { MachineItem } from "@/api/local/machine"
 
 import { dateFormat } from "@/helper/utils"
 

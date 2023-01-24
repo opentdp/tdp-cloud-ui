@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
+import { Qcloud } from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/utils"
 

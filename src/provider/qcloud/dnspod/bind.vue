@@ -2,6 +2,7 @@
 import { ref, reactive } from "vue"
 
 import { Api, QApi } from "@/api"
+import { Qcloud } from "@/api/qcloud/typings"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
 
 // 初始化

@@ -1,5 +1,7 @@
 import { QcloudClient } from "@/api/basic/qcloud"
 
+import { Qcloud } from './typings'
+
 export class DnspodModel extends QcloudClient {
     protected qService = "dnspod"
     protected qVersion = "2021-03-23"
