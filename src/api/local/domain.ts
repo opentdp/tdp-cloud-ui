@@ -30,7 +30,7 @@ export interface DomainItem {
     NSList: string
     Model: "" | "qcloud/dnspod"
     CloudId: string
-    CloudMeta: Record<string, any>
+    CloudMeta: Record<string, unknown>
     Description: string
     Status: string
     CreatedAt: string

@@ -32,7 +32,7 @@ export interface MachineItem {
     Region: string
     Model: "local/worker" | "qcloud/lighthouse"
     CloudId: string
-    CloudMeta: Record<string, any>
+    CloudMeta: Record<string, unknown>
     Description: string
     Status: string
     CreatedAt: string
