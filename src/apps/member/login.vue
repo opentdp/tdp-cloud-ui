@@ -1,49 +1,45 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRouter } from "vue-router"
+<script lang="ts">
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
-// 初始化
+@Component
+export default class MemberLogin extends Vue {
+    public session = sessionStore()
 
-const router = useRouter()
-const session = sessionStore()
+    @Ref
+    public formRef!: FormInstance
 
-// 构造表单
+    public formModel = {
+        Username: import.meta.env.VITE_USERNAME || "",
+        Password: import.meta.env.VITE_PASSWORD || "",
+    }
 
-const formRef = ref<FormInstance>()
+    public formRules: FormRules = {
+        Username: [{ required: true, message: "用户名 不能为空" }],
+        Password: [{ required: true, message: "密码 不能为空" }],
+    }
 
-const formModel = reactive({
-    Username: import.meta.env.VITE_USERNAME || "",
-    Password: import.meta.env.VITE_PASSWORD || "",
-})
-
-const formRules: FormRules = {
-    Username: [{ required: true, message: "用户名 不能为空" }],
-    Password: [{ required: true, message: "密码 不能为空" }],
-}
-
-// 提交表单
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        const res = await Api.user.login(formModel)
-        if (res.Username) {
-            ElMessage.success("登录成功")
-        }
-        session.appid = res.AppId
-        session.username = res.Username
-        session.description = res.Description
-        session.token = res.Token
-        router.push("/")
-    })
+    public formSubmit(form: FormInstance | undefined) {
+        form && form.validate(async valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
+            }
+            const res = await Api.user.login(this.formModel)
+            if (res.Username) {
+                ElMessage.success("登录成功")
+            }
+            this.session.appid = res.AppId
+            this.session.username = res.Username
+            this.session.description = res.Description
+            this.session.token = res.Token
+            this.$router.push("/")
+        })
+    }
 }
 </script>
 
@@ -65,8 +61,7 @@ function formSubmit(form: FormInstance | undefined) {
                 </el-form-item>
                 <el-form-item prop="Password">
                     <el-input v-model="formModel.Password" type="password" placeholder="密码"
-                              @keyup.enter="formSubmit(formRef)"
-                    >
+                        @keyup.enter="formSubmit(formRef)">
                         <template #prepend>
                             <el-icon>
                                 <Lock />

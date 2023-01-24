@@ -1,53 +1,51 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
-// 初始化
+@Component
+export default class MemberPassword extends Vue {
+    public session = sessionStore()
 
-const session = sessionStore()
+    @Ref
+    public formRef!: FormInstance
 
-// 构造表单
+    public formModel = {
+        OldPassword: "",
+        NewPassword: "",
+        NewPassword2: "",
+    }
 
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    OldPassword: "",
-    NewPassword: "",
-    NewPassword2: "",
-})
-
-const formRules = ref<FormRules>({
-    OldPassword: [{ required: true, message: "原始密码 不能为空" }],
-    NewPassword: [{ required: true, message: "密码 不能为空" }],
-    NewPassword2: [
-        { required: true, message: "密码 不能为空" },
-        {
-            validator: (rule, value, callback) => {
-                if (formModel.NewPassword != formModel.NewPassword2) {
-                    callback(new Error("两次密码不一致"))
-                } else {
-                    callback()
+    public formRules: FormRules = {
+        OldPassword: [{ required: true, message: "原始密码 不能为空" }],
+        NewPassword: [{ required: true, message: "密码 不能为空" }],
+        NewPassword2: [
+            { required: true, message: "密码 不能为空" },
+            {
+                validator: (rule, value, callback) => {
+                    if (this.formModel.NewPassword != this.formModel.NewPassword2) {
+                        callback(new Error("两次密码不一致"))
+                    } else {
+                        callback()
+                    }
                 }
+            },
+        ],
+    }
+
+    public formSubmit(form: FormInstance | undefined) {
+        form && form.validate(async valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
             }
-        },
-    ],
-})
-
-// 提交表单
-
-async function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.user.updatePassword(formModel)
-        ElMessage.success("修改成功")
-    })
+            await Api.user.updatePassword(this.formModel)
+            ElMessage.success("修改成功")
+        })
+    }
 }
 </script>
 

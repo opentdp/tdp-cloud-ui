@@ -1,33 +1,31 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRoute } from "vue-router"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
 import LighthouseVNC from '@/provider/qcloud/lighthouse/vnc.vue'
 
-// 初始化
+@Component({
+    components: { LighthouseVNC }
+})
+export default class MachineVnc extends Vue {
+    public loading = true
 
-const route = useRoute()
+    public machine = {} as MachineItem
 
-const machineId = +route.params.id
+    public created() {
+        const machineId = +this.$route.params.id
+        this.getMachine(machineId)
+    }
 
-const loading = ref(true)
-
-// 获取主机
-
-const machine = reactive({} as MachineItem)
-
-async function getMachine(id: number) {
-    const res = await Api.machine.detail(id)
-    Object.assign(machine, res)
-    loading.value = false
+    // 获取主机
+    async getMachine(id: number) {
+        const res = await Api.machine.detail(id)
+        this.machine = res || {}
+        this.loading = false
+    }
 }
-
-// 加载数据
-
-getMachine(machineId)
 </script>
 
 <template>

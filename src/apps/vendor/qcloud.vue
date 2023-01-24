@@ -1,21 +1,23 @@
-<script lang="ts" setup>
-import { reactive } from "vue"
-import { useRoute } from "vue-router"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import DnspodBind from '@/provider/qcloud/dnspod/bind.vue'
 import LighthouseBind from '@/provider/qcloud/lighthouse/bind.vue'
 
-// 初始化
-
-const route = useRoute()
-
-const vid = +route.params.vid
-
-// 管理标签页
-
-const curTab = reactive({
-    id: "lighthouse", label: ""
+@Component({
+    components: { DnspodBind, LighthouseBind }
 })
+export default class VendorQcloud extends Vue {
+    public vid = 0
+
+    public curTab = {
+        id: "lighthouse", label: ""
+    }
+
+    public created() {
+        this.vid = +this.$route.params.vid
+    }
+}
 </script>
 
 <template>

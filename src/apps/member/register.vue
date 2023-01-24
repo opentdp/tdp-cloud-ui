@@ -1,43 +1,39 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRouter } from "vue-router"
+<script lang="ts">
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api } from "@/api"
 
-// 初始化
+@Component
+export default class MemberRegister extends Vue {
+    @Ref
+    public formRef!: FormInstance
 
-const router = useRouter()
+    public formModel = {
+        Username: "",
+        Password: "",
+        Password2: "",
+    }
 
-// 构造表单
+    public formRules: FormRules = {
+        Username: [{ required: true, message: "用户名 不能为空" }],
+        Password: [{ required: true, message: "密码 不能为空" }],
+        Password2: [{ required: true, message: "密码 不能为空" }],
+    }
 
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    Username: "",
-    Password: "",
-    Password2: "",
-})
-
-const formRules: FormRules = {
-    Username: [{ required: true, message: "用户名 不能为空" }],
-    Password: [{ required: true, message: "密码 不能为空" }],
-    Password2: [{ required: true, message: "密码 不能为空" }],
-}
-
-// 提交表单
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.user.register(formModel)
-        ElMessage.success("注册成功")
-        router.push("/member/login")
-    })
+    public formSubmit(form: FormInstance | undefined) {
+        form && form.validate(async valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
+            }
+            await Api.user.register(this.formModel)
+            ElMessage.success("注册成功")
+            // 切换到登陆页面
+            this.$router.push("/member/login")
+        })
+    }
 }
 </script>
 
@@ -68,8 +64,7 @@ function formSubmit(form: FormInstance | undefined) {
                 </el-form-item>
                 <el-form-item prop="Password2">
                     <el-input v-model="formModel.Password2" type="password" placeholder="确认密码"
-                              @keyup.enter="formSubmit(formRef)"
-                    >
+                        @keyup.enter="formSubmit(formRef)">
                         <template #prepend>
                             <el-icon>
                                 <Lock />

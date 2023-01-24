@@ -1,6 +1,5 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRoute } from "vue-router"
+<script lang="ts">
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
@@ -11,168 +10,168 @@ import { TaskScriptItem } from '@/api/local/task_script'
 
 import { WebSSH } from "@/helper/webssh"
 
-// 初始化
+@Component
+export default class TerminalSsh extends Vue {
 
-const route = useRoute()
+    public created() {
+        this.formModel.Addr = this.$route.params.addr + ""
+        this.getMachineList()
+        this.getSshkeyList()
+        this.getScriptList()
+    }
 
-const ipAddress = route.params.addr as string
+    // 管理标签页
 
-// 管理标签页
+    public curTab = {
+        id: "new", label: ""
+    }
+
+    public tabList = [] as sshTab[]
+
+    public createTab() {
+        const tab: sshTab = {
+            id: "tab-" + Date.now(),
+            label: this.formModel.Addr
+        }
+        this.tabList.push(tab)
+        // 延迟连接
+        this.changeTab(tab.id)
+        setTimeout(() => {
+            const url = Api.socket.getWebsshURL(this.formModel)
+            tab.webssh = new WebSSH(tab.id, url)
+        }, 100)
+    }
+
+    public indexTab(id: string) {
+        for (let i = 0; i < this.tabList.length; i++) {
+            if (this.tabList[i].id === id) {
+                return { index: i, tab: this.tabList[i] }
+            }
+        }
+    }
+
+    public changeTab(id: string) {
+        const target = this.indexTab(id)
+        this.curTab.id = target?.tab.id || "new"
+        this.curTab.label = target?.tab.label || ""
+    }
+
+    public removeTab(id: string) {
+        const target = this.indexTab(id)
+        if (!target) {
+            return
+        }
+        const { index, tab } = target
+        if (this.curTab.id === id) {
+            const next = this.tabList[index + 1] || this.tabList[index - 1]
+            this.changeTab(next ? next.id : "new")
+        }
+        tab.webssh?.dispose()
+        this.tabList.splice(index, 1)
+    }
+
+    // 获取密钥列表
+
+    public sshkeyList = [] as SSHKeyItem[]
+
+    async getSshkeyList() {
+        const res = await Api.sshkey.list()
+        this.sshkeyList = res
+    }
+
+    // 获取主机列表
+
+    public machineList = [] as MachineItem[]
+
+    async getMachineList() {
+        const res = await Api.machine.list()
+        this.machineList = res
+    }
+
+    public machineFilter(qr: string, cb: (a: unknown[]) => void) {
+        const rs: unknown[] = []
+        this.machineList.forEach((item) => {
+            if (item.OSType === "LINUX_UNIX" && (item.IpAddress + item.Region).includes(qr)) {
+                rs.push({ value: item.IpAddress, region: item.Region })
+            }
+        })
+        cb(rs)
+    }
+
+    // 执行快捷命令
+
+    public scriptList = [] as TaskScriptItem[]
+
+    async getScriptList() {
+        const res = await Api.taskScript.list()
+        this.scriptList = res
+    }
+
+    public sshExec(cmd: string) {
+        const target = this.indexTab(this.curTab.id)
+        if (target?.tab.webssh) {
+            target.tab.webssh.exec(cmd)
+        }
+    }
+
+    // 登录服务器
+
+    public authType = "0"
+
+    @Ref
+    public formRef!: FormInstance
+
+    public formModel = {
+        Addr: "",
+        User: "root",
+        Password: "",
+        PrivateKey: ""
+    }
+
+    public formRules: FormRules = {
+        Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
+        User: [{ required: true, message: "用户名 不能为空" }],
+        Password: [{
+            validator: (rule, value, callback) => {
+                if (!this.formModel.Password && !this.formModel.PrivateKey) {
+                    callback(new Error("密码或公钥至少提供一个"))
+                } else {
+                    callback()
+                }
+            }
+        }],
+        PrivateKey: [{
+            validator: (rule, value, callback) => {
+                if (!this.formModel.Password && !this.formModel.PrivateKey) {
+                    callback(new Error("密码或公钥至少提供一个"))
+                } else {
+                    callback()
+                }
+            }
+        }],
+    }
+
+    public formSubmit(form: FormInstance | undefined) {
+        if (this.authType === "0") {
+            this.formModel.PrivateKey = ""
+        } else {
+            this.formModel.Password = ""
+        }
+        form && form.validate(valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
+            }
+            this.createTab()
+        })
+    }
+}
 
 interface sshTab {
     id: string
     label: string
     webssh?: WebSSH
 }
-
-const curTab = reactive({
-    id: "new", label: ""
-})
-
-const tabList = reactive<sshTab[]>([])
-
-function createTab() {
-    const tab: sshTab = {
-        id: "tab-" + Date.now(),
-        label: formModel.Addr
-    }
-    tabList.push(tab)
-    // 延迟连接
-    changeTab(tab.id)
-    setTimeout(() => {
-        const url = Api.socket.getWebsshURL(formModel)
-        tab.webssh = new WebSSH(tab.id, url)
-    }, 100)
-}
-
-function indexTab(id: string) {
-    for (let i = 0; i < tabList.length; i++) {
-        if (tabList[i].id === id) {
-            return { index: i, tab: tabList[i] }
-        }
-    }
-}
-
-function changeTab(id: string) {
-    const target = indexTab(id)
-    curTab.id = target?.tab.id || "new"
-    curTab.label = target?.tab.label || ""
-}
-
-function removeTab(id: string) {
-    const target = indexTab(id)
-    if (!target) {
-        return
-    }
-    const { index, tab } = target
-    if (curTab.id === id) {
-        const next = tabList[index + 1] || tabList[index - 1]
-        changeTab(next ? next.id : "new")
-    }
-    tab.webssh?.dispose()
-    tabList.splice(index, 1)
-}
-
-// 登录服务器
-
-let authType = ref("0")
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    Addr: ipAddress,
-    User: "root",
-    Password: "",
-    PrivateKey: ""
-})
-
-const formRules: FormRules = {
-    Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
-    User: [{ required: true, message: "用户名 不能为空" }],
-    Password: [{
-        validator: (rule, value, callback) => {
-            if (!formModel.Password && !formModel.PrivateKey) {
-                callback(new Error("密码或公钥至少提供一个"))
-            } else {
-                callback()
-            }
-        }
-    }],
-    PrivateKey: [{
-        validator: (rule, value, callback) => {
-            if (!formModel.Password && !formModel.PrivateKey) {
-                callback(new Error("密码或公钥至少提供一个"))
-            } else {
-                callback()
-            }
-        }
-    }],
-}
-
-function formSubmit(form: FormInstance | undefined) {
-    if (authType.value === "0") {
-        formModel.PrivateKey = ""
-    } else {
-        formModel.Password = ""
-    }
-    form && form.validate(valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        createTab()
-    })
-}
-
-// 获取主机列表
-
-const machineList = reactive([] as MachineItem[])
-
-async function getMachineList() {
-    const res = await Api.machine.list()
-    machineList.push(...res)
-}
-
-function machineFilter(qr: string, cb: (a: unknown[]) => void) {
-    const rs: unknown[] = []
-    machineList.forEach((item) => {
-        if (item.OSType === "LINUX_UNIX" && (item.IpAddress + item.Region).includes(qr)) {
-            rs.push({ value: item.IpAddress, region: item.Region })
-        }
-    })
-    cb(rs)
-}
-
-// 获取密钥列表
-
-const sshkeyList = ref<SSHKeyItem[]>([])
-
-async function getSshkeyList() {
-    const res = await Api.sshkey.list()
-    sshkeyList.value = res
-}
-
-// 执行快捷命令
-
-const scriptList = ref<TaskScriptItem[]>([])
-
-async function getScriptList() {
-    const res = await Api.taskScript.list()
-    scriptList.value = res
-}
-
-function sshExec(cmd: string) {
-    const target = indexTab(curTab.id)
-    if (target?.tab.webssh) {
-        target.tab.webssh.exec(cmd)
-    }
-}
-
-// 加载数据
-
-getMachineList()
-getSshkeyList()
-getScriptList()
 </script>
 
 <template>
@@ -211,14 +210,12 @@ getScriptList()
                     <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
                         <el-select v-model="formModel.PrivateKey">
                             <el-option v-for="item in sshkeyList" :key="item.Id" :label="item.Description"
-                                       :value="item.PrivateKey"
-                            />
+                                :value="item.PrivateKey" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">
                         <el-input v-model="formModel.PrivateKey" type="textarea"
-                                  :autosize="{ minRows: 3, maxRows: 10 }"
-                        />
+                            :autosize="{ minRows: 3, maxRows: 10 }" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="formSubmit(formRef)">

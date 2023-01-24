@@ -1,13 +1,20 @@
-<script lang="ts" setup>
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 
 import WorkerBind from "@/provider/worker/bind.vue"
 
-// 初始化
+@Component({
+    components: { WorkerBind }
+})
+export default class VendorWorker extends Vue {
+    public wsurl = ""
 
-const workerUrl = Api.socket.getWorkerURL()
-
+    created() {
+        this.wsurl = Api.socket.getWorkerURL()
+    }
+}
 </script>
 
 <template>
@@ -23,7 +30,7 @@ const workerUrl = Api.socket.getWorkerURL()
 
         <el-alert title="节点接入命令" type="warning">
             <template #default>
-                <p>export TDP_EXEC_ARGS="--remote {{ workerUrl }}"</p>
+                <p>export TDP_EXEC_ARGS="--remote {{ wsurl }}"</p>
                 <p>wget -qO- http://tdp.icu/worker-linux | sh -</p>
             </template>
         </el-alert>

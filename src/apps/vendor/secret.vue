@@ -1,63 +1,63 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
-// 初始化
+@Component
+export default class VendorWorker extends Vue {
+    public session = sessionStore()
 
-const session = sessionStore()
+    public created() {
+        this.getSecretList()
+    }
 
-// 厂商列表
+    // 厂商列表
+    async getSecretList() {
+        const res = await Api.vendor.list()
+        this.session.setVendor(res)
+    }
 
-async function getSecretList() {
-    const res = await Api.vendor.list()
-    session.setVendor(res)
+    // 删除厂商
+    async deleteSecret(idx: number) {
+        const item = this.session.vendorList[idx]
+        await Api.vendor.remove(item.Id)
+        this.session.vendorList.splice(idx, 1)
+    }
+
+    // 添加厂商
+
+    @Ref
+    public formRef!: FormInstance
+
+    public formModel = {
+        SecretId: "",
+        SecretKey: "",
+        Provider: "qcloud",
+        Description: "",
+    }
+
+    public formRules: FormRules = {
+        SecretId: [{ required: true, message: "密钥 ID 不能为空" }],
+        SecretKey: [{ required: true, message: "密钥 KEY 不能为空" }],
+        Provider: [{ required: true, message: "云厂商 不能为空" }],
+        Description: [{ required: true, message: "描述或别名 不能为空" }],
+    }
+
+    public formSubmit(form: FormInstance | undefined) {
+        form && form.validate(async valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
+            }
+            await Api.vendor.create(this.formModel)
+            this.formRef.resetFields()
+            this.getSecretList()
+        })
+    }
 }
-
-// 添加厂商
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    SecretId: "",
-    SecretKey: "",
-    Provider: "qcloud",
-    Description: "",
-})
-
-const formRules: FormRules = {
-    SecretId: [{ required: true, message: "密钥 ID 不能为空" }],
-    SecretKey: [{ required: true, message: "密钥 KEY 不能为空" }],
-    Provider: [{ required: true, message: "云厂商 不能为空" }],
-    Description: [{ required: true, message: "描述或别名 不能为空" }],
-}
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.vendor.create(formModel)
-        formRef.value?.resetFields()
-        getSecretList()
-    })
-}
-
-// 删除厂商
-
-async function deleteSecret(idx: number) {
-    const item = session.vendorList[idx]
-    await Api.vendor.remove(item.Id)
-    session.vendorList.splice(idx, 1)
-}
-
-// 加载数据
-
-getSecretList()
 </script>
 
 <template>

@@ -1,17 +1,97 @@
-<script lang="ts" setup>
-import { computed } from "vue"
-import { useRoute } from "vue-router"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import layoutStore from "@/store/layout"
 
-// 初始化
+@Component
+export default class LayoutSidebar extends Vue {
+    public layout = layoutStore()
 
-const route = useRoute()
-const layout = layoutStore()
-
-const onRoutes = computed(() => route.path)
-
-// 菜单数据
+    // 菜单列表
+    public items: MenuItem[] = [
+        {
+            icon: "HomeFilled",
+            index: "/dashboard",
+            title: "首页",
+        },
+        {
+            icon: "Lightning",
+            index: "/domain/list",
+            title: "域名解析",
+        },
+        {
+            icon: "Monitor",
+            index: "/machine/list",
+            title: "主机管理",
+        },
+        {
+            icon: "Coin",
+            index: "/task",
+            title: "快捷命令",
+            subs: [
+                {
+                    icon: "Crop",
+                    index: "/task/script",
+                    title: "脚本管理",
+                },
+                {
+                    icon: "Finished",
+                    index: "/task/history",
+                    title: "历史记录",
+                },
+            ]
+        },
+        {
+            icon: "Connection",
+            index: "/terminal",
+            title: "SSH 终端",
+            subs: [
+                {
+                    icon: "Link",
+                    index: "/terminal/ssh",
+                    title: "SSH 连接",
+                },
+                {
+                    icon: "Lock",
+                    index: "/terminal/sshkey",
+                    title: "SSH 密钥",
+                },
+            ]
+        },
+        {
+            icon: "Switch",
+            index: "/vendor",
+            title: "资产管理",
+            subs: [
+                {
+                    icon: "Cpu",
+                    index: "/vendor/worker",
+                    title: "子节点",
+                },
+                {
+                    icon: "PartlyCloudy",
+                    index: "/vendor/secret",
+                    title: "公有云",
+                },
+            ]
+        }
+        // {
+        //     icon: 'Warning',
+        //     index: '7',
+        //     title: '错误处理',
+        //     subs: [
+        //         {
+        //             index: '/error/403',
+        //             title: '403页面',
+        //         },
+        //         {
+        //             index: '/error/404',
+        //             title: '404页面',
+        //         },
+        //     ],
+        // },
+    ]
+}
 
 interface MenuItem {
     icon: string
@@ -19,95 +99,11 @@ interface MenuItem {
     title: string
     subs?: MenuItem[]
 }
-
-const items: MenuItem[] = [
-    {
-        icon: "HomeFilled",
-        index: "/dashboard",
-        title: "首页",
-    },
-    {
-        icon: "Lightning",
-        index: "/domain/list",
-        title: "域名解析",
-    },
-    {
-        icon: "Monitor",
-        index: "/machine/list",
-        title: "主机管理",
-    },
-    {
-        icon: "Coin",
-        index: "/task",
-        title: "快捷命令",
-        subs: [
-            {
-                icon: "Crop",
-                index: "/task/script",
-                title: "脚本管理",
-            },
-            {
-                icon: "Finished",
-                index: "/task/history",
-                title: "历史记录",
-            },
-        ]
-    },
-    {
-        icon: "Connection",
-        index: "/terminal",
-        title: "SSH 终端",
-        subs: [
-            {
-                icon: "Link",
-                index: "/terminal/ssh",
-                title: "SSH 连接",
-            },
-            {
-                icon: "Lock",
-                index: "/terminal/sshkey",
-                title: "SSH 密钥",
-            },
-        ]
-    },
-    {
-        icon: "Switch",
-        index: "/vendor",
-        title: "资产管理",
-        subs: [
-            {
-                icon: "Cpu",
-                index: "/vendor/worker",
-                title: "子节点",
-            },
-            {
-                icon: "PartlyCloudy",
-                index: "/vendor/secret",
-                title: "公有云",
-            },
-        ]
-    }
-    // {
-    //     icon: 'Warning',
-    //     index: '7',
-    //     title: '错误处理',
-    //     subs: [
-    //         {
-    //             index: '/error/403',
-    //             title: '403页面',
-    //         },
-    //         {
-    //             index: '/error/404',
-    //             title: '404页面',
-    //         },
-    //     ],
-    // },
-]
 </script>
 
 <template>
     <div class="sidebar">
-        <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="layout.collapse"
+        <el-menu class="sidebar-el-menu" :default-active="$route.path" :collapse="layout.collapse"
                  background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router
         >
             <template v-for="item in items">

@@ -1,28 +1,31 @@
-<script lang="ts" setup>
-import { reactive } from "vue"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 
-const summary = reactive({
-    domain: 0,
-    machine: 0,
-    vendor: 0,
-})
+@Component
+export default class DashboardIndex extends Vue {
+    public summary = {
+        domain: 0,
+        machine: 0,
+        vendor: 0,
+    }
 
-async function getAccountSummary() {
-    const domainList = await Api.domain.list()
-    summary.domain = domainList.length
+    public created() {
+        this.getAccountSummary()
+    }
 
-    const machineList = await Api.machine.list()
-    summary.machine = machineList.length
+    async getAccountSummary() {
+        const domainList = await Api.domain.list()
+        this.summary.domain = domainList.length
 
-    const vendorList = await Api.vendor.list()
-    summary.vendor = vendorList.length
+        const machineList = await Api.machine.list()
+        this.summary.machine = machineList.length
+
+        const vendorList = await Api.vendor.list()
+        this.summary.vendor = vendorList.length
+    }
 }
-
-// 加载数据
-
-getAccountSummary()
 </script>
 
 <template>

@@ -1,50 +1,48 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Component, Ref, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { Api } from "@/api"
 import sessionStore from "@/store/session"
 
-// 初始化
+@Component
+export default class MemberInfo extends Vue {
+    public session = sessionStore()
 
-const session = sessionStore()
+    @Ref
+    public formRef!: FormInstance
 
-// 构造表单
+    public formModel = {
+        Description: this.session.description,
+    }
 
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    Description: session.description,
-})
-
-const formRules = ref<FormRules>({
-    desc: [
-        { required: true, message: "个人简介 不能为空" },
-        {
-            validator: (rule, value, callback) => {
-                if (value.trim().length === 0) {
-                    callback(new Error("个人简介 不能为空"))
-                } else {
-                    callback()
-                }
+    public formRules: FormRules = {
+        desc: [
+            { required: true, message: "个人简介 不能为空" },
+            {
+                validator: (rule, value, callback) => {
+                    if (value.trim().length === 0) {
+                        callback(new Error("个人简介 不能为空"))
+                    } else {
+                        callback()
+                    }
+                },
+                trigger: "blur"
             },
-            trigger: "blur"
-        },
-    ],
-})
+        ],
+    }
 
-// 提交表单
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.user.updateInfo(formModel)
-        session.description = formModel.Description
-    })
+    public formSubmit(form: FormInstance | undefined) {
+        form && form.validate(async valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
+            }
+            await Api.user.updateInfo(this.formModel)
+            this.session.description = this.formModel.Description
+        })
+    }
 }
 </script>
 

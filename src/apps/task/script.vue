@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { ref } from "vue"
+<script lang="ts">
+import { Ref,Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 import { TaskScriptItem } from "@/api/local/task_script"
@@ -7,34 +7,37 @@ import { TaskScriptItem } from "@/api/local/task_script"
 import ScriptCreate from "./script_create.vue"
 import ScriptUpdate from "./script_update.vue"
 
-// 初始化
+@Component({
+    components: { ScriptCreate, ScriptUpdate }
+})
+export default class TaskScript extends Vue {
+    public loading = true
 
-const createModal = ref<InstanceType<typeof ScriptCreate>>()
-const updateModal = ref<InstanceType<typeof ScriptUpdate>>()
+    @Ref
+    public createModal!: typeof ScriptCreate
+    @Ref
+    public updateModal!: typeof ScriptUpdate
 
-const loading = ref(true)
+    public scriptList = [] as TaskScriptItem[]
 
-// 获取脚本列表
+    public created() {
+        this.getScriptList()
+    }
 
-const scriptList = ref<TaskScriptItem[]>([])
+    // 获取脚本列表
+    async getScriptList() {
+        const res = await Api.taskScript.list()
+        this.scriptList = res
+        this.loading = false
+    }
 
-async function getScriptList() {
-    const res = await Api.taskScript.list()
-    scriptList.value = res
-    loading.value = false
+    // 删除脚本
+    async removeScript(id: number) {
+        this.loading = true
+        await Api.taskScript.remove(id)
+        await this.getScriptList()
+    }
 }
-
-// 删除脚本
-
-async function removeScript(id: number) {
-    loading.value = true
-    await Api.taskScript.remove(id)
-    await getScriptList()
-}
-
-// 加载数据
-
-getScriptList()
 </script>
 
 <template>

@@ -1,61 +1,61 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { Api } from "@/api"
 import { SSHKeyItem } from "@/api/local/sshkey"
 
-// 初始化
+@Component
+export default class TerminalSshkey extends Vue {
+    public keylist = [] as SSHKeyItem[]
 
-const keylist = ref<SSHKeyItem[]>([])
+    public created() {
+        this.getSshkeyList()
+    }
 
-// 密钥列表
+    // 密钥列表
+    async getSshkeyList() {
+        const res = await Api.sshkey.list()
+        this.keylist = res
+    }
 
-async function getSshkeyList() {
-    const res = await Api.sshkey.list()
-    keylist.value = res
+    // 删除密钥
+    async deleteKey(idx: number) {
+        const item = this.keylist[idx]
+        await Api.sshkey.remove(item.Id)
+        this.keylist.splice(idx, 1)
+    }
+
+    // 添加密钥
+
+    @Ref
+    public formRef!: FormInstance
+
+    public formModel = {
+        PublicKey: "",
+        PrivateKey: "",
+        Description: "",
+    }
+
+    public formRules: FormRules = {
+        PublicKey: [{ required: true, message: "公钥 不能为空" }],
+        PrivateKey: [{ required: true, message: "私钥 不能为空" }],
+        Description: [{ required: true, message: "别名 不能为空" }],
+    }
+
+    public formSubmit(form: FormInstance | undefined) {
+        form && form.validate(async valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
+            }
+            await Api.sshkey.create(this.formModel)
+            this.formRef.resetFields()
+            this.getSshkeyList()
+        })
+    }
 }
-
-// 添加密钥
-
-const formRef = ref<FormInstance>()
-
-const formModel = reactive({
-    PublicKey: "",
-    PrivateKey: "",
-    Description: "",
-})
-
-const formRules: FormRules = {
-    PublicKey: [{ required: true, message: "公钥 不能为空" }],
-    PrivateKey: [{ required: true, message: "私钥 不能为空" }],
-    Description: [{ required: true, message: "别名 不能为空" }],
-}
-
-function formSubmit(form: FormInstance | undefined) {
-    form && form.validate(async valid => {
-        if (!valid) {
-            ElMessage.error("请检查表单")
-            return false
-        }
-        await Api.sshkey.create(formModel)
-        formRef.value?.resetFields()
-        getSshkeyList()
-    })
-}
-
-// 删除密钥
-
-async function deleteKey(idx: number) {
-    const item = keylist.value[idx]
-    await Api.sshkey.remove(item.Id)
-    keylist.value.splice(idx, 1)
-}
-
-// 加载数据
-
-getSshkeyList()
 </script>
 
 <template>

@@ -1,33 +1,30 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
-import { useRoute } from "vue-router"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
 import DnspodDomain from '@/provider/qcloud/dnspod/domain.vue'
 
-// 初始化
+@Component({
+    components: { DnspodDomain }
+})
+export default class DomainDetail extends Vue {
+    public loading = true
 
-const route = useRoute()
+    public domain = {} as DomainItem
 
-const domainId = +route.params.id
+    public created() {
+        const domainId = +this.$route.params.id
+        this.getDomain(domainId)
+    }
 
-const loading = ref(true)
-
-// 获取域名
-
-const domain = reactive({} as DomainItem)
-
-async function getDomain(id: number) {
-    const res = await Api.domain.detail(id)
-    Object.assign(domain, res)
-    loading.value = false
+    async getDomain(id: number) {
+        const res = await Api.domain.detail(id)
+        Object.assign(this.domain, res)
+        this.loading = false
+    }
 }
-
-// 加载数据
-
-getDomain(domainId)
 </script>
 
 <template>

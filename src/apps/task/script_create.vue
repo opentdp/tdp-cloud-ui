@@ -1,65 +1,60 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 import { TaskScriptRequest } from '@/api/local/task_script'
 
-// 初始化
-
-const dailog = ref(false)
-const loading = ref(false)
-
-const emits = defineEmits(['submit'])
-
-// 创建表单
-
-const modelData: TaskScriptRequest = {
-    Name: "",
-    Username: "",
-    Description: "",
-    Content: "",
-    CommandType: "SHELL",
-    WorkDirectory: "",
-    Timeout: 60,
-}
-
-const formModel = reactive({} as TaskScriptRequest)
-
-const formRules = reactive({
-    Name: [{ required: true, message: "名称 不能为空" }],
-    Username: [{ required: true, message: "执行用户 不能为空" }],
-    Description: [{ required: true, message: "描述 不能为空" }],
-    Content: [{ required: true, message: "脚本内容 不能为空" }],
-    CommandType: [{ required: true, message: "脚本类型 不能为空" }],
-    WorkDirectory: [{ required: true, message: "执行路径 不能为空" }],
-    Timeout: [{ required: true, message: "超时时间 不能为空" }],
+@Component({
+    emits: ['submit'],
+    expose: ['open']
 })
+export default class TaskScriptCreate extends Vue {
+    public loading = false
+    public dailog = false
 
-// 提交表单
+    public modelData: TaskScriptRequest = {
+        Name: "",
+        Username: "",
+        Description: "",
+        Content: "",
+        CommandType: "SHELL",
+        WorkDirectory: "",
+        Timeout: 60,
+    }
 
-async function formSubmit() {
-    loading.value = true
-    if (formModel.Username == "") {
-        formModel.Username = formModel.CommandType == "SHELL" ? "root" : "System"
+    public formModel = {} as TaskScriptRequest
+
+    public formRules = {
+        Name: [{ required: true, message: "名称 不能为空" }],
+        Username: [{ required: true, message: "执行用户 不能为空" }],
+        Description: [{ required: true, message: "描述 不能为空" }],
+        Content: [{ required: true, message: "脚本内容 不能为空" }],
+        CommandType: [{ required: true, message: "脚本类型 不能为空" }],
+        WorkDirectory: [{ required: true, message: "执行路径 不能为空" }],
+        Timeout: [{ required: true, message: "超时时间 不能为空" }],
     }
-    if (formModel.WorkDirectory == "") {
-        formModel.WorkDirectory = formModel.CommandType == "SHELL" ? "/root" : "C:\\"
+
+    async formSubmit() {
+        this.loading = true
+        if (this.formModel.Username == "") {
+            this.formModel.Username = this.formModel.CommandType == "SHELL" ? "root" : "System"
+        }
+        if (this.formModel.WorkDirectory == "") {
+            this.formModel.WorkDirectory = this.formModel.CommandType == "SHELL" ? "/root" : "C:\\"
+        }
+        await Api.taskScript.create(this.formModel)
+        this.loading = false
+        this.dailog = false
+        this.$emit("submit")
     }
-    await Api.taskScript.create(formModel)
-    loading.value = false
-    dailog.value = false
-    emits("submit")
+
+    // 导出属性
+    public open() {
+        this.dailog = true
+        this.loading = false
+        Object.assign(this.formModel, this.modelData)
+    }
 }
-
-// 导出属性
-
-defineExpose({
-    open: () => {
-        dailog.value = true
-        loading.value = false
-        Object.assign(formModel, modelData)
-    }
-})
 </script>
 
 <template>
@@ -79,21 +74,18 @@ defineExpose({
             </el-form-item>
             <el-form-item label="执行路径">
                 <el-input v-model="formModel.WorkDirectory"
-                          :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\'"
-                />
+                    :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\'" />
             </el-form-item>
             <el-form-item label="执行用户">
                 <el-input v-model="formModel.Username"
-                          :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 root' : '非必填，默认为 System'"
-                />
+                    :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 root' : '非必填，默认为 System'" />
             </el-form-item>
             <el-form-item label="脚本内容">
                 <el-input v-model="formModel.Content" type="textarea" rows="5" />
             </el-form-item>
             <el-form-item label="超时时间">
                 <el-input-number v-model="formModel.Timeout" placeholder="非必填，默认为 60s" :min="1" :max="86400"
-                                 :value-on-clear="60"
-                />
+                    :value-on-clear="60" />
             </el-form-item>
         </el-form>
         <template #footer>

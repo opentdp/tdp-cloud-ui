@@ -1,6 +1,6 @@
 
-<script lang="ts" setup>
-import { onUnmounted, ref } from "vue"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import VueJsonPretty from "vue-json-pretty"
 import "vue-json-pretty/lib/styles.css"
@@ -9,34 +9,39 @@ import { Api } from "@/api"
 import { TaskHistoryItem } from "@/api/local/task_history"
 import { dateFormat } from "@/helper/utils"
 
-// 获取列表
-
-const historyList = ref<TaskHistoryItem[]>([])
-
-async function getHistory() {
-    const res = await Api.taskHistory.list()
-    historyList.value = res
-}
-
-// 展开检测
-
-const expanded = ref(false)
-
-async function onExpand(row: TaskHistoryItem[], rs: TaskHistoryItem[]) {
-    expanded.value = rs.length > 0
-}
-
-// 加载数据
-
-getHistory()
-
-const timer = setInterval(() => {
-    expanded.value || getHistory()
-}, 5000)
-
-onUnmounted(() => {
-    clearInterval(timer)
+@Component({
+    components: { VueJsonPretty }
 })
+export default class TaskHistory extends Vue {
+    public dateFormat = dateFormat
+
+    public expanded = false
+    public timer = 0
+
+    public historyList = [] as TaskHistoryItem[]
+
+    public created() {
+        this.getHistory()
+        this.timer = setInterval(() => {
+            this.expanded || this.getHistory()
+        }, 5000)
+    }
+
+    public uncreated() {
+        clearInterval(this.timer)
+    }
+
+    // 历史记录
+    async getHistory() {
+        const res = await Api.taskHistory.list()
+        this.historyList = res
+    }
+
+    // 展开检测
+    async onExpand(row: TaskHistoryItem[], rs: TaskHistoryItem[]) {
+        this.expanded = rs.length > 0
+    }
+}
 </script>
 
 <template>

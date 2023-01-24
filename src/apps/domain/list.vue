@@ -1,34 +1,33 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
-// 初始化
+@Component
+export default class DomainList extends Vue {
+    public loading = true
 
-const loading = ref(true)
+    public domainList = [] as DomainItem[]
 
-// 域名列表
+    public created() {
+        this.getDomainList()
+    }
 
-const domainList = reactive<DomainItem[]>([])
+    // 域名列表
+    async getDomainList() {
+        const res = await Api.domain.list()
+        this.domainList.push(...res)
+        this.loading = false
+    }
 
-async function getDomainList() {
-    const res = await Api.domain.list()
-    domainList.push(...res)
-    loading.value = false
+    // 删除域名
+    async deleteDomain(idx: number) {
+        const item = this.domainList[idx]
+        await Api.domain.remove(item.Id)
+        this.domainList.splice(idx, 1)
+    }
 }
-
-// 删除域名
-
-async function deleteDomain(idx: number) {
-    const item = domainList[idx]
-    await Api.domain.remove(item.Id)
-    domainList.splice(idx, 1)
-}
-
-// 加载数据
-
-getDomainList()
 </script>
 
 <template>

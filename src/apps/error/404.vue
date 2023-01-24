@@ -1,10 +1,11 @@
-<script lang="ts" setup>
-import { useRouter } from "vue-router"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
-const router = useRouter()
-
-function goBack() {
-    router.go(-1)
+@Component
+export default class Error404 extends Vue {
+    public goBack() {
+        this.$router.go(-1)
+    }
 }
 </script>
 

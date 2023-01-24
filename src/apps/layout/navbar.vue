@@ -1,52 +1,47 @@
-<script lang="ts" setup>
-import { onMounted } from "vue"
-import { useRouter } from "vue-router"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
-// 初始化
+@Component
+export default class LayoutNavbar extends Vue {
+    public layout = layoutStore()
+    public session = sessionStore()
 
-const router = useRouter()
-const layout = layoutStore()
-const session = sessionStore()
+    public created() {
+        // 小屏自动折叠
+        if (document.body.clientWidth < 1000) {
+            this.collapseChange()
+        }
+    }
 
-// 侧边栏折叠
+    // 侧边栏折叠
+    public collapseChange() {
+        this.layout.setCollapse(!this.layout.collapse)
+    }
 
-function collapseChange() {
-    layout.setCollapse(!layout.collapse)
-}
-
-// 用户名下拉菜单选择事件
-
-function userDropdown(data: string) {
-    switch (data) {
-        case "delcache":
-            Api.cache.clear()
-            location.reload()
-            break
-        case "loginout":
-            session.$reset()
-            router.push({ name: "member-login" })
-            break
-        case "user":
-            router.push({ name: "member-info" })
-            break
-        case "password":
-            router.push({ name: "member-password" })
-            break
+    // 用户名下拉菜单选择事件
+    public userDropdown(data: string) {
+        switch (data) {
+            case "delcache":
+                Api.cache.clear()
+                location.reload()
+                break
+            case "loginout":
+                this.session.$reset()
+                this.$router.push({ name: "member-login" })
+                break
+            case "user":
+                this.$router.push({ name: "member-info" })
+                break
+            case "password":
+                this.$router.push({ name: "member-password" })
+                break
+        }
     }
 }
-
-// 加载数据
-
-onMounted(() => {
-    // 小屏自动折叠
-    if (document.body.clientWidth < 1000) {
-        collapseChange()
-    }
-})
 </script>
 
 <template>

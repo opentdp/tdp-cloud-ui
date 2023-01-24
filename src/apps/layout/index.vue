@@ -1,15 +1,22 @@
-<script lang="ts" setup>
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
+
 import layoutStore from "@/store/layout"
 
-import vNavbar from "./navbar.vue"
-import vSidebar from "./sidebar.vue"
+import Navbar from "./navbar.vue"
+import Sidebar from "./sidebar.vue"
 
-const layout = layoutStore()
+@Component({
+    components: { Navbar, Sidebar }
+})
+export default class LayoutIndex extends Vue {
+    public layout = layoutStore()
+}
 </script>
 
 <template>
-    <v-navbar />
-    <v-sidebar />
+    <Navbar />
+    <Sidebar />
     <div class="content-box" :class="{ collapse: layout.collapse }">
         <router-view v-slot="{ Component }">
             <transition name="move" mode="out-in">

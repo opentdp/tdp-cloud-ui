@@ -1,34 +1,33 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-// 初始化
+@Component
+export default class MachineList extends Vue {
+    public loading = true
 
-const loading = ref(true)
+    public machineList = [] as MachineItem[]
 
-// 主机列表
+    public created() {
+        this.getMachineList()
+    }
 
-const machineList = reactive<MachineItem[]>([])
+    // 主机列表
+    async getMachineList() {
+        const res = await Api.machine.list()
+        this.machineList.push(...res)
+        this.loading = false
+    }
 
-async function getMachineList() {
-    const res = await Api.machine.list()
-    machineList.push(...res)
-    loading.value = false
+    // 删除主机
+    async deleteMachine(idx: number) {
+        const item = this.machineList[idx]
+        await Api.machine.remove(item.Id)
+        this.machineList.splice(idx, 1)
+    }
 }
-
-// 删除主机
-
-async function deleteMachine(idx: number) {
-    const item = machineList[idx]
-    await Api.machine.remove(item.Id)
-    machineList.splice(idx, 1)
-}
-
-// 加载数据
-
-getMachineList()
 </script>
 
 <template>
