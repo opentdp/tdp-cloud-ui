@@ -1,77 +1,35 @@
-import { QCloudClient } from "@/api/basic/qcloud"
+import { QcloudClient } from "@/api/basic/qcloud"
 
-import { Dnspod } from "./typings"
-
-export class DnspodModel extends QCloudClient {
+export class DnspodModel extends QcloudClient {
     protected qService = "dnspod"
     protected qVersion = "2021-03-23"
 
-    public describeDomainList(
-        query?: Dnspod.DescribeDomainListRequest
-    ): Promise<Dnspod.DescribeDomainListResponse> {
-        return this.q({
-            action: "DescribeDomainList",
-            query
-        })
+    public describeDomainList(query?: Qcloud.Dnspod.DescribeDomainListRequest): Promise<Qcloud.Dnspod.DescribeDomainListResponse> {
+        return this.q({ action: "DescribeDomainList", query })
     }
-    public describeRecordList(
-        query: Dnspod.DescribeRecordListRequest
-    ): Promise<Dnspod.DescribeRecordListResponse> {
-        return this.q({
-            action: "DescribeRecordList",
-            query
-        })
+    public describeRecordList(query: Qcloud.Dnspod.DescribeRecordListRequest): Promise<Qcloud.Dnspod.DescribeRecordListResponse> {
+        return this.q({ action: "DescribeRecordList", query })
     }
 
-    public describeDomain(
-        query?: Dnspod.DescribeDomainRequest
-    ): Promise<Dnspod.DescribeDomainResponse> {
-        return this.q({
-            action: "DescribeDomain",
-            query
-        })
+    public describeDomain(query?: Qcloud.Dnspod.DescribeDomainRequest): Promise<Qcloud.Dnspod.DescribeDomainResponse> {
+        return this.q({ action: "DescribeDomain", query })
     }
 
-    public describeRecordType(
-        query: Dnspod.DescribeRecordTypeRequest
-    ): Promise<Dnspod.DescribeRecordTypeResponse> {
-        return this.q({
-            action: "DescribeRecordType",
-            query, expiry: 600
-        })
+    public describeRecordType(query: Qcloud.Dnspod.DescribeRecordTypeRequest): Promise<Qcloud.Dnspod.DescribeRecordTypeResponse> {
+        return this.q({ action: "DescribeRecordType", query, expiry: 600 })
     }
-    public describeRecordLineList(
-        query: Dnspod.DescribeRecordLineListRequest
-    ): Promise<Dnspod.DescribeRecordLineListResponse> {
-        return this.q({
-            action: "DescribeRecordLineList",
-            query, expiry: 600
-        })
+    public describeRecordLineList(query: Qcloud.Dnspod.DescribeRecordLineListRequest): Promise<Qcloud.Dnspod.DescribeRecordLineListResponse> {
+        return this.q({ action: "DescribeRecordLineList", query, expiry: 600 })
     }
 
-    public createRecord(
-        query: Dnspod.CreateRecordRequest
-    ): Promise<Dnspod.CreateRecordResponse> {
-        return this.q({
-            action: "CreateRecord",
-            query,
-        })
+    public createRecord(query: Qcloud.Dnspod.CreateRecordRequest): Promise<Qcloud.Dnspod.CreateRecordResponse> {
+        return this.q({ action: "CreateRecord", query })
     }
-    public modifyRecord(
-        query: Dnspod.ModifyRecordRequest
-    ): Promise<Dnspod.ModifyRecordResponse> {
-        return this.q({
-            action: "ModifyRecord",
-            query,
-        })
+    public modifyRecord(query: Qcloud.Dnspod.ModifyRecordRequest): Promise<Qcloud.Dnspod.ModifyRecordResponse> {
+        return this.q({ action: "ModifyRecord", query })
     }
-    public deleteRecord(
-        query: Dnspod.DeleteRecordRequest
-    ): Promise<Dnspod.DeleteRecordResponse> {
-        return this.q({
-            action: "DeleteRecord",
-            query,
-        })
+    public deleteRecord(query: Qcloud.Dnspod.DeleteRecordRequest): Promise<Qcloud.Dnspod.DeleteRecordResponse> {
+        return this.q({ action: "DeleteRecord", query })
     }
 }
 

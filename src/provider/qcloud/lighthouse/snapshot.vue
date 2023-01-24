@@ -2,14 +2,13 @@
 import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
-import { Lighthouse } from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/utils"
 
 // 初始化
 
 const props = defineProps<{
-    instance: Lighthouse.Instance,
+    instance: Qcloud.Lighthouse.Instance,
 }>()
 
 const emits = defineEmits(['reload'])
@@ -22,7 +21,7 @@ const region = () => {
 
 // 快照列表
 
-const snapshotList = ref<Lighthouse.DescribeSnapshotsResponse>()
+const snapshotList = ref<Qcloud.Lighthouse.DescribeSnapshotsResponse>()
 
 async function getSnapshotList() {
     const res = await QApi.lighthouse.describeSnapshots(region(), {
@@ -59,7 +58,7 @@ function createSnapshotDailog() {
 
 // 回滚快照
 
-async function applySnapshot(item: Lighthouse.Snapshot) {
+async function applySnapshot(item: Qcloud.Lighthouse.Snapshot) {
     await QApi.lighthouse.applyInstanceSnapshot(region(), {
         InstanceId: props.instance.InstanceId,
         SnapshotId: item.SnapshotId
@@ -69,7 +68,7 @@ async function applySnapshot(item: Lighthouse.Snapshot) {
 
 // 删除快照
 
-async function deleteSnapshot(item: Lighthouse.Snapshot) {
+async function deleteSnapshot(item: Qcloud.Lighthouse.Snapshot) {
     await QApi.lighthouse.deleteSnapshots(region(), {
         SnapshotIds: [item.SnapshotId],
     })

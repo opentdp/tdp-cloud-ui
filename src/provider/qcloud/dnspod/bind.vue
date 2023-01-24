@@ -3,7 +3,6 @@ import { ref, reactive } from "vue"
 
 import { Api, QApi } from "@/api"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
-import { Dnspod } from "@/api/qcloud/typings"
 
 // 初始化
 
@@ -17,7 +16,7 @@ QApi.dnspod.vendor(props.vid)
 
 // 获取列表
 
-const domainList = reactive<Dnspod.DomainListItem[]>([])
+const domainList = reactive<Qcloud.Dnspod.DomainListItem[]>([])
 const domainTotalCount = ref(0)
 
 async function getDomainList() {
@@ -29,7 +28,7 @@ async function getDomainList() {
 
 // 绑定域名
 
-function addDomian(item: Dnspod.DomainListItem) {
+function addDomian(item: Qcloud.Dnspod.DomainListItem) {
     Api.domain.create({
         VendorId: props.vid,
         Name: item.Name,

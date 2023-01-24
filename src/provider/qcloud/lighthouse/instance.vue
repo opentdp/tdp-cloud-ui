@@ -4,7 +4,6 @@ import { reactive } from "vue"
 import { QApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"
-import { Lighthouse } from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/utils"
 
@@ -28,7 +27,7 @@ const region = () => {
 
 // 实例信息
 
-const instance = reactive(props.meta.CloudMeta as Lighthouse.Instance)
+const instance = reactive(props.meta.CloudMeta as Qcloud.Lighthouse.Instance)
 
 async function getInstance() {
     const res = await QApi.lighthouse.describeInstances(region(), {

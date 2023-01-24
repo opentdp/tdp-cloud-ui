@@ -1,6 +1,6 @@
 import { HttpClient, HttpRequest } from "./http"
 
-export class QCloudClient extends HttpClient {
+export class QcloudClient extends HttpClient {
     protected api = "/api/qcloud"
 
     protected qService = ""
@@ -8,7 +8,7 @@ export class QCloudClient extends HttpClient {
 
     protected vendorId = 0
 
-    protected q(q: QCloudRequest) {
+    protected q(q: QcloudRequest) {
         const header: HeadersInit = {
             Service: this.qService,
             Version: this.qVersion,
@@ -25,7 +25,7 @@ export class QCloudClient extends HttpClient {
             method: "POST",
             query: q.query || {},
             header: {
-                "TDP-QCloud": JSON.stringify(header),
+                "TDP-Qcloud": JSON.stringify(header),
                 "TDP-Vendor": String(this.vendorId)
             }
         }
@@ -41,7 +41,7 @@ export class QCloudClient extends HttpClient {
     }
 }
 
-export interface QCloudRequest {
+export interface QcloudRequest {
     action: string
     query?: unknown
     region?: string

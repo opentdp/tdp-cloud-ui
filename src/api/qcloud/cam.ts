@@ -1,15 +1,10 @@
-import { QCloudClient } from "@/api/basic/qcloud"
+import { QcloudClient } from "@/api/basic/qcloud"
 
-import { Cam } from "./typings"
-
-export class CamModel extends QCloudClient {
+export class CamModel extends QcloudClient {
     protected qService = "cam"
     protected qVersion = "2019-01-16"
 
-    public getAccountSummary(): Promise<Cam.GetAccountSummaryResponse> {
-        return this.q({
-            action: "GetAccountSummary",
-            expiry: 600
-        })
+    public getAccountSummary(): Promise<Qcloud.Cam.GetAccountSummaryResponse> {
+        return this.q({ action: "GetAccountSummary", expiry: 600 })
     }
 }

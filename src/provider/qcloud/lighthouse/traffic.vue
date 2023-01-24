@@ -4,14 +4,13 @@ import { ref } from "vue"
 import { EChartsOption } from "echarts"
 
 import { QApi } from "@/api"
-import { Lighthouse } from "@/api/qcloud/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
 
 // 初始化
 
 const props = defineProps<{
-    instance: Lighthouse.Instance,
+    instance: Qcloud.Lighthouse.Instance,
 }>()
 
 // 获取区域
@@ -22,7 +21,7 @@ const region = () => {
 
 // 流量信息
 
-const trafficPackage = ref<Lighthouse.TrafficPackage>()
+const trafficPackage = ref<Qcloud.Lighthouse.TrafficPackage>()
 
 const outtrafficChart = ref<EChartsOption>()
 

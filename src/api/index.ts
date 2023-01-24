@@ -28,7 +28,7 @@ export const Api = {
     workhub: new WorkhubModel(),
 }
 
-// 导出 QCloud 接口
+// 导出 Qcloud 接口
 
 import { CamModel } from "./qcloud/cam"
 import { DnspodModel } from "./qcloud/dnspod"

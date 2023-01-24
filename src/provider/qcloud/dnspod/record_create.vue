@@ -2,7 +2,6 @@
 import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
-import { Dnspod } from "@/api/qcloud/typings"
 
 // 初始化
 
@@ -31,7 +30,7 @@ const modelData: Dnspod.RecordListItem = {
     MonitorStatus: "",
 }
 
-const formModel = reactive({} as Dnspod.RecordListItem)
+const formModel = reactive({} as Qcloud.Dnspod.RecordListItem)
 
 const formRules = reactive({
     Name: [{ required: true, message: "主机记录 不能为空" }],
@@ -49,7 +48,7 @@ const formRules = reactive({
 
 async function formSubmit() {
     loading.value = true
-    const query: Dnspod.CreateRecordRequest = {
+    const query: Qcloud.Dnspod.CreateRecordRequest = {
         Domain: domainInfo.Domain,
         SubDomain: formModel.Name,
         RecordType: formModel.Type,
@@ -68,7 +67,7 @@ async function formSubmit() {
 // 记录类型及线路
 
 const recordType = ref<string[]>([])
-const recordLineList = ref<Dnspod.LineInfo[]>([])
+const recordLineList = ref<Qcloud.Dnspod.LineInfo[]>([])
 
 async function getRecordType() {
     const res = await QApi.dnspod.describeRecordType({
@@ -88,7 +87,7 @@ async function getRecordLine() {
 // 导出属性
 
 defineExpose({
-    open: (info: Dnspod.DomainInfo) => {
+    open: (info: Qcloud.Dnspod.DomainInfo) => {
         dailog.value = true
         loading.value = false
         Object.assign(domainInfo, info)

@@ -2,19 +2,18 @@
 import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
-import { Lighthouse } from "@/api/qcloud/typings"
 
 // 初始化
 
 const props = defineProps<{
-    instance: Lighthouse.Instance,
+    instance: Qcloud.Lighthouse.Instance,
 }>()
 
 interface FirewallRuleBus {
     dailog: boolean
     loading: boolean
     index?: number
-    model: Lighthouse.FirewallRule & {
+    model: Qcloud.Lighthouse.FirewallRule & {
         AppType?: string
     }
 }
@@ -27,7 +26,7 @@ const region = () => {
 
 // 规则列表
 
-const firewallRuleList = ref<Lighthouse.DescribeFirewallRulesResponse>()
+const firewallRuleList = ref<Qcloud.Lighthouse.DescribeFirewallRulesResponse>()
 
 async function getFirewallRuleList() {
     const res = await QApi.lighthouse.describeFirewallRules(region(), {
@@ -91,7 +90,7 @@ async function modifyFirewallRule() {
     getFirewallRuleList()
 }
 
-function modifyFirewallRuleDailog(item: Lighthouse.FirewallRule, idx: number) {
+function modifyFirewallRuleDailog(item: Qcloud.Lighthouse.FirewallRule, idx: number) {
     modifyFirewallRuleBus.model = Object.assign({}, item)
     modifyFirewallRuleBus.index = idx
     modifyFirewallRuleBus.dailog = true
@@ -117,7 +116,7 @@ async function modifyFirewallRuleDescription() {
     getFirewallRuleList()
 }
 
-function modifyFirewallRuleDescriptionDailog(item: Lighthouse.FirewallRule) {
+function modifyFirewallRuleDescriptionDailog(item: Qcloud.Lighthouse.FirewallRule) {
     modifyFirewallRuleDescriptionBus.model = Object.assign({}, item)
     modifyFirewallRuleDescriptionBus.dailog = true
 }

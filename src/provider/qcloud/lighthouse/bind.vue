@@ -2,7 +2,6 @@
 import { ref, reactive } from "vue"
 
 import { Api, QApi } from "@/api"
-import { Lighthouse } from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/utils"
 
@@ -18,9 +17,9 @@ QApi.lighthouse.vendor(props.vid)
 
 // 获取列表
 
-const regionList = reactive<Record<string, Lighthouse.RegionInfo>>({})
+const regionList = reactive<Record<string, Qcloud.Lighthouse.RegionInfo>>({})
 
-const instanceList = reactive<Lighthouse.Instance[]>([])
+const instanceList = reactive<Qcloud.Lighthouse.Instance[]>([])
 const instanceCount = ref(0)
 
 async function getRegionList() {
@@ -48,7 +47,7 @@ function parseRegion(s: string) {
 
 // 绑定主机
 
-function addMachine(item: Lighthouse.Instance) {
+function addMachine(item: Qcloud.Lighthouse.Instance) {
     Api.machine.create({
         VendorId: props.vid,
         HostName: item.InstanceName,

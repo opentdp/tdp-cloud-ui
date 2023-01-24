@@ -3,7 +3,6 @@ import { ref, reactive } from "vue"
 
 import { QApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
-import { Dnspod } from "@/api/qcloud/typings"
 
 import RecordCreate from './record_create.vue'
 import RecordUpdate from './record_update.vue'
@@ -35,8 +34,8 @@ async function getDomain() {
 
 // 域名记录
 
-const recordList = ref<Dnspod.RecordListItem[]>()
-const recordCountInfo = ref<Dnspod.RecordCountInfo>()
+const recordList = ref<Qcloud.Dnspod.RecordListItem[]>()
+const recordCountInfo = ref<Qcloud.Dnspod.RecordCountInfo>()
 
 async function getRecordList() {
     const res = await QApi.dnspod.describeRecordList({
@@ -49,7 +48,7 @@ async function getRecordList() {
 // 删除记录
 
 async function deleteRecord(recordId: number) {
-    const query: Dnspod.DeleteRecordRequest = {
+    const query: Qcloud.Dnspod.DeleteRecordRequest = {
         Domain: domainInfo.Domain,
         RecordId: recordId
     }
