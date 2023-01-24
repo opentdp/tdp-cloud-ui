@@ -40,7 +40,7 @@ export default class LighthouseBind extends Vue {
         const res = await QApi.lighthouse.describeInstances(region)
         if (res.TotalCount > 0) {
             this.instanceCount += res.TotalCount
-            this.instanceList = res.InstanceSet || []
+            this.instanceList.push(...res.InstanceSet)
         }
         this.loading--
     }
