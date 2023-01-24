@@ -9,7 +9,6 @@ import { TaskScriptItem } from '@/api/local/task_script'
     expose: ['open']
 })
 export default class TaskScriptUpdate extends Vue {
-    public loading = false
     public dailog = false
 
     public formModel = {} as TaskScriptItem
@@ -25,7 +24,6 @@ export default class TaskScriptUpdate extends Vue {
     }
 
     async formSubmit() {
-        this.loading = false
         if (this.formModel.Username == "") {
             this.formModel.Username = this.formModel.CommandType == "SHELL" ? "root" : "System"
         }
@@ -33,7 +31,6 @@ export default class TaskScriptUpdate extends Vue {
             this.formModel.WorkDirectory = this.formModel.CommandType == "SHELL" ? "/root" : "C:\\"
         }
         await Api.taskScript.update(this.formModel)
-        this.loading = false
         this.dailog = false
         this.$emit("submit")
     }
@@ -41,8 +38,7 @@ export default class TaskScriptUpdate extends Vue {
     // 导出属性
     public open(data: TaskScriptItem) {
         this.dailog = true
-        this.loading = false
-        Object.assign(this.formModel, data)
+        this.formModel = data
     }
 }
 </script>

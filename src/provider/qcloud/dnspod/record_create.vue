@@ -1,103 +1,102 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
 import { QApi } from "@/api"
 import { Qcloud } from "@/api/qcloud/typings"
 
-// 初始化
-
-const dailog = ref(false)
-const loading = ref(false)
-
-const emits = defineEmits(['submit'])
-
-const domainInfo = reactive({} as Qcloud.Dnspod.DomainInfo)
-
-// 创建表单
-
-const modelData: Qcloud.Dnspod.RecordListItem = {
-    Name: "",
-    Type: "",
-    Line: "",
-    Value: "",
-    MX: 0,
-    TTL: 600,
-    Weight: 0,
-    Status: "",
-    Remark: "",
-    LineId: "0",
-    RecordId: 0,
-    UpdatedOn: "",
-    MonitorStatus: "",
-}
-
-const formModel = reactive({} as Qcloud.Dnspod.RecordListItem)
-
-const formRules = reactive({
-    Name: [{ required: true, message: "主机记录 不能为空" }],
-    Type: [{ required: true, message: "记录类型 不能为空" }],
-    Line: [{ required: true, message: "线路类型 不能为空" }],
-    Value: [{ required: true, message: "别名 不能为空" }],
-    MX: [{ required: true, message: "记录值 不能为空" }],
-    TTL: [{ required: true, message: "TTL 不能为空" }],
-    Weight: [{ required: true, message: "权重 不能为空" }],
-    Status: [{ required: true, message: "状态 不能为空" }],
-    Remark: [{ required: true, message: "备注 不能为空" }],
+@Component({
+    emits: ["submit"],
+    expose: ["open"],
 })
+export default class DnspodRecordCreate extends Vue {
+    public loading = false
+    public dailog = false
 
-// 提交表单
+    public domainInfo = {} as Qcloud.Dnspod.DomainInfo
 
-async function formSubmit() {
-    loading.value = true
-    const query: Qcloud.Dnspod.CreateRecordRequest = {
-        Domain: domainInfo.Domain,
-        SubDomain: formModel.Name,
-        RecordType: formModel.Type,
-        RecordLine: formModel.Line,
-        Value: formModel.Value,
-        MX: +formModel.MX || 0,
-        TTL: +formModel.TTL || 600,
-        Weight: +formModel.Weight || 0
+    // 创建表单
+
+    public modelData: Qcloud.Dnspod.RecordListItem = {
+        Name: "",
+        Type: "",
+        Line: "",
+        Value: "",
+        MX: 0,
+        TTL: 600,
+        Weight: 0,
+        Status: "",
+        Remark: "",
+        LineId: "0",
+        RecordId: 0,
+        UpdatedOn: "",
+        MonitorStatus: "",
     }
-    await QApi.dnspod.createRecord(query)
-    loading.value = false
-    dailog.value = false
-    emits("submit")
-}
 
-// 记录类型及线路
+    public formModel = {} as Qcloud.Dnspod.RecordListItem
 
-const recordType = ref<string[]>([])
-const recordLineList = ref<Qcloud.Dnspod.LineInfo[]>([])
+    public formRules = {
+        Name: [{ required: true, message: "主机记录 不能为空" }],
+        Type: [{ required: true, message: "记录类型 不能为空" }],
+        Line: [{ required: true, message: "线路类型 不能为空" }],
+        Value: [{ required: true, message: "别名 不能为空" }],
+        MX: [{ required: true, message: "记录值 不能为空" }],
+        TTL: [{ required: true, message: "TTL 不能为空" }],
+        Weight: [{ required: true, message: "权重 不能为空" }],
+        Status: [{ required: true, message: "状态 不能为空" }],
+        Remark: [{ required: true, message: "备注 不能为空" }],
+    }
 
-async function getRecordType() {
-    const res = await QApi.dnspod.describeRecordType({
-        DomainGrade: domainInfo.Grade
-    })
-    recordType.value = res.TypeList
-}
+    // 提交表单
 
-async function getRecordLine() {
-    const res = await QApi.dnspod.describeRecordLineList({
-        DomainGrade: domainInfo.Grade,
-        Domain: domainInfo.Domain
-    })
-    recordLineList.value = res.LineList
-}
+    async formSubmit() {
+        this.loading = true
+        const query: Qcloud.Dnspod.CreateRecordRequest = {
+            Domain: this.domainInfo.Domain,
+            SubDomain: this.formModel.Name,
+            RecordType: this.formModel.Type,
+            RecordLine: this.formModel.Line,
+            Value: this.formModel.Value,
+            MX: +this.formModel.MX || 0,
+            TTL: +this.formModel.TTL || 600,
+            Weight: +this.formModel.Weight || 0
+        }
+        await QApi.dnspod.createRecord(query)
+        this.loading = false
+        this.dailog = false
+        this.$emit("submit")
+    }
 
-// 导出属性
+    // 记录类型及线路
 
-defineExpose({
-    open: (info: Qcloud.Dnspod.DomainInfo) => {
-        dailog.value = true
-        loading.value = false
-        Object.assign(domainInfo, info)
-        Object.assign(formModel, modelData)
+    public recordType = [] as string[]
+    public recordLineList = [] as Qcloud.Dnspod.LineInfo[]
+
+    async getRecordType() {
+        const res = await QApi.dnspod.describeRecordType({
+            DomainGrade: this.domainInfo.Grade
+        })
+        this.recordType = res.TypeList
+    }
+
+    async getRecordLine() {
+        const res = await QApi.dnspod.describeRecordLineList({
+            DomainGrade: this.domainInfo.Grade,
+            Domain: this.domainInfo.Domain
+        })
+        this.recordLineList = res.LineList
+    }
+
+    // 导出属性
+    public open(info: Qcloud.Dnspod.DomainInfo) {
+        this.dailog = true
+        this.loading = false
+        this.domainInfo = info
+        Object.assign(this.formModel, this.modelData)
         // 加载数据
-        recordType.value.length === 0 && getRecordType()
-        recordLineList.value.length === 0 && getRecordLine()
+        this.recordType.length === 0 && this.getRecordType()
+        this.recordLineList.length === 0 && this.getRecordLine()
     }
-})
+}
 </script>
 
 <template>

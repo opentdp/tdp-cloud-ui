@@ -1,71 +1,72 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { Api, QApi } from "@/api"
 import { Qcloud } from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/utils"
 
-// 初始化
+@Component
+export default class LighthouseBind extends Vue {
+    public dateFormat = dateFormat
 
-const loading = ref(1)
+    public loading = 0
 
-const props = defineProps<{
-    vid: number,
-}>()
+    @Prop
+    public vid = 0
 
-QApi.lighthouse.vendor(props.vid)
-
-// 获取列表
-
-const regionList = reactive<Record<string, Qcloud.Lighthouse.RegionInfo>>({})
-
-const instanceList = reactive<Qcloud.Lighthouse.Instance[]>([])
-const instanceCount = ref(0)
-
-async function getRegionList() {
-    const res = await QApi.lighthouse.describeRegions()
-    loading.value = res.TotalCount
-    res.RegionSet.forEach((item) => {
-        regionList[item.Region] = item
-        getInstanceList(item.Region)
-    })
-}
-
-async function getInstanceList(region: string) {
-    const res = await QApi.lighthouse.describeInstances(region)
-    if (res.TotalCount > 0) {
-        instanceCount.value += res.TotalCount
-        instanceList.push(...res.InstanceSet)
+    public created() {
+        QApi.lighthouse.vendor(this.vid)
+        this.getRegionList()
     }
-    loading.value--
+
+    // 获取列表
+
+    public regionList: Record<string, Qcloud.Lighthouse.RegionInfo> = {}
+
+    public instanceList = [] as Qcloud.Lighthouse.Instance[]
+    public instanceCount = 0
+
+    async getRegionList() {
+        const res = await QApi.lighthouse.describeRegions()
+        this.loading = res.TotalCount
+        res.RegionSet.forEach((item) => {
+            this.regionList[item.Region] = item
+            this.getInstanceList(item.Region)
+        })
+    }
+
+    async getInstanceList(region: string) {
+        const res = await QApi.lighthouse.describeInstances(region)
+        if (res.TotalCount > 0) {
+            this.instanceCount += res.TotalCount
+            this.instanceList = res.InstanceSet || []
+        }
+        this.loading--
+    }
+
+    // 绑定主机
+
+    public addMachine(item: Qcloud.Lighthouse.Instance) {
+        Api.machine.create({
+            VendorId: this.vid,
+            HostName: item.InstanceName,
+            IpAddress: item.PublicAddresses[0],
+            OSType: item.PlatformType,
+            Region: this.parseRegion(item.Zone),
+            Model: "qcloud/lighthouse",
+            CloudId: item.InstanceId,
+            CloudMeta: JSON.stringify(item),
+            Description: "",
+            Status: "{}",
+        })
+    }
+
+    public parseRegion(s: string) {
+        const [r, z] = s.replace(/-(\d+)$/, ':$1').split(':')
+        return this.regionList[r].RegionName + (r ? " " + z + "区" : "")
+    }
 }
-
-function parseRegion(s: string) {
-    const [r, z] = s.replace(/-(\d+)$/, ':$1').split(':')
-    return regionList[r].RegionName + (r ? " " + z + "区" : "")
-}
-
-// 绑定主机
-
-function addMachine(item: Qcloud.Lighthouse.Instance) {
-    Api.machine.create({
-        VendorId: props.vid,
-        HostName: item.InstanceName,
-        IpAddress: item.PublicAddresses[0],
-        OSType: item.PlatformType,
-        Region: parseRegion(item.Zone),
-        Model: "qcloud/lighthouse",
-        CloudId: item.InstanceId,
-        CloudMeta: JSON.stringify(item),
-        Description: "",
-        Status: "{}",
-    })
-}
-
-// 加载数据
-
-getRegionList()
 </script>
 
 <template>

@@ -17,7 +17,7 @@ export default class DomainList extends Vue {
     // 域名列表
     async getDomainList() {
         const res = await Api.domain.list()
-        this.domainList.push(...res)
+        this.domainList = res || []
         this.loading = false
     }
 

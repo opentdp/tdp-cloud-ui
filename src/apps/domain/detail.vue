@@ -21,7 +21,7 @@ export default class DomainDetail extends Vue {
 
     async getDomain(id: number) {
         const res = await Api.domain.detail(id)
-        Object.assign(this.domain, res)
+        this.domain = res || {}
         this.loading = false
     }
 }

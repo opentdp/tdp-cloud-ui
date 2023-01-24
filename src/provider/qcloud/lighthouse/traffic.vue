@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { ref } from "vue"
+<script lang="ts">
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { EChartsOption } from "echarts"
 
@@ -8,122 +8,124 @@ import { Qcloud } from "@/api/qcloud/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
 
-// 初始化
+@Component
+export default class LighthouseTraffic extends Vue {
+    public bytesToSize = bytesToSize
 
-const props = defineProps<{
-    instance: Qcloud.Lighthouse.Instance,
-}>()
+    @Prop
+    public instance: Qcloud.Lighthouse.Instance
 
-// 获取区域
+    public created() {
+        this.getTrafficPackage()
+        this.getLighthouseOuttraffic()
+    }
 
-const region = () => {
-    return props.instance.Zone.replace(/-\d$/, "")
-}
+    // 获取区域
 
-// 流量信息
+    public get region() {
+        return this.instance.Zone.replace(/-\d$/, "")
+    }
 
-const trafficPackage = ref<Qcloud.Lighthouse.TrafficPackage>()
+    // 流量信息
 
-const outtrafficChart = ref<EChartsOption>()
+    public trafficPackage: Qcloud.Lighthouse.TrafficPackage
 
-async function getTrafficPackage() {
-    const res = await QApi.lighthouse.describeInstancesTrafficPackages(region(), {
-        InstanceIds: [props.instance.InstanceId],
-    })
-    trafficPackage.value = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
-}
+    public outtrafficChart!: EChartsOption
 
-async function getLighthouseOuttraffic() {
-    const res = await QApi.monitor.getMonitorData(region(), {
-        Namespace: "QCE/LIGHTHOUSE",
-        MetricName: "LighthouseOuttraffic",
-        Instances: [
-            {
-                Dimensions: [
-                    {
-                        Name: "InstanceId",
-                        Value: props.instance.InstanceId,
-                    },
-                ],
-            },
-        ],
-        Period: 300,
-        StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
-        EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
-    })
-    const data = res.DataPoints[0].Timestamps.map(t => {
-        return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
-    })
-    outtrafficChart.value = getOuttrafficChartConfig(data, res.DataPoints[0].Values)
-}
+    async getTrafficPackage() {
+        const res = await QApi.lighthouse.describeInstancesTrafficPackages(this.region, {
+            InstanceIds: [this.instance.InstanceId],
+        })
+        this.trafficPackage = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
+    }
 
-function getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {
-    return {
-        backgroundColor: '#fcfcfc',
-        toolbox: {
-            feature: {
-                dataZoom: {
-                    yAxisIndex: false
+    async getLighthouseOuttraffic() {
+        const res = await QApi.monitor.getMonitorData(this.region, {
+            Namespace: "QCE/LIGHTHOUSE",
+            MetricName: "LighthouseOuttraffic",
+            Instances: [
+                {
+                    Dimensions: [
+                        {
+                            Name: "InstanceId",
+                            Value: this.instance.InstanceId,
+                        },
+                    ],
                 },
-                saveAsImage: {
-                    pixelRatio: 2
+            ],
+            Period: 300,
+            StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
+            EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
+        })
+        const data = res.DataPoints[0].Timestamps.map(t => {
+            return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
+        })
+        this.outtrafficChart = this.getOuttrafficChartConfig(data, res.DataPoints[0].Values)
+    }
+
+    public getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {
+        return {
+            backgroundColor: '#fcfcfc',
+            toolbox: {
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: false
+                    },
+                    saveAsImage: {
+                        pixelRatio: 2
+                    }
                 }
-            }
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'shadow'
             },
-            formatter: '时间：{b0}<br />流量：{c0} MB/s'
-        },
-        grid: {
-            left: 80,
-            right: 80,
-            bottom: 90
-        },
-        dataZoom: [
-            {
-                type: 'inside',
-                start: 80
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                },
+                formatter: '时间：{b0}<br />流量：{c0} MB/s'
             },
-            {
-                type: 'slider'
-            }
-        ],
-        xAxis: {
-            silent: false,
-            splitLine: {
-                show: false
+            grid: {
+                left: 80,
+                right: 80,
+                bottom: 90
             },
-            splitArea: {
-                show: false
+            dataZoom: [
+                {
+                    type: 'inside',
+                    start: 80
+                },
+                {
+                    type: 'slider'
+                }
+            ],
+            xAxis: {
+                silent: false,
+                splitLine: {
+                    show: false
+                },
+                splitArea: {
+                    show: false
+                },
+                data: xdata
             },
-            data: xdata
-        },
-        yAxis: {
-            axisLabel: {
-                formatter: '{value} MB/s'
+            yAxis: {
+                axisLabel: {
+                    formatter: '{value} MB/s'
+                },
+                splitArea: {
+                    show: false
+                }
             },
-            splitArea: {
-                show: false
-            }
-        },
-        series: [
-            {
-                type: 'line',
-                areaStyle: {},
-                name: '流量',
-                data: sdata
-            }
-        ]
+            series: [
+                {
+                    type: 'line',
+                    areaStyle: {},
+                    name: '流量',
+                    data: sdata
+                }
+            ]
+        }
     }
 }
-
-// 加载数据
-
-getTrafficPackage()
-getLighthouseOuttraffic()
 </script>
 
 <template>

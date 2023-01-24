@@ -1,94 +1,95 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QApi } from "@/api"
 import { Qcloud } from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/utils"
 
-// 初始化
-
-const props = defineProps<{
-    instance: Qcloud.Lighthouse.Instance,
-}>()
-
-const emits = defineEmits(['change'])
-
-// 获取区域
-
-const region = () => {
-    return props.instance.Zone.replace(/-\d$/, "")
-}
-
-// 快照列表
-
-const snapshotList = ref<Qcloud.Lighthouse.DescribeSnapshotsResponse>()
-
-async function getSnapshotList() {
-    const res = await QApi.lighthouse.describeSnapshots(region(), {
-        Filters: [{ Name: "instance-id", Values: [props.instance.InstanceId] }],
-    })
-    snapshotList.value = res
-}
-
-// 创建快照
-
-const createSnapshotBus = reactive({
-    dailog: false,
-    loading: false,
-    model: {
-        name: ""
-    }
+@Component({
+    emits: ["change"]
 })
+export default class LighthouseSnapshot extends Vue {
+    public dateFormat = dateFormat
 
-async function createSnapshot() {
-    createSnapshotBus.loading = true
-    await QApi.lighthouse.createInstanceSnapshot(region(), {
-        InstanceId: props.instance.InstanceId,
-        SnapshotName: createSnapshotBus.model.name
-    })
-    createSnapshotBus.dailog = false
-    createSnapshotBus.loading = false
-    refreshSnapshot()
-    emits("change")
-}
+    @Prop
+    public instance: Qcloud.Lighthouse.Instance
 
-function createSnapshotDailog() {
-    createSnapshotBus.model.name = 'Snapshot-' + Date.now()
-    createSnapshotBus.dailog = true
-}
+    public created() {
+        this.getSnapshotList()
+    }
+    // 获取区域
 
-// 回滚快照
+    public get region() {
+        return this.instance.Zone.replace(/-\d$/, "")
+    }
 
-async function applySnapshot(item: Qcloud.Lighthouse.Snapshot) {
-    await QApi.lighthouse.applyInstanceSnapshot(region(), {
-        InstanceId: props.instance.InstanceId,
-        SnapshotId: item.SnapshotId
-    })
-    emits("change")
-}
+    // 快照列表
 
-// 删除快照
+    public snapshotList: Qcloud.Lighthouse.DescribeSnapshotsResponse
 
-async function deleteSnapshot(item: Qcloud.Lighthouse.Snapshot) {
-    await QApi.lighthouse.deleteSnapshots(region(), {
-        SnapshotIds: [item.SnapshotId],
-    })
-    refreshSnapshot()
-}
+    async getSnapshotList() {
+        const res = await QApi.lighthouse.describeSnapshots(this.region, {
+            Filters: [{ Name: "instance-id", Values: [this.instance.InstanceId] }],
+        })
+        this.snapshotList = res
+    }
 
-// 刷新列表
+    // 创建快照
 
-async function refreshSnapshot() {
-    await getSnapshotList()
-    if (snapshotList.value?.SnapshotSet.find((item) => item.Percent < 100)) {
-        setTimeout(refreshSnapshot, 1500)
+    public createSnapshotBus = {
+        dailog: false,
+        loading: false,
+        model: {
+            name: ""
+        }
+    }
+
+    async createSnapshot() {
+        this.createSnapshotBus.loading = true
+        await QApi.lighthouse.createInstanceSnapshot(this.region, {
+            InstanceId: this.instance.InstanceId,
+            SnapshotName: this.createSnapshotBus.model.name
+        })
+        this.createSnapshotBus.dailog = false
+        this.createSnapshotBus.loading = false
+        this.refreshSnapshot()
+        this.$emit("change")
+    }
+
+    public createSnapshotDailog() {
+        this.createSnapshotBus.model.name = 'Snapshot-' + Date.now()
+        this.createSnapshotBus.dailog = true
+    }
+
+    // 回滚快照
+
+    async applySnapshot(item: Qcloud.Lighthouse.Snapshot) {
+        await QApi.lighthouse.applyInstanceSnapshot(this.region, {
+            InstanceId: this.instance.InstanceId,
+            SnapshotId: item.SnapshotId
+        })
+        this.$emit("change")
+    }
+
+    // 删除快照
+
+    async deleteSnapshot(item: Qcloud.Lighthouse.Snapshot) {
+        await QApi.lighthouse.deleteSnapshots(this.region, {
+            SnapshotIds: [item.SnapshotId],
+        })
+        this.refreshSnapshot()
+    }
+
+    // 刷新列表
+
+    async refreshSnapshot() {
+        await this.getSnapshotList()
+        if (this.snapshotList.value?.SnapshotSet.find((item) => item.Percent < 100)) {
+            setTimeout(this.refreshSnapshot, 1500)
+        }
     }
 }
-
-// 加载数据
-
-getSnapshotList()
 </script>
 
 <template>

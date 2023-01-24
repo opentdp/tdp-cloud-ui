@@ -1,14 +1,132 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QApi } from "@/api"
 import { Qcloud } from "@/api/qcloud/typings"
 
-// 初始化
+@Component
+export default class LighthouseFirewall extends Vue {
+    @Prop
+    public instance: Qcloud.Lighthouse.Instance
 
-const props = defineProps<{
-    instance: Qcloud.Lighthouse.Instance,
-}>()
+    public created() {
+        this.getFirewallRuleList()
+    }
+
+    // 获取区域
+
+    public get region() {
+        return this.instance.Zone.replace(/-\d$/, "")
+    }
+
+    // 规则列表
+
+    public firewallRuleList: Qcloud.Lighthouse.DescribeFirewallRulesResponse
+
+    async getFirewallRuleList() {
+        const res = await QApi.lighthouse.describeFirewallRules(this.region, {
+            InstanceId: this.instance.InstanceId,
+        })
+        this.firewallRuleList = res
+    }
+
+    // 添加规则
+
+    public createFirewallRuleBus: FirewallRuleBus = {
+        dailog: false,
+        loading: false,
+        model: {
+            Protocol: "TCP",
+            Port: "",
+            CidrBlock: "0.0.0.0/0",
+            Action: "ACCEPT",
+            FirewallRuleDescription: "",
+        }
+    }
+
+    async createFirewallRule() {
+        this.createFirewallRuleBus.loading = true
+        await QApi.lighthouse.createFirewallRules(this.region, {
+            InstanceId: this.instance.InstanceId,
+            FirewallRules: [this.createFirewallRuleBus.model]
+        })
+        this.createFirewallRuleBus.dailog = false
+        this.createFirewallRuleBus.loading = false
+        this.getFirewallRuleList()
+    }
+
+    // 修改规则
+
+    public modifyFirewallRuleBus: FirewallRuleBus = {
+        dailog: false,
+        loading: false,
+        model: { Protocol: "" }
+    }
+
+    async modifyFirewallRule() {
+        if (!this.firewallRuleList.value) {
+            return
+        }
+        this.modifyFirewallRuleBus.loading = true
+        await QApi.lighthouse.modifyFirewallRules(this.region, {
+            InstanceId: this.instance.InstanceId,
+            FirewallRules: this.firewallRuleList.value.FirewallRuleSet.map(
+                (item: FirewallRuleBus["model"], idx) => {
+                    if (this.modifyFirewallRuleBus.index === idx) {
+                        item = Object.assign({}, this.modifyFirewallRuleBus.model)
+                    }
+                    delete item.AppType
+                    return item
+                }
+            )
+        })
+        this.modifyFirewallRuleBus.dailog = false
+        this.modifyFirewallRuleBus.loading = false
+        this.getFirewallRuleList()
+    }
+
+    public modifyFirewallRuleDailog(item: Qcloud.Lighthouse.FirewallRule, idx: number) {
+        this.modifyFirewallRuleBus.model = Object.assign({}, item)
+        this.modifyFirewallRuleBus.index = idx
+        this.modifyFirewallRuleBus.dailog = true
+    }
+
+    // 修改规则描述
+
+    public modifyFirewallRuleDescriptionBus: FirewallRuleBus = {
+        dailog: false,
+        loading: false,
+        model: { Protocol: "" }
+    }
+
+    async modifyFirewallRuleDescription() {
+        this.modifyFirewallRuleDescriptionBus.loading = true
+        delete this.modifyFirewallRuleDescriptionBus.model.AppType
+        await QApi.lighthouse.modifyFirewallRuleDescription(this.region, {
+            InstanceId: this.instance.InstanceId,
+            FirewallRule: this.modifyFirewallRuleDescriptionBus.model
+        })
+        this.modifyFirewallRuleDescriptionBus.dailog = false
+        this.modifyFirewallRuleDescriptionBus.loading = false
+        this.getFirewallRuleList()
+    }
+
+    public modifyFirewallRuleDescriptionDailog(item: Qcloud.Lighthouse.FirewallRule) {
+        this.modifyFirewallRuleDescriptionBus.model = Object.assign({}, item)
+        this.modifyFirewallRuleDescriptionBus.dailog = true
+    }
+
+    // 删除规则
+
+    async deleteFirewallRule(item: FirewallRuleBus["model"]) {
+        delete item.AppType
+        await QApi.lighthouse.deleteFirewallRules(this.region, {
+            InstanceId: this.instance.InstanceId,
+            FirewallRules: [item]
+        })
+        this.getFirewallRuleList()
+    }
+}
 
 interface FirewallRuleBus {
     dailog: boolean
@@ -18,124 +136,6 @@ interface FirewallRuleBus {
         AppType?: string
     }
 }
-
-// 获取区域
-
-const region = () => {
-    return props.instance.Zone.replace(/-\d$/, "")
-}
-
-// 规则列表
-
-const firewallRuleList = ref<Qcloud.Lighthouse.DescribeFirewallRulesResponse>()
-
-async function getFirewallRuleList() {
-    const res = await QApi.lighthouse.describeFirewallRules(region(), {
-        InstanceId: props.instance.InstanceId,
-    })
-    firewallRuleList.value = res
-}
-
-// 添加规则
-
-const createFirewallRuleBus = reactive<FirewallRuleBus>({
-    dailog: false,
-    loading: false,
-    model: {
-        Protocol: "TCP",
-        Port: "",
-        CidrBlock: "0.0.0.0/0",
-        Action: "ACCEPT",
-        FirewallRuleDescription: "",
-    }
-})
-
-async function createFirewallRule() {
-    createFirewallRuleBus.loading = true
-    await QApi.lighthouse.createFirewallRules(region(), {
-        InstanceId: props.instance.InstanceId,
-        FirewallRules: [createFirewallRuleBus.model]
-    })
-    createFirewallRuleBus.dailog = false
-    createFirewallRuleBus.loading = false
-    getFirewallRuleList()
-}
-
-// 修改规则
-
-const modifyFirewallRuleBus = reactive<FirewallRuleBus>({
-    dailog: false,
-    loading: false,
-    model: { Protocol: "" }
-})
-
-async function modifyFirewallRule() {
-    if (!firewallRuleList.value) {
-        return
-    }
-    modifyFirewallRuleBus.loading = true
-    await QApi.lighthouse.modifyFirewallRules(region(), {
-        InstanceId: props.instance.InstanceId,
-        FirewallRules: firewallRuleList.value.FirewallRuleSet.map(
-            (item: FirewallRuleBus["model"], idx) => {
-                if (modifyFirewallRuleBus.index === idx) {
-                    item = Object.assign({}, modifyFirewallRuleBus.model)
-                }
-                delete item.AppType
-                return item
-            }
-        )
-    })
-    modifyFirewallRuleBus.dailog = false
-    modifyFirewallRuleBus.loading = false
-    getFirewallRuleList()
-}
-
-function modifyFirewallRuleDailog(item: Qcloud.Lighthouse.FirewallRule, idx: number) {
-    modifyFirewallRuleBus.model = Object.assign({}, item)
-    modifyFirewallRuleBus.index = idx
-    modifyFirewallRuleBus.dailog = true
-}
-
-// 修改规则描述
-
-const modifyFirewallRuleDescriptionBus = reactive<FirewallRuleBus>({
-    dailog: false,
-    loading: false,
-    model: { Protocol: "" }
-})
-
-async function modifyFirewallRuleDescription() {
-    modifyFirewallRuleDescriptionBus.loading = true
-    delete modifyFirewallRuleDescriptionBus.model.AppType
-    await QApi.lighthouse.modifyFirewallRuleDescription(region(), {
-        InstanceId: props.instance.InstanceId,
-        FirewallRule: modifyFirewallRuleDescriptionBus.model
-    })
-    modifyFirewallRuleDescriptionBus.dailog = false
-    modifyFirewallRuleDescriptionBus.loading = false
-    getFirewallRuleList()
-}
-
-function modifyFirewallRuleDescriptionDailog(item: Qcloud.Lighthouse.FirewallRule) {
-    modifyFirewallRuleDescriptionBus.model = Object.assign({}, item)
-    modifyFirewallRuleDescriptionBus.dailog = true
-}
-
-// 删除规则
-
-async function deleteFirewallRule(item: FirewallRuleBus["model"]) {
-    delete item.AppType
-    await QApi.lighthouse.deleteFirewallRules(region(), {
-        InstanceId: props.instance.InstanceId,
-        FirewallRules: [item]
-    })
-    getFirewallRuleList()
-}
-
-// 加载数据
-
-getFirewallRuleList()
 </script>
 
 <template>
@@ -164,8 +164,7 @@ getFirewallRuleList()
             <el-table-column fixed="right" label="操作" width="180" align="center">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit"
-                               @click="modifyFirewallRuleDailog(scope.row, scope.$index)"
-                    >
+                        @click="modifyFirewallRuleDailog(scope.row, scope.$index)">
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">
@@ -260,8 +259,7 @@ getFirewallRuleList()
             <span class="dialog-footer">
                 <el-button @click="modifyFirewallRuleDescriptionBus.dailog = false">取消</el-button>
                 <el-button type="primary" :loading="modifyFirewallRuleDescriptionBus.loading"
-                           @click="modifyFirewallRuleDescription"
-                >
+                    @click="modifyFirewallRuleDescription">
                     保存
                 </el-button>
             </span>

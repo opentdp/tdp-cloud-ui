@@ -1,21 +1,9 @@
-<script lang="ts" setup>
-import { ref } from "vue"
+<script lang="ts">
+import { Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
-import { WorkerItem } from "@/api/local/workhub"
-
-// 节点列表
-
-const workerList = ref<WorkerItem[]>([])
-
-async function getWorkerList() {
-    const res = await Api.workhub.list()
-    workerList.value = res
+@Component
+export default class WorkerInstance extends Vue {
 }
-
-// 加载数据
-
-getWorkerList()
 </script>
 
 <template>

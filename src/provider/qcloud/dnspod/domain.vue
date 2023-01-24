@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QApi } from "@/api"
 import { Qcloud } from "@/api/qcloud/typings"
@@ -8,58 +8,65 @@ import { DomainItem } from "@/api/local/domain"
 import RecordCreate from './record_create.vue'
 import RecordUpdate from './record_update.vue'
 
-// 初始化
+@Component({
+    components: { RecordCreate, RecordUpdate }
+})
+export default class DnspodDomain extends Vue {
 
-const props = defineProps<{
-    meta: DomainItem,
-}>()
+    @Prop
+    public meta!: DomainItem
 
-QApi.dnspod.vendor(props.meta.VendorId)
+    @Ref
+    public createModal!: typeof RecordCreate
 
-const createModal = ref<InstanceType<typeof RecordCreate>>()
-const updateModal = ref<InstanceType<typeof RecordUpdate>>()
+    @Ref
+    public updateModal!: typeof RecordUpdate
 
-// 域名概要
-
-const domainInfo = reactive({
-    Domain: props.meta.Name,
-    Grade: props.meta.CloudMeta.Grade,
-} as Qcloud.Dnspod.DomainInfo)
-
-async function getDomain() {
-    const res = await QApi.dnspod.describeDomain({
-        Domain: domainInfo.Domain
-    })
-    Object.assign(domainInfo, res.DomainInfo)
-}
-
-// 域名记录
-
-const recordList = ref<Qcloud.Dnspod.RecordListItem[]>()
-const recordCountInfo = ref<Qcloud.Dnspod.RecordCountInfo>()
-
-async function getRecordList() {
-    const res = await QApi.dnspod.describeRecordList({
-        Domain: domainInfo.Domain
-    })
-    recordList.value = res.RecordList
-    recordCountInfo.value = res.RecordCountInfo
-}
-
-// 删除记录
-
-async function deleteRecord(recordId: number) {
-    const query: Qcloud.Dnspod.DeleteRecordRequest = {
-        Domain: domainInfo.Domain,
-        RecordId: recordId
+    public created() {
+        QApi.dnspod.vendor(this.meta.VendorId)
+        this.domainInfo = {
+            Domain: this.meta.Name,
+            Grade: this.meta.CloudMeta.Grade,
+        }
+        this.getDomain()
+        this.getRecordList()
     }
-    await QApi.dnspod.deleteRecord(query)
-    getRecordList()
-}
 
-// 加载数据
-getDomain()
-getRecordList()
+    // 域名概要
+
+    public domainInfo: Qcloud.Dnspod.DomainInfo
+
+    async getDomain() {
+        const res = await QApi.dnspod.describeDomain({
+            Domain: this.domainInfo.Domain
+        })
+        this.domainInfo = res.DomainInfo
+    }
+
+    // 域名记录
+
+    public recordList!: Qcloud.Dnspod.RecordListItem[]
+    public recordCountInfo!: Qcloud.Dnspod.RecordCountInfo
+
+    async getRecordList() {
+        const res = await QApi.dnspod.describeRecordList({
+            Domain: this.domainInfo.Domain
+        })
+        this.recordList = res.RecordList
+        this.recordCountInfo = res.RecordCountInfo
+    }
+
+    // 删除记录
+
+    async deleteRecord(recordId: number) {
+        const query: Qcloud.Dnspod.DeleteRecordRequest = {
+            Domain: this.domainInfo.Domain,
+            RecordId: recordId
+        }
+        await QApi.dnspod.deleteRecord(query)
+        this.getRecordList()
+    }
+}
 </script>
 
 <template>

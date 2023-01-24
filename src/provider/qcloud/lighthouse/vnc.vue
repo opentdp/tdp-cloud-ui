@@ -1,69 +1,69 @@
-<script lang="ts" setup>
-import { ref, onMounted } from "vue"
+<script lang="ts">
+import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
 
 import { Api, QApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { TaskScriptItem } from '@/api/local/task_script'
 
-// 初始化
+@Component
+export default class LighthouseVnc extends Vue {
+    @Prop
+    public meta!: MachineItem
 
-const props = defineProps<{
-    meta: MachineItem,
-}>()
+    public created() {
+        QApi.lighthouse.vendor(this.meta.VendorId)
+        this.getScriptList()
+        this.vncInit()
+    }
 
-QApi.lighthouse.vendor(props.meta.VendorId)
+    // 获取区域
 
-// 获取区域
+    public get region() {
+        return this.meta.CloudMeta.Zone.replace(/-\d$/, "")
+    }
 
-const region = () => {
-    return props.meta.CloudMeta.Zone.replace(/-\d$/, "")
-}
+    // 加载VNC框架
 
-// 加载VNC框架
+    @Ref
+    public frame!: HTMLIFrameElement
 
-const frame = ref<HTMLIFrameElement>()
+    async vncInit() {
+        const res = await QApi.lighthouse.describeInstanceVncUrl(this.region, {
+            InstanceId: this.meta.CloudId,
+        })
+        if (this.frame) {
+            const vnc = '/api/qcloud/vnc?InstanceVncUrl='
+            this.frame.src = vnc + res.InstanceVncUrl
+        }
+    }
 
-async function vncInit() {
-    const res = await QApi.lighthouse.describeInstanceVncUrl(region(), {
-        InstanceId: props.meta.CloudId,
-    })
-    if (frame.value) {
-        const vnc = '/api/qcloud/vnc?InstanceVncUrl='
-        frame.value.src = vnc + res.InstanceVncUrl
+    // 执行快捷命令
+
+    public scriptList = [] as TaskScriptItem[]
+
+    async getScriptList() {
+        const res = await Api.taskScript.list()
+        this.scriptList = res
+    }
+
+    public vncExec(cmd: string) {
+        if (this.frame.contentWindow) {
+            const vdoc = this.frame.contentWindow.document
+            const cbtn = vdoc.querySelector<HTMLAnchorElement>('a.copyBtn')
+            cbtn && cbtn.click(), setTimeout(() => {
+                const btn = vdoc.querySelector<HTMLButtonElement>('button.bt_confirm')
+                const ipt = vdoc.querySelector<HTMLInputElement>('textarea.vnc-paste-text')
+                if (btn && ipt) {
+                    cmd = cmd.replace(/\n\s+/g, '\n')
+                    cmd = cmd.replace(/\n+/g, '\n')
+                    cmd = cmd.trim() + '\n'
+                    ipt.value = cmd
+                    btn.click()
+                }
+            }, 500)
+        }
     }
 }
-
-// 执行快捷命令
-
-const scriptList = ref<TaskScriptItem[]>([])
-
-async function getScriptList() {
-    const res = await Api.taskScript.list()
-    scriptList.value = res
-}
-
-function vncExec(cmd: string) {
-    if (frame.value?.contentWindow) {
-        const vdoc = frame.value.contentWindow.document
-        const cbtn = vdoc.querySelector<HTMLAnchorElement>('a.copyBtn')
-        cbtn && cbtn.click(), setTimeout(() => {
-            const btn = vdoc.querySelector<HTMLButtonElement>('button.bt_confirm')
-            const ipt = vdoc.querySelector<HTMLInputElement>('textarea.vnc-paste-text')
-            if (btn && ipt) {
-                cmd = cmd.replace(/\n\s+/g, '\n')
-                cmd = cmd.replace(/\n+/g, '\n')
-                cmd = cmd.trim() + '\n'
-                ipt.value = cmd
-                btn.click()
-            }
-        }, 500)
-    }
-}
-
-// 加载数据
-
-getScriptList()
-onMounted(() => vncInit())
 </script>
 
 <template>

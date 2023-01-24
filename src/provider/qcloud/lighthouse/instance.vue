@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { reactive } from "vue"
+<script lang="ts">
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QApi } from "@/api"
 import { Qcloud } from "@/api/qcloud/typings"
@@ -12,96 +12,97 @@ import Firwwall from './firewall.vue'
 import Snapshot from './snapshot.vue'
 import Traffic from './traffic.vue'
 
-// 初始化
-
-const props = defineProps<{
-    meta: MachineItem,
-}>()
-
-QApi.lighthouse.vendor(props.meta.VendorId)
-
-// 获取区域
-
-const region = () => {
-    return props.meta.CloudMeta.Zone.replace(/-\d$/, "")
-}
-
-// 实例信息
-
-const instance = reactive(props.meta.CloudMeta as Qcloud.Lighthouse.Instance)
-
-async function getInstance() {
-    const res = await QApi.lighthouse.describeInstances(region(), {
-        InstanceIds: [instance.InstanceId],
-    })
-    Object.assign(instance, res.InstanceSet[0])
-}
-
-// 关闭实例
-
-async function stopInstance() {
-    instance.InstanceState = "STOPPING"
-    await QApi.lighthouse.stopInstances(region(), {
-        InstanceIds: [instance.InstanceId],
-    })
-    setTimeout(refreshInstance, 1500)
-}
-
-// 启动实例
-
-async function startInstance() {
-    instance.InstanceState = "STARTING"
-    await QApi.lighthouse.startInstances(region(), {
-        InstanceIds: [instance.InstanceId],
-    })
-    setTimeout(refreshInstance, 1500)
-}
-
-// 重启实例
-
-async function rebootInstance() {
-    instance.InstanceState = "REBOOTING"
-    await QApi.lighthouse.rebootInstances(region(), {
-        InstanceIds: [instance.InstanceId],
-    })
-    setTimeout(refreshInstance, 1500)
-}
-
-// 刷新实例
-
-async function refreshInstance() {
-    await getInstance()
-    if (instance.InstanceState.match(/ING$/)) {
-        setTimeout(refreshInstance, 1500)
-    }
-}
-
-// 修改实例名
-
-const modifyInstanceNameBus = reactive({
-    dailog: false,
-    loading: false,
-    model: {
-        name: ""
-    }
+@Component({
+    components: { Firwwall, Snapshot, Traffic }
 })
+export default class LighthouseInstance extends Vue {
+    public InstanceStateMap = InstanceStateMap
+    public dateFormat = dateFormat
 
-async function modifyInstanceName() {
-    modifyInstanceNameBus.loading = true
-    if (modifyInstanceNameBus.model.name && instance.InstanceName != modifyInstanceNameBus.model.name) {
-        await QApi.lighthouse.modifyInstancesAttribute(region(), {
-            InstanceIds: [instance.InstanceId],
-            InstanceName: modifyInstanceNameBus.model.name
-        })
-        instance.InstanceName = modifyInstanceNameBus.model.name
+    @Prop
+    public meta!: MachineItem
+
+    public created() {
+        QApi.lighthouse.vendor(this.meta.VendorId)
+        this.instance = this.meta.CloudMeta
+        this.getInstance()
     }
-    modifyInstanceNameBus.dailog = false
-    modifyInstanceNameBus.loading = false
+
+    // 获取区域
+
+    public get region() {
+        return this.instance.Zone.replace(/-\d$/, "")
+    }
+
+    // 实例信息
+
+    public instance: Qcloud.Lighthouse.Instance
+
+    async getInstance() {
+        const res = await QApi.lighthouse.describeInstances(this.region, {
+            InstanceIds: [this.instance.InstanceId],
+        })
+        this.instance = res.InstanceSet[0]
+    }
+
+    // 关闭实例
+    async stopInstance() {
+        this.instance.InstanceState = "STOPPING"
+        await QApi.lighthouse.stopInstances(this.region, {
+            InstanceIds: [this.instance.InstanceId],
+        })
+        setTimeout(this.refreshInstance, 1500)
+    }
+
+    // 启动实例
+    async startInstance() {
+        this.instance.InstanceState = "STARTING"
+        await QApi.lighthouse.startInstances(this.region, {
+            InstanceIds: [this.instance.InstanceId],
+        })
+        setTimeout(this.refreshInstance, 1500)
+    }
+
+    // 重启实例
+    async rebootInstance() {
+        this.instance.InstanceState = "REBOOTING"
+        await QApi.lighthouse.rebootInstances(this.region, {
+            InstanceIds: [this.instance.InstanceId],
+        })
+        setTimeout(this.refreshInstance, 1500)
+    }
+
+    // 刷新实例
+    async refreshInstance() {
+        await this.getInstance()
+        if (this.instance.InstanceState.match(/ING$/)) {
+            setTimeout(this.refreshInstance, 1500)
+        }
+    }
+
+    // 修改实例名
+
+    public modifyInstanceNameBus = {
+        dailog: false,
+        loading: false,
+        model: {
+            name: ""
+        }
+    }
+
+    async modifyInstanceName() {
+        this.modifyInstanceNameBus.loading = true
+        if (this.modifyInstanceNameBus.model.name && this.instance.InstanceName != this.modifyInstanceNameBus.model.name) {
+            await QApi.lighthouse.modifyInstancesAttribute(this.region, {
+                InstanceIds: [this.instance.InstanceId],
+                InstanceName: this.modifyInstanceNameBus.model.name
+            })
+            this.instance.InstanceName = this.modifyInstanceNameBus.model.name
+        }
+        this.modifyInstanceNameBus.dailog = false
+        this.modifyInstanceNameBus.loading = false
+    }
 }
-
-// 加载数据
-
-getInstance()
 </script>
 
 <template>
@@ -114,18 +115,15 @@ getInstance()
                 </small>
                 <div class="flex-auto" />
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
-                           :loading="instance.InstanceState == 'STARTING'" @click="startInstance"
-                >
+                    :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
                     开机
                 </el-button>
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                           :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance"
-                >
+                    :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
                     关机
                 </el-button>
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                           :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance"
-                >
+                    :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
                     重启
                 </el-button>
                 <el-button v-if="instance.InstanceState == 'RUNNING'" type="primary" plain size="small">

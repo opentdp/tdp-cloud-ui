@@ -1,50 +1,49 @@
-<script lang="ts" setup>
-import { ref, reactive } from "vue"
+<script lang="ts">
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { Api, QApi } from "@/api"
 import { Qcloud } from "@/api/qcloud/typings"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
 
-// 初始化
+@Component
+export default class DnspodBind extends Vue {
+    public DomainStatusMap = DomainStatusMap
 
-const loading = ref(true)
+    public loading = true
 
-const props = defineProps<{
-    vid: number,
-}>()
+    @Prop
+    public vid = 0
 
-QApi.dnspod.vendor(props.vid)
+    public domainList = [] as Qcloud.Dnspod.DomainListItem[]
+    public domainTotalCount = 0
 
-// 获取列表
+    public created() {
+        QApi.dnspod.vendor(this.vid)
+        this.getDomainList()
+    }
 
-const domainList = reactive<Qcloud.Dnspod.DomainListItem[]>([])
-const domainTotalCount = ref(0)
+    // 获取列表
+    async getDomainList() {
+        const res = await QApi.dnspod.describeDomainList()
+        this.domainTotalCount = res.DomainCountInfo.AllTotal
+        this.domainList = res.DomainList
+        this.loading = false
+    }
 
-async function getDomainList() {
-    const res = await QApi.dnspod.describeDomainList()
-    domainTotalCount.value = res.DomainCountInfo.AllTotal
-    domainList.push(...res.DomainList)
-    loading.value = false
+    // 绑定域名
+    public addDomian(item: Qcloud.Dnspod.DomainListItem) {
+        Api.domain.create({
+            VendorId: this.vid,
+            Name: item.Name,
+            NSList: item.EffectiveDNS.join(","),
+            Model: "qcloud/dnspod",
+            CloudId: item.DomainId + '',
+            CloudMeta: JSON.stringify(item),
+            Description: "",
+            Status: "{}",
+        })
+    }
 }
-
-// 绑定域名
-
-function addDomian(item: Qcloud.Dnspod.DomainListItem) {
-    Api.domain.create({
-        VendorId: props.vid,
-        Name: item.Name,
-        NSList: item.EffectiveDNS.join(","),
-        Model: "qcloud/dnspod",
-        CloudId: item.DomainId + '',
-        CloudMeta: JSON.stringify(item),
-        Description: "",
-        Status: "{}",
-    })
-}
-
-// 加载数据
-
-getDomainList()
 </script>
 
 <template>
