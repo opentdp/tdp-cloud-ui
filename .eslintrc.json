@@ -12,7 +12,7 @@
         "es6": true
     },
     "globals": {
-        "QCloud": "readonly"
+        "Helper": "readonly"
     },
     "plugins": [
         "vue",
@@ -22,7 +22,6 @@
     "parserOptions": {
         "parser": "@typescript-eslint/parser",
         "sourceType": "module",
-        "allowImportExportEverywhere": true,
         "ecmaFeatures": {
             "jsx": true
         }
@@ -32,8 +31,10 @@
             "warn",
             "never"
         ],
-        "vue/html-indent": "off",
-        "vue/html-closing-bracket-newline": "off",
+        "vue/html-indent": [
+            "error",
+            4
+        ],
         "vue/first-attribute-linebreak": "off",
         "vue/max-attributes-per-line": "off",
         "vue/multi-word-component-names": "off"

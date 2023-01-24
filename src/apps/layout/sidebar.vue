@@ -108,7 +108,8 @@ const items: MenuItem[] = [
 <template>
     <div class="sidebar">
         <el-menu class="sidebar-el-menu" :default-active="onRoutes" :collapse="layout.collapse"
-            background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
+                 background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router
+        >
             <template v-for="item in items">
                 <template v-if="item.subs">
                     <el-sub-menu :key="item.index" :index="item.index">

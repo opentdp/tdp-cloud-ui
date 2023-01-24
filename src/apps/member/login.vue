@@ -65,7 +65,8 @@ function formSubmit(form: FormInstance | undefined) {
                 </el-form-item>
                 <el-form-item prop="Password">
                     <el-input v-model="formModel.Password" type="password" placeholder="密码"
-                        @keyup.enter="formSubmit(formRef)">
+                              @keyup.enter="formSubmit(formRef)"
+                    >
                         <template #prepend>
                             <el-icon>
                                 <Lock />

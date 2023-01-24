@@ -79,18 +79,21 @@ defineExpose({
             </el-form-item>
             <el-form-item label="执行路径">
                 <el-input v-model="formModel.WorkDirectory"
-                    :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\'" />
+                          :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\'"
+                />
             </el-form-item>
             <el-form-item label="执行用户">
                 <el-input v-model="formModel.Username"
-                    :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 root' : '非必填，默认为 System'" />
+                          :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 root' : '非必填，默认为 System'"
+                />
             </el-form-item>
             <el-form-item label="脚本内容">
                 <el-input v-model="formModel.Content" type="textarea" rows="5" />
             </el-form-item>
             <el-form-item label="超时时间">
                 <el-input-number v-model="formModel.Timeout" placeholder="非必填，默认为 60s" :min="1" :max="86400"
-                    :value-on-clear="60" />
+                                 :value-on-clear="60"
+                />
             </el-form-item>
         </el-form>
         <template #footer>
