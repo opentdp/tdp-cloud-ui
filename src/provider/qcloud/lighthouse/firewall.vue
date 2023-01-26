@@ -7,7 +7,7 @@ import * as Qcloud from "@/api/qcloud/typings"
 @Component
 export default class LighthouseFirewall extends Vue {
     @Prop
-    public instance: Qcloud.Lighthouse.Instance
+    public instance!: Qcloud.Lighthouse.Instance
 
     public created() {
         this.getFirewallRuleList()
@@ -21,7 +21,7 @@ export default class LighthouseFirewall extends Vue {
 
     // 规则列表
 
-    public firewallRuleList: Qcloud.Lighthouse.DescribeFirewallRulesResponse
+    public firewallRuleList!: Qcloud.Lighthouse.DescribeFirewallRulesResponse
 
     async getFirewallRuleList() {
         const res = await QApi.lighthouse.describeFirewallRules(this.region, {
@@ -64,13 +64,13 @@ export default class LighthouseFirewall extends Vue {
     }
 
     async modifyFirewallRule() {
-        if (!this.firewallRuleList.value) {
+        if (!this.firewallRuleList) {
             return
         }
         this.modifyFirewallRuleBus.loading = true
         await QApi.lighthouse.modifyFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
-            FirewallRules: this.firewallRuleList.value.FirewallRuleSet.map(
+            FirewallRules: this.firewallRuleList.FirewallRuleSet.map(
                 (item: FirewallRuleBus["model"], idx) => {
                     if (this.modifyFirewallRuleBus.index === idx) {
                         item = Object.assign({}, this.modifyFirewallRuleBus.model)
@@ -164,8 +164,7 @@ interface FirewallRuleBus {
             <el-table-column fixed="right" label="操作" width="180" align="center">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit"
-                               @click="modifyFirewallRuleDailog(scope.row, scope.$index)"
-                    >
+                        @click="modifyFirewallRuleDailog(scope.row, scope.$index)">
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">
@@ -260,8 +259,7 @@ interface FirewallRuleBus {
             <span class="dialog-footer">
                 <el-button @click="modifyFirewallRuleDescriptionBus.dailog = false">取消</el-button>
                 <el-button type="primary" :loading="modifyFirewallRuleDescriptionBus.loading"
-                           @click="modifyFirewallRuleDescription"
-                >
+                    @click="modifyFirewallRuleDescription">
                     保存
                 </el-button>
             </span>

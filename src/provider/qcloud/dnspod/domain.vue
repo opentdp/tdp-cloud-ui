@@ -34,7 +34,7 @@ export default class DnspodDomain extends Vue {
 
     // 域名概要
 
-    public domainInfo: Qcloud.Dnspod.DomainInfo
+    public domainInfo!: Qcloud.Dnspod.DomainInfo
 
     async getDomain() {
         const res = await QApi.dnspod.describeDomain({

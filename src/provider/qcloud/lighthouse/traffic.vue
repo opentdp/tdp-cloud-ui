@@ -13,7 +13,7 @@ export default class LighthouseTraffic extends Vue {
     public bytesToSize = bytesToSize
 
     @Prop
-    public instance: Qcloud.Lighthouse.Instance
+    public instance!: Qcloud.Lighthouse.Instance
 
     public created() {
         this.getTrafficPackage()
@@ -28,9 +28,7 @@ export default class LighthouseTraffic extends Vue {
 
     // 流量信息
 
-    public trafficPackage: Qcloud.Lighthouse.TrafficPackage
-
-    public outtrafficChart!: EChartsOption
+    public trafficPackage!: Qcloud.Lighthouse.TrafficPackage
 
     async getTrafficPackage() {
         const res = await QApi.lighthouse.describeInstancesTrafficPackages(this.region, {
@@ -60,13 +58,15 @@ export default class LighthouseTraffic extends Vue {
         const data = res.DataPoints[0].Timestamps.map(t => {
             return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
         })
-        this.outtrafficChart = this.getOuttrafficChartConfig(data, res.DataPoints[0].Values)
+        this.setOuttrafficChartConfig(data, res.DataPoints[0].Values)
     }
 
     // 生成图表参数
 
-    public getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {
-        return {
+    public outtrafficChart!: EChartsOption
+
+    public setOuttrafficChartConfig(xdata: string[], sdata: number[]) {
+        this.outtrafficChart = {
             backgroundColor: '#fcfcfc',
             toolbox: {
                 feature: {

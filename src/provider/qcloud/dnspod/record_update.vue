@@ -12,11 +12,11 @@ export default class DnspodRecordUpdate extends Vue {
     public loading = false
     public dailog = false
 
-    public domainInfo = {} as Qcloud.Dnspod.DomainInfo
+    public domainInfo!: Qcloud.Dnspod.DomainInfo
 
     // 创建表单
 
-    public formModel = {} as Qcloud.Dnspod.RecordListItem
+    public formModel!: Qcloud.Dnspod.RecordListItem
 
     public formRules = {
         Name: [{ required: true, message: "别名 不能为空" }],
@@ -60,7 +60,7 @@ export default class DnspodRecordUpdate extends Vue {
         const res = await QApi.dnspod.describeRecordType({
             DomainGrade: this.domainInfo.Grade
         })
-        this.recordType = res.TypeList
+        this.recordType = res.TypeList || []
     }
 
     async getRecordLine() {
@@ -68,7 +68,7 @@ export default class DnspodRecordUpdate extends Vue {
             DomainGrade: this.domainInfo.Grade,
             Domain: this.domainInfo.Domain
         })
-        this.recordLineList = res.LineList
+        this.recordLineList = res.LineList || []
     }
 
     // 导出属性

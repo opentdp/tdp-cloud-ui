@@ -26,7 +26,7 @@ export default class LighthouseBind extends Vue {
 
     public regionList: Record<string, Qcloud.Lighthouse.RegionInfo> = {}
 
-    public instanceList = [] as Qcloud.Lighthouse.Instance[]
+    public instanceList: Qcloud.Lighthouse.Instance[] = []
     public instanceCount = 0
 
     async getRegionList() {
@@ -49,7 +49,7 @@ export default class LighthouseBind extends Vue {
 
     // 已绑定主机
 
-    public machineList = [] as MachineItem[]
+    public machineList: MachineItem[] = []
 
     async getMachineList() {
         const res = await Api.machine.list()
@@ -85,7 +85,7 @@ export default class LighthouseBind extends Vue {
     // 同步主机
 
     public updateMachine(item: Qcloud.Lighthouse.Instance) {
-        const m = this.getBoundMachine(item.id)
+        const m = this.getBoundMachine(item.InstanceId)
         Api.machine.update({
             Id: m ? m.Id : 0,
             VendorId: this.vid,
@@ -145,10 +145,7 @@ export default class LighthouseBind extends Vue {
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="getBoundMachine(scope.row.InstanceId)" link type="primary" icon="View">
-                        同步
-                    </el-button>
-                    <el-button v-else link type="primary" icon="View" @click="addMachine(scope.row)">
+                    <el-button link type="primary" icon="View" @click="addMachine(scope.row)">
                         导入
                     </el-button>
                 </template>

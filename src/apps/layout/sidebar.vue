@@ -8,6 +8,7 @@ export default class LayoutSidebar extends Vue {
     public layout = layoutStore()
 
     // 菜单列表
+
     public items: MenuItem[] = [
         {
             icon: "HomeFilled",
@@ -104,7 +105,7 @@ interface MenuItem {
 <template>
     <div class="sidebar">
         <el-menu class="sidebar-el-menu" :default-active="$route.path" :collapse="layout.collapse"
-                 background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router
+            background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router
         >
             <template v-for="item in items">
                 <template v-if="item.subs">

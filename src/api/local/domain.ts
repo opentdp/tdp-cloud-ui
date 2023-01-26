@@ -23,19 +23,19 @@ export class DomainModel extends HttpClient {
 }
 
 export interface DomainOrig {
-    UserId: number
     VendorId: number
     Name: string
     NSList: string
     Model: "" | "qcloud/dnspod"
     CloudId: string
-    CloudMeta: Record<string, unknown>
+    CloudMeta: string | Record<string, unknown>
     Description: string
     Status: string
 }
 
 export interface DomainItem extends DomainOrig {
     Id: number
+    UserId?: number
     CreatedAt?: string
     UpdatedAt?: string
 }

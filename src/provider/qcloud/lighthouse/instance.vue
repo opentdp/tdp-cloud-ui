@@ -24,7 +24,7 @@ export default class LighthouseInstance extends Vue {
 
     public created() {
         QApi.lighthouse.vendor(this.meta.VendorId)
-        this.instance = this.meta.CloudMeta
+        Object.assign(this.instance, this.meta.CloudMeta)
         this.getInstance()
     }
 
@@ -36,13 +36,15 @@ export default class LighthouseInstance extends Vue {
 
     // 实例信息
 
-    public instance: Qcloud.Lighthouse.Instance
+    public instance!: Qcloud.Lighthouse.Instance
 
     async getInstance() {
         const res = await QApi.lighthouse.describeInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
         })
-        this.instance = res.InstanceSet[0]
+        if (res.InstanceSet) {
+            this.instance = res.InstanceSet[0]
+        }
     }
 
     // 关闭实例
@@ -110,7 +112,7 @@ export default class LighthouseInstance extends Vue {
 </script>
 
 <template>
-    <el-card v-if="instance" shadow="hover">
+    <el-card v-if="instance.InstanceId" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>实例信息</b> &nbsp; &nbsp;
@@ -119,18 +121,15 @@ export default class LighthouseInstance extends Vue {
                 </small>
                 <div class="flex-auto" />
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
-                           :loading="instance.InstanceState == 'STARTING'" @click="startInstance"
-                >
+                    :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
                     开机
                 </el-button>
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                           :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance"
-                >
+                    :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
                     关机
                 </el-button>
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                           :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance"
-                >
+                    :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
                     重启
                 </el-button>
                 <el-button v-if="instance.InstanceState == 'RUNNING'" type="primary" plain size="small">

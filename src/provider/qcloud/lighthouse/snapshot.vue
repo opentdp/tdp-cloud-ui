@@ -13,7 +13,7 @@ export default class LighthouseSnapshot extends Vue {
     public dateFormat = dateFormat
 
     @Prop
-    public instance: Qcloud.Lighthouse.Instance
+    public instance!: Qcloud.Lighthouse.Instance
 
     public created() {
         this.getSnapshotList()
@@ -27,7 +27,7 @@ export default class LighthouseSnapshot extends Vue {
 
     // 快照列表
 
-    public snapshotList: Qcloud.Lighthouse.DescribeSnapshotsResponse
+    public snapshotList!: Qcloud.Lighthouse.DescribeSnapshotsResponse
 
     async getSnapshotList() {
         const res = await QApi.lighthouse.describeSnapshots(this.region, {
