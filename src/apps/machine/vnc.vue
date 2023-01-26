@@ -12,14 +12,15 @@ import LighthouseVNC from '@/provider/qcloud/lighthouse/vnc.vue'
 export default class MachineVnc extends Vue {
     public loading = true
 
-    public machine = {} as MachineItem
-
     public created() {
         const machineId = +this.$route.params.id
         this.getMachine(machineId)
     }
 
     // 获取主机
+
+    public machine = {} as MachineItem
+
     async getMachine(id: number) {
         const res = await Api.machine.detail(id)
         this.machine = res || {}

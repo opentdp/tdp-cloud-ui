@@ -12,7 +12,6 @@ import LighthouseInstance from '@/provider/qcloud/lighthouse/instance.vue'
 })
 export default class MachineDetail extends Vue {
     public loading = true
-    public machine = {} as MachineItem
 
     public created() {
         const machineId = +this.$route.params.id
@@ -20,6 +19,9 @@ export default class MachineDetail extends Vue {
     }
 
     // 获取主机
+
+    public machine = {} as MachineItem
+
     async getMachine(id: number) {
         const res = await Api.machine.detail(id)
         this.machine = res || {}

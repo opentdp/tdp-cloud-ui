@@ -8,13 +8,14 @@ import { DomainItem } from "@/api/local/domain"
 export default class DomainList extends Vue {
     public loading = true
 
-    public domainList = [] as DomainItem[]
-
     public created() {
         this.getDomainList()
     }
 
     // 域名列表
+
+    public domainList = [] as DomainItem[]
+
     async getDomainList() {
         const res = await Api.domain.list()
         this.domainList = res || []
@@ -22,6 +23,7 @@ export default class DomainList extends Vue {
     }
 
     // 删除域名
+
     async deleteDomain(idx: number) {
         const item = this.domainList[idx]
         await Api.domain.remove(item.Id)

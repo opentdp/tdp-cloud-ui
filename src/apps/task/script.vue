@@ -15,16 +15,18 @@ export default class TaskScript extends Vue {
 
     @Ref
     public createModal!: typeof ScriptCreate
+
     @Ref
     public updateModal!: typeof ScriptUpdate
-
-    public scriptList = [] as TaskScriptItem[]
 
     public created() {
         this.getScriptList()
     }
 
     // 获取脚本列表
+
+    public scriptList = [] as TaskScriptItem[]
+
     async getScriptList() {
         const res = await Api.taskScript.list()
         this.scriptList = res
@@ -32,6 +34,7 @@ export default class TaskScript extends Vue {
     }
 
     // 删除脚本
+
     async removeScript(id: number) {
         this.loading = true
         await Api.taskScript.remove(id)

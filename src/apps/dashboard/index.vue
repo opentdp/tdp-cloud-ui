@@ -5,14 +5,18 @@ import { Api } from "@/api"
 
 @Component
 export default class DashboardIndex extends Vue {
+    public loading = true
+
+    public created() {
+        this.getAccountSummary()
+    }
+
+    // 概要信息
+
     public summary = {
         domain: 0,
         machine: 0,
         vendor: 0,
-    }
-
-    public created() {
-        this.getAccountSummary()
     }
 
     async getAccountSummary() {
@@ -24,6 +28,8 @@ export default class DashboardIndex extends Vue {
 
         const vendorList = await Api.vendor.list()
         this.summary.vendor = vendorList.length
+
+        this.loading = false
     }
 }
 </script>

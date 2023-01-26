@@ -12,12 +12,14 @@ import DnspodDomain from '@/provider/qcloud/dnspod/domain.vue'
 export default class DomainDetail extends Vue {
     public loading = true
 
-    public domain = {} as DomainItem
-
     public created() {
         const domainId = +this.$route.params.id
         this.getDomain(domainId)
     }
+
+    // 域名信息
+
+    public domain = {} as DomainItem
 
     async getDomain(id: number) {
         const res = await Api.domain.detail(id)

@@ -8,13 +8,14 @@ import { MachineItem } from "@/api/local/machine"
 export default class MachineList extends Vue {
     public loading = true
 
-    public machineList = [] as MachineItem[]
-
     public created() {
         this.getMachineList()
     }
 
     // 主机列表
+
+    public machineList = [] as MachineItem[]
+
     async getMachineList() {
         const res = await Api.machine.list()
         this.machineList = res || []
@@ -22,6 +23,7 @@ export default class MachineList extends Vue {
     }
 
     // 删除主机
+
     async deleteMachine(idx: number) {
         const item = this.machineList[idx]
         await Api.machine.remove(item.Id)

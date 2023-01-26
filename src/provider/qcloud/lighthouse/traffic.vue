@@ -63,6 +63,8 @@ export default class LighthouseTraffic extends Vue {
         this.outtrafficChart = this.getOuttrafficChartConfig(data, res.DataPoints[0].Values)
     }
 
+    // 生成图表参数
+
     public getOuttrafficChartConfig(xdata: string[], sdata: number[]): EChartsOption {
         return {
             backgroundColor: '#fcfcfc',

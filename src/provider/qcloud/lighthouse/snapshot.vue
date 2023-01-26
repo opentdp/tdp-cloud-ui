@@ -18,6 +18,7 @@ export default class LighthouseSnapshot extends Vue {
     public created() {
         this.getSnapshotList()
     }
+
     // 获取区域
 
     public get region() {

@@ -10,8 +10,6 @@ import { bytesToSize } from "@/helper/utils"
 export default class WorkerBind extends Vue {
     public bytesToSize = bytesToSize
 
-    public workerList = [] as WorkerItem[]
-
     public timer = 0
 
     public created() {
@@ -26,12 +24,16 @@ export default class WorkerBind extends Vue {
     }
 
     // 节点列表
+
+    public workerList = [] as WorkerItem[]
+
     async getWorkerList() {
         const res = await Api.workhub.list()
         this.workerList = res
     }
 
     // 绑定主机
+
     public addMachine(item: WorkerItem) {
         Api.machine.create({
             VendorId: 0,

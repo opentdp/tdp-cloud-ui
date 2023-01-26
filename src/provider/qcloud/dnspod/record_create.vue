@@ -87,6 +87,7 @@ export default class DnspodRecordCreate extends Vue {
     }
 
     // 导出属性
+
     public open(info: Qcloud.Dnspod.DomainInfo) {
         this.dailog = true
         this.loading = false

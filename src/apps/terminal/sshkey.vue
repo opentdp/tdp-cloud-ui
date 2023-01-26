@@ -8,19 +8,24 @@ import { SSHKeyItem } from "@/api/local/sshkey"
 
 @Component
 export default class TerminalSshkey extends Vue {
-    public keylist = [] as SSHKeyItem[]
+    public loading = false
 
     public created() {
         this.getSshkeyList()
     }
 
     // 密钥列表
+
+    public keylist = [] as SSHKeyItem[]
+
     async getSshkeyList() {
         const res = await Api.sshkey.list()
         this.keylist = res
+        this.loading = false
     }
 
     // 删除密钥
+
     async deleteKey(idx: number) {
         const item = this.keylist[idx]
         await Api.sshkey.remove(item.Id)
@@ -45,6 +50,7 @@ export default class TerminalSshkey extends Vue {
     }
 
     public formSubmit(form: FormInstance | undefined) {
+        this.loading = true
         form && form.validate(async valid => {
             if (!valid) {
                 ElMessage.error("请检查表单")
@@ -110,7 +116,7 @@ export default class TerminalSshkey extends Vue {
                     <el-input v-model="formModel.PrivateKey" type="textarea" rows="5" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="formSubmit(formRef)">
+                    <el-button type="primary" :loading="loading" @click="formSubmit(formRef)">
                         保存
                     </el-button>
                 </el-form-item>

@@ -46,6 +46,7 @@ export default class LighthouseInstance extends Vue {
     }
 
     // 关闭实例
+
     async stopInstance() {
         this.instance.InstanceState = "STOPPING"
         await QApi.lighthouse.stopInstances(this.region, {
@@ -55,6 +56,7 @@ export default class LighthouseInstance extends Vue {
     }
 
     // 启动实例
+
     async startInstance() {
         this.instance.InstanceState = "STARTING"
         await QApi.lighthouse.startInstances(this.region, {
@@ -64,6 +66,7 @@ export default class LighthouseInstance extends Vue {
     }
 
     // 重启实例
+
     async rebootInstance() {
         this.instance.InstanceState = "REBOOTING"
         await QApi.lighthouse.rebootInstances(this.region, {
@@ -73,6 +76,7 @@ export default class LighthouseInstance extends Vue {
     }
 
     // 刷新实例
+
     async refreshInstance() {
         await this.getInstance()
         if (this.instance.InstanceState.match(/ING$/)) {

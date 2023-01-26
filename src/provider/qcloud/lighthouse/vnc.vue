@@ -37,7 +37,7 @@ export default class LighthouseVnc extends Vue {
         }
     }
 
-    // 执行快捷命令
+    // 获取快捷命令
 
     public scriptList = [] as TaskScriptItem[]
 
@@ -45,6 +45,8 @@ export default class LighthouseVnc extends Vue {
         const res = await Api.taskScript.list()
         this.scriptList = res
     }
+
+    // 执行快捷命令
 
     public vncExec(cmd: string) {
         if (this.frame.contentWindow) {

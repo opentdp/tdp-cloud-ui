@@ -3,6 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { Api, QApi } from "@/api"
 import { Qcloud } from "@/api/qcloud/typings"
+import { MachineItem } from "@/api/local/machine"
 
 import { dateFormat } from "@/helper/utils"
 
@@ -43,6 +44,15 @@ export default class LighthouseBind extends Vue {
             this.instanceList.push(...res.InstanceSet)
         }
         this.loading--
+    }
+
+    // 已绑定主机
+
+    public machineList = [] as MachineItem[]
+
+    async getMachineList() {
+        const res = await Api.machine.list()
+        this.machineList = res || []
     }
 
     // 绑定主机

@@ -15,12 +15,14 @@ export default class VendorWorker extends Vue {
     }
 
     // 厂商列表
+
     async getSecretList() {
         const res = await Api.vendor.list()
         this.session.setVendor(res)
     }
 
     // 删除厂商
+
     async deleteSecret(idx: number) {
         const item = this.session.vendorList[idx]
         await Api.vendor.remove(item.Id)

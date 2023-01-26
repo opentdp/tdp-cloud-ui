@@ -15,10 +15,7 @@ import { dateFormat } from "@/helper/utils"
 export default class TaskHistory extends Vue {
     public dateFormat = dateFormat
 
-    public expanded = false
     public timer = 0
-
-    public historyList = [] as TaskHistoryItem[]
 
     public created() {
         this.getHistory()
@@ -32,12 +29,18 @@ export default class TaskHistory extends Vue {
     }
 
     // 历史记录
+
+    public historyList = [] as TaskHistoryItem[]
+
     async getHistory() {
         const res = await Api.taskHistory.list()
         this.historyList = res
     }
 
-    // 展开检测
+    // 侧边栏开关
+
+    public expanded = false
+
     async onExpand(row: TaskHistoryItem[], rs: TaskHistoryItem[]) {
         this.expanded = rs.length > 0
     }
