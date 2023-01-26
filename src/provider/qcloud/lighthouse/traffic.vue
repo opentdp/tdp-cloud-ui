@@ -4,7 +4,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 import { EChartsOption } from "echarts"
 
 import { QApi } from "@/api"
-import { Qcloud } from "@/api/qcloud/typings"
+import * as Qcloud from "@/api/qcloud/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/utils"
 

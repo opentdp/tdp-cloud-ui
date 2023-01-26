@@ -68,7 +68,8 @@ export default class WorkerBind extends Vue {
             <el-table-column label="CPU">
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="+scope.row.SystemStat.CpuPercent.toFixed(2)" status="success">
+                                 :percentage="+scope.row.SystemStat.CpuPercent.toFixed(2)" status="success"
+                    >
                         {{ scope.row.SystemStat.CpuPercent.toFixed(2) }}%，
                         {{ scope.row.SystemStat.CpuCore }} Cores
                     </el-progress>
@@ -77,8 +78,9 @@ export default class WorkerBind extends Vue {
             <el-table-column label="内存">
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="scope.row.SystemStat.MemoryUsed / scope.row.SystemStat.MemoryTotal * 100"
-                        status="success">
+                                 :percentage="scope.row.SystemStat.MemoryUsed / scope.row.SystemStat.MemoryTotal * 100"
+                                 status="success"
+                    >
                         {{ bytesToSize(scope.row.SystemStat.MemoryUsed) }} /
                         {{ bytesToSize(scope.row.SystemStat.MemoryTotal) }}
                     </el-progress>
@@ -87,8 +89,9 @@ export default class WorkerBind extends Vue {
             <el-table-column label="硬盘">
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="scope.row.SystemStat.DiskUsed / scope.row.SystemStat.DiskTotal * 100"
-                        status="success">
+                                 :percentage="scope.row.SystemStat.DiskUsed / scope.row.SystemStat.DiskTotal * 100"
+                                 status="success"
+                    >
                         {{ bytesToSize(scope.row.SystemStat.DiskUsed) }} /
                         {{ bytesToSize(scope.row.SystemStat.DiskTotal) }}
                     </el-progress>

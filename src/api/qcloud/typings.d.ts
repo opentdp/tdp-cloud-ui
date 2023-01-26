@@ -1,11 +1,5 @@
-// Qcloud Typing
-
-export namespace Qcloud {
-    import type * as Cam from "tencentcloud-sdk-nodejs/tencentcloud/services/cam/v20190116/cam_models"
-    import type * as Dnspod from "tencentcloud-sdk-nodejs/tencentcloud/services/dnspod/v20210323/dnspod_models"
-    import type * as Lighthouse from "tencentcloud-sdk-nodejs/tencentcloud/services/lighthouse/v20200324/lighthouse_models"
-    import type * as Monitor from "tencentcloud-sdk-nodejs/tencentcloud/services/monitor/v20180724/monitor_models"
-    import type * as TAT from "tencentcloud-sdk-nodejs/tencentcloud/services/tat/v20201028/tat_models"
-
-    export { Cam, Dnspod, Lighthouse, Monitor, TAT }
-}
+export type * as Cam from "tencentcloud-sdk-nodejs/tencentcloud/services/cam/v20190116/cam_models"
+export type * as Dnspod from "tencentcloud-sdk-nodejs/tencentcloud/services/dnspod/v20210323/dnspod_models"
+export type * as Lighthouse from "tencentcloud-sdk-nodejs/tencentcloud/services/lighthouse/v20200324/lighthouse_models"
+export type * as Monitor from "tencentcloud-sdk-nodejs/tencentcloud/services/monitor/v20180724/monitor_models"
+export type * as TAT from "tencentcloud-sdk-nodejs/tencentcloud/services/tat/v20201028/tat_models"

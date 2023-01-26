@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QApi } from "@/api"
-import { Qcloud } from "@/api/qcloud/typings"
+import * as Qcloud from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/utils"
 

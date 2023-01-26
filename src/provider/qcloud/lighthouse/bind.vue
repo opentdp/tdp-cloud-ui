@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { Api, QApi } from "@/api"
-import { Qcloud } from "@/api/qcloud/typings"
+import * as Qcloud from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 
 import { dateFormat } from "@/helper/utils"

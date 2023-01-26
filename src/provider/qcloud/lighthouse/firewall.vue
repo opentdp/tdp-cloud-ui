@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QApi } from "@/api"
-import { Qcloud } from "@/api/qcloud/typings"
+import * as Qcloud from "@/api/qcloud/typings"
 
 @Component
 export default class LighthouseFirewall extends Vue {
@@ -164,7 +164,8 @@ interface FirewallRuleBus {
             <el-table-column fixed="right" label="操作" width="180" align="center">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit"
-                        @click="modifyFirewallRuleDailog(scope.row, scope.$index)">
+                               @click="modifyFirewallRuleDailog(scope.row, scope.$index)"
+                    >
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">
@@ -259,7 +260,8 @@ interface FirewallRuleBus {
             <span class="dialog-footer">
                 <el-button @click="modifyFirewallRuleDescriptionBus.dailog = false">取消</el-button>
                 <el-button type="primary" :loading="modifyFirewallRuleDescriptionBus.loading"
-                    @click="modifyFirewallRuleDescription">
+                           @click="modifyFirewallRuleDescription"
+                >
                     保存
                 </el-button>
             </span>
