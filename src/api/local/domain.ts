@@ -9,7 +9,7 @@ export class DomainModel extends HttpClient {
         return this.get("/domain/" + id)
     }
 
-    public create(rq: DomainRequest): Promise<HttpMessage> {
+    public create(rq: DomainOrig): Promise<HttpMessage> {
         return this.post("/domain", rq)
     }
 
@@ -22,8 +22,7 @@ export class DomainModel extends HttpClient {
     }
 }
 
-export interface DomainItem {
-    Id: number
+export interface DomainOrig {
     UserId: number
     VendorId: number
     Name: string
@@ -33,17 +32,10 @@ export interface DomainItem {
     CloudMeta: Record<string, unknown>
     Description: string
     Status: string
-    CreatedAt: string
-    UpdatedAt: string
 }
 
-export interface DomainRequest {
-    VendorId: number
-    Name: string
-    NSList: string
-    Model: "" | "qcloud/dnspod"
-    CloudId: string
-    CloudMeta: string
-    Description: string
-    Status: string
+export interface DomainItem extends DomainOrig {
+    Id: number
+    CreatedAt?: string
+    UpdatedAt?: string
 }

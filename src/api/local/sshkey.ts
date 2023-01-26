@@ -5,7 +5,7 @@ export class SSHKeyModel extends HttpClient {
         return this.get("/sshkey")
     }
 
-    public create(rq: SSHKeyRequest): Promise<HttpMessage> {
+    public create(rq: SSHKeyOrig): Promise<HttpMessage> {
         return this.post("/sshkey", rq)
     }
 
@@ -18,18 +18,15 @@ export class SSHKeyModel extends HttpClient {
     }
 }
 
-export interface SSHKeyItem {
-    Id: number
-    UserId: number
+export interface SSHKeyOrig {
     PublicKey: string
     PrivateKey: string
     Description: string
-    CreatedAt: string
-    UpdatedAt: string
 }
 
-export interface SSHKeyRequest {
-    PublicKey: string
-    PrivateKey: string
-    Description: string
+export interface SSHKeyItem extends SSHKeyOrig {
+    Id: number
+    UserId?: number
+    CreatedAt?: string
+    UpdatedAt?: string
 }

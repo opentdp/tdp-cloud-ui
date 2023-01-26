@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
-import { TaskScriptRequest } from '@/api/local/task_script'
+import { TaskScriptOrig } from '@/api/local/task_script'
 
 @Component({
     emits: ['submit'],
@@ -12,17 +12,7 @@ export default class TaskScriptCreate extends Vue {
     public loading = false
     public dailog = false
 
-    public modelData: TaskScriptRequest = {
-        Name: "",
-        Username: "",
-        Description: "",
-        Content: "",
-        CommandType: "SHELL",
-        WorkDirectory: "",
-        Timeout: 60,
-    }
-
-    public formModel = {} as TaskScriptRequest
+    public formModel = {} as TaskScriptOrig
 
     public formRules = {
         Name: [{ required: true, message: "名称 不能为空" }],
@@ -52,7 +42,15 @@ export default class TaskScriptCreate extends Vue {
     public open() {
         this.dailog = true
         this.loading = false
-        Object.assign(this.formModel, this.modelData)
+        this.formModel = {
+            Name: "",
+            Username: "",
+            Description: "",
+            Content: "",
+            CommandType: "SHELL",
+            WorkDirectory: "",
+            Timeout: 60,
+        }
     }
 }
 </script>

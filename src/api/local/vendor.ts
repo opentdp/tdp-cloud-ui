@@ -5,7 +5,7 @@ export class VendorModel extends HttpClient {
         return this.get("/vendor")
     }
 
-    public create(rq: VendorRequest): Promise<HttpMessage> {
+    public create(rq: VendorOrig): Promise<HttpMessage> {
         return this.post("/vendor", rq)
     }
 
@@ -18,20 +18,16 @@ export class VendorModel extends HttpClient {
     }
 }
 
-export interface VendorItem {
-    Id: number
-    UserId: number
+export interface VendorOrig {
     SecretId: string
     SecretKey: string
     Provider: string
     Description: string
-    CreatedAt: string
-    UpdatedAt: string
 }
 
-export interface VendorRequest {
-    SecretId: string
-    SecretKey: string
-    Provider: string
-    Description: string
+export interface VendorItem extends VendorOrig {
+    Id: number
+    UserId?: number
+    CreatedAt?: string
+    UpdatedAt?: string
 }

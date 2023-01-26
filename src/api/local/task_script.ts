@@ -5,7 +5,7 @@ export class TaskScriptModel extends HttpClient {
         return this.get("/task/script")
     }
 
-    public create(rq: TaskScriptRequest): Promise<HttpMessage> {
+    public create(rq: TaskScriptOrig): Promise<HttpMessage> {
         return this.post("/task/script/", rq)
     }
 
@@ -18,9 +18,7 @@ export class TaskScriptModel extends HttpClient {
     }
 }
 
-export interface TaskScriptItem {
-    Id: number
-    UserId: number
+export interface TaskScriptOrig {
     Name: string
     Username: string
     Description: string
@@ -30,12 +28,9 @@ export interface TaskScriptItem {
     Timeout: number
 }
 
-export interface TaskScriptRequest {
-    Name: string
-    Username: string
-    Description: string
-    Content: string
-    CommandType: string
-    WorkDirectory: string
-    Timeout: number
+export interface TaskScriptItem extends TaskScriptOrig {
+    Id: number
+    UserId?: number
+    CreatedAt?: string
+    UpdatedAt?: string
 }

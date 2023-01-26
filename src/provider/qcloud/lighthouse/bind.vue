@@ -18,6 +18,7 @@ export default class LighthouseBind extends Vue {
 
     public created() {
         QApi.lighthouse.vendor(this.vid)
+        this.getMachineList()
         this.getRegionList()
     }
 
@@ -55,6 +56,15 @@ export default class LighthouseBind extends Vue {
         this.machineList = res || []
     }
 
+    public getBoundMachine(cloudId: string) {
+        for (let i = 0, n = this.machineList.length; i < n; this.machineList) {
+            const item = this.machineList[i]
+            if (item.CloudId === cloudId) {
+                return item
+            }
+        }
+    }
+
     // 绑定主机
 
     public addMachine(item: Qcloud.Lighthouse.Instance) {
@@ -71,6 +81,27 @@ export default class LighthouseBind extends Vue {
             Status: "{}",
         })
     }
+
+    // 同步主机
+
+    public updateMachine(item: Qcloud.Lighthouse.Instance) {
+        const m = this.getBoundMachine(item.id)
+        Api.machine.update({
+            Id: m ? m.Id : 0,
+            VendorId: this.vid,
+            HostName: item.InstanceName,
+            IpAddress: item.PublicAddresses[0],
+            OSType: item.PlatformType,
+            Region: this.parseRegion(item.Zone),
+            Model: "qcloud/lighthouse",
+            CloudId: item.InstanceId,
+            CloudMeta: JSON.stringify(item),
+            Description: "",
+            Status: "{}",
+        })
+    }
+
+    // 解析地域
 
     public parseRegion(s: string) {
         const [r, z] = s.replace(/-(\d+)$/, ':$1').split(':')
@@ -114,7 +145,10 @@ export default class LighthouseBind extends Vue {
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="View" @click="addMachine(scope.row)">
+                    <el-button v-if="getBoundMachine(scope.row.InstanceId)" link type="primary" icon="View">
+                        同步
+                    </el-button>
+                    <el-button v-else link type="primary" icon="View" @click="addMachine(scope.row)">
                         导入
                     </el-button>
                 </template>

@@ -1,11 +1,11 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class UserModel extends HttpClient {
-    public login(rq: LoginRequest): Promise<LoginResponse> {
+    public login(rq: UserRequest): Promise<LoginResponse> {
         return this.post("/user/login", rq)
     }
 
-    public register(rq: RegisterRequest): Promise<HttpMessage> {
+    public register(rq: UserRequest): Promise<HttpMessage> {
         return this.post("/user/register", rq)
     }
 
@@ -22,12 +22,7 @@ export class UserModel extends HttpClient {
     }
 }
 
-export interface LoginRequest {
-    Username: string
-    Password: string
-}
-
-export interface LoginRequest {
+export interface UserRequest {
     Username: string
     Password: string
 }
@@ -37,11 +32,6 @@ export interface LoginResponse {
     Username: string
     Description: string
     Token: string
-}
-
-export interface RegisterRequest {
-    Username: string
-    Password: string
 }
 
 export interface UserInfoResponse {

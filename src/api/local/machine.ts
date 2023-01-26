@@ -9,7 +9,7 @@ export class MachineModel extends HttpClient {
         return this.get("/machine/" + id)
     }
 
-    public create(rq: MachineRequest): Promise<HttpMessage> {
+    public create(rq: MachineOrig): Promise<HttpMessage> {
         return this.post("/machine", rq)
     }
 
@@ -22,9 +22,7 @@ export class MachineModel extends HttpClient {
     }
 }
 
-export interface MachineItem {
-    Id: number
-    UserId: number
+export interface MachineOrig {
     VendorId: number
     HostName: string
     IpAddress: string
@@ -32,22 +30,14 @@ export interface MachineItem {
     Region: string
     Model: "local/worker" | "qcloud/lighthouse"
     CloudId: string
-    CloudMeta: Record<string, unknown>
+    CloudMeta: string | Record<string, unknown>
     Description: string
     Status: string
-    CreatedAt: string
-    UpdatedAt: string
 }
 
-export interface MachineRequest {
-    VendorId: number
-    HostName: string
-    IpAddress: string
-    OSType: string
-    Region: string
-    Model: "local/worker" | "qcloud/lighthouse"
-    CloudId: string
-    CloudMeta: string
-    Description: string
-    Status: string
+export interface MachineItem extends MachineOrig {
+    Id: number
+    UserId?: number
+    CreatedAt?: string
+    UpdatedAt?: string
 }

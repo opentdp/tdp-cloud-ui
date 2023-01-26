@@ -9,7 +9,7 @@ export class ConfigModel extends HttpClient {
         return this.get("/config/" + name)
     }
 
-    public create(rq: ConfigRequest): Promise<HttpMessage> {
+    public create(rq: ConfigOrig): Promise<HttpMessage> {
         return this.post("/config", rq)
     }
 
@@ -22,19 +22,15 @@ export class ConfigModel extends HttpClient {
     }
 }
 
-export interface ConfigItem {
-    Id: number
+export interface ConfigOrig {
     Name: string
     Value: string
     Module: string
     Description: string
-    CreatedAt: string
-    UpdatedAt: string
 }
 
-export interface ConfigRequest {
-    Name: string
-    Value: string
-    Module: string
-    Description: string
+export interface ConfigItem extends ConfigOrig {
+    Id: number
+    CreatedAt?: string
+    UpdatedAt?: string
 }
