@@ -9,6 +9,7 @@ import { SSHKeyItem } from "@/api/local/sshkey"
 import { TaskScriptItem } from "@/api/local/task_script"
 
 import { WebSSH } from "@/helper/webssh"
+import shells from "@/helper/script/shell"
 
 @Component
 export default class TerminalSsh extends Vue {
@@ -98,14 +99,17 @@ export default class TerminalSsh extends Vue {
         cb(rs)
     }
 
-    // 执行快捷命令
+    // 获取快捷命令
 
     public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
+        this.scriptList.push(...shells)
         const res = await Api.taskScript.list()
-        this.scriptList = res
+        this.scriptList.push(...res)
     }
+
+    // 执行快捷命令
 
     public sshExec(cmd: string) {
         const target = this.indexTab(this.curTab.id)
@@ -210,14 +214,12 @@ interface sshTab {
                     <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
                         <el-select v-model="formModel.PrivateKey">
                             <el-option v-for="item in sshkeyList" :key="item.Id" :label="item.Description"
-                                :value="item.PrivateKey"
-                            />
+                                :value="item.PrivateKey" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">
                         <el-input v-model="formModel.PrivateKey" type="textarea"
-                            :autosize="{ minRows: 3, maxRows: 10 }"
-                        />
+                            :autosize="{ minRows: 3, maxRows: 10 }" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="formSubmit(formRef)">

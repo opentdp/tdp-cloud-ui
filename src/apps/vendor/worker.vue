@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import * as shells from "@/helper/script/shell"
+import { installTDPWorker } from "@/helper/script/shell"
 
 import WorkerBind from "@/provider/worker/bind.vue"
 
@@ -9,7 +9,7 @@ import WorkerBind from "@/provider/worker/bind.vue"
     components: { WorkerBind }
 })
 export default class VendorWorker extends Vue {
-    public shells = shells
+    public installTDPWorker = installTDPWorker
 }
 </script>
 
@@ -24,7 +24,7 @@ export default class VendorWorker extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-alert title="节点接入命令" type="warning">
-            <pre>{{ shells.installTDPWorker.Content }}</pre>
+            <pre>{{ installTDPWorker.Content }}</pre>
         </el-alert>
         <div class="space-10" />
         <WorkerBind />

@@ -1,11 +1,12 @@
 import { Api } from "@/api"
-import { TaskScriptOrig } from "@/api/local/task_script"
+import { TaskScriptItem } from "@/api/local/task_script"
 
 function trim(s: string) {
     return s.replace(/\n {8}/g, "\n").trim()
 }
 
-export const installTDPWorker: TaskScriptOrig = {
+export const installTDPWorker: TaskScriptItem = {
+    Id: 0,
     Name: "安装 TDP Worker",
     Username: "root",
     Description: "",
@@ -17,3 +18,7 @@ export const installTDPWorker: TaskScriptOrig = {
     WorkDirectory: "/root",
     Timeout: 300
 }
+
+// 导出所有脚本
+
+export default [installTDPWorker]

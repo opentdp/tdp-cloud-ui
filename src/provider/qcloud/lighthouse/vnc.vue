@@ -6,6 +6,8 @@ import * as Qcloud from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 import { TaskScriptItem } from "@/api/local/task_script"
 
+import shells from "@/helper/script/shell"
+
 @Component
 export default class LighthouseVnc extends Vue {
     @Prop
@@ -45,8 +47,9 @@ export default class LighthouseVnc extends Vue {
     public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
+        this.scriptList.push(...shells)
         const res = await Api.taskScript.list()
-        this.scriptList = res
+        this.scriptList.push(...res)
     }
 
     // 执行快捷命令
