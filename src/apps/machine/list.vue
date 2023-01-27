@@ -3,6 +3,7 @@ import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
+import { WorkerItem } from "@/api/local/workhub"
 
 @Component
 export default class MachineList extends Vue {
@@ -10,6 +11,7 @@ export default class MachineList extends Vue {
 
     public created() {
         this.getMachineList()
+        this.getWorkerList()
     }
 
     // 主机列表
@@ -28,6 +30,17 @@ export default class MachineList extends Vue {
         const item = this.machineList[idx]
         await Api.machine.remove(item.Id)
         this.machineList.splice(idx, 1)
+    }
+
+    // 节点列表
+
+    public workerList: Record<string, WorkerItem> = {}
+
+    async getWorkerList() {
+        const res = await Api.workhub.list()
+        res.forEach(item => {
+            this.workerList[item.HostId] = item
+        })
     }
 }
 </script>
@@ -55,6 +68,16 @@ export default class MachineList extends Vue {
                 <el-table-column prop="IpAddress" label="IP 地址" />
                 <el-table-column prop="Region" label="地域" />
                 <el-table-column prop="Model" label="来源" />
+                <el-table-column label="子节点">
+                    <template #default="scope">
+                        <el-button v-if="workerList[scope.row.CloudId]" link type="success">
+                            运行中
+                        </el-button>
+                        <el-button v-else link type="info">
+                            未安装
+                        </el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">
