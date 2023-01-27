@@ -56,7 +56,7 @@ export default class WorkerBind extends Vue {
             Region: "",
             Model: "local/worker",
             CloudId: item.HostId,
-            CloudMeta: JSON.stringify(item.SystemStat),
+            CloudMeta: JSON.stringify(item),
             Description: "",
             Status: "{}",
         })
@@ -75,7 +75,7 @@ export default class WorkerBind extends Vue {
             Region: "",
             Model: "local/worker",
             CloudId: item.HostId,
-            CloudMeta: JSON.stringify(item.SystemStat),
+            CloudMeta: JSON.stringify(item),
             Description: "",
             Status: "{}",
         })
