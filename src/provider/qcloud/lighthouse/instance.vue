@@ -8,9 +8,9 @@ import { MachineItem } from "@/api/local/machine"
 
 import { dateFormat } from "@/helper/utils"
 
-import Firwwall from './firewall.vue'
-import Snapshot from './snapshot.vue'
-import Traffic from './traffic.vue'
+import Firwwall from "./firewall.vue"
+import Snapshot from "./snapshot.vue"
+import Traffic from "./traffic.vue"
 
 @Component({
     components: { Firwwall, Snapshot, Traffic }

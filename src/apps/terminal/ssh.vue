@@ -6,7 +6,7 @@ import { ElMessage, FormInstance, FormRules } from "element-plus"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { SSHKeyItem } from "@/api/local/sshkey"
-import { TaskScriptItem } from '@/api/local/task_script'
+import { TaskScriptItem } from "@/api/local/task_script"
 
 import { WebSSH } from "@/helper/webssh"
 

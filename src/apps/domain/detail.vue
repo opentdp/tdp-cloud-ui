@@ -4,7 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import { Api } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
-import DnspodDomain from '@/provider/qcloud/dnspod/domain.vue'
+import DnspodDomain from "@/provider/qcloud/dnspod/domain.vue"
 
 @Component({
     components: { DnspodDomain }

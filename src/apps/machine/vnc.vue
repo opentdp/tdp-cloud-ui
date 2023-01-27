@@ -4,7 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-import LighthouseVNC from '@/provider/qcloud/lighthouse/vnc.vue'
+import LighthouseVNC from "@/provider/qcloud/lighthouse/vnc.vue"
 
 @Component({
     components: { LighthouseVNC }

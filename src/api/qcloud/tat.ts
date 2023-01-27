@@ -1,6 +1,6 @@
 import { QcloudClient } from "@/api/basic/qcloud"
 
-import * as Qcloud from './typings'
+import * as Qcloud from "./typings"
 
 export class TATModel extends QcloudClient {
     protected qService = "tat"

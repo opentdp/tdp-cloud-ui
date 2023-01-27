@@ -5,8 +5,8 @@ import { QApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 import { DomainItem } from "@/api/local/domain"
 
-import RecordCreate from './record_create.vue'
-import RecordUpdate from './record_update.vue'
+import RecordCreate from "./record_create.vue"
+import RecordUpdate from "./record_update.vue"
 
 @Component({
     components: { RecordCreate, RecordUpdate }

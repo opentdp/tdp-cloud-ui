@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import DnspodBind from '@/provider/qcloud/dnspod/bind.vue'
-import LighthouseBind from '@/provider/qcloud/lighthouse/bind.vue'
+import DnspodBind from "@/provider/qcloud/dnspod/bind.vue"
+import LighthouseBind from "@/provider/qcloud/lighthouse/bind.vue"
 
 @Component({
     components: { DnspodBind, LighthouseBind }

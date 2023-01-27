@@ -4,8 +4,8 @@ import { Component, Vue } from "vue-facing-decorator"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-import WorkerInstance from '@/provider/worker/instance.vue'
-import LighthouseInstance from '@/provider/qcloud/lighthouse/instance.vue'
+import WorkerInstance from "@/provider/worker/instance.vue"
+import LighthouseInstance from "@/provider/qcloud/lighthouse/instance.vue"
 
 @Component({
     components: { WorkerInstance, LighthouseInstance }

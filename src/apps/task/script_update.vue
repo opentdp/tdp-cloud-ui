@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { Api } from "@/api"
-import { TaskScriptItem } from '@/api/local/task_script'
+import { TaskScriptItem } from "@/api/local/task_script"
 
 @Component({
     emits: ['close'],

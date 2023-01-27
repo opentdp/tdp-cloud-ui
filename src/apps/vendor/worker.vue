@@ -2,6 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import * as shells from "@/helper/script/shell"
+
 import WorkerBind from "@/provider/worker/bind.vue"
 
 @Component({
