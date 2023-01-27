@@ -40,7 +40,9 @@ export default class DnspodDomain extends Vue {
         const res = await QApi.dnspod.describeDomain({
             Domain: this.domainInfo.Domain
         })
-        this.domainInfo = res.DomainInfo
+        if (res.DomainInfo) {
+            this.domainInfo = res.DomainInfo
+        }
     }
 
     // 域名记录
@@ -52,8 +54,10 @@ export default class DnspodDomain extends Vue {
         const res = await QApi.dnspod.describeRecordList({
             Domain: this.domainInfo.Domain
         })
-        this.recordList = res.RecordList
-        this.recordCountInfo = res.RecordCountInfo
+        if (res.RecordCountInfo) {
+            this.recordList = res.RecordList || []
+            this.recordCountInfo = res.RecordCountInfo
+        }
     }
 
     // 删除记录

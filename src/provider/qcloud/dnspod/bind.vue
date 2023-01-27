@@ -25,8 +25,10 @@ export default class DnspodBind extends Vue {
     // 获取列表
     async getDomainList() {
         const res = await QApi.dnspod.describeDomainList()
-        this.domainTotalCount = res.DomainCountInfo.AllTotal
-        this.domainList = res.DomainList || []
+        if (res.DomainCountInfo) {
+            this.domainList = res.DomainList || []
+            this.domainTotalCount = res.DomainCountInfo.AllTotal
+        }
         this.loading = false
     }
 
