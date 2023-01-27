@@ -40,8 +40,8 @@ export default class MachineVnc extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
-        <div v-if="machine.Model == 'qcloud/lighthouse'">
+        <template v-if="machine?.Model == 'qcloud/lighthouse'">
             <LighthouseVNC :meta="machine" />
-        </div>
+        </template>
     </div>
 </template>

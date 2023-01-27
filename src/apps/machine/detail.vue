@@ -41,11 +41,11 @@ export default class MachineDetail extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
-        <div v-if="machine.Model == 'qcloud/lighthouse'">
+        <template v-if="machine?.Model == 'qcloud/lighthouse'">
             <LighthouseInstance :meta="machine" />
-        </div>
-        <div v-if="machine.Model == 'local/worker'">
+        </template>
+        <template v-if="machine?.Model == 'local/worker'">
             <WorkerInstance :meta="machine" />
-        </div>
+        </template>
     </div>
 </template>

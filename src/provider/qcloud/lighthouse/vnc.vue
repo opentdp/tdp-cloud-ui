@@ -2,13 +2,16 @@
 import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
 
 import { Api, QApi } from "@/api"
+import * as Qcloud from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 import { TaskScriptItem } from '@/api/local/task_script'
 
 @Component
 export default class LighthouseVnc extends Vue {
     @Prop
-    public meta!: MachineItem
+    public meta!: Omit<MachineItem, "CloudMeta"> & {
+        CloudMeta: Qcloud.Lighthouse.Instance
+    }
 
     public created() {
         QApi.lighthouse.vendor(this.meta.VendorId)

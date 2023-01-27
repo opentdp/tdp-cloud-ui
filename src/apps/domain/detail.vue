@@ -40,8 +40,8 @@ export default class DomainDetail extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
-        <div v-if="domain.Model == 'qcloud/dnspod'">
+        <template v-if="domain?.Model == 'qcloud/dnspod'">
             <DnspodDomain :meta="domain" />
-        </div>
+        </template>
     </div>
 </template>
