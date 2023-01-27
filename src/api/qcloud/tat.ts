@@ -10,15 +10,15 @@ export class TATModel extends QcloudClient {
         return this.q({ action: "RunCommand", region, query })
     }
 
+    public describeCommands(region: string, query: Qcloud.TAT.DescribeCommandsRequest): Promise<Qcloud.TAT.DescribeCommandsResponse> {
+        return this.q({ action: "DescribeCommands", region, query })
+    }
+
     public describeInvocations(region: string, query: Qcloud.TAT.DescribeInvocationsRequest): Promise<Qcloud.TAT.DescribeInvocationsResponse> {
         return this.q({ action: "DescribeInvocations", region, query })
     }
 
     public describeInvocationTasks(region: string, query: Qcloud.TAT.DescribeInvocationTasksRequest): Promise<Qcloud.TAT.DescribeInvocationTasksResponse> {
         return this.q({ action: "DescribeInvocationTasks", region, query })
-    }
-
-    public describeCommands(region: string, query: Qcloud.TAT.DescribeCommandsRequest): Promise<Qcloud.TAT.DescribeCommandsResponse> {
-        return this.q({ action: "DescribeCommands", region, query })
     }
 }

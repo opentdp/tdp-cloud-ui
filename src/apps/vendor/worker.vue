@@ -29,7 +29,7 @@ export default class VendorWorker extends Vue {
         </el-breadcrumb>
         <el-alert title="节点接入命令" type="warning">
             <template #default>
-                <p>export TDP_EXEC_ARGS="--remote {{ wsurl }}"</p>
+                <p>TDP_EXEC_ARGS="--remote {{ wsurl }}"</p>
                 <p>wget -qO- http://tdp.icu/worker-linux | sh -</p>
             </template>
         </el-alert>

@@ -44,6 +44,20 @@ export default class LighthouseBind extends Vue {
         })
     }
 
+    // 执行脚本
+
+    async runCommand(instance: Qcloud.Lighthouse.Instance, code: string) {
+        const region = instance.Zone.replace(/-(\d+)$/, '')
+        const res = await QApi.tat.runCommand(region, {
+            InstanceIds: [instance.InstanceId],
+            Content: code,
+        })
+        const rs2 = QApi.tat.describeInvocations(region, {
+            InvocationIds: [res.InvocationId]
+        })
+        console.log(rs2)
+    }
+
     // 已绑定主机
 
     public boundMachineList: Record<string, MachineItem> = {}
@@ -136,8 +150,7 @@ export default class LighthouseBind extends Vue {
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="boundMachineList[scope.row.InstanceId]" link icon="View"
-                        @click="syncMachine(scope.row)"
-                    >
+                        @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">
