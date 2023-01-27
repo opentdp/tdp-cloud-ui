@@ -4,6 +4,9 @@ import { Component, Vue } from "vue-facing-decorator"
 import { Api } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
+import { TaskScriptItem } from "@/api/local/task_script"
+
+import shellList from "@/helper/script/shell"
 
 @Component
 export default class MachineList extends Vue {
@@ -12,6 +15,7 @@ export default class MachineList extends Vue {
     public created() {
         this.getMachineList()
         this.getWorkerList()
+        this.getScriptList()
     }
 
     // 主机列表
@@ -42,6 +46,34 @@ export default class MachineList extends Vue {
             this.workerList[item.HostId] = item
         })
     }
+
+    // 获取快捷命令
+
+    public scriptList: TaskScriptItem[] = shellList
+
+    async getScriptList() {
+        const res = await Api.taskScript.list()
+        this.scriptList.push(...res)
+    }
+
+    // 执行快捷命令
+
+    public workerExec(cmd: TaskScriptItem) {
+        const id = this.selectedRow.CloudId
+        const bd = this.workerList[id]
+        Api.workhub.exec({
+            HostId: bd.HostId,
+            Payload: cmd
+        })
+    }
+
+    // 选择主机
+
+    public selectedRow!: MachineItem
+
+    public tableRowChange(row: MachineItem) {
+        this.selectedRow = row
+    }
 }
 </script>
 
@@ -63,7 +95,9 @@ export default class MachineList extends Vue {
                     <small>主机总数: {{ machineList.length }}</small>
                 </div>
             </template>
-            <el-table v-loading="loading" :data="machineList" table-layout="fixed">
+            <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
+                @current-change="tableRowChange"
+            >
                 <el-table-column fixed prop="HostName" label="名称" min-width="120" />
                 <el-table-column prop="IpAddress" label="IP 地址" />
                 <el-table-column prop="Region" label="地域" />
@@ -95,6 +129,19 @@ export default class MachineList extends Vue {
                     </template>
                 </el-table-column>
             </el-table>
+        </el-card>
+        <div class="space-10" />
+        <el-card v-if="selectedRow" shadow="hover">
+            <template #header>
+                <div class="flex-between">
+                    <b>快捷命令</b>
+                </div>
+            </template>
+            <div class="button-list">
+                <el-button v-for="item in scriptList" :key="item.Id" @click="workerExec(item)">
+                    {{ item.Name }}
+                </el-button>
+            </div>
         </el-card>
     </div>
 </template>

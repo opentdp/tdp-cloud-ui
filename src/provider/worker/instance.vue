@@ -18,7 +18,6 @@ export default class WorkerInstance extends Vue {
     public instance!: WorkerItem
 
     public created() {
-        console.log(this.meta)
         this.instance = this.meta.CloudMeta
     }
 }

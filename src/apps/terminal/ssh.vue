@@ -213,12 +213,14 @@ interface sshTab {
                     <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
                         <el-select v-model="formModel.PrivateKey">
                             <el-option v-for="item in sshkeyList" :key="item.Id" :label="item.Description"
-                                :value="item.PrivateKey" />
+                                :value="item.PrivateKey"
+                            />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">
                         <el-input v-model="formModel.PrivateKey" type="textarea"
-                            :autosize="{ minRows: 3, maxRows: 10 }" />
+                            :autosize="{ minRows: 3, maxRows: 10 }"
+                        />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="formSubmit(formRef)">
