@@ -123,15 +123,18 @@ export default class LighthouseInstance extends Vue {
                 </small>
                 <div class="flex-auto" />
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
-                    :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
+                    :loading="instance.InstanceState == 'STARTING'" @click="startInstance"
+                >
                     开机
                 </el-button>
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                    :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
+                    :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance"
+                >
                     关机
                 </el-button>
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                    :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
+                    :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance"
+                >
                     重启
                 </el-button>
                 <el-button v-if="instance.InstanceState == 'RUNNING'" type="primary" plain size="small">

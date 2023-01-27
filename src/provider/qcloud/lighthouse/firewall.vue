@@ -21,13 +21,18 @@ export default class LighthouseFirewall extends Vue {
 
     // 规则列表
 
-    public firewallRuleList!: Qcloud.Lighthouse.DescribeFirewallRulesResponse
+    public firewallRuleList!: Qcloud.Lighthouse.FirewallRule[]
+    public firewallRuleCount = 0
 
     async getFirewallRuleList() {
         const res = await QApi.lighthouse.describeFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
         })
-        this.firewallRuleList = res
+        this.firewallRuleList = res.FirewallRuleSet.map(item => {
+            delete (item as Partial<Qcloud.Lighthouse.FirewallRuleInfo>).AppType
+            return item
+        })
+        this.firewallRuleCount = res.TotalCount
     }
 
     // 添加规则
@@ -70,15 +75,12 @@ export default class LighthouseFirewall extends Vue {
         this.modifyFirewallRuleBus.loading = true
         await QApi.lighthouse.modifyFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
-            FirewallRules: this.firewallRuleList.FirewallRuleSet.map(
-                (item: FirewallRuleBus["model"], idx) => {
-                    if (this.modifyFirewallRuleBus.index === idx) {
-                        item = Object.assign({}, this.modifyFirewallRuleBus.model)
-                    }
-                    delete item.AppType
-                    return item
+            FirewallRules: this.firewallRuleList.map((item, idx) => {
+                if (this.modifyFirewallRuleBus.index === idx) {
+                    Object.assign(item, this.modifyFirewallRuleBus.model)
                 }
-            )
+                return item
+            })
         })
         this.modifyFirewallRuleBus.dailog = false
         this.modifyFirewallRuleBus.loading = false
@@ -101,7 +103,6 @@ export default class LighthouseFirewall extends Vue {
 
     async modifyFirewallRuleDescription() {
         this.modifyFirewallRuleDescriptionBus.loading = true
-        delete this.modifyFirewallRuleDescriptionBus.model.AppType
         await QApi.lighthouse.modifyFirewallRuleDescription(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRule: this.modifyFirewallRuleDescriptionBus.model
@@ -119,7 +120,6 @@ export default class LighthouseFirewall extends Vue {
     // 删除规则
 
     async deleteFirewallRule(item: FirewallRuleBus["model"]) {
-        delete item.AppType
         await QApi.lighthouse.deleteFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRules: [item]
@@ -132,9 +132,7 @@ interface FirewallRuleBus {
     dailog: boolean
     loading: boolean
     index?: number
-    model: Qcloud.Lighthouse.FirewallRule & {
-        AppType?: string
-    }
+    model: Qcloud.Lighthouse.FirewallRule
 }
 </script>
 
@@ -143,14 +141,14 @@ interface FirewallRuleBus {
         <template #header>
             <div class="flex-between">
                 <b>防火墙</b> &nbsp; &nbsp;
-                <small>规则总数: {{ firewallRuleList.TotalCount }}</small>
+                <small>规则总数: {{ firewallRuleCount }}</small>
                 <div class="flex-auto" />
                 <el-button type="primary" plain size="small" @click="createFirewallRuleBus.dailog = true">
                     添加规则
                 </el-button>
             </div>
         </template>
-        <el-table :data="firewallRuleList.FirewallRuleSet" table-layout="fixed">
+        <el-table :data="firewallRuleList" table-layout="fixed">
             <el-table-column prop="CidrBlock" label="来源" min-width="150" />
             <el-table-column prop="Protocol" label="协议" min-width="100" />
             <el-table-column prop="Port" label="端口" min-width="120" />

@@ -24,13 +24,13 @@ export default class DnspodBind extends Vue {
     // 获取列表
 
     public domainList: Qcloud.Dnspod.DomainListItem[] = []
-    public domainTotalCount = 0
+    public domainCount = 0
 
     async getDomainList() {
         const res = await QApi.dnspod.describeDomainList()
         if (res.DomainCountInfo) {
             this.domainList = res.DomainList || []
-            this.domainTotalCount = res.DomainCountInfo.AllTotal
+            this.domainCount = res.DomainCountInfo.AllTotal
         }
         this.loading = false
     }
@@ -85,7 +85,7 @@ export default class DnspodBind extends Vue {
         <template #header>
             <div class="flex-between">
                 <b>域名列表</b>
-                <small>域名总数: {{ domainTotalCount }}</small>
+                <small>域名总数: {{ domainCount }}</small>
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
