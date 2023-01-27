@@ -1,4 +1,5 @@
 import { HttpClient } from "@/api/basic/http"
+import { TaskScriptOrig } from "./task_script"
 
 export class TaskHistoryModel extends HttpClient {
     public list(): Promise<TaskHistoryItem[]> {
@@ -6,26 +7,20 @@ export class TaskHistoryModel extends HttpClient {
     }
 }
 
-export interface TaskHistoryItem {
-    Id: number
-    UserId: number
+export interface TaskHistoryOrig {
     HostId: string
     Subject: string
     HostName: string
-    Request: TaskHistoryRequest
+    Request: TaskScriptOrig
     Response: TaskHistoryResponse
     Status: string
-    CreatedAt: number
-    UpdatedAt: number
 }
 
-export interface TaskHistoryRequest {
-    Name: string
-    CommandType: string
-    Content: string
-    Username: string
-    WorkDirectory: string
-    Timeout: number
+export interface TaskHistoryItem extends TaskHistoryOrig {
+    Id: number
+    UserId?: number
+    CreatedAt?: number
+    UpdatedAt?: number
 }
 
 export interface TaskHistoryResponse {

@@ -20,11 +20,11 @@ export class TaskScriptModel extends HttpClient {
 
 export interface TaskScriptOrig {
     Name: string
-    Username: string
-    Description: string
-    Content: string
     CommandType: string
+    Username: string
     WorkDirectory: string
+    Content: string
+    Description: string
     Timeout: number
 }
 
