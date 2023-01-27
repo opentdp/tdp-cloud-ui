@@ -15,11 +15,11 @@ export default class TaskScriptUpdate extends Vue {
 
     public formRules = {
         Name: [{ required: true, message: "名称 不能为空" }],
-        Username: [{ required: true, message: "执行用户 不能为空" }],
-        Description: [{ required: true, message: "描述 不能为空" }],
-        Content: [{ required: true, message: "脚本内容 不能为空" }],
         CommandType: [{ required: true, message: "脚本类型 不能为空" }],
+        Username: [{ required: true, message: "执行用户 不能为空" }],
         WorkDirectory: [{ required: true, message: "执行路径 不能为空" }],
+        Content: [{ required: true, message: "脚本内容 不能为空" }],
+        Description: [{ required: true, message: "描述 不能为空" }],
         Timeout: [{ required: true, message: "超时时间 不能为空" }],
     }
 
@@ -55,30 +55,30 @@ export default class TaskScriptUpdate extends Vue {
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="修改脚本" width="600px">
         <el-form :model="formModel" :rules="formRules" label-width="100px" label-suffix=":">
-            <el-form-item label="名称">
-                <el-input v-model="formModel.Name" :maxlength="60" />
-            </el-form-item>
-            <el-form-item label="描述：">
-                <el-input v-model="formModel.Description" :maxlength="120" />
-            </el-form-item>
-            <el-form-item label="脚本类型">
+            <el-form-item label="类型">
                 <el-radio-group v-model="formModel.CommandType">
                     <el-radio label="SHELL" />
                     <el-radio label="POWERSHELL" />
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="执行路径">
-                <el-input v-model="formModel.WorkDirectory"
-                    :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\'"
-                />
+            <el-form-item label="名称">
+                <el-input v-model="formModel.Name" :maxlength="60" />
             </el-form-item>
             <el-form-item label="执行用户">
                 <el-input v-model="formModel.Username"
                     :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 root' : '非必填，默认为 System'"
                 />
             </el-form-item>
-            <el-form-item label="脚本">
+            <el-form-item label="执行路径">
+                <el-input v-model="formModel.WorkDirectory"
+                    :placeholder="formModel.CommandType == 'SHELL' ? '非必填，默认为 /root' : '非必填，默认为 C:\\'"
+                />
+            </el-form-item>
+            <el-form-item label="脚本内容">
                 <el-input v-model="formModel.Content" type="textarea" rows="5" />
+            </el-form-item>
+            <el-form-item label="脚本描述">
+                <el-input v-model="formModel.Description" :maxlength="120" />
             </el-form-item>
             <el-form-item label="超时时间">
                 <el-input-number v-model="formModel.Timeout" placeholder="非必填，默认为 60s" :min="1" :max="86400"
