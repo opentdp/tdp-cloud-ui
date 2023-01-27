@@ -103,7 +103,7 @@ export default class DnspodDomain extends Vue {
                 </template>
             </el-table-column>
             <el-table-column prop="Remark" label="备注" min-width="150" />
-            <el-table-column label="操作" width="180" align="center">
+            <el-table-column fixed="right" label="操作" width="180" align="center">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="updateModal?.open(domainInfo, scope.row)">
                         编辑
