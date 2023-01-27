@@ -18,8 +18,8 @@ export default class LighthouseBind extends Vue {
 
     public created() {
         QApi.lighthouse.vendor(this.vid)
-        this.getMachineList()
-        this.getRegionList()
+        this.getRegionInstanceList()
+        this.getBoundMachineList()
     }
 
     // 获取列表
@@ -29,45 +29,35 @@ export default class LighthouseBind extends Vue {
     public instanceList: Qcloud.Lighthouse.Instance[] = []
     public instanceCount = 0
 
-    async getRegionList() {
+    async getRegionInstanceList() {
         const res = await QApi.lighthouse.describeRegions()
         this.loading = res.TotalCount
-        res.RegionSet.forEach((item) => {
+        res.RegionSet.forEach(async (item) => {
             this.regionList[item.Region] = item
-            this.getInstanceList(item.Region)
+            // 获取当前大区实例
+            const rs2 = await QApi.lighthouse.describeInstances(item.Region)
+            if (rs2.TotalCount && rs2.InstanceSet) {
+                this.instanceList.push(...rs2.InstanceSet)
+                this.instanceCount += rs2.TotalCount
+            }
+            this.loading--
         })
-    }
-
-    async getInstanceList(region: string) {
-        const res = await QApi.lighthouse.describeInstances(region)
-        if (res.TotalCount > 0) {
-            this.instanceCount += res.TotalCount
-            this.instanceList.push(...res.InstanceSet)
-        }
-        this.loading--
     }
 
     // 已绑定主机
 
-    public machineList: MachineItem[] = []
+    public boundMachineList: Record<string, MachineItem> = {}
 
-    async getMachineList() {
+    async getBoundMachineList() {
         const res = await Api.machine.list()
-        this.machineList = res || []
-    }
-
-    public getBoundMachine(cloudId: string) {
-        for (let i = 0, n = this.machineList.length; i < n; this.machineList) {
-            const item = this.machineList[i]
-            if (item.CloudId === cloudId) {
-                return item
-            }
-        }
+        res.forEach((item) => {
+            this.boundMachineList[item.CloudId] = item
+        })
     }
 
     // 绑定主机
 
-    public addMachine(item: Qcloud.Lighthouse.Instance) {
+    public bindMachine(item: Qcloud.Lighthouse.Instance) {
         Api.machine.create({
             VendorId: this.vid,
             HostName: item.InstanceName,
@@ -84,10 +74,10 @@ export default class LighthouseBind extends Vue {
 
     // 同步主机
 
-    public updateMachine(item: Qcloud.Lighthouse.Instance) {
-        const m = this.getBoundMachine(item.InstanceId)
+    public syncMachine(item: Qcloud.Lighthouse.Instance) {
+        const bd = this.boundMachineList[item.InstanceId]
         Api.machine.update({
-            Id: m ? m.Id : 0,
+            Id: bd ? bd.Id : 0,
             VendorId: this.vid,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
@@ -145,7 +135,12 @@ export default class LighthouseBind extends Vue {
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="View" @click="addMachine(scope.row)">
+                    <el-button v-if="boundMachineList[scope.row.InstanceId]" link icon="View"
+                        @click="syncMachine(scope.row)"
+                    >
+                        同步
+                    </el-button>
+                    <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">
                         导入
                     </el-button>
                 </template>

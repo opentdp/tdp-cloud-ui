@@ -4,6 +4,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 import { Api, QApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
+import { DomainItem } from "@/api/local/domain"
 
 @Component
 export default class DnspodBind extends Vue {
@@ -14,15 +15,17 @@ export default class DnspodBind extends Vue {
     @Prop
     public vid = 0
 
-    public domainList: Qcloud.Dnspod.DomainListItem[] = []
-    public domainTotalCount = 0
-
     public created() {
         QApi.dnspod.vendor(this.vid)
         this.getDomainList()
+        this.getBoundDomainList()
     }
 
     // 获取列表
+
+    public domainList: Qcloud.Dnspod.DomainListItem[] = []
+    public domainTotalCount = 0
+
     async getDomainList() {
         const res = await QApi.dnspod.describeDomainList()
         if (res.DomainCountInfo) {
@@ -32,9 +35,38 @@ export default class DnspodBind extends Vue {
         this.loading = false
     }
 
+    // 已绑定域名
+
+    public boundDomainList: Record<string, DomainItem> = {}
+
+    async getBoundDomainList() {
+        const res = await Api.domain.list()
+        res.forEach((item) => {
+            this.boundDomainList[item.CloudId] = item
+        })
+    }
+
     // 绑定域名
-    public addDomian(item: Qcloud.Dnspod.DomainListItem) {
+
+    public bindDomian(item: Qcloud.Dnspod.DomainListItem) {
         Api.domain.create({
+            VendorId: this.vid,
+            Name: item.Name,
+            NSList: item.EffectiveDNS.join(","),
+            Model: "qcloud/dnspod",
+            CloudId: item.DomainId + '',
+            CloudMeta: JSON.stringify(item),
+            Description: "",
+            Status: "{}",
+        })
+    }
+
+    // 同步域名
+
+    public syncDomian(item: Qcloud.Dnspod.DomainListItem) {
+        const bd = this.boundDomainList[item.DomainId]
+        Api.domain.update({
+            Id: bd ? bd.Id : 0,
             VendorId: this.vid,
             Name: item.Name,
             NSList: item.EffectiveDNS.join(","),
@@ -74,7 +106,12 @@ export default class DnspodBind extends Vue {
             <el-table-column prop="VipEndAt" label="套餐有效期" min-width="180" />
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="View" @click="addDomian(scope.row)">
+                    <el-button v-if="boundDomainList[scope.row.DomainId]" link icon="View"
+                        @click="syncDomian(scope.row)"
+                    >
+                        同步
+                    </el-button>
+                    <el-button v-else link type="primary" icon="View" @click="bindDomian(scope.row)">
                         导入
                     </el-button>
                 </template>
