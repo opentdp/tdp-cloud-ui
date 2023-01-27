@@ -19,7 +19,7 @@ export default class WorkerBind extends Vue {
         }, 15000)
     }
 
-    public unmounted() {
+    public destroyed() {
         clearInterval(this.timer)
     }
 

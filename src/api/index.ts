@@ -34,13 +34,13 @@ import { CamModel } from "./qcloud/cam"
 import { DnspodModel } from "./qcloud/dnspod"
 import { LighthouseModel } from "./qcloud/lighthouse"
 import { MonitorModel } from "./qcloud/monitor"
-import { TATModel as QTATModel } from "./qcloud/tat"
+import { TATModel } from "./qcloud/tat"
 
 export const QApi = {
     cam: new CamModel(),
     dnspod: new DnspodModel(),
     lighthouse: new LighthouseModel(),
     monitor: new MonitorModel(),
-    tat: new QTATModel(),
+    tat: new TATModel(),
 }
 
