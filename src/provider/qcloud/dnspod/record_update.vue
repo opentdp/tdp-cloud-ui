@@ -5,12 +5,11 @@ import { QApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 
 @Component({
-    emits: ["submit"],
+    emits: ["close"],
     expose: ["open"],
 })
 export default class DnspodRecordUpdate extends Vue {
     public loading = false
-    public dailog = false
 
     public domainInfo!: Qcloud.Dnspod.DomainInfo
 
@@ -47,14 +46,13 @@ export default class DnspodRecordUpdate extends Vue {
         }
         await QApi.dnspod.modifyRecord(query)
         this.loading = false
-        this.dailog = false
-        this.$emit("submit")
+        this.close()
     }
 
     // 记录类型及线路
 
-    public recordType = [] as string[]
-    public recordLineList = [] as Qcloud.Dnspod.LineInfo[]
+    public recordType: string[] = []
+    public recordLineList: Qcloud.Dnspod.LineInfo[] = []
 
     async getRecordType() {
         const res = await QApi.dnspod.describeRecordType({
@@ -71,7 +69,14 @@ export default class DnspodRecordUpdate extends Vue {
         this.recordLineList = res.LineList || []
     }
 
-    // 导出属性
+    // 对话框管理
+
+    public dailog = false
+
+    public close() {
+        this.dailog = false
+        this.$emit("close")
+    }
 
     public open(info: Qcloud.Dnspod.DomainInfo, record: Qcloud.Dnspod.RecordListItem) {
         this.dailog = true

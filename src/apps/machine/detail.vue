@@ -20,7 +20,7 @@ export default class MachineDetail extends Vue {
 
     // 获取主机
 
-    public machine = {} as MachineItem
+    public machine!: MachineItem
 
     async getMachine(id: number) {
         const res = await Api.machine.detail(id)

@@ -114,7 +114,7 @@ export default class DnspodDomain extends Vue {
             </el-table-column>
         </el-table>
 
-        <RecordCreate ref="createModal" @submit="getRecordList" />
-        <RecordUpdate ref="updateModal" @submit="getRecordList" />
+        <RecordCreate ref="createModal" @close="getRecordList" />
+        <RecordUpdate ref="updateModal" @close="getRecordList" />
     </el-card>
 </template>

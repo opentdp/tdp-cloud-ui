@@ -26,7 +26,7 @@ export default class TerminalSsh extends Vue {
         id: "new", label: ""
     }
 
-    public tabList = [] as sshTab[]
+    public tabList: sshTab[] = []
 
     public createTab() {
         const tab: sshTab = {
@@ -72,7 +72,7 @@ export default class TerminalSsh extends Vue {
 
     // 获取密钥列表
 
-    public sshkeyList = [] as SSHKeyItem[]
+    public sshkeyList: SSHKeyItem[] = []
 
     async getSshkeyList() {
         const res = await Api.sshkey.list()
@@ -81,7 +81,7 @@ export default class TerminalSsh extends Vue {
 
     // 获取主机列表
 
-    public machineList = [] as MachineItem[]
+    public machineList: MachineItem[] = []
 
     async getMachineList() {
         const res = await Api.machine.list()
@@ -100,7 +100,7 @@ export default class TerminalSsh extends Vue {
 
     // 执行快捷命令
 
-    public scriptList = [] as TaskScriptItem[]
+    public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
         const res = await Api.taskScript.list()

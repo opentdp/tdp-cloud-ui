@@ -14,7 +14,7 @@ export default class DnspodBind extends Vue {
     @Prop
     public vid = 0
 
-    public domainList = [] as Qcloud.Dnspod.DomainListItem[]
+    public domainList: Qcloud.Dnspod.DomainListItem[] = []
     public domainTotalCount = 0
 
     public created() {

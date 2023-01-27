@@ -5,14 +5,13 @@ import { Api } from "@/api"
 import { TaskScriptItem } from '@/api/local/task_script'
 
 @Component({
-    emits: ['submit'],
+    emits: ['close'],
     expose: ['open']
 })
 export default class TaskScriptUpdate extends Vue {
     public loading = false
-    public dailog = false
 
-    public formModel = {} as TaskScriptItem
+    public formModel!: TaskScriptItem
 
     public formRules = {
         Name: [{ required: true, message: "名称 不能为空" }],
@@ -34,11 +33,17 @@ export default class TaskScriptUpdate extends Vue {
         }
         await Api.taskScript.update(this.formModel)
         this.loading = false
-        this.dailog = false
-        this.$emit("submit")
+        this.close()
     }
 
-    // 导出属性
+    // 对话框管理
+
+    public dailog = false
+
+    public close() {
+        this.dailog = false
+        this.$emit("close")
+    }
 
     public open(data: TaskScriptItem) {
         this.dailog = true

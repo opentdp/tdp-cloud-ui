@@ -30,7 +30,7 @@ export default class TaskHistory extends Vue {
 
     // 历史记录
 
-    public historyList = [] as TaskHistoryItem[]
+    public historyList: TaskHistoryItem[] = []
 
     async getHistory() {
         const res = await Api.taskHistory.list()

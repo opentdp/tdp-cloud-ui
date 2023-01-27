@@ -19,7 +19,7 @@ export default class DomainDetail extends Vue {
 
     // 域名信息
 
-    public domain = {} as DomainItem
+    public domain!: DomainItem
 
     async getDomain(id: number) {
         const res = await Api.domain.detail(id)

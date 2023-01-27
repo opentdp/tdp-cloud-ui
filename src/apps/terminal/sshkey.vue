@@ -16,7 +16,7 @@ export default class TerminalSshkey extends Vue {
 
     // 密钥列表
 
-    public keylist = [] as SSHKeyItem[]
+    public keylist: SSHKeyItem[] = []
 
     async getSshkeyList() {
         const res = await Api.sshkey.list()

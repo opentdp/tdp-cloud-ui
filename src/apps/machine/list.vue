@@ -14,7 +14,7 @@ export default class MachineList extends Vue {
 
     // 主机列表
 
-    public machineList = [] as MachineItem[]
+    public machineList: MachineItem[] = []
 
     async getMachineList() {
         const res = await Api.machine.list()

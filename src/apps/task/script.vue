@@ -25,7 +25,7 @@ export default class TaskScript extends Vue {
 
     // 获取脚本列表
 
-    public scriptList = [] as TaskScriptItem[]
+    public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
         const res = await Api.taskScript.list()
@@ -85,7 +85,7 @@ export default class TaskScript extends Vue {
             </el-table>
         </el-card>
 
-        <ScriptCreate ref="createModal" @submit="getScriptList" />
-        <ScriptUpdate ref="updateModal" @submit="getScriptList" />
+        <ScriptCreate ref="createModal" @close="getScriptList" />
+        <ScriptUpdate ref="updateModal" @close="getScriptList" />
     </div>
 </template>
