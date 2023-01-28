@@ -103,7 +103,7 @@ export default class MachineList extends Vue {
                 <el-table-column prop="Model" label="来源" />
                 <el-table-column label="子节点">
                     <template #default="scope">
-                        <el-button v-if="scope.row.WorkerId" link type="success">
+                        <el-button v-if="scope.row.WorkerId.length == 32" link type="success">
                             已注册
                         </el-button>
                         <el-button v-else link type="info">
@@ -136,7 +136,7 @@ export default class MachineList extends Vue {
                     <b>快捷命令</b>
                 </div>
             </template>
-            <div v-if="selectedRow.WorkerId" class="button-list">
+            <div v-if="selectedRow.WorkerId.length == 32" class="button-list">
                 <el-button v-for="item in scriptList" :key="item.Id" @click="workerExec(item)">
                     {{ item.Name }}
                 </el-button>
