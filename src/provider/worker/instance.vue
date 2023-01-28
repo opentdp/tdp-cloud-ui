@@ -47,7 +47,7 @@ export default class WorkerInstance extends Vue {
                 {{ bytesToSize(instance.SystemStat.DiskTotal) }} GB
             </el-descriptions-item>
             <el-descriptions-item label="IP 地址">
-                {{ instance.RemoteAddr }}
+                {{ instance.SystemStat.IpAddress }}
             </el-descriptions-item>
             <el-descriptions-item label="操作系统">
                 {{ instance.SystemStat.OS }}

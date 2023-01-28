@@ -50,9 +50,9 @@ export default class WorkerBind extends Vue {
     public bindMachine(item: WorkerItem) {
         Api.machine.create({
             VendorId: 0,
-            HostName: item.HostName || item.SystemStat.HostName,
-            IpAddress: item.RemoteAddr.replace(/:\d+$/, ''),
-            OSType: item.OSType || item.SystemStat.OS,
+            HostName: item.SystemStat.HostName,
+            IpAddress: item.SystemStat.IpAddress,
+            OSType: item.SystemStat.OS,
             Region: "",
             Model: "local/worker",
             CloudId: item.SystemStat.HostId,
@@ -70,9 +70,9 @@ export default class WorkerBind extends Vue {
         const bd = this.boundMachineList[item.WorkerId]
         Api.machine.update({
             Id: bd ? bd.Id : 0,
-            HostName: item.HostName || item.SystemStat.HostName,
-            IpAddress: item.RemoteAddr.replace(/:\d+$/, ''),
-            OSType: item.OSType || item.SystemStat.OS,
+            HostName: item.SystemStat.HostName,
+            IpAddress: item.SystemStat.IpAddress,
+            OSType: item.SystemStat.OS,
             WorkerId: item.WorkerId,
             WorkerMeta: item,
         })

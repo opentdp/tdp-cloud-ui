@@ -22,21 +22,20 @@ export interface WorkerStat {
     MemoryUsed: number
     DiskTotal: number
     DiskUsed: number
+    IpAddress: string
     NetBytesRecv: number
     NetBytesSent: number
 }
 
 export interface WorkerOrig {
     WorkerId: string
-    OSType: string
-    HostName: string
-    RemoteAddr: string
     SystemStat: WorkerStat
 }
 
 export interface WorkerItem extends WorkerOrig {
     Id: number
     UserId?: number
+    MachineId?: number
     CreatedAt?: number
     UpdatedAt?: number
 }
