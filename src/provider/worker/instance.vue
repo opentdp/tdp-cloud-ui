@@ -11,14 +11,14 @@ export default class WorkerInstance extends Vue {
     public bytesToSize = bytesToSize
 
     @Prop
-    public meta!: Omit<MachineItem, "CloudMeta"> & {
-        CloudMeta: WorkerItem
+    public meta!: Omit<MachineItem, "WorkerMeta"> & {
+        WorkerMeta: WorkerItem
     }
 
     public instance!: WorkerItem
 
     public created() {
-        this.instance = this.meta.CloudMeta
+        this.instance = this.meta.WorkerMeta
     }
 }
 </script>
@@ -32,7 +32,7 @@ export default class WorkerInstance extends Vue {
         </template>
         <el-descriptions :column="2" border>
             <el-descriptions-item label="实例ID" :span="2">
-                {{ instance.HostId }}
+                {{ instance.SystemStat.HostId }}
             </el-descriptions-item>
             <el-descriptions-item label="实例名">
                 {{ instance.SystemStat.HostName }}

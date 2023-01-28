@@ -44,7 +44,7 @@ export default class MachineList extends Vue {
     async getWorkerList() {
         const res = await Api.workhub.list()
         res.forEach(item => {
-            this.workerList[item.HostId] = item
+            this.workerList[item.WorkerId] = item
         })
     }
 
@@ -61,10 +61,8 @@ export default class MachineList extends Vue {
     // 执行快捷命令
 
     public workerExec(cmd: TaskScriptItem) {
-        const id = this.selectedRow.CloudId
-        const bd = this.workerList[id]
         Api.workhub.exec({
-            HostId: bd.HostId,
+            WorkerId: this.selectedRow.WorkerId,
             Payload: cmd
         })
     }
@@ -105,11 +103,11 @@ export default class MachineList extends Vue {
                 <el-table-column prop="Model" label="来源" />
                 <el-table-column label="子节点">
                     <template #default="scope">
-                        <el-button v-if="workerList[scope.row.CloudId]" link type="success">
-                            已接入
+                        <el-button v-if="scope.row.WorkerId" link type="success">
+                            已注册
                         </el-button>
                         <el-button v-else link type="info">
-                            未接入
+                            未注册
                         </el-button>
                     </template>
                 </el-table-column>
@@ -138,13 +136,13 @@ export default class MachineList extends Vue {
                     <b>快捷命令</b>
                 </div>
             </template>
-            <div v-if="workerList[selectedRow.CloudId]" class="button-list">
+            <div v-if="selectedRow.WorkerId" class="button-list">
                 <el-button v-for="item in scriptList" :key="item.Id" @click="workerExec(item)">
                     {{ item.Name }}
                 </el-button>
             </div>
             <div v-else>
-                此主机未通过 TDP Cloud Worker 接入，请使用下述命令完成接入。
+                此主机未通过 TDP Cloud Worker 注册，请使用下述命令完成注册。
                 <pre>{{ installTDPWorker.Content }}</pre>
             </div>
         </el-card>

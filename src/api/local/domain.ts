@@ -13,7 +13,7 @@ export class DomainModel extends HttpClient {
         return this.post("/domain", rq)
     }
 
-    public update(rq: DomainItem): Promise<HttpMessage> {
+    public update(rq: Partial<DomainItem>): Promise<HttpMessage> {
         return this.patch("/domain/" + rq.Id, rq)
     }
 
@@ -28,7 +28,7 @@ export interface DomainOrig {
     NSList: string
     Model: "" | "qcloud/dnspod"
     CloudId: string
-    CloudMeta: Record<string, unknown>
+    CloudMeta: unknown
     Description: string
     Status: number
 }

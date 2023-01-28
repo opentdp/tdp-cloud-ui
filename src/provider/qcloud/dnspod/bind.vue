@@ -67,14 +67,9 @@ export default class DnspodBind extends Vue {
         const bd = this.boundDomainList[item.DomainId]
         Api.domain.update({
             Id: bd ? bd.Id : 0,
-            VendorId: this.vid,
-            Name: item.Name,
             NSList: item.EffectiveDNS.join(","),
-            Model: "qcloud/dnspod",
             CloudId: item.DomainId + '',
             CloudMeta: item,
-            Description: "",
-            Status: 1,
         })
     }
 }

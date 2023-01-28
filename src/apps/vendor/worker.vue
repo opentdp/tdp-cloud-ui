@@ -23,7 +23,7 @@ export default class VendorWorker extends Vue {
                 子节点
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-alert title="节点接入命令" type="warning">
+        <el-alert title="注册子节点命令" type="warning">
             <pre>{{ installTDPWorker.Content }}</pre>
         </el-alert>
         <div class="space-10" />

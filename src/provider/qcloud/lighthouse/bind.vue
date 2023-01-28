@@ -81,6 +81,8 @@ export default class LighthouseBind extends Vue {
             Model: "qcloud/lighthouse",
             CloudId: item.InstanceId,
             CloudMeta: item,
+            WorkerId: "nil:" + Date.now(),
+            WorkerMeta: {},
             Description: "",
             Status: 1,
         })
@@ -92,16 +94,12 @@ export default class LighthouseBind extends Vue {
         const bd = this.boundMachineList[item.InstanceId]
         Api.machine.update({
             Id: bd ? bd.Id : 0,
-            VendorId: this.vid,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
             OSType: item.PlatformType,
             Region: this.parseRegion(item.Zone),
-            Model: "qcloud/lighthouse",
             CloudId: item.InstanceId,
             CloudMeta: item,
-            Description: "",
-            Status: 1,
         })
     }
 
@@ -150,8 +148,7 @@ export default class LighthouseBind extends Vue {
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="boundMachineList[scope.row.InstanceId]" link icon="View"
-                        @click="syncMachine(scope.row)"
-                    >
+                        @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

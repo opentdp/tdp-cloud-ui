@@ -12,6 +12,7 @@ export class WorkhubModel extends HttpClient {
 }
 
 export interface WorkerStat {
+    HostId: string
     HostName: string
     Uptime: number
     OS: string
@@ -26,8 +27,8 @@ export interface WorkerStat {
 }
 
 export interface WorkerOrig {
+    WorkerId: string
     OSType: string
-    HostId: string
     HostName: string
     RemoteAddr: string
     SystemStat: WorkerStat
@@ -41,6 +42,6 @@ export interface WorkerItem extends WorkerOrig {
 }
 
 export interface WorkerExecRequest {
-    HostId: string
+    WorkerId: string
     Payload: TaskScriptOrig
 }

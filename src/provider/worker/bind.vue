@@ -41,7 +41,7 @@ export default class WorkerBind extends Vue {
     async getBoundMachineList() {
         const res = await Api.machine.list()
         res.forEach((item) => {
-            this.boundMachineList[item.CloudId] = item
+            this.boundMachineList[item.WorkerId] = item
         })
     }
 
@@ -55,8 +55,10 @@ export default class WorkerBind extends Vue {
             OSType: item.OSType || item.SystemStat.OS,
             Region: "",
             Model: "local/worker",
-            CloudId: item.HostId,
-            CloudMeta: item,
+            CloudId: item.SystemStat.HostId,
+            CloudMeta: {},
+            WorkerId: item.WorkerId,
+            WorkerMeta: item,
             Description: "",
             Status: 1,
         })
@@ -65,19 +67,14 @@ export default class WorkerBind extends Vue {
     // 同步主机
 
     public syncMachine(item: WorkerItem) {
-        const bd = this.boundMachineList[item.HostId]
+        const bd = this.boundMachineList[item.WorkerId]
         Api.machine.update({
             Id: bd ? bd.Id : 0,
-            VendorId: 0,
             HostName: item.HostName || item.SystemStat.HostName,
             IpAddress: item.RemoteAddr.replace(/:\d+$/, ''),
             OSType: item.OSType || item.SystemStat.OS,
-            Region: "",
-            Model: "local/worker",
-            CloudId: item.HostId,
-            CloudMeta: item,
-            Description: "",
-            Status: 1,
+            WorkerId: item.WorkerId,
+            WorkerMeta: item,
         })
     }
 }
@@ -100,8 +97,7 @@ export default class WorkerBind extends Vue {
             <el-table-column label="CPU">
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="+scope.row.SystemStat.CpuPercent.toFixed(2)" status="success"
-                    >
+                        :percentage="+scope.row.SystemStat.CpuPercent.toFixed(2)" status="success">
                         {{ scope.row.SystemStat.CpuPercent.toFixed(2) }}%，
                         {{ scope.row.SystemStat.CpuCore }} Cores
                     </el-progress>
@@ -111,8 +107,7 @@ export default class WorkerBind extends Vue {
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.SystemStat.MemoryUsed / scope.row.SystemStat.MemoryTotal * 100"
-                        status="success"
-                    >
+                        status="success">
                         {{ bytesToSize(scope.row.SystemStat.MemoryUsed) }} /
                         {{ bytesToSize(scope.row.SystemStat.MemoryTotal) }}
                     </el-progress>
@@ -122,8 +117,7 @@ export default class WorkerBind extends Vue {
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.SystemStat.DiskUsed / scope.row.SystemStat.DiskTotal * 100"
-                        status="success"
-                    >
+                        status="success">
                         {{ bytesToSize(scope.row.SystemStat.DiskUsed) }} /
                         {{ bytesToSize(scope.row.SystemStat.DiskTotal) }}
                     </el-progress>
@@ -142,9 +136,8 @@ export default class WorkerBind extends Vue {
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="boundMachineList[scope.row.HostId]" link icon="View"
-                        @click="syncMachine(scope.row)"
-                    >
+                    <el-button v-if="boundMachineList[scope.row.WorkerId]" link icon="View"
+                        @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

@@ -13,7 +13,7 @@ export class MachineModel extends HttpClient {
         return this.post("/machine", rq)
     }
 
-    public update(rq: MachineItem): Promise<HttpMessage> {
+    public update(rq: Partial<MachineItem>): Promise<HttpMessage> {
         return this.patch("/machine/" + rq.Id, rq)
     }
 
@@ -30,7 +30,9 @@ export interface MachineOrig {
     Region: string
     Model: "local/worker" | "qcloud/lighthouse"
     CloudId: string
-    CloudMeta: Record<string, unknown>
+    CloudMeta: unknown
+    WorkerId: string
+    WorkerMeta: unknown
     Description: string
     Status: number
 }

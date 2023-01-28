@@ -8,9 +8,9 @@ export class TaskHistoryModel extends HttpClient {
 }
 
 export interface TaskHistoryOrig {
-    HostId: string
     Subject: string
     HostName: string
+    WorkerId: string
     Request: TaskScriptOrig
     Response: TaskHistoryResponse
     Status: string
