@@ -28,9 +28,9 @@ export interface DomainOrig {
     NSList: string
     Model: "" | "qcloud/dnspod"
     CloudId: string
-    CloudMeta: string | Record<string, unknown>
+    CloudMeta: Record<string, unknown>
     Description: string
-    Status: string
+    Status: number
 }
 
 export interface DomainItem extends DomainOrig {

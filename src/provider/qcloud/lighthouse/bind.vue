@@ -80,9 +80,9 @@ export default class LighthouseBind extends Vue {
             Region: this.parseRegion(item.Zone),
             Model: "qcloud/lighthouse",
             CloudId: item.InstanceId,
-            CloudMeta: JSON.stringify(item),
+            CloudMeta: item,
             Description: "",
-            Status: "{}",
+            Status: 1,
         })
     }
 
@@ -99,9 +99,9 @@ export default class LighthouseBind extends Vue {
             Region: this.parseRegion(item.Zone),
             Model: "qcloud/lighthouse",
             CloudId: item.InstanceId,
-            CloudMeta: JSON.stringify(item),
+            CloudMeta: item,
             Description: "",
-            Status: "{}",
+            Status: 1,
         })
     }
 

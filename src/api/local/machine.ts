@@ -30,9 +30,9 @@ export interface MachineOrig {
     Region: string
     Model: "local/worker" | "qcloud/lighthouse"
     CloudId: string
-    CloudMeta: string | Record<string, unknown>
+    CloudMeta: Record<string, unknown>
     Description: string
-    Status: string
+    Status: number
 }
 
 export interface MachineItem extends MachineOrig {

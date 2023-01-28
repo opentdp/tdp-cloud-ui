@@ -55,9 +55,9 @@ export default class DnspodBind extends Vue {
             NSList: item.EffectiveDNS.join(","),
             Model: "qcloud/dnspod",
             CloudId: item.DomainId + '',
-            CloudMeta: JSON.stringify(item),
+            CloudMeta: item,
             Description: "",
-            Status: "{}",
+            Status: 1,
         })
     }
 
@@ -72,9 +72,9 @@ export default class DnspodBind extends Vue {
             NSList: item.EffectiveDNS.join(","),
             Model: "qcloud/dnspod",
             CloudId: item.DomainId + '',
-            CloudMeta: JSON.stringify(item),
+            CloudMeta: item,
             Description: "",
-            Status: "{}",
+            Status: 1,
         })
     }
 }
