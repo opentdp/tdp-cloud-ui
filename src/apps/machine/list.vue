@@ -7,7 +7,6 @@ import { WorkerItem } from "@/api/local/workhub"
 import { TaskScriptItem } from "@/api/local/task_script"
 
 import shellList, { installTDPWorker } from "@/helper/script/shell"
-import highlight from "@/helper/highlight"
 
 @Component
 export default class MachineList extends Vue {
@@ -143,10 +142,10 @@ export default class MachineList extends Vue {
                 </el-button>
             </div>
             <div v-else>
-                此主机未通过 TDP Cloud Worker 注册，请使用下述命令完成注册。
+                <p>主机未使用 <i>TDP Cloud Worker</i> 连接，请使用下述脚本完成注册。</p>
+                <p>此脚本仅支持在 <b>{{ selectedRow.HostName }}</b> 上注册客户端，请勿在其它主机上运行！</p>
                 <pre v-highlight>
-                    <code>TDP_CLOUD_ID="{{ selectedRow.CloudId }}"</code>
-                    <code>{{ installTDPWorker.Content }}</code>
+                    <code>{{ installTDPWorker.Content.replace("/worker", "/worker/" + selectedRow.Id) }}</code>
                 </pre>
             </div>
         </el-card>
