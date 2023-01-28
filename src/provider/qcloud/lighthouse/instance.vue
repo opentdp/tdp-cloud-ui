@@ -6,7 +6,7 @@ import * as Qcloud from "@/api/qcloud/typings"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"
 import { MachineItem } from "@/api/local/machine"
 
-import { dateFormat } from "@/helper/utils"
+import { dateFormat } from "@/helper/format"
 
 import Firwwall from "./firewall.vue"
 import Snapshot from "./snapshot.vue"

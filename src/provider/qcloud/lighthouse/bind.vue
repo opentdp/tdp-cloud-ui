@@ -5,7 +5,7 @@ import { Api, QApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 
-import { dateFormat } from "@/helper/utils"
+import { dateFormat } from "@/helper/format"
 
 @Component
 export default class LighthouseBind extends Vue {

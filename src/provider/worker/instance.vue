@@ -4,7 +4,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 import { MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
 
-import { bytesToSize } from "@/helper/utils"
+import { bytesToSize } from "@/helper/format"
 
 @Component
 export default class WorkerInstance extends Vue {

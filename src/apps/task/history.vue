@@ -7,7 +7,7 @@ import "vue-json-pretty/lib/styles.css"
 
 import { Api } from "@/api"
 import { TaskHistoryItem } from "@/api/local/task_history"
-import { dateFormat } from "@/helper/utils"
+import { dateFormat } from "@/helper/format"
 
 @Component({
     components: { VueJsonPretty }

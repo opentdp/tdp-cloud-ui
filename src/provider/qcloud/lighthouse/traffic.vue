@@ -6,7 +6,7 @@ import { EChartsOption } from "echarts"
 import { QApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 
-import { bytesToSize, dateFormat } from "@/helper/utils"
+import { bytesToSize, dateFormat } from "@/helper/format"
 
 @Component
 export default class LighthouseTraffic extends Vue {

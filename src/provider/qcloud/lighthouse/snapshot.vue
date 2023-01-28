@@ -4,7 +4,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 import { QApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 
-import { dateFormat } from "@/helper/utils"
+import { dateFormat } from "@/helper/format"
 
 @Component({
     emits: ["change"]
