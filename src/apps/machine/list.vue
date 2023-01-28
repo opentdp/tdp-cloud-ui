@@ -6,10 +6,11 @@ import { MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
 import { TaskScriptItem } from "@/api/local/task_script"
 
-import shells from "@/helper/script/shell"
+import shellList, { installTDPWorker } from "@/helper/script/shell"
 
 @Component
 export default class MachineList extends Vue {
+    public installTDPWorker = installTDPWorker
     public loading = true
 
     public created() {
@@ -49,9 +50,10 @@ export default class MachineList extends Vue {
 
     // 获取快捷命令
 
-    public scriptList: TaskScriptItem[] = [...shells]
+    public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
+        this.scriptList.push(...shellList)
         const res = await Api.taskScript.list()
         this.scriptList.push(...res)
     }
@@ -104,10 +106,10 @@ export default class MachineList extends Vue {
                 <el-table-column label="子节点">
                     <template #default="scope">
                         <el-button v-if="workerList[scope.row.CloudId]" link type="success">
-                            运行中
+                            已接入
                         </el-button>
                         <el-button v-else link type="info">
-                            未安装
+                            未接入
                         </el-button>
                     </template>
                 </el-table-column>
@@ -136,10 +138,14 @@ export default class MachineList extends Vue {
                     <b>快捷命令</b>
                 </div>
             </template>
-            <div class="button-list">
+            <div v-if="workerList[selectedRow.CloudId]" class="button-list">
                 <el-button v-for="item in scriptList" :key="item.Id" @click="workerExec(item)">
                     {{ item.Name }}
                 </el-button>
+            </div>
+            <div v-else>
+                此主机未通过 TDP Cloud Worker 接入，请使用下述命令完成接入。
+                <pre>{{ installTDPWorker.Content }}</pre>
             </div>
         </el-card>
     </div>
