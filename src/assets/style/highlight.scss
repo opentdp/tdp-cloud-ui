@@ -1,0 +1,15 @@
+pre.highlight {
+    margin: 10px 0 0;
+
+    code.hljs {
+        padding: 0 10px !important;
+
+        &:first-child {
+            padding-top: 10px !important;
+        }
+
+        &:last-child {
+            padding-bottom: 10px !important;
+        }
+    }
+}
