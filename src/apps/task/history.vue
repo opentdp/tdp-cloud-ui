@@ -24,7 +24,7 @@ export default class TaskHistory extends Vue {
         }, 5000)
     }
 
-    public uncreated() {
+    public unmounted() {
         clearInterval(this.timer)
     }
 
