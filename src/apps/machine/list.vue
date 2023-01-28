@@ -6,7 +6,7 @@ import { MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
 import { TaskScriptItem } from "@/api/local/task_script"
 
-import shellList from "@/helper/script/shell"
+import shells from "@/helper/script/shell"
 
 @Component
 export default class MachineList extends Vue {
@@ -49,7 +49,7 @@ export default class MachineList extends Vue {
 
     // 获取快捷命令
 
-    public scriptList: TaskScriptItem[] = shellList
+    public scriptList: TaskScriptItem[] = [...shells]
 
     async getScriptList() {
         const res = await Api.taskScript.list()
@@ -96,8 +96,7 @@ export default class MachineList extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
-                @current-change="tableRowChange"
-            >
+                @current-change="tableRowChange">
                 <el-table-column fixed prop="HostName" label="名称" min-width="120" />
                 <el-table-column prop="IpAddress" label="IP 地址" />
                 <el-table-column prop="Region" label="地域" />
