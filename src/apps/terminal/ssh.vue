@@ -38,7 +38,7 @@ export default class TerminalSsh extends Vue {
         // 延迟连接
         this.changeTab(tab.id)
         setTimeout(() => {
-            const url = Api.socket.getWebsshURL(this.formModel)
+            const url = Api.terminal.getWebsshURL(this.formModel)
             tab.webssh = new WebSSH(tab.id, url)
         }, 100)
     }

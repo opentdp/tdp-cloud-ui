@@ -11,7 +11,7 @@ export const installTDPWorker: TaskScriptItem = {
     Username: "root",
     Description: "",
     Content: trim(`
-        TDP_EXEC_ARGS="--remote ${Api.socket.getWorkerURL()}"
+        TDP_EXEC_ARGS="--remote ${Api.workhub.getRegisterURL()}"
         wget -qO- http://tdp.icu/worker-linux | sh -
     `),
     CommandType: "shell",

@@ -9,6 +9,12 @@ export class WorkhubModel extends HttpClient {
     public exec(rq: WorkerExecRequest): Promise<[]> {
         return this.post("/workhub/exec", rq)
     }
+
+    public getRegisterURL() {
+        const origin = location.origin.replace(/^http/, "ws")
+        const wsurl = "/wsi/" + this.session.appid + "/workhub"
+        return origin + wsurl
+    }
 }
 
 export interface WorkerStat {
