@@ -79,7 +79,7 @@ export default class TaskScriptUpdate extends Vue {
                 <el-input v-model="formModel.Content" type="textarea" rows="5" />
             </el-form-item>
             <el-form-item label="脚本描述">
-                <el-input v-model="formModel.Description" :maxlength="120" />
+                <el-input v-model="formModel.Description" type="textarea" />
             </el-form-item>
             <el-form-item label="超时时间">
                 <el-input-number v-model="formModel.Timeout" placeholder="非必填，默认为 60s" :min="1" :max="86400"

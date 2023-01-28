@@ -66,7 +66,7 @@ export default class TaskScript extends Vue {
             </template>
             <el-table v-loading="loading" :data="scriptList">
                 <el-table-column fixed prop="Name" label="名称" />
-                <el-table-column prop="Description" label="描述" />
+                <el-table-column prop="CommandType" label="类型" />
                 <el-table-column prop="Content" label="脚本" min-width="250" show-overflow-tooltip />
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
