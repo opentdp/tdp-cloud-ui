@@ -41,7 +41,7 @@ export default class TaskHistory extends Vue {
 
     public expanded = false
 
-    async onExpand(row: TaskHistoryItem[], rs: TaskHistoryItem[]) {
+    async expandChange(row: TaskHistoryItem[], rs: TaskHistoryItem[]) {
         this.expanded = rs.length > 0
     }
 }
@@ -64,7 +64,7 @@ export default class TaskHistory extends Vue {
                     <small>记录总数: {{ historyList.length }}</small>
                 </div>
             </template>
-            <el-table :data="historyList" @expand-change="onExpand">
+            <el-table :data="historyList" @expand-change="expandChange">
                 <el-table-column prop="Id" label="任务ID" />
                 <el-table-column prop="HostName" label="主机名" />
                 <el-table-column prop="Subject" label="任务名称" />
