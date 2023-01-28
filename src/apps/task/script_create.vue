@@ -68,6 +68,7 @@ export default class TaskScriptCreate extends Vue {
                 <el-radio-group v-model="formModel.CommandType">
                     <el-radio label="SHELL" />
                     <el-radio label="POWERSHELL" />
+                    <el-radio label="CMD" />
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="名称">
