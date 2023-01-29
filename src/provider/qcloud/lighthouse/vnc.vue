@@ -16,7 +16,7 @@ export default class LighthouseVnc extends Vue {
     }
 
     public created() {
-        QApi.lighthouse.vendor(this.meta.VendorId)
+        QApi.vendor(this.meta.VendorId)
         this.getScriptList()
         this.vncInit()
     }

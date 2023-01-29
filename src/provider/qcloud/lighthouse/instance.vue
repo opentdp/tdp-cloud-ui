@@ -25,7 +25,7 @@ export default class LighthouseInstance extends Vue {
     }
 
     public created() {
-        QApi.lighthouse.vendor(this.meta.VendorId)
+        QApi.vendor(this.meta.VendorId)
         this.instance = this.meta.CloudMeta
         this.getInstance()
     }

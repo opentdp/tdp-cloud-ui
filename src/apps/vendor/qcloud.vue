@@ -8,14 +8,14 @@ import LighthouseBind from "@/provider/qcloud/lighthouse/bind.vue"
     components: { DnspodBind, LighthouseBind }
 })
 export default class VendorQcloud extends Vue {
-    public vid = 0
+    public vendorId = 0
 
     public curTab = {
         id: "lighthouse", label: ""
     }
 
     public created() {
-        this.vid = +this.$route.params.vid
+        this.vendorId = +this.$route.params.id
     }
 }
 </script>
@@ -32,10 +32,10 @@ export default class VendorQcloud extends Vue {
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
             <el-tab-pane label="轻量服务器" name="lighthouse">
-                <LighthouseBind :vid="vid" />
+                <LighthouseBind :vendor-id="vendorId" />
             </el-tab-pane>
             <el-tab-pane label="域名解析" name="dnspod">
-                <DnspodBind :vid="vid" />
+                <DnspodBind :vendor-id="vendorId" />
             </el-tab-pane>
         </el-tabs>
     </div>

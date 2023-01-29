@@ -137,7 +137,7 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/vendor/secret.vue"),
             },
             {
-                path: "/vendor/qcloud/:vid",
+                path: "/vendor/qcloud/:id",
                 name: "qcloud-bind",
                 meta: {
                     title: "腾讯云",

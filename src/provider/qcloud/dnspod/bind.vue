@@ -13,10 +13,10 @@ export default class DnspodBind extends Vue {
     public loading = true
 
     @Prop
-    public vid = 0
+    public vendorId = 0
 
     public created() {
-        QApi.dnspod.vendor(this.vid)
+        QApi.vendor(this.vendorId)
         this.getDomainList()
         this.getBoundDomainList()
     }
@@ -50,7 +50,7 @@ export default class DnspodBind extends Vue {
 
     public bindDomian(item: Qcloud.Dnspod.DomainListItem) {
         Api.domain.create({
-            VendorId: this.vid,
+            VendorId: this.vendorId,
             Name: item.Name,
             NSList: item.EffectiveDNS.join(","),
             Model: "qcloud/dnspod",

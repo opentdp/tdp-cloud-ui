@@ -11,13 +11,13 @@ import { dateFormat } from "@/helper/format"
 export default class LighthouseBind extends Vue {
     public dateFormat = dateFormat
 
-    public loading = 0
+    public loading = 1
 
     @Prop
-    public vid = 0
+    public vendorId = 0
 
     public created() {
-        QApi.lighthouse.vendor(this.vid)
+        QApi.vendor(this.vendorId)
         this.getRegionInstanceList()
         this.getBoundMachineList()
     }
@@ -74,7 +74,7 @@ export default class LighthouseBind extends Vue {
     public bindMachine(item: Qcloud.Lighthouse.Instance) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         Api.machine.create({
-            VendorId: this.vid,
+            VendorId: this.vendorId,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
             OSType: item.PlatformType,

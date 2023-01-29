@@ -24,7 +24,7 @@ export default class DnspodDomain extends Vue {
     public updateModal!: typeof RecordUpdate
 
     public created() {
-        QApi.dnspod.vendor(this.meta.VendorId)
+        QApi.vendor(this.meta.VendorId)
         this.domainInfo = {
             Domain: this.meta.Name,
             Grade: this.meta.CloudMeta.Grade,

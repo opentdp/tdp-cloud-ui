@@ -30,6 +30,8 @@ export const Api = {
 
 // 导出 Qcloud 接口
 
+import { QcloudVendor } from "./basic/qcloud"
+
 import { CamModel } from "./qcloud/cam"
 import { DnspodModel } from "./qcloud/dnspod"
 import { LighthouseModel } from "./qcloud/lighthouse"
@@ -37,6 +39,8 @@ import { MonitorModel } from "./qcloud/monitor"
 import { TATModel } from "./qcloud/tat"
 
 export const QApi = {
+    vendor: QcloudVendor,
+
     cam: new CamModel(),
     dnspod: new DnspodModel(),
     lighthouse: new LighthouseModel(),
