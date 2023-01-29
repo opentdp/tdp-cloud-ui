@@ -94,7 +94,7 @@ export default class WorkerBind extends Vue {
                     {{ scope.row.WorkerMeta.HostName }}
                 </template>
             </el-table-column>
-            <el-table-column label="地址">
+            <el-table-column label="公网 IP">
                 <template #default="scope">
                     {{ scope.row.WorkerMeta.IpAddress }}
                 </template>

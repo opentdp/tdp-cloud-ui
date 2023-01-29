@@ -40,7 +40,7 @@ export default class WorkerInstance extends Vue {
             <el-descriptions-item label="系统盘">
                 {{ bytesToSize(meta.WorkerMeta.DiskTotal) }} GB
             </el-descriptions-item>
-            <el-descriptions-item label="IP 地址">
+            <el-descriptions-item label="公网 IP">
                 {{ meta.WorkerMeta.IpAddress }}
             </el-descriptions-item>
             <el-descriptions-item label="操作系统">

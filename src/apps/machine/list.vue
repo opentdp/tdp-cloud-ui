@@ -98,7 +98,7 @@ export default class MachineList extends Vue {
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
                 @current-change="tableRowChange">
                 <el-table-column fixed prop="HostName" label="名称" min-width="120" />
-                <el-table-column prop="IpAddress" label="IP 地址" />
+                <el-table-column prop="IpAddress" label="公网 IP" />
                 <el-table-column prop="Region" label="地域" />
                 <el-table-column prop="Model" label="来源" />
                 <el-table-column label="子节点">
