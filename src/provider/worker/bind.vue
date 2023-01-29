@@ -48,6 +48,7 @@ export default class WorkerBind extends Vue {
     // 绑定主机
 
     public bindMachine(item: WorkerItem) {
+        const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         Api.machine.create({
             VendorId: 0,
             HostName: item.WorkerMeta.HostName,
@@ -55,7 +56,7 @@ export default class WorkerBind extends Vue {
             OSType: item.WorkerMeta.OS,
             Region: "",
             Model: "local/worker",
-            CloudId: item.WorkerMeta.HostId,
+            CloudId: "rand-" + rand,
             CloudMeta: {},
             WorkerId: item.WorkerId,
             WorkerMeta: item.WorkerMeta,

@@ -72,6 +72,7 @@ export default class LighthouseBind extends Vue {
     // 绑定主机
 
     public bindMachine(item: Qcloud.Lighthouse.Instance) {
+        const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         Api.machine.create({
             VendorId: this.vid,
             HostName: item.InstanceName,
@@ -81,7 +82,7 @@ export default class LighthouseBind extends Vue {
             Model: "qcloud/lighthouse",
             CloudId: item.InstanceId,
             CloudMeta: item,
-            WorkerId: "date-" + Date.now(),
+            WorkerId: "rand-" + rand,
             WorkerMeta: {},
             Description: "",
             Status: 1,
@@ -148,8 +149,7 @@ export default class LighthouseBind extends Vue {
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="boundMachineList[scope.row.InstanceId]" link icon="View"
-                        @click="syncMachine(scope.row)"
-                    >
+                        @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">
