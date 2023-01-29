@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { MachineItem } from "@/api/local/machine"
-import { WorkerItem } from "@/api/local/workhub"
+import { WorkerMeta } from "@/api/local/workhub"
 
 import { bytesToSize } from "@/helper/format"
 
@@ -12,19 +12,13 @@ export default class WorkerInstance extends Vue {
 
     @Prop
     public meta!: Omit<MachineItem, "WorkerMeta"> & {
-        WorkerMeta: WorkerItem
-    }
-
-    public instance!: WorkerItem
-
-    public created() {
-        this.instance = this.meta.WorkerMeta
+        WorkerMeta: WorkerMeta
     }
 }
 </script>
 
 <template>
-    <el-card v-if="instance" shadow="hover">
+    <el-card v-if="meta" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>实例信息</b>
@@ -32,25 +26,25 @@ export default class WorkerInstance extends Vue {
         </template>
         <el-descriptions :column="2" border>
             <el-descriptions-item label="实例ID" :span="2">
-                {{ instance.WorkerMeta.HostId }}
+                {{ meta.WorkerMeta.HostId }}
             </el-descriptions-item>
             <el-descriptions-item label="实例名">
-                {{ instance.WorkerMeta.HostName }}
+                {{ meta.WorkerMeta.HostName }}
             </el-descriptions-item>
             <el-descriptions-item label="CPU">
-                {{ instance.WorkerMeta.CpuCore }} 核
+                {{ meta.WorkerMeta.CpuCore }} 核
             </el-descriptions-item>
             <el-descriptions-item label="内存">
-                {{ bytesToSize(instance.WorkerMeta.MemoryTotal) }} GB
+                {{ bytesToSize(meta.WorkerMeta.MemoryTotal) }} GB
             </el-descriptions-item>
             <el-descriptions-item label="系统盘">
-                {{ bytesToSize(instance.WorkerMeta.DiskTotal) }} GB
+                {{ bytesToSize(meta.WorkerMeta.DiskTotal) }} GB
             </el-descriptions-item>
             <el-descriptions-item label="IP 地址">
-                {{ instance.WorkerMeta.IpAddress }}
+                {{ meta.WorkerMeta.IpAddress }}
             </el-descriptions-item>
             <el-descriptions-item label="操作系统">
-                {{ instance.WorkerMeta.OS }}
+                {{ meta.WorkerMeta.OS }}
             </el-descriptions-item>
         </el-descriptions>
     </el-card>
