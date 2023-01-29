@@ -32,12 +32,11 @@ export default class VendorQcloud extends Vue {
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
             <el-tab-pane label="轻量服务器" name="lighthouse">
-                <LighthouseBind :vendor-id="vendorId" />
+                <LighthouseBind :meta="{ vendorId }" />
             </el-tab-pane>
             <el-tab-pane label="域名解析" name="dnspod">
-                <DnspodBind :vendor-id="vendorId" />
+                <DnspodBind :meta="{ vendorId }" />
             </el-tab-pane>
         </el-tabs>
     </div>
 </template>
-c

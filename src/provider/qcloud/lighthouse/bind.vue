@@ -14,10 +14,12 @@ export default class LighthouseBind extends Vue {
     public loading = 1
 
     @Prop
-    public vendorId = 0
+    public meta!: {
+        vendorId: number
+    }
 
     public created() {
-        QApi.vendor(this.vendorId)
+        QApi.vendor(this.meta.vendorId)
         this.getRegionInstanceList()
         this.getBoundMachineList()
     }
@@ -149,7 +151,8 @@ export default class LighthouseBind extends Vue {
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="boundMachineList[scope.row.InstanceId]" link icon="View"
-                        @click="syncMachine(scope.row)">
+                        @click="syncMachine(scope.row)"
+                    >
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

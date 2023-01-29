@@ -13,10 +13,12 @@ export default class DnspodBind extends Vue {
     public loading = true
 
     @Prop
-    public vendorId = 0
+    public meta!: {
+        vendorId: number
+    }
 
     public created() {
-        QApi.vendor(this.vendorId)
+        QApi.vendor(this.meta.vendorId)
         this.getDomainList()
         this.getBoundDomainList()
     }
