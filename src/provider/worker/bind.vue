@@ -50,15 +50,15 @@ export default class WorkerBind extends Vue {
     public bindMachine(item: WorkerItem) {
         Api.machine.create({
             VendorId: 0,
-            HostName: item.SystemStat.HostName,
-            IpAddress: item.SystemStat.IpAddress,
-            OSType: item.SystemStat.OS,
+            HostName: item.WorkerMeta.HostName,
+            IpAddress: item.WorkerMeta.IpAddress,
+            OSType: item.WorkerMeta.OS,
             Region: "",
             Model: "local/worker",
-            CloudId: item.SystemStat.HostId,
+            CloudId: item.WorkerMeta.HostId,
             CloudMeta: {},
             WorkerId: item.WorkerId,
-            WorkerMeta: item,
+            WorkerMeta: item.WorkerMeta,
             Description: "",
             Status: 1,
         })
@@ -70,11 +70,11 @@ export default class WorkerBind extends Vue {
         const bd = this.boundMachineList[item.WorkerId]
         Api.machine.update({
             Id: bd ? bd.Id : 0,
-            HostName: item.SystemStat.HostName,
-            IpAddress: item.SystemStat.IpAddress,
-            OSType: item.SystemStat.OS,
+            HostName: item.WorkerMeta.HostName,
+            IpAddress: item.WorkerMeta.IpAddress,
+            OSType: item.WorkerMeta.OS,
             WorkerId: item.WorkerId,
-            WorkerMeta: item,
+            WorkerMeta: item.WorkerMeta,
         })
     }
 }
@@ -88,50 +88,54 @@ export default class WorkerBind extends Vue {
             </div>
         </template>
         <el-table ref="tableRef" :data="workerList" highlight-current-row>
-            <el-table-column prop="RemoteAddr" label="地址" />
             <el-table-column label="主机名">
                 <template #default="scope">
-                    {{ scope.row.SystemStat.HostName }}
+                    {{ scope.row.WorkerMeta.HostName }}
+                </template>
+            </el-table-column>
+            <el-table-column label="地址">
+                <template #default="scope">
+                    {{ scope.row.WorkerMeta.IpAddress }}
                 </template>
             </el-table-column>
             <el-table-column label="CPU">
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="+scope.row.SystemStat.CpuPercent.toFixed(2)" status="success">
-                        {{ scope.row.SystemStat.CpuPercent.toFixed(2) }}%，
-                        {{ scope.row.SystemStat.CpuCore }} Cores
+                        :percentage="+scope.row.WorkerMeta.CpuPercent.toFixed(2)" status="success">
+                        {{ scope.row.WorkerMeta.CpuPercent.toFixed(2) }}%，
+                        {{ scope.row.WorkerMeta.CpuCore }} Cores
                     </el-progress>
                 </template>
             </el-table-column>
             <el-table-column label="内存">
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="scope.row.SystemStat.MemoryUsed / scope.row.SystemStat.MemoryTotal * 100"
+                        :percentage="scope.row.WorkerMeta.MemoryUsed / scope.row.WorkerMeta.MemoryTotal * 100"
                         status="success">
-                        {{ bytesToSize(scope.row.SystemStat.MemoryUsed) }} /
-                        {{ bytesToSize(scope.row.SystemStat.MemoryTotal) }}
+                        {{ bytesToSize(scope.row.WorkerMeta.MemoryUsed) }} /
+                        {{ bytesToSize(scope.row.WorkerMeta.MemoryTotal) }}
                     </el-progress>
                 </template>
             </el-table-column>
             <el-table-column label="硬盘">
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="scope.row.SystemStat.DiskUsed / scope.row.SystemStat.DiskTotal * 100"
+                        :percentage="scope.row.WorkerMeta.DiskUsed / scope.row.WorkerMeta.DiskTotal * 100"
                         status="success">
-                        {{ bytesToSize(scope.row.SystemStat.DiskUsed) }} /
-                        {{ bytesToSize(scope.row.SystemStat.DiskTotal) }}
+                        {{ bytesToSize(scope.row.WorkerMeta.DiskUsed) }} /
+                        {{ bytesToSize(scope.row.WorkerMeta.DiskTotal) }}
                     </el-progress>
                 </template>
             </el-table-column>
             <el-table-column label="网络 In/Out">
                 <template #default="scope">
-                    {{ bytesToSize(scope.row.SystemStat.NetBytesRecv) }} /
-                    {{ bytesToSize(scope.row.SystemStat.NetBytesSent) }}
+                    {{ bytesToSize(scope.row.WorkerMeta.NetBytesRecv) }} /
+                    {{ bytesToSize(scope.row.WorkerMeta.NetBytesSent) }}
                 </template>
             </el-table-column>
             <el-table-column label="运行时间">
                 <template #default="scope">
-                    {{ (scope.row.SystemStat.Uptime / 86400).toFixed(1) }} 天
+                    {{ (scope.row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
                 </template>
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="90" align="center">

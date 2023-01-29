@@ -17,7 +17,7 @@ export class WorkhubModel extends HttpClient {
     }
 }
 
-export interface WorkerStat {
+export interface WorkerMeta {
     HostId: string
     HostName: string
     Uptime: number
@@ -35,7 +35,7 @@ export interface WorkerStat {
 
 export interface WorkerOrig {
     WorkerId: string
-    SystemStat: WorkerStat
+    WorkerMeta: WorkerMeta
 }
 
 export interface WorkerItem extends WorkerOrig {

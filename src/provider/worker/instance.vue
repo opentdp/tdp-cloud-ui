@@ -32,25 +32,25 @@ export default class WorkerInstance extends Vue {
         </template>
         <el-descriptions :column="2" border>
             <el-descriptions-item label="实例ID" :span="2">
-                {{ instance.SystemStat.HostId }}
+                {{ instance.WorkerMeta.HostId }}
             </el-descriptions-item>
             <el-descriptions-item label="实例名">
-                {{ instance.SystemStat.HostName }}
+                {{ instance.WorkerMeta.HostName }}
             </el-descriptions-item>
             <el-descriptions-item label="CPU">
-                {{ instance.SystemStat.CpuCore }} 核
+                {{ instance.WorkerMeta.CpuCore }} 核
             </el-descriptions-item>
             <el-descriptions-item label="内存">
-                {{ bytesToSize(instance.SystemStat.MemoryTotal) }} GB
+                {{ bytesToSize(instance.WorkerMeta.MemoryTotal) }} GB
             </el-descriptions-item>
             <el-descriptions-item label="系统盘">
-                {{ bytesToSize(instance.SystemStat.DiskTotal) }} GB
+                {{ bytesToSize(instance.WorkerMeta.DiskTotal) }} GB
             </el-descriptions-item>
             <el-descriptions-item label="IP 地址">
-                {{ instance.SystemStat.IpAddress }}
+                {{ instance.WorkerMeta.IpAddress }}
             </el-descriptions-item>
             <el-descriptions-item label="操作系统">
-                {{ instance.SystemStat.OS }}
+                {{ instance.WorkerMeta.OS }}
             </el-descriptions-item>
         </el-descriptions>
     </el-card>
