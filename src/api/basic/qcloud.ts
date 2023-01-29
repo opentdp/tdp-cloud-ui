@@ -7,38 +7,41 @@ export class QcloudClient extends HttpClient {
     protected qVersion = ""
 
     protected q(q: QcloudRequest) {
-        const header: HeadersInit = {
+        const query: QcloudParams = {
             Service: this.qService,
             Version: this.qVersion,
             Action: q.action,
-        }
-        if (q.region) {
-            header.Region = q.region
-        }
-        if (q.endpoint) {
-            header.Endpoint = q.endpoint
+            Payload: q.query || {},
         }
 
-        const params: HttpRequest = {
-            url: "/qcloud",
+        q.region && (query.Region = q.region)
+        q.endpoint && (query.Endpoint = q.endpoint)
+
+        const req: HttpRequest = {
+            url: "/qcloud/" + QcloudClient.vendorId,
             method: "POST",
-            query: q.query || {},
-            header: {
-                "TDP-Qcloud": JSON.stringify(header),
-                "TDP-Vendor": QcloudClient.vendorId
-            }
+            query: query
         }
 
         if (q.expiry && q.expiry > 0) {
-            return this.rcache(Object.assign(params, { expiry: q.expiry }))
+            return this.rcache(Object.assign(req, { expiry: q.expiry }))
         }
 
-        return this.request(params)
+        return this.request(req)
     }
 }
 
 export function QcloudVendor(id: number | string) {
     QcloudClient.vendorId = id + ""
+}
+
+export interface QcloudParams {
+    Service: string
+    Version: string
+    Action: string
+    Payload: unknown
+    Region?: string
+    Endpoint?: string
 }
 
 export interface QcloudRequest {
