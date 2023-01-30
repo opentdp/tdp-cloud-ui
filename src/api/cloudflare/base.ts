@@ -1,19 +1,13 @@
 import { HttpClient, HttpRequest } from "@/api/basic/http"
 
-export class Cloudflare extends HttpClient {
-    static vendorId = ""
+export class CloudflareClient extends HttpClient {
+    static VendorId = ""
 
-    protected qService = ""
-    protected qVersion = ""
-
-    protected q(query: CloudflareRequest, expiry = 0) {
+    protected bus(query: CloudflareRequest, expiry = 0) {
         const req: HttpRequest = {
             method: "POST",
-            url: "/Cloudflare/" + Cloudflare.vendorId,
-            query: Object.assign({
-                Service: this.qService,
-                Version: this.qVersion,
-            }, query)
+            url: "/cloudflare/" + CloudflareClient.VendorId,
+            query: query
         }
 
         if (expiry > 0) {
@@ -22,17 +16,15 @@ export class Cloudflare extends HttpClient {
 
         return this.request(req)
     }
+
 }
 
 export function CloudflareVendor(id: number | string) {
-    Cloudflare.vendorId = id + ""
+    CloudflareClient.VendorId = id + ""
 }
 
 export interface CloudflareRequest {
-    Service?: string
-    Version?: string
-    Action: string
+    Path: string
+    Query?: string
     Payload?: unknown
-    Region?: string
-    Endpoint?: string
 }
