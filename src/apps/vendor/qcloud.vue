@@ -8,6 +8,8 @@ import { VendorItem } from "@/api/local/vendor"
 
 @Component
 export default class VendorListCloudflare extends Vue {
+    public loading = true
+
     public created() {
         this.getVendorList()
     }
@@ -21,6 +23,7 @@ export default class VendorListCloudflare extends Vue {
         this.vendorList = res.filter(item => {
             return item.Provider == "qcloud"
         })
+        this.loading = false
     }
 
     // 删除厂商
@@ -79,7 +82,7 @@ export default class VendorListCloudflare extends Vue {
                     <b>账号列表</b>
                 </div>
             </template>
-            <el-table :data="vendorList">
+            <el-table v-loading="loading" :data="vendorList">
                 <el-table-column prop="Description" label="别名" width="160" />
                 <el-table-column prop="SecretId" label="密钥 ID" />
                 <el-table-column prop="SecretKey" label="密钥 KEY" />
