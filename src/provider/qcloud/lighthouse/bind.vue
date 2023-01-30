@@ -65,7 +65,7 @@ export default class LighthouseBind extends Vue {
     public bindMachine(item: Qcloud.Lighthouse.Instance) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         LoApi.machine.create({
-            VendorId: this.vendorId,
+            VendorId: this.meta.vendorId,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
             OSType: item.PlatformType,
