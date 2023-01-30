@@ -24,7 +24,8 @@ export function CloudflareVendor(id: number | string) {
 }
 
 export interface CloudflareRequest {
+    Method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
     Path: string
-    Query?: string
+    Query?: unknown
     Payload?: unknown
 }
