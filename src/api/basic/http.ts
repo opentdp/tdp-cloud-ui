@@ -33,11 +33,11 @@ export class HttpClient {
         return this.request({ method: "PATCH", url, query })
     }
 
-    protected async rcache(req: HttpRequest & { expiry: number }) {
+    protected async rcache(req: HttpRequest, expiry: number) {
         let res = this.cached.get(req)
         if (!res) {
             res = await this.request(req)
-            this.cached.set(req, res, req.expiry)
+            this.cached.set(req, res, expiry)
         }
         return res
     }
@@ -119,9 +119,9 @@ export class HttpClient {
 }
 
 export interface HttpRequest {
-    url: string
-    header?: HeadersInit
     method: "GET" | "DELETE" | "POST" | "PATCH"
+    header?: HeadersInit
+    url: string
     query?: unknown
 }
 

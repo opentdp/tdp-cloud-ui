@@ -6,25 +6,18 @@ export class QcloudClient extends HttpClient {
     protected qService = ""
     protected qVersion = ""
 
-    protected q(q: QcloudRequest) {
-        const query: QcloudParams = {
-            Service: this.qService,
-            Version: this.qVersion,
-            Action: q.action,
-            Payload: q.query || {},
-        }
-
-        q.region && (query.Region = q.region)
-        q.endpoint && (query.Endpoint = q.endpoint)
-
+    protected q(query: QcloudRequest, expiry = 0) {
         const req: HttpRequest = {
-            url: "/qcloud/" + QcloudClient.vendorId,
             method: "POST",
-            query: query
+            url: "/qcloud/" + QcloudClient.vendorId,
+            query: Object.assign({
+                Service: this.qService,
+                Version: this.qVersion,
+            }, query)
         }
 
-        if (q.expiry && q.expiry > 0) {
-            return this.rcache(Object.assign(req, { expiry: q.expiry }))
+        if (expiry > 0) {
+            return this.rcache(req, expiry)
         }
 
         return this.request(req)
@@ -35,19 +28,11 @@ export function QcloudVendor(id: number | string) {
     QcloudClient.vendorId = id + ""
 }
 
-export interface QcloudParams {
-    Service: string
-    Version: string
+export interface QcloudRequest {
+    Service?: string
+    Version?: string
     Action: string
-    Payload: unknown
+    Payload?: unknown
     Region?: string
     Endpoint?: string
-}
-
-export interface QcloudRequest {
-    action: string
-    query?: unknown
-    region?: string
-    endpoint?: string
-    expiry?: number
 }

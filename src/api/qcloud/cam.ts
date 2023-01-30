@@ -7,6 +7,6 @@ export class CamModel extends QcloudClient {
     protected qVersion = "2019-01-16"
 
     public getAccountSummary(): Promise<Qcloud.Cam.GetAccountSummaryResponse> {
-        return this.q({ action: "GetAccountSummary", expiry: 600 })
+        return this.q({ Action: "GetAccountSummary" }, 600)
     }
 }

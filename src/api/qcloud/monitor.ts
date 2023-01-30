@@ -7,6 +7,6 @@ export class MonitorModel extends QcloudClient {
     protected qVersion = "2018-07-24"
 
     public getMonitorData(region: string, query: Qcloud.Monitor.GetMonitorDataRequest): Promise<Qcloud.Monitor.GetMonitorDataResponse> {
-        return this.q({ action: "GetMonitorData", region, query, expiry: 600 })
+        return this.q({ Action: "GetMonitorData", Region: region, Payload: query }, 600)
     }
 }
