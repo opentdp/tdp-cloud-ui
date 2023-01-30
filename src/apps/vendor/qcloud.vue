@@ -4,32 +4,31 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { LoApi } from "@/api"
-import { ProviderList } from "@/api/local/vendor"
-
-import sessionStore from "@/store/session"
+import { VendorItem } from "@/api/local/vendor"
 
 @Component
-export default class VendorSecret extends Vue {
-    public ProviderList = ProviderList
-    public session = sessionStore()
-
+export default class VendorListCloudflare extends Vue {
     public created() {
-        this.getSecretList()
+        this.getVendorList()
     }
 
     // 厂商列表
 
-    async getSecretList() {
+    public vendorList: VendorItem[] = []
+
+    async getVendorList() {
         const res = await LoApi.vendor.list()
-        this.session.setVendor(res)
+        this.vendorList = res.filter(item => {
+            return item.Provider == "qcloud"
+        })
     }
 
     // 删除厂商
 
-    async deleteSecret(idx: number) {
-        const item = this.session.vendorList[idx]
+    async deleteVendor(idx: number) {
+        const item = this.vendorList[idx]
         await LoApi.vendor.remove(item.Id)
-        this.session.vendorList.splice(idx, 1)
+        this.vendorList.splice(idx, 1)
     }
 
     // 添加厂商
@@ -47,8 +46,7 @@ export default class VendorSecret extends Vue {
     public formRules: FormRules = {
         SecretId: [{ required: true, message: "密钥 ID 不能为空" }],
         SecretKey: [{ required: true, message: "密钥 KEY 不能为空" }],
-        Provider: [{ required: true, message: "云厂商 不能为空" }],
-        Description: [{ required: true, message: "描述或别名 不能为空" }],
+        Description: [{ required: true, message: "别名或别名 不能为空" }],
     }
 
     public formSubmit(form: FormInstance | undefined) {
@@ -59,7 +57,7 @@ export default class VendorSecret extends Vue {
             }
             await LoApi.vendor.create(this.formModel)
             this.formRef.resetFields()
-            this.getSecretList()
+            this.getVendorList()
         })
     }
 }
@@ -78,32 +76,26 @@ export default class VendorSecret extends Vue {
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>密钥列表</b>
+                    <b>账号列表</b>
                 </div>
             </template>
-            <el-table :data="session.vendorList">
-                <el-table-column prop="Id" label="序号" width="80" />
-                <el-table-column prop="Description" label="描述" width="160" />
-                <el-table-column label="厂商">
-                    <template #default="scope">
-                        {{ ProviderList[scope.row.Provider] }}
-                    </template>
-                </el-table-column>
+            <el-table :data="vendorList">
+                <el-table-column prop="Description" label="别名" width="160" />
                 <el-table-column prop="SecretId" label="密钥 ID" />
                 <el-table-column prop="SecretKey" label="密钥 KEY" />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button v-if="scope.row.Provider == 'qcloud'" link type="primary" icon="View">
-                            <router-link :to="'/vendor/bind/qcloud/' + scope.row.Id">
+                            <router-link :to="'/vrbind/qcloud/' + scope.row.Id">
                                 导入
                             </router-link>
                         </el-button>
                         <el-button v-if="scope.row.Provider == 'cloudflare'" link type="primary" icon="View">
-                            <router-link :to="'/vendor/bind/cloudflare/' + scope.row.Id">
+                            <router-link :to="'/vrbind/cloudflare/' + scope.row.Id">
                                 导入
                             </router-link>
                         </el-button>
-                        <el-popconfirm title="确定删除?" @confirm="deleteSecret(scope.$index)">
+                        <el-popconfirm title="确定删除?" @confirm="deleteVendor(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">
                                     删除
@@ -118,21 +110,15 @@ export default class VendorSecret extends Vue {
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>添加密钥</b>
+                    <b>添加账号</b>
                     <el-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" icon="Position"
-                        :underline="false"
-                    >
+                        :underline="false">
                         &nbsp;操作指南
                     </el-link>
                 </div>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
-                <el-form-item prop="Provider" label="厂商">
-                    <el-select v-model="formModel.Provider">
-                        <el-option v-for="v, k in ProviderList" :key="k" :label="v" :value="k" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item prop="Description" label="描述">
+                <el-form-item prop="Description" label="别名">
                     <el-input v-model="formModel.Description" />
                 </el-form-item>
                 <el-form-item prop="SecretId" label="密钥 ID">

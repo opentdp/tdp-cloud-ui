@@ -17,6 +17,7 @@ export default class CloudflareBind extends Vue {
     public created() {
         CfApi.vendor(this.meta.vendorId)
         this.getDomainlist()
+        CfApi.zones.dnsRecords("3bf29adb3736dda1506aca5084a71dfc")
     }
 
     // 获取列表

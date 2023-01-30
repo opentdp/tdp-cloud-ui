@@ -4,61 +4,60 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { LoApi } from "@/api"
-import { SSHKeyItem } from "@/api/local/sshkey"
+import { VendorItem } from "@/api/local/vendor"
 
 @Component
-export default class TerminalSshkey extends Vue {
-    public loading = false
-
+export default class VendorListCloudflare extends Vue {
     public created() {
-        this.getSshkeyList()
+        this.getVendorList()
     }
 
-    // 密钥列表
+    // 厂商列表
 
-    public keylist: SSHKeyItem[] = []
+    public vendorList: VendorItem[] = []
 
-    async getSshkeyList() {
-        const res = await LoApi.sshkey.list()
-        this.keylist = res
-        this.loading = false
+    async getVendorList() {
+        const res = await LoApi.vendor.list()
+        this.vendorList = res.filter(item =>{
+            return item.Provider == "cloudflare"
+        })
     }
 
-    // 删除密钥
+    // 删除厂商
 
-    async deleteKey(idx: number) {
-        const item = this.keylist[idx]
-        await LoApi.sshkey.remove(item.Id)
-        this.keylist.splice(idx, 1)
+    async deleteVendor(idx: number) {
+        const item = this.vendorList[idx]
+        await LoApi.vendor.remove(item.Id)
+        this.vendorList.splice(idx, 1)
     }
 
-    // 添加密钥
+    // 添加厂商
 
     @Ref
     public formRef!: FormInstance
 
     public formModel = {
-        PublicKey: "",
-        PrivateKey: "",
+        SecretId: "",
+        SecretKey: "",
+        Provider: "cloudflare",
         Description: "",
     }
 
     public formRules: FormRules = {
-        PublicKey: [{ required: true, message: "公钥 不能为空" }],
-        PrivateKey: [{ required: true, message: "私钥 不能为空" }],
-        Description: [{ required: true, message: "别名 不能为空" }],
+        SecretId: [{ required: true, message: "邮箱 不能为空" }],
+        SecretKey: [{ required: true, message: "Api Token 不能为空" }],
+        Description: [{ required: true, message: "别名或别名 不能为空" }],
     }
 
     public formSubmit(form: FormInstance | undefined) {
-        this.loading = true
         form && form.validate(async valid => {
             if (!valid) {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.sshkey.create(this.formModel)
+            await LoApi.vendor.create(this.formModel)
             this.formRef.resetFields()
-            this.getSshkeyList()
+            this.getVendorList()
         })
     }
 }
@@ -71,22 +70,27 @@ export default class TerminalSshkey extends Vue {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                SSH 密钥
+                Cloudflare
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>密钥列表</b>
+                    <b>账号列表</b>
                 </div>
             </template>
-            <el-table :data="keylist">
+            <el-table :data="vendorList">
                 <el-table-column prop="Description" label="别名" width="160" />
-                <el-table-column prop="PublicKey" label="公钥" show-overflow-tooltip />
-                <el-table-column prop="PrivateKey" label="私钥" show-overflow-tooltip />
+                <el-table-column prop="SecretId" label="邮箱" />
+                <el-table-column prop="SecretKey" label="令牌" />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-popconfirm title="确定删除?" @confirm="deleteKey(scope.$index)">
+                        <el-button link type="primary" icon="View">
+                            <router-link :to="'/vrbind/cloudflare/' + scope.row.Id">
+                                导入
+                            </router-link>
+                        </el-button>
+                        <el-popconfirm title="确定删除?" @confirm="deleteVendor(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">
                                     删除
@@ -101,21 +105,25 @@ export default class TerminalSshkey extends Vue {
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>添加密钥</b>
+                    <b>添加账号</b>
+                    <el-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" icon="Position"
+                        :underline="false">
+                        &nbsp;操作指南
+                    </el-link>
                 </div>
             </template>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="55px">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
                 <el-form-item prop="Description" label="别名">
                     <el-input v-model="formModel.Description" />
                 </el-form-item>
-                <el-form-item prop="PublicKey" label="公钥">
-                    <el-input v-model="formModel.PublicKey" type="textarea" rows="5" />
+                <el-form-item prop="SecretId" label="邮箱">
+                    <el-input v-model="formModel.SecretId" />
                 </el-form-item>
-                <el-form-item prop="PrivateKey" label="私钥">
-                    <el-input v-model="formModel.PrivateKey" type="textarea" rows="5" />
+                <el-form-item prop="SecretKey" label="令牌">
+                    <el-input v-model="formModel.SecretKey" />
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" :loading="loading" @click="formSubmit(formRef)">
+                    <el-button type="primary" @click="formSubmit(formRef)">
                         保存
                     </el-button>
                 </el-form-item>

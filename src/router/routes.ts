@@ -128,41 +128,50 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/vendor/list",
-                name: "vendor-list",
-                meta: {
-                    title: "公有云",
-                    login: true,
-                },
-                component: () => import("@/apps/vendor/list.vue"),
-            },
-            //////
-            {
-                path: "/vendor/bind/worker",
-                name: "vendor-bind-worker",
-                meta: {
-                    title: "子节点",
-                    login: true,
-                },
-                component: () => import("@/apps/vendor/bind_worker.vue"),
-            },
-            {
-                path: "/vendor/bind/qcloud/:id",
-                name: "vendor-bind-qcloud",
-                meta: {
-                    title: "腾讯云",
-                    login: true,
-                },
-                component: () => import("@/apps/vendor/bind_qcloud.vue"),
-            },
-            {
-                path: "/vendor/bind/cloudflare/:id",
-                name: "vendor-bind-cloudflare",
+                path: "/vendor/cloudflare",
+                name: "vendor-cloudflare",
                 meta: {
                     title: "Cloudflare",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/bind_cloudflare.vue"),
+                component: () => import("@/apps/vendor/cloudflare.vue"),
+            },
+            {
+                path: "/vendor/qcloud",
+                name: "vendor-qcloud",
+                meta: {
+                    title: "腾讯云",
+                    login: true,
+                },
+                component: () => import("@/apps/vendor/qcloud.vue"),
+            },
+            //////
+            {
+                path: "/vrbind/cloudflare/:id",
+                name: "vrbind-cloudflare",
+                meta: {
+                    title: "Cloudflare",
+                    login: true,
+                },
+                component: () => import("@/apps/vrbind/cloudflare.vue"),
+            },
+            {
+                path: "/vrbind/qcloud/:id",
+                name: "vrbind-qcloud",
+                meta: {
+                    title: "腾讯云",
+                    login: true,
+                },
+                component: () => import("@/apps/vrbind/qcloud.vue"),
+            },
+            {
+                path: "/vrbind/worker",
+                name: "vrbind-worker",
+                meta: {
+                    title: "子节点",
+                    login: true,
+                },
+                component: () => import("@/apps/vrbind/worker.vue"),
             },
             //////
             {

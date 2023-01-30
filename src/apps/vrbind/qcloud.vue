@@ -11,7 +11,7 @@ import LighthouseBind from "@/provider/qcloud/lighthouse/bind.vue"
 @Component({
     components: { DnspodBind, LighthouseBind }
 })
-export default class VendorQcloud extends Vue {
+export default class VendorBindQcloud extends Vue {
     public vendorId = 0
 
     public curTab = {
