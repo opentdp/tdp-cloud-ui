@@ -128,31 +128,41 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/vendor/secret",
-                name: "vendor-secret",
+                path: "/vendor/list",
+                name: "vendor-list",
                 meta: {
                     title: "公有云",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/secret.vue"),
+                component: () => import("@/apps/vendor/list.vue"),
             },
+            //////
             {
-                path: "/vendor/qcloud/:id",
-                name: "qcloud-bind",
-                meta: {
-                    title: "腾讯云",
-                    login: true,
-                },
-                component: () => import("@/apps/vendor/qcloud.vue"),
-            },
-            {
-                path: "/vendor/worker",
-                name: "vendor-worker",
+                path: "/vendor/bind/worker",
+                name: "vendor-bind-worker",
                 meta: {
                     title: "子节点",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/worker.vue"),
+                component: () => import("@/apps/vendor/bind_worker.vue"),
+            },
+            {
+                path: "/vendor/bind/qcloud/:id",
+                name: "vendor-bind-qcloud",
+                meta: {
+                    title: "腾讯云",
+                    login: true,
+                },
+                component: () => import("@/apps/vendor/bind_qcloud.vue"),
+            },
+            {
+                path: "/vendor/bind/cloudflare/:id",
+                name: "vendor-bind-cloudflare",
+                meta: {
+                    title: "Cloudflare",
+                    login: true,
+                },
+                component: () => import("@/apps/vendor/bind_cloudflare.vue"),
             },
             //////
             {

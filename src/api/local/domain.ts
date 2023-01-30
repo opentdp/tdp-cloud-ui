@@ -26,7 +26,7 @@ export interface DomainOrig {
     VendorId: number
     Name: string
     NSList: string
-    Model: "" | "qcloud/dnspod"
+    Model: "cloudflare" | "qcloud/dnspod"
     CloudId: string
     CloudMeta: unknown
     Description: string

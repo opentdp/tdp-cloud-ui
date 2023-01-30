@@ -18,6 +18,11 @@ export class VendorModel extends HttpClient {
     }
 }
 
+export const ProviderList = {
+    "cloudflare": "Cloudflare",
+    "qcloud": "腾讯云",
+}
+
 export interface VendorOrig {
     SecretId: string
     SecretKey: string

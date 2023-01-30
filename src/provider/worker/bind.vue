@@ -34,7 +34,6 @@ export default class WorkerBind extends Vue {
     public workerList: WorkerItem[] = []
 
     async getWorkerList() {
-        console.log(this.meta)
         const res = await LoApi.workhub.list()
         this.workerList = res
     }

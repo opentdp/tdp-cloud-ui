@@ -4,10 +4,13 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { LoApi } from "@/api"
+import { ProviderList } from "@/api/local/vendor"
+
 import sessionStore from "@/store/session"
 
 @Component
-export default class VendorWorker extends Vue {
+export default class VendorSecret extends Vue {
+    public ProviderList = ProviderList
     public session = sessionStore()
 
     public created() {
@@ -81,13 +84,22 @@ export default class VendorWorker extends Vue {
             <el-table :data="session.vendorList">
                 <el-table-column prop="Id" label="序号" width="80" />
                 <el-table-column prop="Description" label="描述" width="160" />
-                <el-table-column prop="Provider" label="厂商" />
+                <el-table-column label="厂商">
+                    <template #default="scope">
+                        {{ ProviderList[scope.row.Provider] }}
+                    </template>
+                </el-table-column>
                 <el-table-column prop="SecretId" label="密钥 ID" />
                 <el-table-column prop="SecretKey" label="密钥 KEY" />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button v-if="scope.row.Provider == 'qcloud'" link type="primary" icon="View">
-                            <router-link :to="'/vendor/qcloud/' + scope.row.Id">
+                            <router-link :to="'/vendor/bind/qcloud/' + scope.row.Id">
+                                导入
+                            </router-link>
+                        </el-button>
+                        <el-button v-if="scope.row.Provider == 'cloudflare'" link type="primary" icon="View">
+                            <router-link :to="'/vendor/bind/cloudflare/' + scope.row.Id">
                                 导入
                             </router-link>
                         </el-button>
@@ -107,16 +119,20 @@ export default class VendorWorker extends Vue {
             <template #header>
                 <div class="flex-between">
                     <b>添加密钥</b>
-                    <el-button v-if="formModel.Provider == 'qcloud'" class="button" text icon="Position">
-                        <a href="https://github.com/tdp-resource/tdp-cloud#添加腾讯云账号" target="_blank">
-                            腾讯云操作指南
+                    <el-button text class="button" icon="Position">
+                        <a :href="'https://apps.rehiy.com/tdp-cloud/docs/添加' + ProviderList[formModel.Provider] + '账号.md'"
+                            target="_blank"
+                        >
+                            {{ ProviderList[formModel.Provider]}}操作指南
                         </a>
                     </el-button>
                 </div>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
                 <el-form-item prop="Provider" label="厂商">
-                    <el-input v-model="formModel.Provider" readonly />
+                    <el-select v-model="formModel.Provider">
+                        <el-option v-for="v, k in ProviderList" :key="k" :label="v" :value="k" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item prop="Description" label="描述">
                     <el-input v-model="formModel.Description" />
