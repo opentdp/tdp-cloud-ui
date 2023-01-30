@@ -119,11 +119,11 @@ export default class VendorSecret extends Vue {
             <template #header>
                 <div class="flex-between">
                     <b>添加密钥</b>
-                    <el-button text class="button" icon="Position">
-                        <a href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank">
-                            操作指南
-                        </a>
-                    </el-button>
+                    <el-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" icon="Position"
+                        :underline="false"
+                    >
+                        &nbsp;操作指南
+                    </el-link>
                 </div>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">

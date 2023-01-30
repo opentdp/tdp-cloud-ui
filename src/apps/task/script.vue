@@ -59,7 +59,7 @@ export default class TaskScript extends Vue {
                     <b>脚本列表</b> &nbsp; &nbsp;
                     <small>脚本总数: {{ scriptList.length }}</small>
                     <div class="flex-auto" />
-                    <el-button type="primary" plain size="small" icon="Plus" @click="createModal?.open()">
+                    <el-button plain type="primary" size="small" icon="Plus" @click="createModal?.open()">
                         添加
                     </el-button>
                 </div>
