@@ -37,13 +37,12 @@ export default class MemberPassword extends Vue {
     }
 
     public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
+        form && form.validate(valid => {
             if (!valid) {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.user.updatePassword(this.formModel)
-            ElMessage.success("修改成功")
+            LoApi.user.updatePassword(this.formModel)
         })
     }
 }
