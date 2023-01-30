@@ -120,7 +120,7 @@ export default class VendorSecret extends Vue {
                 <div class="flex-between">
                     <b>添加密钥</b>
                     <el-button text class="button" icon="Position">
-                        <a href="'https://apps.rehiy.com/tdp-cloud/docs/" target="_blank">
+                        <a href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank">
                             操作指南
                         </a>
                     </el-button>
