@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref,Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { TaskScriptItem } from "@/api/local/task_script"
 
 import ScriptCreate from "./script_create.vue"
@@ -28,7 +28,7 @@ export default class TaskScript extends Vue {
     public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
-        const res = await Api.taskScript.list()
+        const res = await LoApi.taskScript.list()
         this.scriptList = res
         this.loading = false
     }
@@ -37,7 +37,7 @@ export default class TaskScript extends Vue {
 
     async removeScript(id: number) {
         this.loading = true
-        await Api.taskScript.remove(id)
+        await LoApi.taskScript.remove(id)
         await this.getScriptList()
     }
 }

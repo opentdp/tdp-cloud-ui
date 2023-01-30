@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
 import DnspodDomain from "@/provider/qcloud/dnspod/domain.vue"
@@ -22,7 +22,7 @@ export default class DomainDetail extends Vue {
     public domain!: DomainItem
 
     async getDomain(id: number) {
-        const res = await Api.domain.detail(id)
+        const res = await LoApi.domain.detail(id)
         this.domain = res || {}
         this.loading = false
     }

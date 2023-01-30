@@ -1,6 +1,9 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
+import { LoApi } from "@/api"
+import { MachineItem } from "@/api/local/machine"
+
 import { installTDPWorker } from "@/helper/script/shell"
 
 import WorkerBind from "@/provider/worker/bind.vue"
@@ -10,6 +13,21 @@ import WorkerBind from "@/provider/worker/bind.vue"
 })
 export default class VendorWorker extends Vue {
     public installTDPWorker = installTDPWorker
+
+    public created() {
+        this.getMachineList()
+    }
+
+    // 已绑定主机
+
+    public machineList: Record<string, MachineItem> = {}
+
+    async getMachineList() {
+        const res = await LoApi.machine.list()
+        res.forEach((item) => {
+            this.machineList[item.WorkerId] = item
+        })
+    }
 }
 </script>
 
@@ -27,6 +45,6 @@ export default class VendorWorker extends Vue {
             <pre>{{ installTDPWorker.Content }}</pre>
         </el-alert>
         <div class="space-10" />
-        <WorkerBind />
+        <WorkerBind :meta="{ boundList: machineList }" />
     </div>
 </template>

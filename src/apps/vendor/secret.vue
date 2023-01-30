@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import sessionStore from "@/store/session"
 
 @Component
@@ -17,7 +17,7 @@ export default class VendorWorker extends Vue {
     // 厂商列表
 
     async getSecretList() {
-        const res = await Api.vendor.list()
+        const res = await LoApi.vendor.list()
         this.session.setVendor(res)
     }
 
@@ -25,7 +25,7 @@ export default class VendorWorker extends Vue {
 
     async deleteSecret(idx: number) {
         const item = this.session.vendorList[idx]
-        await Api.vendor.remove(item.Id)
+        await LoApi.vendor.remove(item.Id)
         this.session.vendorList.splice(idx, 1)
     }
 
@@ -54,7 +54,7 @@ export default class VendorWorker extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await Api.vendor.create(this.formModel)
+            await LoApi.vendor.create(this.formModel)
             this.formRef.resetFields()
             this.getSecretList()
         })

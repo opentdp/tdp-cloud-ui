@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
 import LighthouseVNC from "@/provider/qcloud/lighthouse/vnc.vue"
@@ -22,7 +22,7 @@ export default class MachineVnc extends Vue {
     public machine!:  MachineItem
 
     async getMachine(id: number) {
-        const res = await Api.machine.detail(id)
+        const res = await LoApi.machine.detail(id)
         this.machine = res || {}
         this.loading = false
     }

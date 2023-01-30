@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { SSHKeyItem } from "@/api/local/sshkey"
 
 @Component
@@ -19,7 +19,7 @@ export default class TerminalSshkey extends Vue {
     public keylist: SSHKeyItem[] = []
 
     async getSshkeyList() {
-        const res = await Api.sshkey.list()
+        const res = await LoApi.sshkey.list()
         this.keylist = res
         this.loading = false
     }
@@ -28,7 +28,7 @@ export default class TerminalSshkey extends Vue {
 
     async deleteKey(idx: number) {
         const item = this.keylist[idx]
-        await Api.sshkey.remove(item.Id)
+        await LoApi.sshkey.remove(item.Id)
         this.keylist.splice(idx, 1)
     }
 
@@ -56,7 +56,7 @@ export default class TerminalSshkey extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await Api.sshkey.create(this.formModel)
+            await LoApi.sshkey.create(this.formModel)
             this.formRef.resetFields()
             this.getSshkeyList()
         })

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { QApi } from "@/api"
+import { QcApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/format"
@@ -30,7 +30,7 @@ export default class LighthouseSnapshot extends Vue {
     public snapshotList!: Qcloud.Lighthouse.DescribeSnapshotsResponse
 
     async getSnapshotList() {
-        const res = await QApi.lighthouse.describeSnapshots(this.region, {
+        const res = await QcApi.lighthouse.describeSnapshots(this.region, {
             Filters: [{ Name: "instance-id", Values: [this.instance.InstanceId] }],
         })
         this.snapshotList = res
@@ -48,7 +48,7 @@ export default class LighthouseSnapshot extends Vue {
 
     async createSnapshot() {
         this.createSnapshotBus.loading = true
-        await QApi.lighthouse.createInstanceSnapshot(this.region, {
+        await QcApi.lighthouse.createInstanceSnapshot(this.region, {
             InstanceId: this.instance.InstanceId,
             SnapshotName: this.createSnapshotBus.model.name
         })
@@ -66,7 +66,7 @@ export default class LighthouseSnapshot extends Vue {
     // 回滚快照
 
     async applySnapshot(item: Qcloud.Lighthouse.Snapshot) {
-        await QApi.lighthouse.applyInstanceSnapshot(this.region, {
+        await QcApi.lighthouse.applyInstanceSnapshot(this.region, {
             InstanceId: this.instance.InstanceId,
             SnapshotId: item.SnapshotId
         })
@@ -76,7 +76,7 @@ export default class LighthouseSnapshot extends Vue {
     // 删除快照
 
     async deleteSnapshot(item: Qcloud.Lighthouse.Snapshot) {
-        await QApi.lighthouse.deleteSnapshots(this.region, {
+        await QcApi.lighthouse.deleteSnapshots(this.region, {
             SnapshotIds: [item.SnapshotId],
         })
         this.refreshSnapshot()

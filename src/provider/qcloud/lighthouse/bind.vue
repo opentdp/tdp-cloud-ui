@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { Api, QApi } from "@/api"
+import { LoApi, QcApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 
@@ -16,12 +16,12 @@ export default class LighthouseBind extends Vue {
     @Prop
     public meta!: {
         vendorId: number
+        boundList: Record<string, MachineItem>
     }
 
     public created() {
-        QApi.vendor(this.meta.vendorId)
+        QcApi.vendor(this.meta.vendorId)
         this.getRegionInstanceList()
-        this.getBoundMachineList()
     }
 
     // 获取列表
@@ -32,12 +32,12 @@ export default class LighthouseBind extends Vue {
     public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await QApi.lighthouse.describeRegions()
+        const res = await QcApi.lighthouse.describeRegions()
         this.loading = res.TotalCount
         res.RegionSet.forEach(async (item) => {
             this.regionList[item.Region] = item
             // 获取当前大区实例
-            const rs2 = await QApi.lighthouse.describeInstances(item.Region)
+            const rs2 = await QcApi.lighthouse.describeInstances(item.Region)
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet)
                 this.instanceCount += rs2.TotalCount
@@ -50,32 +50,21 @@ export default class LighthouseBind extends Vue {
 
     async runCommand(instance: Qcloud.Lighthouse.Instance, code: string) {
         const region = instance.Zone.replace(/-(\d+)$/, '')
-        const res = await QApi.tat.runCommand(region, {
+        const res = await QcApi.tat.runCommand(region, {
             InstanceIds: [instance.InstanceId],
             Content: code,
         })
-        const rs2 = QApi.tat.describeInvocations(region, {
+        const rs2 = QcApi.tat.describeInvocations(region, {
             InvocationIds: [res.InvocationId]
         })
         console.log(rs2)
-    }
-
-    // 已绑定主机
-
-    public boundMachineList: Record<string, MachineItem> = {}
-
-    async getBoundMachineList() {
-        const res = await Api.machine.list()
-        res.forEach((item) => {
-            this.boundMachineList[item.CloudId] = item
-        })
     }
 
     // 绑定主机
 
     public bindMachine(item: Qcloud.Lighthouse.Instance) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
-        Api.machine.create({
+        LoApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
@@ -94,8 +83,8 @@ export default class LighthouseBind extends Vue {
     // 同步主机
 
     public syncMachine(item: Qcloud.Lighthouse.Instance) {
-        const bd = this.boundMachineList[item.InstanceId]
-        Api.machine.update({
+        const bd = this.meta.boundList[item.InstanceId]
+        LoApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
@@ -150,7 +139,7 @@ export default class LighthouseBind extends Vue {
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="boundMachineList[scope.row.InstanceId]" link icon="View"
+                    <el-button v-if="meta.boundList[scope.row.InstanceId]" link icon="View"
                         @click="syncMachine(scope.row)"
                     >
                         同步

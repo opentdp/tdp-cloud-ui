@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { QApi } from "@/api"
+import { QcApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 
 @Component({
@@ -43,7 +43,7 @@ export default class DnspodRecordCreate extends Vue {
             TTL: +this.formModel.TTL || 600,
             Weight: +this.formModel.Weight || 0
         }
-        await QApi.dnspod.createRecord(query)
+        await QcApi.dnspod.createRecord(query)
         this.loading = false
         this.close()
     }
@@ -54,14 +54,14 @@ export default class DnspodRecordCreate extends Vue {
     public recordLineList: Qcloud.Dnspod.LineInfo[] = []
 
     async getRecordType() {
-        const res = await QApi.dnspod.describeRecordType({
+        const res = await QcApi.dnspod.describeRecordType({
             DomainGrade: this.domainInfo.Grade
         })
         this.recordType = res.TypeList || []
     }
 
     async getRecordLine() {
-        const res = await QApi.dnspod.describeRecordLineList({
+        const res = await QcApi.dnspod.describeRecordLineList({
             DomainGrade: this.domainInfo.Grade,
             Domain: this.domainInfo.Domain
         })

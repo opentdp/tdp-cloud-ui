@@ -3,7 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { EChartsOption } from "echarts"
 
-import { QApi } from "@/api"
+import { QcApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/format"
@@ -31,14 +31,14 @@ export default class LighthouseTraffic extends Vue {
     public trafficPackage!: Qcloud.Lighthouse.TrafficPackage
 
     async getTrafficPackage() {
-        const res = await QApi.lighthouse.describeInstancesTrafficPackages(this.region, {
+        const res = await QcApi.lighthouse.describeInstancesTrafficPackages(this.region, {
             InstanceIds: [this.instance.InstanceId],
         })
         this.trafficPackage = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
     }
 
     async getLighthouseOuttraffic() {
-        const res = await QApi.monitor.getMonitorData(this.region, {
+        const res = await QcApi.monitor.getMonitorData(this.region, {
             Namespace: "QCE/LIGHTHOUSE",
             MetricName: "LighthouseOuttraffic",
             Instances: [

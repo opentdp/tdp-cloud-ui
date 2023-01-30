@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
@@ -26,7 +26,7 @@ export default class LayoutNavbar extends Vue {
     public userDropdown(data: string) {
         switch (data) {
             case "delcache":
-                Api.cache.clear()
+                LoApi.cache.clear()
                 location.reload()
                 break
             case "loginout":

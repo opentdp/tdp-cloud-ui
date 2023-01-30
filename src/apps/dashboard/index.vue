@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 
 @Component
 export default class DashboardIndex extends Vue {
@@ -20,13 +20,13 @@ export default class DashboardIndex extends Vue {
     }
 
     async getAccountSummary() {
-        const domainList = await Api.domain.list()
+        const domainList = await LoApi.domain.list()
         this.summary.domain = domainList.length
 
-        const machineList = await Api.machine.list()
+        const machineList = await LoApi.machine.list()
         this.summary.machine = machineList.length
 
-        const vendorList = await Api.vendor.list()
+        const vendorList = await LoApi.vendor.list()
         this.summary.vendor = vendorList.length
 
         this.loading = false

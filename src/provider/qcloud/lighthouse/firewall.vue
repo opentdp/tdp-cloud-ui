@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { QApi } from "@/api"
+import { QcApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 
 @Component
@@ -25,7 +25,7 @@ export default class LighthouseFirewall extends Vue {
     public firewallRuleCount = 0
 
     async getFirewallRuleList() {
-        const res = await QApi.lighthouse.describeFirewallRules(this.region, {
+        const res = await QcApi.lighthouse.describeFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
         })
         this.firewallRuleList = res.FirewallRuleSet.map(item => {
@@ -51,7 +51,7 @@ export default class LighthouseFirewall extends Vue {
 
     async createFirewallRule() {
         this.createFirewallRuleBus.loading = true
-        await QApi.lighthouse.createFirewallRules(this.region, {
+        await QcApi.lighthouse.createFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRules: [this.createFirewallRuleBus.model]
         })
@@ -73,7 +73,7 @@ export default class LighthouseFirewall extends Vue {
             return
         }
         this.modifyFirewallRuleBus.loading = true
-        await QApi.lighthouse.modifyFirewallRules(this.region, {
+        await QcApi.lighthouse.modifyFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRules: this.firewallRuleList.map((item, idx) => {
                 if (this.modifyFirewallRuleBus.index === idx) {
@@ -103,7 +103,7 @@ export default class LighthouseFirewall extends Vue {
 
     async modifyFirewallRuleDescription() {
         this.modifyFirewallRuleDescriptionBus.loading = true
-        await QApi.lighthouse.modifyFirewallRuleDescription(this.region, {
+        await QcApi.lighthouse.modifyFirewallRuleDescription(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRule: this.modifyFirewallRuleDescriptionBus.model
         })
@@ -120,7 +120,7 @@ export default class LighthouseFirewall extends Vue {
     // 删除规则
 
     async deleteFirewallRule(item: FirewallRuleBus["model"]) {
-        await QApi.lighthouse.deleteFirewallRules(this.region, {
+        await QcApi.lighthouse.deleteFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRules: [item]
         })

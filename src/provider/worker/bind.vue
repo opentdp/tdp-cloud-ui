@@ -1,7 +1,7 @@
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator"
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
 
@@ -13,8 +13,12 @@ export default class WorkerBind extends Vue {
 
     public timer = 0
 
+    @Prop
+    public meta!: {
+        boundList: Record<string, MachineItem>
+    }
+
     public created() {
-        this.getBoundMachineList()
         this.getWorkerList()
         this.timer = setInterval(() => {
             this.getWorkerList()
@@ -30,26 +34,16 @@ export default class WorkerBind extends Vue {
     public workerList: WorkerItem[] = []
 
     async getWorkerList() {
-        const res = await Api.workhub.list()
+        console.log(this.meta)
+        const res = await LoApi.workhub.list()
         this.workerList = res
-    }
-
-    // 已绑定主机
-
-    public boundMachineList: Record<string, MachineItem> = {}
-
-    async getBoundMachineList() {
-        const res = await Api.machine.list()
-        res.forEach((item) => {
-            this.boundMachineList[item.WorkerId] = item
-        })
     }
 
     // 绑定主机
 
     public bindMachine(item: WorkerItem) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
-        Api.machine.create({
+        LoApi.machine.create({
             VendorId: 0,
             HostName: item.WorkerMeta.HostName,
             IpAddress: item.WorkerMeta.IpAddress,
@@ -68,8 +62,8 @@ export default class WorkerBind extends Vue {
     // 同步主机
 
     public syncMachine(item: WorkerItem) {
-        const bd = this.boundMachineList[item.WorkerId]
-        Api.machine.update({
+        const bd = this.meta.boundList[item.WorkerId]
+        LoApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.WorkerMeta.HostName,
             IpAddress: item.WorkerMeta.IpAddress,
@@ -102,8 +96,7 @@ export default class WorkerBind extends Vue {
             <el-table-column label="CPU">
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="+scope.row.WorkerMeta.CpuPercent.toFixed(2)" status="success"
-                    >
+                        :percentage="+scope.row.WorkerMeta.CpuPercent.toFixed(2)" status="success">
                         {{ scope.row.WorkerMeta.CpuPercent.toFixed(2) }}%，
                         {{ scope.row.WorkerMeta.CpuCore }} Cores
                     </el-progress>
@@ -113,8 +106,7 @@ export default class WorkerBind extends Vue {
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.WorkerMeta.MemoryUsed / scope.row.WorkerMeta.MemoryTotal * 100"
-                        status="success"
-                    >
+                        status="success">
                         {{ bytesToSize(scope.row.WorkerMeta.MemoryUsed) }} /
                         {{ bytesToSize(scope.row.WorkerMeta.MemoryTotal) }}
                     </el-progress>
@@ -124,8 +116,7 @@ export default class WorkerBind extends Vue {
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.WorkerMeta.DiskUsed / scope.row.WorkerMeta.DiskTotal * 100"
-                        status="success"
-                    >
+                        status="success">
                         {{ bytesToSize(scope.row.WorkerMeta.DiskUsed) }} /
                         {{ bytesToSize(scope.row.WorkerMeta.DiskTotal) }}
                     </el-progress>
@@ -144,9 +135,8 @@ export default class WorkerBind extends Vue {
             </el-table-column>
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="boundMachineList[scope.row.WorkerId]" link icon="View"
-                        @click="syncMachine(scope.row)"
-                    >
+                    <el-button v-if="meta.boundList[scope.row.WorkerId]" link icon="View"
+                        @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

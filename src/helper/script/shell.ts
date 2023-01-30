@@ -1,4 +1,4 @@
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { TaskScriptItem } from "@/api/local/task_script"
 
 function trim(s: string) {
@@ -11,7 +11,7 @@ export const installTDPWorker: TaskScriptItem = {
     Username: "root",
     Description: "",
     Content: trim(`
-        TDP_EXEC_ARGS="--remote ${Api.workhub.getRegisterURL()}"
+        TDP_EXEC_ARGS="--remote ${LoApi.workhub.getRegisterURL()}"
         wget -qO- http://tdp.icu/worker-linux | sh -
     `),
     CommandType: "shell",

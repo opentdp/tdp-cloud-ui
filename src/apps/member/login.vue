@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import sessionStore from "@/store/session"
 
 @Component
@@ -29,7 +29,7 @@ export default class MemberLogin extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            const res = await Api.user.login(this.formModel)
+            const res = await LoApi.user.login(this.formModel)
             if (res.Username) {
                 ElMessage.success("登录成功")
             }

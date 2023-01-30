@@ -1,6 +1,5 @@
-import { QcloudClient } from "@/api/basic/qcloud"
-
 import * as Qcloud from "./typings"
+import { QcloudClient } from "./base"
 
 export class MonitorModel extends QcloudClient {
     protected qService = "monitor"

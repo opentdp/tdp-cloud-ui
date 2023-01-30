@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
 import { TaskScriptItem } from "@/api/local/task_script"
@@ -24,7 +24,7 @@ export default class MachineList extends Vue {
     public machineList: MachineItem[] = []
 
     async getMachineList() {
-        const res = await Api.machine.list()
+        const res = await LoApi.machine.list()
         this.machineList = res || []
         this.loading = false
     }
@@ -33,7 +33,7 @@ export default class MachineList extends Vue {
 
     async deleteMachine(idx: number) {
         const item = this.machineList[idx]
-        await Api.machine.remove(item.Id)
+        await LoApi.machine.remove(item.Id)
         this.machineList.splice(idx, 1)
     }
 
@@ -42,7 +42,7 @@ export default class MachineList extends Vue {
     public workerList: Record<string, WorkerItem> = {}
 
     async getWorkerList() {
-        const res = await Api.workhub.list()
+        const res = await LoApi.workhub.list()
         res.forEach(item => {
             this.workerList[item.WorkerId] = item
         })
@@ -54,14 +54,14 @@ export default class MachineList extends Vue {
 
     async getScriptList() {
         this.scriptList.push(...shellList)
-        const res = await Api.taskScript.list()
+        const res = await LoApi.taskScript.list()
         this.scriptList.push(...res)
     }
 
     // 执行快捷命令
 
     public workerExec(cmd: TaskScriptItem) {
-        Api.workhub.exec({
+        LoApi.workhub.exec({
             WorkerId: this.selectedRow.WorkerId,
             Payload: cmd
         })

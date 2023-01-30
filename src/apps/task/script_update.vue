@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { TaskScriptItem } from "@/api/local/task_script"
 
 @Component({
@@ -31,7 +31,7 @@ export default class TaskScriptUpdate extends Vue {
         if (this.formModel.WorkDirectory == "") {
             this.formModel.WorkDirectory = this.formModel.CommandType == "SHELL" ? "/root" : "C:\\"
         }
-        await Api.taskScript.update(this.formModel)
+        await LoApi.taskScript.update(this.formModel)
         this.loading = false
         this.close()
     }

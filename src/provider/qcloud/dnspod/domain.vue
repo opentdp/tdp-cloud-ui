@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
-import { QApi } from "@/api"
+import { QcApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 import { DomainItem } from "@/api/local/domain"
 
@@ -24,7 +24,7 @@ export default class DnspodDomain extends Vue {
     public updateModal!: typeof RecordUpdate
 
     public created() {
-        QApi.vendor(this.meta.VendorId)
+        QcApi.vendor(this.meta.VendorId)
         this.domainInfo = {
             Domain: this.meta.Name,
             Grade: this.meta.CloudMeta.Grade,
@@ -38,7 +38,7 @@ export default class DnspodDomain extends Vue {
     public domainInfo!: Qcloud.Dnspod.DomainInfo
 
     async getDomain() {
-        const res = await QApi.dnspod.describeDomain({
+        const res = await QcApi.dnspod.describeDomain({
             Domain: this.domainInfo.Domain
         })
         if (res.DomainInfo) {
@@ -52,7 +52,7 @@ export default class DnspodDomain extends Vue {
     public recordCountInfo!: Qcloud.Dnspod.RecordCountInfo
 
     async getRecordList() {
-        const res = await QApi.dnspod.describeRecordList({
+        const res = await QcApi.dnspod.describeRecordList({
             Domain: this.domainInfo.Domain
         })
         if (res.RecordCountInfo) {
@@ -68,7 +68,7 @@ export default class DnspodDomain extends Vue {
             Domain: this.domainInfo.Domain,
             RecordId: recordId
         }
-        await QApi.dnspod.deleteRecord(query)
+        await QcApi.dnspod.deleteRecord(query)
         this.getRecordList()
     }
 }

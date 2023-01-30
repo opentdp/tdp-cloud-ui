@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 
 @Component
 export default class MemberRegister extends Vue {
@@ -28,7 +28,7 @@ export default class MemberRegister extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await Api.user.register(this.formModel)
+            await LoApi.user.register(this.formModel)
             ElMessage.success("注册成功")
             // 切换到登陆页面
             this.$router.push("/member/login")

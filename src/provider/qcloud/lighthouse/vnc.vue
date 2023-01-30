@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
 
-import { Api, QApi } from "@/api"
+import { LoApi, QcApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 import { TaskScriptItem } from "@/api/local/task_script"
@@ -16,7 +16,7 @@ export default class LighthouseVnc extends Vue {
     }
 
     public created() {
-        QApi.vendor(this.meta.VendorId)
+        QcApi.vendor(this.meta.VendorId)
         this.getScriptList()
         this.vncInit()
     }
@@ -33,7 +33,7 @@ export default class LighthouseVnc extends Vue {
     public frame!: HTMLIFrameElement
 
     async vncInit() {
-        const res = await QApi.lighthouse.describeInstanceVncUrl(this.region, {
+        const res = await QcApi.lighthouse.describeInstanceVncUrl(this.region, {
             InstanceId: this.meta.CloudId,
         })
         if (this.frame) {
@@ -48,7 +48,7 @@ export default class LighthouseVnc extends Vue {
 
     async getScriptList() {
         this.scriptList.push(...shellList)
-        const res = await Api.taskScript.list()
+        const res = await LoApi.taskScript.list()
         this.scriptList.push(...res)
     }
 

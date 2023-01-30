@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import sessionStore from "@/store/session"
 
 @Component
@@ -42,7 +42,7 @@ export default class MemberPassword extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await Api.user.updatePassword(this.formModel)
+            await LoApi.user.updatePassword(this.formModel)
             ElMessage.success("修改成功")
         })
     }

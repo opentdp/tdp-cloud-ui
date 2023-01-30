@@ -5,7 +5,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import VueJsonPretty from "vue-json-pretty"
 import "vue-json-pretty/lib/styles.css"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { TaskHistoryItem } from "@/api/local/task_history"
 import { dateFormat } from "@/helper/format"
 
@@ -33,7 +33,7 @@ export default class TaskHistory extends Vue {
     public historyList: TaskHistoryItem[] = []
 
     async getHistory() {
-        const res = await Api.taskHistory.list()
+        const res = await LoApi.taskHistory.list()
         this.historyList = res
     }
 

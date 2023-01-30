@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { QApi } from "@/api"
+import { QcApi } from "@/api"
 import * as Qcloud from "@/api/qcloud/typings"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"
 import { MachineItem } from "@/api/local/machine"
@@ -25,7 +25,7 @@ export default class LighthouseInstance extends Vue {
     }
 
     public created() {
-        QApi.vendor(this.meta.VendorId)
+        QcApi.vendor(this.meta.VendorId)
         this.instance = this.meta.CloudMeta
         this.getInstance()
     }
@@ -41,7 +41,7 @@ export default class LighthouseInstance extends Vue {
     public instance!: Qcloud.Lighthouse.Instance
 
     async getInstance() {
-        const res = await QApi.lighthouse.describeInstances(this.region, {
+        const res = await QcApi.lighthouse.describeInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
         })
         if (res.InstanceSet) {
@@ -53,7 +53,7 @@ export default class LighthouseInstance extends Vue {
 
     async stopInstance() {
         this.instance.InstanceState = "STOPPING"
-        await QApi.lighthouse.stopInstances(this.region, {
+        await QcApi.lighthouse.stopInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
         })
         setTimeout(this.refreshInstance, 1500)
@@ -63,7 +63,7 @@ export default class LighthouseInstance extends Vue {
 
     async startInstance() {
         this.instance.InstanceState = "STARTING"
-        await QApi.lighthouse.startInstances(this.region, {
+        await QcApi.lighthouse.startInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
         })
         setTimeout(this.refreshInstance, 1500)
@@ -73,7 +73,7 @@ export default class LighthouseInstance extends Vue {
 
     async rebootInstance() {
         this.instance.InstanceState = "REBOOTING"
-        await QApi.lighthouse.rebootInstances(this.region, {
+        await QcApi.lighthouse.rebootInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
         })
         setTimeout(this.refreshInstance, 1500)
@@ -101,7 +101,7 @@ export default class LighthouseInstance extends Vue {
     async modifyInstanceName() {
         this.modifyInstanceNameBus.loading = true
         if (this.modifyInstanceNameBus.model.name && this.instance.InstanceName != this.modifyInstanceNameBus.model.name) {
-            await QApi.lighthouse.modifyInstancesAttribute(this.region, {
+            await QcApi.lighthouse.modifyInstancesAttribute(this.region, {
                 InstanceIds: [this.instance.InstanceId],
                 InstanceName: this.modifyInstanceNameBus.model.name
             })

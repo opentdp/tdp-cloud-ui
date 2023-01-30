@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { Api } from "@/api"
+import { LoApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { SSHKeyItem } from "@/api/local/sshkey"
 import { TaskScriptItem } from "@/api/local/task_script"
@@ -38,7 +38,7 @@ export default class TerminalSsh extends Vue {
         // 延迟连接
         this.changeTab(tab.id)
         setTimeout(() => {
-            const url = Api.terminal.getWebsshURL(this.formModel)
+            const url = LoApi.terminal.getWebsshURL(this.formModel)
             tab.webssh = new WebSSH(tab.id, url)
         }, 100)
     }
@@ -76,7 +76,7 @@ export default class TerminalSsh extends Vue {
     public sshkeyList: SSHKeyItem[] = []
 
     async getSshkeyList() {
-        const res = await Api.sshkey.list()
+        const res = await LoApi.sshkey.list()
         this.sshkeyList = res
     }
 
@@ -85,7 +85,7 @@ export default class TerminalSsh extends Vue {
     public machineList: MachineItem[] = []
 
     async getMachineList() {
-        const res = await Api.machine.list()
+        const res = await LoApi.machine.list()
         this.machineList = res
     }
 
@@ -105,7 +105,7 @@ export default class TerminalSsh extends Vue {
 
     async getScriptList() {
         this.scriptList.push(...shellList)
-        const res = await Api.taskScript.list()
+        const res = await LoApi.taskScript.list()
         this.scriptList.push(...res)
     }
 
