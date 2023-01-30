@@ -11,7 +11,7 @@ export const installTDPWorker: TaskScriptItem = {
     Username: "root",
     Description: "",
     Content: trim(`
-        TDP_EXEC_ARGS="--remote ${LoApi.workhub.getRegisterURL()}"
+        export TDP_EXEC_ARGS="--remote ${LoApi.workhub.getRegisterURL()}"
         wget -qO- https://apps.rehiy.com/tdp-cloud/worker-linux | sh -
     `),
     CommandType: "shell",
