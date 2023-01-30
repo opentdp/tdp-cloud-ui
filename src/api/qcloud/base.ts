@@ -1,18 +1,18 @@
 import { HttpClient, HttpRequest } from "@/api/basic/http"
 
 export class QcloudClient extends HttpClient {
-    static vendorId = ""
+    static VendorId = ""
 
-    protected qService = ""
-    protected qVersion = ""
+    protected Service = ""
+    protected Version = ""
 
-    protected q(query: QcloudRequest, expiry = 0) {
+    protected bus(query: QcloudRequest, expiry = 0) {
         const req: HttpRequest = {
             method: "POST",
-            url: "/qcloud/" + QcloudClient.vendorId,
+            url: "/qcloud/" + QcloudClient.VendorId,
             query: Object.assign({
-                Service: this.qService,
-                Version: this.qVersion,
+                Service: this.Service,
+                Version: this.Version,
             }, query)
         }
 
@@ -25,7 +25,7 @@ export class QcloudClient extends HttpClient {
 }
 
 export function QcloudVendor(id: number | string) {
-    QcloudClient.vendorId = id + ""
+    QcloudClient.VendorId = id + ""
 }
 
 export interface QcloudRequest {
