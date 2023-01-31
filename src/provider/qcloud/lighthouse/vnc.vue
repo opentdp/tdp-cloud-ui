@@ -47,9 +47,10 @@ export default class LighthouseVnc extends Vue {
     public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
-        this.scriptList.push(...shellList)
         const res = await LoApi.taskScript.list()
-        this.scriptList.push(...res.Datasets)
+        const list = [...shellList, ...res.Datasets]
+        // 根据操作系统过滤脚本
+        this.scriptList = LoApi.taskScript.osFilter(list, this.meta.OSType)
     }
 
     // 执行快捷命令

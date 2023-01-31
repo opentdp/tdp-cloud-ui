@@ -16,6 +16,17 @@ export class TaskScriptModel extends HttpClient {
     public remove(id: number): Promise<HttpMessage> {
         return this.delete("/task/script/" + id)
     }
+
+    public osFilter(list: TaskScriptItem[], os: string) {
+        return list.filter(s => {
+            if (s.CommandType == "SHELL") {
+                return os != "windows"
+            }
+            if (s.CommandType == "CMD" || s.CommandType == "POWERSHELL") {
+                return os == "windows"
+            }
+        })
+    }
 }
 
 export interface TaskScriptOrig {

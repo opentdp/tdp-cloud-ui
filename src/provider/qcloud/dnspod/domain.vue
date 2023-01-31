@@ -99,7 +99,7 @@ export default class DnspodDomain extends Vue {
             <el-table-column prop="TTL" label="TTL" min-width="80" />
             <el-table-column label="状态" min-width="80">
                 <template #default="scope">
-                    {{ scope.row.Status === "ENABLE" ? "启用" : "禁用" }}
+                    {{ scope.row.Status == "ENABLE" ? "启用" : "禁用" }}
                 </template>
             </el-table-column>
             <el-table-column prop="Remark" label="备注" min-width="150" />

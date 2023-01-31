@@ -76,7 +76,7 @@ export default class LighthouseFirewall extends Vue {
         await QcApi.lighthouse.modifyFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRules: this.firewallRuleList.map((item, idx) => {
-                if (this.modifyFirewallRuleBus.index === idx) {
+                if (this.modifyFirewallRuleBus.index == idx) {
                     Object.assign(item, this.modifyFirewallRuleBus.model)
                 }
                 return item

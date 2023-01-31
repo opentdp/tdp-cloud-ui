@@ -13,7 +13,7 @@ export function okNotify(msg: string) {
 
 export function errNotify(data: string | { Message: string }) {
     let msg: string
-    if (typeof data !== "string") {
+    if (typeof data != "string") {
         msg = data.Message || "UKN"
     } else {
         msg = data || "UKN"

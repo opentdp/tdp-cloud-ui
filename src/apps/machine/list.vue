@@ -53,9 +53,8 @@ export default class MachineList extends Vue {
     public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
-        this.scriptList.push(...shellList)
         const res = await LoApi.taskScript.list()
-        this.scriptList.push(...res.Datasets)
+        this.scriptList = [...shellList, ...res.Datasets]
     }
 
     // 执行快捷命令
@@ -70,8 +69,10 @@ export default class MachineList extends Vue {
     // 选择主机
 
     public selectedRow!: MachineItem
+    public rowScriptList: TaskScriptItem[] = []
 
     public tableRowChange(row: MachineItem) {
+        this.rowScriptList = LoApi.taskScript.osFilter(this.scriptList, row.OSType)
         this.selectedRow = row
     }
 }
@@ -96,8 +97,7 @@ export default class MachineList extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
-                @current-change="tableRowChange"
-            >
+                @current-change="tableRowChange">
                 <el-table-column fixed prop="HostName" label="名称" min-width="120" />
                 <el-table-column prop="IpAddress" label="公网 IP" />
                 <el-table-column prop="Region" label="地域" />
@@ -138,9 +138,11 @@ export default class MachineList extends Vue {
                 </div>
             </template>
             <div v-if="selectedRow.WorkerId.length == 32" class="button-list">
-                <el-button v-for="item in scriptList" :key="item.Id" @click="workerExec(item)">
-                    {{ item.Name }}
-                </el-button>
+                <template v-for="item in rowScriptList" :key="item.Id">
+                    <el-button @click="workerExec(item)">
+                        {{ item.Name }}
+                    </el-button>
+                </template>
             </div>
             <div v-else>
                 <p>主机未使用 <i>TDP Cloud Worker</i> 连接，请使用下述脚本完成注册。</p>

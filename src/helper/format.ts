@@ -3,7 +3,7 @@
  */
 
 export function bytesToSize(a: number, d = 2) {
-    if (a === 0) {
+    if (a == 0) {
         return "0 Bytes"
     }
     const c = 1024
@@ -34,7 +34,7 @@ export function dateFormat(t: string | number, fmt: string) {
         const rk = fmt.match(new RegExp(k))
         if (rk) {
             const ok = o[k] + ""
-            fmt = fmt.replace(rk[0], rk[0].length === 1 ? ok : ("00" + ok).substring(ok.length))
+            fmt = fmt.replace(rk[0], rk[0].length == 1 ? ok : ("00" + ok).substring(ok.length))
         }
     }
 

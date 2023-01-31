@@ -22,7 +22,7 @@ export default class MemberInfo extends Vue {
             { required: true, message: "个人简介 不能为空" },
             {
                 validator: (rule, value, callback) => {
-                    if (value.trim().length === 0) {
+                    if (value.trim().length == 0) {
                         callback(new Error("个人简介 不能为空"))
                     } else {
                         callback()

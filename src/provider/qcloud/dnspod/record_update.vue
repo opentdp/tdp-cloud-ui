@@ -84,8 +84,8 @@ export default class DnspodRecordUpdate extends Vue {
         this.domainInfo = info
         this.formModel = record
         // 加载数据
-        this.recordType.length === 0 && this.getRecordType()
-        this.recordLineList.length === 0 && this.getRecordLine()
+        this.recordType.length == 0 && this.getRecordType()
+        this.recordLineList.length == 0 && this.getRecordLine()
     }
 }
 </script>

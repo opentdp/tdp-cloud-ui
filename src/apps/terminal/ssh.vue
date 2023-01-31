@@ -45,7 +45,7 @@ export default class TerminalSsh extends Vue {
 
     public indexTab(id: string) {
         for (let i = 0; i < this.tabList.length; i++) {
-            if (this.tabList[i].id === id) {
+            if (this.tabList[i].id == id) {
                 return { index: i, tab: this.tabList[i] }
             }
         }
@@ -63,7 +63,7 @@ export default class TerminalSsh extends Vue {
             return
         }
         const { index, tab } = target
-        if (this.curTab.id === id) {
+        if (this.curTab.id == id) {
             const next = this.tabList[index + 1] || this.tabList[index - 1]
             this.changeTab(next ? next.id : "new")
         }
@@ -92,7 +92,7 @@ export default class TerminalSsh extends Vue {
     public machineFilter(qr: string, cb: (a: unknown[]) => void) {
         const rs: unknown[] = []
         this.machineList.forEach((item) => {
-            if (item.OSType === "LINUX_UNIX" && (item.IpAddress + item.Region).includes(qr)) {
+            if (item.OSType == "linux" && (item.IpAddress + item.Region).includes(qr)) {
                 rs.push({ value: item.IpAddress, region: item.Region })
             }
         })
@@ -104,9 +104,10 @@ export default class TerminalSsh extends Vue {
     public scriptList: TaskScriptItem[] = []
 
     async getScriptList() {
-        this.scriptList.push(...shellList)
         const res = await LoApi.taskScript.list()
-        this.scriptList.push(...res.Datasets)
+        const list = [...shellList, ...res.Datasets]
+        // 根据操作系统过滤脚本
+        this.scriptList = LoApi.taskScript.osFilter(list, "linux")
     }
 
     // 执行快捷命令
@@ -156,7 +157,7 @@ export default class TerminalSsh extends Vue {
     }
 
     public formSubmit(form: FormInstance | undefined) {
-        if (this.authType === "0") {
+        if (this.authType == "0") {
             this.formModel.PrivateKey = ""
         } else {
             this.formModel.Password = ""
@@ -214,14 +215,12 @@ interface sshTab {
                     <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
                         <el-select v-model="formModel.PrivateKey">
                             <el-option v-for="item in sshkeyList" :key="item.Id" :label="item.Description"
-                                :value="item.PrivateKey"
-                            />
+                                :value="item.PrivateKey" />
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">
                         <el-input v-model="formModel.PrivateKey" type="textarea"
-                            :autosize="{ minRows: 3, maxRows: 10 }"
-                        />
+                            :autosize="{ minRows: 3, maxRows: 10 }" />
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="formSubmit(formRef)">

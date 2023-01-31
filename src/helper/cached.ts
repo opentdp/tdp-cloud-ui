@@ -33,7 +33,7 @@ export class Cached {
 
     // 存储数据
     public set(key: unknown, value: unknown, expiry = 0) {
-        if (value === null) {
+        if (value == null) {
             return this.remove(key)
         }
         // 数据序列化
@@ -61,7 +61,7 @@ export class Cached {
             if (!skey || skey.indexOf(this.prefix)) {
                 continue
             }
-            if (all === true) {
+            if (all == true) {
                 this.driver.removeItem(skey)
             } else {
                 this.get(skey.replace(this.prefix, ''))
@@ -72,7 +72,7 @@ export class Cached {
     // 转换键名
     private hashkey(key: unknown): string {
         // 字符串作为key
-        if (typeof key !== 'object') {
+        if (typeof key != 'object') {
             return this.prefix + key
         }
         // 将对象作为key
