@@ -3,7 +3,7 @@ import { HttpClient } from "@/api/basic/http"
 import { TaskScriptOrig } from "./task_script"
 
 export class TaskHistoryModel extends HttpClient {
-    public list(): Promise<TaskHistoryItem[]> {
+    public list(): Promise<TaskHistoryPaged> {
         return this.get("/task/history")
     }
 }
@@ -19,9 +19,14 @@ export interface TaskHistoryOrig {
 
 export interface TaskHistoryItem extends TaskHistoryOrig {
     Id: number
-    UserId?: number
-    CreatedAt?: number
-    UpdatedAt?: number
+    UserId: number
+    CreatedAt: number
+    UpdatedAt: number
+}
+
+export interface TaskHistoryPaged {
+    Datasets: TaskHistoryItem[]
+    Datainfo?: unknown
 }
 
 export interface TaskHistoryResponse {

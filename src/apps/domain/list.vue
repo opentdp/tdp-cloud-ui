@@ -18,7 +18,7 @@ export default class DomainList extends Vue {
 
     async getDomainList() {
         const res = await LoApi.domain.list()
-        this.domainList = res || []
+        this.domainList = res.Datasets
         this.loading = false
     }
 

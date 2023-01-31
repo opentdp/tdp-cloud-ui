@@ -23,7 +23,7 @@ export default class VendorBindCloudflare extends Vue {
 
     async getDomainList() {
         const res = await LoApi.domain.list()
-        res.forEach((item) => {
+        res.Datasets.forEach((item) => {
             this.domainList[item.CloudId] = item
         })
     }

@@ -35,7 +35,7 @@ export default class WorkerBind extends Vue {
 
     async getWorkerList() {
         const res = await LoApi.workhub.list()
-        this.workerList = res
+        this.workerList = res.Datasets
     }
 
     // 绑定主机

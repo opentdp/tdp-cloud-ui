@@ -20,14 +20,14 @@ export default class DashboardIndex extends Vue {
     }
 
     async getAccountSummary() {
-        const domainList = await LoApi.domain.list()
-        this.summary.domain = domainList.length
+        const rs1 = await LoApi.domain.list()
+        this.summary.domain = rs1.Datasets.length
 
-        const machineList = await LoApi.machine.list()
-        this.summary.machine = machineList.length
+        const rs2 = await LoApi.machine.list()
+        this.summary.machine = rs2.Datasets.length
 
-        const vendorList = await LoApi.vendor.list()
-        this.summary.vendor = vendorList.length
+        const rs3 = await LoApi.vendor.list()
+        this.summary.vendor = rs3.Datasets.length
 
         this.loading = false
     }

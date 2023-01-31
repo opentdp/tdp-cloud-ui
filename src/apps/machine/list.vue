@@ -25,7 +25,7 @@ export default class MachineList extends Vue {
 
     async getMachineList() {
         const res = await LoApi.machine.list()
-        this.machineList = res || []
+        this.machineList = res.Datasets
         this.loading = false
     }
 
@@ -43,7 +43,7 @@ export default class MachineList extends Vue {
 
     async getWorkerList() {
         const res = await LoApi.workhub.list()
-        res.forEach(item => {
+        res.Datasets.forEach(item => {
             this.workerList[item.WorkerId] = item
         })
     }
@@ -55,7 +55,7 @@ export default class MachineList extends Vue {
     async getScriptList() {
         this.scriptList.push(...shellList)
         const res = await LoApi.taskScript.list()
-        this.scriptList.push(...res)
+        this.scriptList.push(...res.Datasets)
     }
 
     // 执行快捷命令

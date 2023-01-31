@@ -1,7 +1,7 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class MachineModel extends HttpClient {
-    public list(): Promise<MachineItem[]> {
+    public list(): Promise<MachinePaged> {
         return this.get("/machine")
     }
 
@@ -45,7 +45,12 @@ export interface MachineOrig {
 
 export interface MachineItem extends MachineOrig {
     Id: number
-    UserId?: number
-    CreatedAt?: string
-    UpdatedAt?: string
+    UserId: number
+    CreatedAt: string
+    UpdatedAt: string
+}
+
+export interface MachinePaged {
+    Datasets: MachineItem[]
+    Datainfo?: unknown
 }

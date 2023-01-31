@@ -77,7 +77,7 @@ export default class TerminalSsh extends Vue {
 
     async getSshkeyList() {
         const res = await LoApi.sshkey.list()
-        this.sshkeyList = res
+        this.sshkeyList = res.Datasets
     }
 
     // 获取主机列表
@@ -86,7 +86,7 @@ export default class TerminalSsh extends Vue {
 
     async getMachineList() {
         const res = await LoApi.machine.list()
-        this.machineList = res
+        this.machineList = res.Datasets
     }
 
     public machineFilter(qr: string, cb: (a: unknown[]) => void) {
@@ -106,7 +106,7 @@ export default class TerminalSsh extends Vue {
     async getScriptList() {
         this.scriptList.push(...shellList)
         const res = await LoApi.taskScript.list()
-        this.scriptList.push(...res)
+        this.scriptList.push(...res.Datasets)
     }
 
     // 执行快捷命令

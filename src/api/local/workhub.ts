@@ -3,7 +3,7 @@ import { HttpClient } from "@/api/basic/http"
 import { TaskScriptOrig } from "./task_script"
 
 export class WorkhubModel extends HttpClient {
-    public list(): Promise<WorkerItem[]> {
+    public list(): Promise<WorkerPaged> {
         return this.get("/workhub")
     }
 
@@ -41,10 +41,15 @@ export interface WorkerOrig {
 
 export interface WorkerItem extends WorkerOrig {
     Id: number
-    UserId?: number
-    MachineId?: number
-    CreatedAt?: number
-    UpdatedAt?: number
+    UserId: number
+    MachineId: number
+    CreatedAt: number
+    UpdatedAt: number
+}
+
+export interface WorkerPaged {
+    Datasets: WorkerItem[]
+    Datainfo?: unknown
 }
 
 export interface WorkerExecRequest {

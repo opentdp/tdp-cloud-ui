@@ -1,7 +1,7 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class DomainModel extends HttpClient {
-    public list(): Promise<DomainItem[]> {
+    public list(): Promise<DomainPaged> {
         return this.get("/domain")
     }
 
@@ -40,7 +40,12 @@ export interface DomainOrig {
 
 export interface DomainItem extends DomainOrig {
     Id: number
-    UserId?: number
-    CreatedAt?: string
-    UpdatedAt?: string
+    UserId: number
+    CreatedAt: string
+    UpdatedAt: string
+}
+
+export interface DomainPaged {
+    Datasets: DomainItem[]
+    Datainfo?: unknown
 }

@@ -34,7 +34,7 @@ export default class TaskHistory extends Vue {
 
     async getHistory() {
         const res = await LoApi.taskHistory.list()
-        this.historyList = res
+        this.historyList = res.Datasets
     }
 
     // 侧边栏开关

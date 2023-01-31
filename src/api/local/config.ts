@@ -1,7 +1,7 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class ConfigModel extends HttpClient {
-    public list(): Promise<ConfigItem[]> {
+    public list(): Promise<ConfigPaged> {
         return this.get("/config")
     }
 
@@ -13,7 +13,7 @@ export class ConfigModel extends HttpClient {
         return this.post("/config", rq)
     }
 
-    public update(rq: ConfigItem): Promise<HttpMessage> {
+    public update(rq: Partial<ConfigItem>): Promise<HttpMessage> {
         return this.patch("/config/" + rq.Name, rq)
     }
 
@@ -31,6 +31,11 @@ export interface ConfigOrig {
 
 export interface ConfigItem extends ConfigOrig {
     Id: number
-    CreatedAt?: string
-    UpdatedAt?: string
+    CreatedAt: string
+    UpdatedAt: string
+}
+
+export interface ConfigPaged {
+    Datasets: ConfigItem[]
+    Datainfo?: unknown
 }

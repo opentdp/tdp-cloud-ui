@@ -29,7 +29,7 @@ export default class TaskScript extends Vue {
 
     async getScriptList() {
         const res = await LoApi.taskScript.list()
-        this.scriptList = res
+        this.scriptList = res.Datasets
         this.loading = false
     }
 

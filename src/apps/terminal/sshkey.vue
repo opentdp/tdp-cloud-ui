@@ -20,7 +20,7 @@ export default class TerminalSshkey extends Vue {
 
     async getSshkeyList() {
         const res = await LoApi.sshkey.list()
-        this.keylist = res
+        this.keylist = res.Datasets
         this.loading = false
     }
 

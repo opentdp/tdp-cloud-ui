@@ -1,7 +1,7 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class SSHKeyModel extends HttpClient {
-    public list(): Promise<SSHKeyItem[]> {
+    public list(): Promise<SSHKeyPaged> {
         return this.get("/sshkey")
     }
 
@@ -9,7 +9,7 @@ export class SSHKeyModel extends HttpClient {
         return this.post("/sshkey", rq)
     }
 
-    public update(rq: SSHKeyItem): Promise<HttpMessage> {
+    public update(rq: Partial<SSHKeyItem>): Promise<HttpMessage> {
         return this.patch("/sshkey/" + rq.Id, rq)
     }
 
@@ -26,7 +26,12 @@ export interface SSHKeyOrig {
 
 export interface SSHKeyItem extends SSHKeyOrig {
     Id: number
-    UserId?: number
-    CreatedAt?: string
-    UpdatedAt?: string
+    UserId: number
+    CreatedAt: string
+    UpdatedAt: string
+}
+
+export interface SSHKeyPaged {
+    Datasets: SSHKeyItem[]
+    Datainfo?: unknown
 }

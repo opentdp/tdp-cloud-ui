@@ -1,7 +1,7 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class TaskScriptModel extends HttpClient {
-    public list(): Promise<TaskScriptItem[]> {
+    public list(): Promise<TaskScriptPaged> {
         return this.get("/task/script")
     }
 
@@ -9,7 +9,7 @@ export class TaskScriptModel extends HttpClient {
         return this.post("/task/script/", rq)
     }
 
-    public update(rq: TaskScriptItem): Promise<HttpMessage> {
+    public update(rq: Partial<TaskScriptItem>): Promise<HttpMessage> {
         return this.patch("/task/script/" + rq.Id, rq)
     }
 
@@ -30,7 +30,12 @@ export interface TaskScriptOrig {
 
 export interface TaskScriptItem extends TaskScriptOrig {
     Id: number
-    UserId?: number
-    CreatedAt?: string
-    UpdatedAt?: string
+    UserId: number
+    CreatedAt: string
+    UpdatedAt: string
+}
+
+export interface TaskScriptPaged {
+    Datasets: TaskScriptItem[]
+    Datainfo?: unknown
 }

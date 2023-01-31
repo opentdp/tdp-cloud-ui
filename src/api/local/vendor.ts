@@ -1,7 +1,7 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
 export class VendorModel extends HttpClient {
-    public list(): Promise<VendorItem[]> {
+    public list(): Promise<VendorPaged> {
         return this.get("/vendor")
     }
 
@@ -9,7 +9,7 @@ export class VendorModel extends HttpClient {
         return this.post("/vendor", rq)
     }
 
-    public update(rq: VendorItem): Promise<HttpMessage> {
+    public update(rq: Partial<VendorItem>): Promise<HttpMessage> {
         return this.patch("/vendor/" + rq.Id, rq)
     }
 
@@ -32,7 +32,12 @@ export interface VendorOrig {
 
 export interface VendorItem extends VendorOrig {
     Id: number
-    UserId?: number
-    CreatedAt?: string
-    UpdatedAt?: string
+    UserId: number
+    CreatedAt: string
+    UpdatedAt: string
+}
+
+export interface VendorPaged {
+    Datasets: VendorItem[]
+    Datainfo?: unknown
 }

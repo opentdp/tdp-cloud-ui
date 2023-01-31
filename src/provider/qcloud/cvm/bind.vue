@@ -147,7 +147,8 @@ export default class CvmBind extends Vue {
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="meta.boundList[scope.row.InstanceId]" link icon="View"
-                        @click="syncMachine(scope.row)">
+                        @click="syncMachine(scope.row)"
+                    >
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

@@ -24,7 +24,7 @@ export default class VendorBindWorker extends Vue {
 
     async getMachineList() {
         const res = await LoApi.machine.list()
-        res.forEach((item) => {
+        res.Datasets.forEach((item) => {
             this.machineList[item.WorkerId] = item
         })
     }

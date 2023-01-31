@@ -49,7 +49,7 @@ export default class LighthouseVnc extends Vue {
     async getScriptList() {
         this.scriptList.push(...shellList)
         const res = await LoApi.taskScript.list()
-        this.scriptList.push(...res)
+        this.scriptList.push(...res.Datasets)
     }
 
     // 执行快捷命令

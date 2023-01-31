@@ -31,7 +31,7 @@ export default class VendorBindQcloud extends Vue {
 
     async getMachineList() {
         const res = await LoApi.machine.list()
-        res.forEach((item) => {
+        res.Datasets.forEach((item) => {
             this.machineList[item.CloudId] = item
         })
     }
@@ -42,7 +42,7 @@ export default class VendorBindQcloud extends Vue {
 
     async getDomainList() {
         const res = await LoApi.domain.list()
-        res.forEach((item) => {
+        res.Datasets.forEach((item) => {
             this.domainList[item.CloudId] = item
         })
     }
