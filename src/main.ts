@@ -1,3 +1,5 @@
+import "@/helper/globals"
+
 import { createApp } from "vue"
 
 import App from "@/app.vue"
