@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { CfApi } from "@/api"
+import { LoApi, CfApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
 @Component
@@ -27,7 +27,7 @@ export default class CloudflareBind extends Vue {
 
     async getDomainlist() {
         const res = await CfApi.zones.list()
-        this.domainList = res.result
+        this.domainList = res.Datasets
         this.loading = false
     }
 
@@ -38,7 +38,7 @@ export default class CloudflareBind extends Vue {
             VendorId: this.meta.vendorId,
             Name: item.name,
             NSList: item.name_servers.join(","),
-            Model: "qcloud/dnspod",
+            Model: "cloudflare/zone",
             CloudId: item.id + '',
             CloudMeta: item,
             Description: "",

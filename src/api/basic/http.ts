@@ -62,7 +62,7 @@ export class HttpClient {
             if (/GET|DELETE/.test(req.method)) {
                 req.url += "?" + this.buildQuery(req.query)
             }
-            else if (/PATCH|POST/.test(req.method)) {
+            else if (/PATCH|PUT|POST/.test(req.method)) {
                 request.body = JSON.stringify(req.query)
                 headers["Content-Type"] = "application/json"
             }

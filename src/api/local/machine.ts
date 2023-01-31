@@ -22,13 +22,19 @@ export class MachineModel extends HttpClient {
     }
 }
 
+export const MachineModels = {
+    "local/worker": "TDP Worker",
+    "qcloud/cvm": "腾讯云 CVM",
+    "qcloud/lighthouse": "腾讯云 LH",
+}
+
 export interface MachineOrig {
     VendorId: number
     HostName: string
     IpAddress: string
     OSType: string
     Region: string
-    Model: "local/worker" | "qcloud/cvm" | "qcloud/lighthouse"
+    Model: keyof (typeof MachineModels)
     CloudId: string
     CloudMeta: unknown
     WorkerId: string

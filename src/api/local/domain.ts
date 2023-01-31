@@ -22,11 +22,16 @@ export class DomainModel extends HttpClient {
     }
 }
 
+export const DomainModels = {
+    "cloudflare/zone": "Cloudflare",
+    "qcloud/dnspod": "Dnspod",
+}
+
 export interface DomainOrig {
     VendorId: number
     Name: string
     NSList: string
-    Model: "cloudflare" | "qcloud/dnspod"
+    Model: keyof (typeof DomainModels)
     CloudId: string
     CloudMeta: unknown
     Description: string
