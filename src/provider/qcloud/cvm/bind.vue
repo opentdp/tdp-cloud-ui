@@ -8,7 +8,7 @@ import { MachineItem } from "@/api/local/machine"
 import { dateFormat } from "@/helper/format"
 
 @Component
-export default class LighthouseBind extends Vue {
+export default class CvmBind extends Vue {
     public dateFormat = dateFormat
 
     public loading = 1
@@ -26,18 +26,18 @@ export default class LighthouseBind extends Vue {
 
     // 获取列表
 
-    public regionList: Record<string, Qcloud.Lighthouse.RegionInfo> = {}
+    public regionList: Record<string, Qcloud.Cvm.RegionInfo> = {}
 
-    public instanceList: Qcloud.Lighthouse.Instance[] = []
+    public instanceList: Qcloud.Cvm.Instance[] = []
     public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await QcApi.lighthouse.describeRegions()
+        const res = await QcApi.cvm.describeRegions()
         this.loading = res.TotalCount
         res.RegionSet.forEach(async (item) => {
             this.regionList[item.Region] = item
             // 获取当前大区实例
-            const rs2 = await QcApi.lighthouse.describeInstances(item.Region)
+            const rs2 = await QcApi.cvm.describeInstances(item.Region)
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet)
                 this.instanceCount += rs2.TotalCount
@@ -48,8 +48,8 @@ export default class LighthouseBind extends Vue {
 
     // 执行脚本
 
-    async runCommand(instance: Qcloud.Lighthouse.Instance, code: string) {
-        const region = instance.Zone.replace(/-(\d+)$/, '')
+    async runCommand(instance: Required<Qcloud.Cvm.Instance>, code: string) {
+        const region = instance.Placement.Zone.replace(/-(\d+)$/, '')
         const res = await QcApi.tat.runCommand(region, {
             InstanceIds: [instance.InstanceId],
             Content: code,
@@ -62,15 +62,15 @@ export default class LighthouseBind extends Vue {
 
     // 绑定主机
 
-    public bindMachine(item: Qcloud.Lighthouse.Instance) {
+    public bindMachine(item: Required<Qcloud.Cvm.Instance>) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         LoApi.machine.create({
             VendorId: this.meta.vendorId,
-            HostName: item.InstanceName,
-            IpAddress: item.PublicAddresses[0],
+            HostName: item.InstanceName || "",
+            IpAddress: item.PublicIpAddresses[0],
             OSType: this.parseOSType(item.OsName),
-            Region: this.parseRegion(item.Zone),
-            Model: "qcloud/lighthouse",
+            Region: this.parseRegion(item.Placement.Zone),
+            Model: "qcloud/cvm",
             CloudId: item.InstanceId,
             CloudMeta: item,
             WorkerId: "rand-" + rand,
@@ -82,14 +82,14 @@ export default class LighthouseBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: Qcloud.Lighthouse.Instance) {
+    public syncMachine(item: Required<Qcloud.Cvm.Instance>) {
         const bd = this.meta.boundList[item.InstanceId]
         LoApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
-            IpAddress: item.PublicAddresses[0],
+            IpAddress: item.PublicIpAddresses[0],
             OSType: this.parseOSType(item.OsName),
-            Region: this.parseRegion(item.Zone),
+            Region: this.parseRegion(item.Placement.Zone),
             CloudId: item.InstanceId,
             CloudMeta: item,
         })
@@ -107,6 +107,7 @@ export default class LighthouseBind extends Vue {
     public parseOSType(s: string) {
         return /windows/i.test(s) ? "windows" : "linux"
     }
+
 }
 </script>
 
@@ -123,7 +124,7 @@ export default class LighthouseBind extends Vue {
             <el-table-column fixed prop="InstanceName" label="名称" min-width="150" />
             <el-table-column label="地域" min-width="120">
                 <template #default="scope">
-                    {{ parseRegion(scope.row.Zone) }}
+                    {{ parseRegion(scope.row.Placement.Zone) }}
                 </template>
             </el-table-column>
             <el-table-column prop="CPU" label="CPU" min-width="60" />
@@ -137,7 +138,7 @@ export default class LighthouseBind extends Vue {
                     {{ scope.row.SystemDisk.DiskSize + " GB" }}
                 </template>
             </el-table-column>
-            <el-table-column prop="PublicAddresses" label="外网 IP" min-width="120" />
+            <el-table-column prop="PublicIpAddresses" label="外网 IP" min-width="120" />
             <el-table-column label="到期时间" min-width="100">
                 <template #default="scope">
                     {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
@@ -146,8 +147,7 @@ export default class LighthouseBind extends Vue {
             <el-table-column fixed="right" label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="meta.boundList[scope.row.InstanceId]" link icon="View"
-                        @click="syncMachine(scope.row)"
-                    >
+                        @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

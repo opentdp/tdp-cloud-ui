@@ -28,7 +28,7 @@ export interface MachineOrig {
     IpAddress: string
     OSType: string
     Region: string
-    Model: "local/worker" | "qcloud/lighthouse"
+    Model: "local/worker" | "qcloud/cvm" | "qcloud/lighthouse"
     CloudId: string
     CloudMeta: unknown
     WorkerId: string

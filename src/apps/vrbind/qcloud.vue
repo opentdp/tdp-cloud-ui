@@ -5,17 +5,18 @@ import { LoApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 import { MachineItem } from "@/api/local/machine"
 
-import DnspodBind from "@/provider/qcloud/dnspod/bind.vue"
+import CvmBind from "@/provider/qcloud/cvm/bind.vue"
 import LighthouseBind from "@/provider/qcloud/lighthouse/bind.vue"
+import DnspodBind from "@/provider/qcloud/dnspod/bind.vue"
 
 @Component({
-    components: { DnspodBind, LighthouseBind }
+    components: { CvmBind, LighthouseBind, DnspodBind }
 })
 export default class VendorBindQcloud extends Vue {
     public vendorId = 0
 
     public curTab = {
-        id: "lighthouse", label: ""
+        id: "cvm", label: ""
     }
 
     public created() {
@@ -60,6 +61,9 @@ export default class VendorBindQcloud extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
+            <el-tab-pane label="CVM服务器" name="cvm">
+                <CvmBind :meta="{ vendorId, boundList: machineList }" />
+            </el-tab-pane>
             <el-tab-pane label="轻量服务器" name="lighthouse">
                 <LighthouseBind :meta="{ vendorId, boundList: machineList }" />
             </el-tab-pane>

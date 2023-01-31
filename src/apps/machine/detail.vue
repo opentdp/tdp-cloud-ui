@@ -5,10 +5,11 @@ import { LoApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
 import WorkerInstance from "@/provider/worker/instance.vue"
+import CvmInstance from "@/provider/qcloud/cvm/instance.vue"
 import LighthouseInstance from "@/provider/qcloud/lighthouse/instance.vue"
 
 @Component({
-    components: { WorkerInstance, LighthouseInstance }
+    components: { CvmInstance, LighthouseInstance, WorkerInstance }
 })
 export default class MachineDetail extends Vue {
     public loading = true
@@ -41,6 +42,9 @@ export default class MachineDetail extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
+        <template v-if="machine?.Model == 'qcloud/cvm'">
+            <CvmInstance :meta="machine" />
+        </template>
         <template v-if="machine?.Model == 'qcloud/lighthouse'">
             <LighthouseInstance :meta="machine" />
         </template>
