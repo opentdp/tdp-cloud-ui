@@ -90,7 +90,7 @@ export default class DnspodRecordUpdate extends Vue {
                 </el-select>
             </el-form-item>
             <el-form-item prop="content" label="记录值">
-                <el-input v-model="formModel.content" type="textarea" />
+                <el-input v-model="formModel.content" type="textarea" autosize />
             </el-form-item>
             <el-form-item prop="proxied" label="加速">
                 <el-radio-group v-model="formModel.proxied">

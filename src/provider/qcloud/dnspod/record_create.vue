@@ -83,8 +83,8 @@ export default class DnspodRecordCreate extends Vue {
         this.domainInfo = info
         this.formModel = {
             Name: "",
-            Type: "",
-            Line: "",
+            Type: "A",
+            Line: "默认",
             Value: "",
             MX: 0,
             TTL: 600,
@@ -120,7 +120,7 @@ export default class DnspodRecordCreate extends Vue {
                 </el-select>
             </el-form-item>
             <el-form-item prop="Value" label="记录值">
-                <el-input v-model="formModel.Value" />
+                <el-input v-model="formModel.Value" type="textarea" autosize />
             </el-form-item>
             <el-form-item prop="Weight" label="权重">
                 <el-input-number v-model="formModel.Weight" />

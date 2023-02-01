@@ -108,7 +108,7 @@ export default class DnspodRecordUpdate extends Vue {
                 </el-select>
             </el-form-item>
             <el-form-item prop="Value" label="记录值">
-                <el-input v-model="formModel.Value" />
+                <el-input v-model="formModel.Value" type="textarea" autosize />
             </el-form-item>
             <el-form-item prop="Weight" label="权重">
                 <el-input-number v-model="formModel.Weight" />
