@@ -77,7 +77,6 @@ export default class DnspodRecordCreate extends Vue {
         this.$emit("close")
     }
 
-
     public open(info: QC.Dnspod.DomainInfo) {
         this.dailog = true
         this.loading = false
@@ -98,6 +97,7 @@ export default class DnspodRecordCreate extends Vue {
             MonitorStatus: "",
         }
         // 加载数据
+        console.log(this.domainInfo)
         this.recordType.length == 0 && this.getRecordType()
         this.recordLineList.length == 0 && this.getRecordLine()
     }

@@ -51,7 +51,7 @@ export default class CloudflareDomain extends Vue {
     // 删除记录
 
     async deleteRecord(id: string) {
-        await CfApi.zones.dnsRecordDelete(id)
+        await CfApi.zones.dnsRecordDelete(this.domainInfo.id, id)
         this.getRecordList()
     }
 }
@@ -72,12 +72,7 @@ export default class CloudflareDomain extends Vue {
         <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
             <el-table-column label="主机记录" show-overflow-tooltip fixed>
                 <template #default="scope">
-                    <template v-if="scope.row.name == scope.row.zone_name">
-                        @
-                    </template>
-                    <template v-else>
-                        {{ scope.row.name.replace("." + scope.row.zone_name, "") }}
-                    </template>
+                    {{ scope.row.name.replace(scope.row.zone_name, "").replace(/\.$/, "") || "@" }}
                 </template>
             </el-table-column>
             <el-table-column prop="type" label="记录类型" show-overflow-tooltip />
@@ -92,15 +87,10 @@ export default class CloudflareDomain extends Vue {
                     {{ scope.row.ttl > 1 ? scope.row.ttl : "自动" }}
                 </template>
             </el-table-column>
-            <el-table-column label="状态" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.Status == "ENABLE" ? "启用" : "禁用" }}
-                </template>
-            </el-table-column>
             <el-table-column prop="comment" label="备注" show-overflow-tooltip />
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="updateModal?.open(domainInfo, scope.row)">
+                    <el-button link type="primary" icon="Edit" @click="updateModal?.open(scope.row)">
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteRecord(scope.row.id)">

@@ -1,71 +1,53 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { QcApi } from "@/api"
-import * as QC from "@/api/qcloud/typings"
+import { CfApi } from "@/api"
+import { ZoneRecordTypes } from "@/api/cloudflare/zones"
+import * as CF from "@/api/cloudflare/typings"
 
 @Component({
     emits: ["close"],
     expose: ["open"],
 })
 export default class DnspodRecordCreate extends Vue {
+    public ZoneRecordTypes = ZoneRecordTypes
     public loading = false
 
-    public domainInfo!: QC.Dnspod.DomainInfo
+    public domainInfo!: CF.ZoneItem
 
     // 创建表单
 
-    public formModel!: QC.Dnspod.RecordListItem
+    public formModel!: CF.ZoneRecordCreate
 
     public formRules = {
-        Name: [{ required: true, message: "主机记录 不能为空" }],
-        Type: [{ required: true, message: "记录类型 不能为空" }],
-        Line: [{ required: true, message: "线路类型 不能为空" }],
-        Value: [{ required: true, message: "别名 不能为空" }],
-        MX: [{ required: true, message: "记录值 不能为空" }],
-        TTL: [{ required: true, message: "TTL 不能为空" }],
-        Weight: [{ required: true, message: "权重 不能为空" }],
-        Status: [{ required: true, message: "状态 不能为空" }],
-        Remark: [{ required: true, message: "备注 不能为空" }],
+        name: [{ required: true, message: "主机记录 不能为空" }],
+        type: [{ required: true, message: "记录类型 不能为空" }],
+        content: [{ required: true, message: "别名 不能为空" }],
+        proxied: [{ required: true, message: "加速 不能为空" }],
+        priority: [{ required: true, message: "权重 不能为空" }],
+        ttl: [{ required: true, message: "TTL 不能为空" }],
+        comment: [{ required: true, message: "备注 不能为空" }],
     }
 
     // 提交表单
 
     async formSubmit() {
         this.loading = true
-        const query: QC.Dnspod.CreateRecordRequest = {
-            Domain: this.domainInfo.Domain,
-            SubDomain: this.formModel.Name,
-            RecordType: this.formModel.Type,
-            RecordLine: this.formModel.Line,
-            Value: this.formModel.Value,
-            MX: +this.formModel.MX || 0,
-            TTL: +this.formModel.TTL || 600,
-            Weight: +this.formModel.Weight || 0
-        }
-        await QcApi.dnspod.createRecord(query)
+        await CfApi.zones.dnsRecordCreate(
+            this.domainInfo.id,
+            {
+                name: this.formModel.name,
+                type: this.formModel.type,
+                content: this.formModel.content,
+                proxied: this.formModel.proxied,
+                priority: this.formModel.priority || 0,
+                ttl: +this.formModel.ttl || 1,
+                comment: this.formModel.comment || "",
+                tags: this.formModel.tags || []
+            }
+        )
         this.loading = false
         this.close()
-    }
-
-    // 记录类型及线路
-
-    public recordType: string[] = []
-    public recordLineList: QC.Dnspod.LineInfo[] = []
-
-    async getRecordType() {
-        const res = await QcApi.dnspod.describeRecordType({
-            DomainGrade: this.domainInfo.Grade
-        })
-        this.recordType = res.TypeList || []
-    }
-
-    async getRecordLine() {
-        const res = await QcApi.dnspod.describeRecordLineList({
-            DomainGrade: this.domainInfo.Grade,
-            Domain: this.domainInfo.Domain
-        })
-        this.recordLineList = res.LineList || []
     }
 
     // 对话框管理
@@ -77,29 +59,20 @@ export default class DnspodRecordCreate extends Vue {
         this.$emit("close")
     }
 
-
-    public open(info: QC.Dnspod.DomainInfo) {
+    public open(domain: CF.ZoneItem) {
         this.dailog = true
         this.loading = false
-        this.domainInfo = info
+        this.domainInfo = domain
         this.formModel = {
-            Name: "",
-            Type: "",
-            Line: "",
-            Value: "",
-            MX: 0,
-            TTL: 600,
-            Weight: 0,
-            Status: "",
-            Remark: "",
-            LineId: "0",
-            RecordId: 0,
-            UpdatedOn: "",
-            MonitorStatus: "",
+            name: "",
+            type: "",
+            content: "",
+            proxied: true,
+            priority: 0,
+            ttl: 1,
+            comment: "",
+            tags: []
         }
-        // 加载数据
-        this.recordType.length == 0 && this.getRecordType()
-        this.recordLineList.length == 0 && this.getRecordLine()
     }
 }
 </script>
@@ -107,30 +80,28 @@ export default class DnspodRecordCreate extends Vue {
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加记录" width="400px">
         <el-form :model="formModel" :rules="formRules" label-width="88px">
-            <el-form-item prop="Name" label="主机记录">
-                <el-input v-model="formModel.Name" />
+            <el-form-item prop="name" label="主机记录">
+                <el-input v-model="formModel.name" />
             </el-form-item>
-            <el-form-item prop="Type" label="记录类型">
-                <el-select v-model="formModel.Type">
-                    <el-option v-for="v in recordType" :key="v" :label="v" :value="v" />
+            <el-form-item prop="type" label="记录类型">
+                <el-select v-model="formModel.type">
+                    <el-option v-for="v, k in ZoneRecordTypes" :key="k" :label="k" :value="k" />
                 </el-select>
             </el-form-item>
-            <el-form-item prop="Line" label="线路类型">
-                <el-select v-model="formModel.Line">
-                    <el-option v-for="v in recordLineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
-                </el-select>
+            <el-form-item prop="content" label="记录值">
+                <el-input v-model="formModel.content" type="textarea" />
             </el-form-item>
-            <el-form-item prop="Value" label="记录值">
-                <el-input v-model="formModel.Value" />
+            <el-form-item prop="proxied" label="加速">
+                <el-radio-group v-model="formModel.proxied">
+                    <el-radio :label="true">启用</el-radio>
+                    <el-radio :label="false">禁用</el-radio>
+                </el-radio-group>
             </el-form-item>
-            <el-form-item prop="Weight" label="权重">
-                <el-input v-model="formModel.Weight" />
+            <el-form-item prop="priority" label="权重">
+                <el-input-number v-model="formModel.priority" />
             </el-form-item>
-            <el-form-item prop="MX" label="MX">
-                <el-input v-model="formModel.MX" />
-            </el-form-item>
-            <el-form-item prop="TTL" label="TTL">
-                <el-input v-model="formModel.TTL" />
+            <el-form-item prop="ttl" label="TTL">
+                <el-input-number v-model="formModel.ttl" />
             </el-form-item>
         </el-form>
         <template #footer>
