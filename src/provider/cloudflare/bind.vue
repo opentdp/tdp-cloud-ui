@@ -2,6 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { LoApi, CfApi } from "@/api"
+import * as CF from "@/api/cloudflare/typings"
 import { DomainItem } from "@/api/local/domain"
 
 @Component
@@ -22,7 +23,7 @@ export default class CloudflareBind extends Vue {
 
     // 获取列表
 
-    public domainList: any[] = []
+    public domainList: CF.ZoneItem[] = []
     public domainCount = 0
 
     async getDomainlist() {
@@ -33,11 +34,12 @@ export default class CloudflareBind extends Vue {
 
     // 绑定域名
 
-    public bindDomian(item: any) {
+    public bindDomian(item: CF.ZoneItem) {
+        const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
         LoApi.domain.create({
             VendorId: this.meta.vendorId,
             Name: item.name,
-            NSList: item.name_servers.join(","),
+            NSList: ns,
             Model: "cloudflare/zone",
             CloudId: item.id + '',
             CloudMeta: item,
@@ -48,11 +50,12 @@ export default class CloudflareBind extends Vue {
 
     // 同步域名
 
-    public syncDomian(item: any) {
+    public syncDomian(item: CF.ZoneItem) {
+        const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
         const bd = this.meta.boundList[item.id]
         LoApi.domain.update({
             Id: bd ? bd.Id : 0,
-            NSList: item.EffectiveDNS.join(","),
+            NSList: ns,
             CloudId: item.id + '',
             CloudMeta: item,
         })

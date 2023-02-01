@@ -50,7 +50,7 @@ export interface ZoneItem {
 	cname_suffix: string;
 	created_on: string;
 	development_mode: number;
-	host: Host;
+	host?: Host;
 	id: string;
 	meta: Meta;
 	modified_on: string;
