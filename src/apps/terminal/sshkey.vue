@@ -81,10 +81,10 @@ export default class TerminalSshkey extends Vue {
                 </div>
             </template>
             <el-table :data="keylist">
-                <el-table-column prop="Description" label="别名" width="160" />
+                <el-table-column prop="Description" label="别名" show-overflow-tooltip />
                 <el-table-column prop="PublicKey" label="公钥" show-overflow-tooltip />
                 <el-table-column prop="PrivateKey" label="私钥" show-overflow-tooltip />
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-popconfirm title="确定删除?" @confirm="deleteKey(scope.$index)">
                             <template #reference>

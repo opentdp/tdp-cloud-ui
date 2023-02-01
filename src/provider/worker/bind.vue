@@ -82,17 +82,17 @@ export default class WorkerBind extends Vue {
             </div>
         </template>
         <el-table ref="tableRef" :data="workerList" highlight-current-row>
-            <el-table-column label="主机名">
+            <el-table-column label="主机名" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.WorkerMeta.HostName }}
                 </template>
             </el-table-column>
-            <el-table-column label="公网 IP">
+            <el-table-column label="公网 IP" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.WorkerMeta.IpAddress }}
                 </template>
             </el-table-column>
-            <el-table-column label="CPU">
+            <el-table-column label="CPU" show-overflow-tooltip>
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="+scope.row.WorkerMeta.CpuPercent.toFixed(2)" status="success"
@@ -102,7 +102,7 @@ export default class WorkerBind extends Vue {
                     </el-progress>
                 </template>
             </el-table-column>
-            <el-table-column label="内存">
+            <el-table-column label="内存" show-overflow-tooltip>
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.WorkerMeta.MemoryUsed / scope.row.WorkerMeta.MemoryTotal * 100"
@@ -113,7 +113,7 @@ export default class WorkerBind extends Vue {
                     </el-progress>
                 </template>
             </el-table-column>
-            <el-table-column label="硬盘">
+            <el-table-column label="硬盘" show-overflow-tooltip>
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.WorkerMeta.DiskUsed / scope.row.WorkerMeta.DiskTotal * 100"
@@ -124,13 +124,13 @@ export default class WorkerBind extends Vue {
                     </el-progress>
                 </template>
             </el-table-column>
-            <el-table-column label="网络 In/Out">
+            <el-table-column label="网络 In/Out" show-overflow-tooltip>
                 <template #default="scope">
                     {{ bytesToSize(scope.row.WorkerMeta.NetBytesRecv) }} /
                     {{ bytesToSize(scope.row.WorkerMeta.NetBytesSent) }}
                 </template>
             </el-table-column>
-            <el-table-column label="运行时间">
+            <el-table-column label="运行时间" show-overflow-tooltip>
                 <template #default="scope">
                     {{ (scope.row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
                 </template>

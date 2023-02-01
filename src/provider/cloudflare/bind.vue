@@ -71,29 +71,28 @@ export default class CloudflareBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column fixed prop="name" label="域名" min-width="150" />
-            <el-table-column label="状态">
+            <el-table-column fixed prop="name" label="域名" show-overflow-tooltip />
+            <el-table-column label="状态" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.status }}
                 </template>
             </el-table-column>
-            <el-table-column label="接入方式">
+            <el-table-column label="接入方式" show-overflow-tooltip>
                 <template #default="scope">
-                    {{ scope.row.type == "full" ? "NS" : "CNAME" }}
+                    {{ scope.row.type == "full" ? "NS" : scope.row.host?.name }}
                 </template>
             </el-table-column>
-            <el-table-column label="NS / CNAME后缀" min-width="180">
+            <el-table-column label="NS 服务器" show-overflow-tooltip>
                 <template #default="scope">
                     <template v-if="scope.row.name_servers">
-                        <div>{{ scope.row.name_servers[0] }}</div>
-                        <div>{{ scope.row.name_servers[1] }}</div>
+                        {{ scope.row.name_servers.join(",") }}
                     </template>
-                    <template v-if="scope.row.cname_suffix">
-                        <div>{{ scope.row.cname_suffix }}</div>
+                    <template v-else>
+                        Unknown
                     </template>
                 </template>
             </el-table-column>
-            <el-table-column label="套餐" min-width="120">
+            <el-table-column label="套餐" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.plan.name }}
                 </template>

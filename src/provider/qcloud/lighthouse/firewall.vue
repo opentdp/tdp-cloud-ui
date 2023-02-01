@@ -149,11 +149,11 @@ interface FirewallRuleBus {
             </div>
         </template>
         <el-table :data="firewallRuleList" table-layout="fixed">
-            <el-table-column prop="CidrBlock" label="来源" min-width="150" />
-            <el-table-column prop="Protocol" label="协议" min-width="100" />
-            <el-table-column prop="Port" label="端口" min-width="120" />
-            <el-table-column prop="Action" label="策略" min-width="100" />
-            <el-table-column prop="FirewallRuleDescription" label="备注" min-width="200">
+            <el-table-column prop="CidrBlock" label="来源" show-overflow-tooltip />
+            <el-table-column prop="Protocol" label="协议" show-overflow-tooltip />
+            <el-table-column prop="Port" label="端口" show-overflow-tooltip />
+            <el-table-column prop="Action" label="策略" show-overflow-tooltip />
+            <el-table-column prop="FirewallRuleDescription" label="备注" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.FirewallRuleDescription }}
                     <el-button link icon="EditPen" @click="modifyFirewallRuleDescriptionDailog(scope.row)" />

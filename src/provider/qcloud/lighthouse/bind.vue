@@ -120,25 +120,25 @@ export default class LighthouseBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
-            <el-table-column fixed prop="InstanceName" label="名称" min-width="150" />
-            <el-table-column label="地域" min-width="120">
+            <el-table-column fixed prop="InstanceName" label="名称" show-overflow-tooltip />
+            <el-table-column label="地域" show-overflow-tooltip>
                 <template #default="scope">
                     {{ parseRegion(scope.row.Zone) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="CPU" label="CPU" min-width="60" />
-            <el-table-column label="内存" min-width="60">
+            <el-table-column prop="CPU" label="CPU" show-overflow-tooltip />
+            <el-table-column label="内存" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.Memory + " GB" }}
                 </template>
             </el-table-column>
-            <el-table-column label="系统盘" min-width="80">
+            <el-table-column label="系统盘" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.SystemDisk.DiskSize + " GB" }}
                 </template>
             </el-table-column>
-            <el-table-column prop="PublicAddresses" label="外网 IP" min-width="120" />
-            <el-table-column label="到期时间" min-width="100">
+            <el-table-column prop="PublicAddresses" label="外网 IP" show-overflow-tooltip />
+            <el-table-column label="到期时间" show-overflow-tooltip>
                 <template #default="scope">
                     {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
                 </template>

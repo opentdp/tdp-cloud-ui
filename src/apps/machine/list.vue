@@ -98,16 +98,17 @@ export default class MachineList extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
-                @current-change="tableRowChange">
-                <el-table-column fixed prop="HostName" label="名称" min-width="120" />
-                <el-table-column prop="IpAddress" label="公网 IP" />
-                <el-table-column prop="Region" label="地域" />
-                <el-table-column prop="Model" label="类型">
+                @current-change="tableRowChange"
+            >
+                <el-table-column fixed prop="HostName" label="名称" show-overflow-tooltip />
+                <el-table-column prop="IpAddress" label="公网 IP" show-overflow-tooltip />
+                <el-table-column prop="Region" label="地域" show-overflow-tooltip />
+                <el-table-column prop="Model" label="类型" show-overflow-tooltip>
                     <template #default="scope">
                         {{ MachineModels[scope.row.Model] }}
                     </template>
                 </el-table-column>
-                <el-table-column label="子节点">
+                <el-table-column label="子节点" show-overflow-tooltip>
                     <template #default="scope">
                         <el-button v-if="scope.row.WorkerId.length == 32" link type="success">
                             已注册
