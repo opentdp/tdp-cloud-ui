@@ -4,10 +4,11 @@ import { Component, Vue } from "vue-facing-decorator"
 import { LoApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 
+import CloudflareZone from "@/provider/cloudflare/domain.vue"
 import DnspodDomain from "@/provider/qcloud/dnspod/domain.vue"
 
 @Component({
-    components: { DnspodDomain }
+    components: { CloudflareZone, DnspodDomain }
 })
 export default class DomainDetail extends Vue {
     public loading = true
@@ -40,6 +41,9 @@ export default class DomainDetail extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
+        <template v-if="domain?.Model == 'cloudflare/zone'">
+            <CloudflareZone :meta="domain" />
+        </template>
         <template v-if="domain?.Model == 'qcloud/dnspod'">
             <DnspodDomain :meta="domain" />
         </template>

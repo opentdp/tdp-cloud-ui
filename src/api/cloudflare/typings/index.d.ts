@@ -9,4 +9,5 @@ export interface Datainfo {
     Total: number
 }
 
-export { ZoneItem } from "./zones"
+export { ZoneItem } from "./zone"
+export { ZoneRecordItem } from "./zone_record"
