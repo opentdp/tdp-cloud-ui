@@ -1,25 +1,24 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "vue-facing-decorator"
-
-import { ElMessage, FormInstance, FormRules } from "element-plus"
+import { Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
-import { MachineItem } from "@/api/local/machine"
-import { SSHKeyItem } from "@/api/local/sshkey"
 import { TaskScriptItem } from "@/api/local/task_script"
 
 import { WebSSH } from "@/helper/webssh"
 import shellList from "@/helper/script/shell"
 
-@Component
+import SshConnect from "./ssh_connect.vue"
+
+@Component({
+    components: { SshConnect }
+})
 export default class TerminalSsh extends Vue {
+    public addr = ""
 
     // 初始化
 
     public created() {
-        this.formModel.Addr = this.$route.params.addr + ""
-        this.getMachineList()
-        this.getSshkeyList()
+        this.addr = this.$route.params.addr + ""
         this.getScriptList()
     }
 
@@ -29,18 +28,18 @@ export default class TerminalSsh extends Vue {
         id: "new", label: ""
     }
 
-    public tabList: sshTab[] = []
+    public tabList: tabItem[] = []
 
-    public createTab() {
-        const tab: sshTab = {
+    public createTab(config: sshConfig) {
+        const tab: tabItem = {
             id: "tab-" + Date.now(),
-            label: this.formModel.Addr
+            label: config.Addr
         }
         this.tabList.push(tab)
         // 延迟连接
         this.changeTab(tab.id)
         setTimeout(() => {
-            const url = LoApi.terminal.getWebsshURL(this.formModel)
+            const url = LoApi.terminal.getWebsshURL(config)
             tab.webssh = new WebSSH(tab.id, url)
         }, 100)
     }
@@ -73,34 +72,6 @@ export default class TerminalSsh extends Vue {
         this.tabList.splice(index, 1)
     }
 
-    // 获取密钥列表
-
-    public sshkeyList: SSHKeyItem[] = []
-
-    async getSshkeyList() {
-        const res = await LoApi.sshkey.list()
-        this.sshkeyList = res.Datasets
-    }
-
-    // 获取主机列表
-
-    public machineList: MachineItem[] = []
-
-    async getMachineList() {
-        const res = await LoApi.machine.list()
-        this.machineList = res.Datasets
-    }
-
-    public machineFilter(qr: string, cb: (a: unknown[]) => void) {
-        const rs: unknown[] = []
-        this.machineList.forEach((item) => {
-            if (item.OSType == "linux" && (item.IpAddress + item.Region).includes(qr)) {
-                rs.push({ value: item.IpAddress, region: item.Region })
-            }
-        })
-        cb(rs)
-    }
-
     // 获取快捷命令
 
     public scriptList: TaskScriptItem[] = []
@@ -121,63 +92,19 @@ export default class TerminalSsh extends Vue {
         }
     }
 
-    // 登录服务器
-
-    public authType = "0"
-
-    @Ref
-    public formRef!: FormInstance
-
-    public formModel = {
-        Addr: "",
-        User: "root",
-        Password: "",
-        PrivateKey: ""
-    }
-
-    public formRules: FormRules = {
-        Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
-        User: [{ required: true, message: "用户名 不能为空" }],
-        Password: [{
-            validator: (rule, value, callback) => {
-                if (!this.formModel.Password && !this.formModel.PrivateKey) {
-                    callback(new Error("密码或公钥至少提供一个"))
-                } else {
-                    callback()
-                }
-            }
-        }],
-        PrivateKey: [{
-            validator: (rule, value, callback) => {
-                if (!this.formModel.Password && !this.formModel.PrivateKey) {
-                    callback(new Error("密码或公钥至少提供一个"))
-                } else {
-                    callback()
-                }
-            }
-        }],
-    }
-
-    public formSubmit(form: FormInstance | undefined) {
-        if (this.authType == "0") {
-            this.formModel.PrivateKey = ""
-        } else {
-            this.formModel.Password = ""
-        }
-        form && form.validate(valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            this.createTab()
-        })
-    }
 }
 
-interface sshTab {
+interface tabItem {
     id: string
     label: string
     webssh?: WebSSH
+}
+
+interface sshConfig {
+    Addr: string
+    User: string
+    Password: string
+    PrivateKey: string
 }
 </script>
 
@@ -193,45 +120,7 @@ interface sshTab {
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card" @tab-change="changeTab" @tab-remove="removeTab">
             <el-tab-pane label="新会话" name="new">
-                <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
-                    <el-form-item prop="Addr" label="主机">
-                        <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="machineFilter" clearable>
-                            <template #default="{ item }">
-                                {{ item.value }} - {{ item.region }}
-                            </template>
-                        </el-autocomplete>
-                    </el-form-item>
-                    <el-form-item prop="User" label="用户名">
-                        <el-input v-model="formModel.User" />
-                    </el-form-item>
-                    <el-form-item label="验证方式">
-                        <el-select v-model="authType">
-                            <el-option label="用户密码" value="0" />
-                            <el-option v-if="sshkeyList.length > 0" label="选择私玥" value="2" />
-                            <el-option label="输入私玥" value="4" />
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item v-if="authType == '0'" prop="Password" label="密码">
-                        <el-input v-model="formModel.Password" type="password" @keyup.enter="formSubmit(formRef)" />
-                    </el-form-item>
-                    <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
-                        <el-select v-model="formModel.PrivateKey">
-                            <el-option v-for="item in sshkeyList" :key="item.Id" :label="item.Description"
-                                :value="item.PrivateKey"
-                            />
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">
-                        <el-input v-model="formModel.PrivateKey" type="textarea"
-                            :autosize="{ minRows: 3 }"
-                        />
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="formSubmit(formRef)">
-                            登录
-                        </el-button>
-                    </el-form-item>
-                </el-form>
+                <SshConnect :addr="addr" @submit="createTab" />
             </el-tab-pane>
             <el-tab-pane v-for="item in tabList" :key="item.id" :name="item.id" :label="item.label" closable>
                 <div :id="item.id" />

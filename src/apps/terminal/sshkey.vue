@@ -1,14 +1,19 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormInstance, FormRules } from "element-plus"
-
 import { LoApi } from "@/api"
 import { SSHKeyItem } from "@/api/local/sshkey"
 
-@Component
+import SshkeyCreate from "./sshkey_create.vue"
+
+@Component({
+    components: { SshkeyCreate }
+})
 export default class TerminalSshkey extends Vue {
     public loading = true
+
+    @Ref
+    public createModal!: typeof SshkeyCreate
 
     // 初始化
 
@@ -33,35 +38,6 @@ export default class TerminalSshkey extends Vue {
         await LoApi.sshkey.remove(item.Id)
         this.keylist.splice(idx, 1)
     }
-
-    // 添加密钥
-
-    @Ref
-    public formRef!: FormInstance
-
-    public formModel = {
-        PublicKey: "",
-        PrivateKey: "",
-        Description: "",
-    }
-
-    public formRules: FormRules = {
-        PublicKey: [{ required: true, message: "公钥 不能为空" }],
-        PrivateKey: [{ required: true, message: "私钥 不能为空" }],
-        Description: [{ required: true, message: "别名 不能为空" }],
-    }
-
-    public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            await LoApi.sshkey.create(this.formModel)
-            this.formRef.resetFields()
-            this.getSshkeyList()
-        })
-    }
 }
 </script>
 
@@ -78,7 +54,12 @@ export default class TerminalSshkey extends Vue {
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>密钥列表</b>
+                    <b>密钥列表</b> &nbsp; &nbsp;
+                    <small>记录总数: {{ keylist?.length || 0 }}</small>
+                    <div class="flex-auto" />
+                    <el-button type="primary" plain size="small" @click="createModal?.open()">
+                        添加记录
+                    </el-button>
                 </div>
             </template>
             <el-table :data="keylist">
@@ -98,29 +79,6 @@ export default class TerminalSshkey extends Vue {
                 </el-table-column>
             </el-table>
         </el-card>
-        <div class="space-10" />
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>添加密钥</b>
-                </div>
-            </template>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="55px">
-                <el-form-item prop="Description" label="别名">
-                    <el-input v-model="formModel.Description" />
-                </el-form-item>
-                <el-form-item prop="PublicKey" label="公钥">
-                    <el-input v-model="formModel.PublicKey" type="textarea" rows="5" />
-                </el-form-item>
-                <el-form-item prop="PrivateKey" label="私钥">
-                    <el-input v-model="formModel.PrivateKey" type="textarea" rows="5" />
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="formSubmit(formRef)">
-                        保存
-                    </el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
+        <SshkeyCreate ref="createModal" @close="getSshkeyList" />
     </div>
 </template>

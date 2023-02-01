@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
@@ -18,6 +18,9 @@ export default class DnspodRecordUpdate extends Vue {
 
     // 创建表单
 
+    @Ref
+    public formRef!: FormInstance
+
     public formModel!: CF.ZoneRecordCreate
 
     public formRules: FormRules = {
@@ -27,10 +30,10 @@ export default class DnspodRecordUpdate extends Vue {
         proxied: [{ required: true, message: "加速 不能为空" }],
         priority: [{ required: true, message: "权重 不能为空" }],
         ttl: [{ required: true, message: "TTL 不能为空" }],
-        comment: [{ required: true, message: "备注 不能为空" }],
     }
 
     // 提交表单
+
     public formSubmit(form: FormInstance | undefined) {
         form && form.validate(async valid => {
             if (!valid) {
@@ -83,7 +86,7 @@ export default class DnspodRecordUpdate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="更新记录" width="400px">
-        <el-form :model="formModel" :rules="formRules" label-width="88px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
             <el-form-item prop="name" label="主机记录">
                 <el-input v-model="formModel.name" />
             </el-form-item>
@@ -115,7 +118,7 @@ export default class DnspodRecordUpdate extends Vue {
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" @click="formSubmit">
+                <el-button type="primary" @click="formSubmit(formRef)">
                     保存
                 </el-button>
             </span>

@@ -64,7 +64,7 @@ export default class TaskScriptCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加脚本" width="600px">
-        <el-form :model="formModel" :rules="formRules" label-width="100px" label-suffix=":">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px" label-suffix=":">
             <el-form-item label="类型">
                 <el-radio-group v-model="formModel.CommandType">
                     <el-radio label="SHELL" />
@@ -98,7 +98,7 @@ export default class TaskScriptCreate extends Vue {
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" @click="formSubmit">
+                <el-button type="primary" @click="formSubmit(formRef)">
                     保存
                 </el-button>
             </span>

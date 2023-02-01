@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
@@ -11,6 +11,12 @@ import { TaskScriptItem } from "@/api/local/task_script"
     expose: ['open']
 })
 export default class TaskScriptUpdate extends Vue {
+
+    // 创建表单
+
+    @Ref
+    public formRef!: FormInstance
+
     public formModel!: TaskScriptItem
 
     public formRules: FormRules = {
@@ -20,6 +26,8 @@ export default class TaskScriptUpdate extends Vue {
         Description: [{ required: true, message: "描述 不能为空" }],
         Timeout: [{ required: true, message: "超时时间 不能为空" }],
     }
+
+    // 提交表单
 
     public formSubmit(form: FormInstance | undefined) {
         form && form.validate(async valid => {
@@ -56,7 +64,7 @@ export default class TaskScriptUpdate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="修改脚本" width="600px">
-        <el-form :model="formModel" :rules="formRules" label-width="100px" label-suffix=":">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px" label-suffix=":">
             <el-form-item label="类型">
                 <el-radio-group v-model="formModel.CommandType">
                     <el-radio label="SHELL" />
@@ -90,7 +98,9 @@ export default class TaskScriptUpdate extends Vue {
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" @click="formSubmit">保存</el-button>
+                <el-button type="primary" @click="formSubmit(formRef)">
+                    保存
+                </el-button>
             </span>
         </template>
     </el-dialog>
