@@ -97,7 +97,6 @@ export default class DnspodRecordCreate extends Vue {
             MonitorStatus: "",
         }
         // 加载数据
-        console.log(this.domainInfo)
         this.recordType.length == 0 && this.getRecordType()
         this.recordLineList.length == 0 && this.getRecordLine()
     }
@@ -124,13 +123,13 @@ export default class DnspodRecordCreate extends Vue {
                 <el-input v-model="formModel.Value" />
             </el-form-item>
             <el-form-item prop="Weight" label="权重">
-                <el-input v-model="formModel.Weight" />
+                <el-input-number v-model="formModel.Weight" />
             </el-form-item>
             <el-form-item prop="MX" label="MX">
-                <el-input v-model="formModel.MX" />
+                <el-input-number v-model="formModel.MX" />
             </el-form-item>
             <el-form-item prop="TTL" label="TTL">
-                <el-input v-model="formModel.TTL" />
+                <el-input-number v-model="formModel.TTL" />
             </el-form-item>
         </el-form>
         <template #footer>

@@ -18,21 +18,21 @@ export default class DnspodRecordUpdate extends Vue {
     public formModel!: QC.Dnspod.RecordListItem
 
     public formRules = {
-        Name: [{ required: true, message: "别名 不能为空" }],
-        Type: [{ required: true, message: "别名 不能为空" }],
-        Line: [{ required: true, message: "别名 不能为空" }],
+        Name: [{ required: true, message: "主机记录 不能为空" }],
+        Type: [{ required: true, message: "记录类型 不能为空" }],
+        Line: [{ required: true, message: "线路类型 不能为空" }],
         Value: [{ required: true, message: "别名 不能为空" }],
-        MX: [{ required: true, message: "别名 不能为空" }],
-        TTL: [{ required: true, message: "别名 不能为空" }],
-        Weight: [{ required: true, message: "别名 不能为空" }],
-        Status: [{ required: true, message: "别名 不能为空" }],
-        Remark: [{ required: true, message: "别名 不能为空" }],
+        MX: [{ required: true, message: "记录值 不能为空" }],
+        TTL: [{ required: true, message: "TTL 不能为空" }],
+        Weight: [{ required: true, message: "权重 不能为空" }],
+        Status: [{ required: true, message: "状态 不能为空" }],
+        Remark: [{ required: true, message: "备注 不能为空" }],
     }
 
     // 提交表单
 
     async formSubmit() {
-        this.loading = false
+        this.loading = true
         const query: QC.Dnspod.ModifyRecordRequest = {
             Domain: this.domainInfo.Domain,
             SubDomain: this.formModel.Name,
@@ -83,6 +83,7 @@ export default class DnspodRecordUpdate extends Vue {
         this.loading = false
         this.domainInfo = info
         this.formModel = record
+	this.formModel.Weight = record.Weight || 0
         // 加载数据
         this.recordType.length == 0 && this.getRecordType()
         this.recordLineList.length == 0 && this.getRecordLine()
@@ -110,13 +111,13 @@ export default class DnspodRecordUpdate extends Vue {
                 <el-input v-model="formModel.Value" />
             </el-form-item>
             <el-form-item prop="Weight" label="权重">
-                <el-input v-model="formModel.Weight" />
+                <el-input-number v-model="formModel.Weight" />
             </el-form-item>
             <el-form-item prop="MX" label="MX">
-                <el-input v-model="formModel.MX" />
+                <el-input-number v-model="formModel.MX" />
             </el-form-item>
             <el-form-item prop="TTL" label="TTL">
-                <el-input v-model="formModel.TTL" />
+                <el-input-number v-model="formModel.TTL" />
             </el-form-item>
         </el-form>
         <template #footer>
