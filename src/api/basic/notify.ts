@@ -5,20 +5,24 @@ const Message: Record<string, string> = {
     EOF: "参数错误",
 }
 
-export function okNotify(msg: string) {
+export function okMessage(data: string | { Message: string }) {
+    let msg = (typeof data != "string" ? data.Message : data) || "UKN"
     msg = Message[msg] || msg
-    ElMessage.success(msg)
+    ElMessage({
+        type: 'success',
+        grouping: true,
+        message: msg,
+    })
     return msg
 }
 
-export function errNotify(data: string | { Message: string }) {
-    let msg: string
-    if (typeof data != "string") {
-        msg = data.Message || "UKN"
-    } else {
-        msg = data || "UKN"
-    }
+export function errMessage(data: string | { Message: string }) {
+    let msg = (typeof data != "string" ? data.Message : data) || "UKN"
     msg = Message[msg] || msg
-    ElMessage.error(msg)
+    ElMessage({
+        type: 'error',
+        grouping: true,
+        message: msg,
+    })
     return msg
 }

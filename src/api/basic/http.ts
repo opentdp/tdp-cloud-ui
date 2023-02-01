@@ -1,7 +1,7 @@
 import { Cached } from "@/helper/cached"
 import sessionStore from "@/store/session"
 
-import { errNotify, okNotify } from "./notify"
+import { errMessage, okMessage } from "./notify"
 
 let cached: Cached
 let session: ReturnType<typeof sessionStore>
@@ -76,7 +76,7 @@ export class HttpClient {
         const data = await body.json()
         // 捕获错误信息
         if (data.Error) {
-            const err = errNotify(data.Error)
+            const err = errMessage(data.Error)
             if (/会话已失效|登录后重试/.test(err)) {
                 session.$reset(), location.reload()
             }
@@ -85,7 +85,7 @@ export class HttpClient {
         // 处理正确结果
         if (data.Payload) {
             if (data.Payload.Message) {
-                okNotify(data.Payload.Message)
+                okMessage(data.Payload.Message)
             }
             return data.Payload
         }
