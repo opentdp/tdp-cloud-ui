@@ -73,7 +73,7 @@ export default class VendorListCloudflare extends Vue {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                公有云
+                腾讯云
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover">

@@ -5,6 +5,10 @@ export class VendorModel extends HttpClient {
         return this.get("/vendor")
     }
 
+    public detail(id: number): Promise<VendorItem> {
+        return this.get("/vendor/" + id)
+    }
+
     public create(rq: VendorOrig): Promise<HttpMessage> {
         return this.post("/vendor", rq)
     }

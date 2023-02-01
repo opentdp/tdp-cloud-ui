@@ -36,8 +36,11 @@ export default class DomainDetail extends Vue {
             <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
+            <el-breadcrumb-item to="/domain/list">
+                域名管理
+            </el-breadcrumb-item>
             <el-breadcrumb-item>
-                解析管理
+                {{ domain.Name }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />

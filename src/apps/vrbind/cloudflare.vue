@@ -3,6 +3,7 @@ import { Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
+import { VendorItem } from "@/api/local/vendor"
 
 import CloudflareBind from "@/provider/cloudflare/bind.vue"
 
@@ -10,11 +11,20 @@ import CloudflareBind from "@/provider/cloudflare/bind.vue"
     components: { CloudflareBind }
 })
 export default class VendorBindCloudflare extends Vue {
-    public vendorId = 0
-
     public created() {
-        this.getDomainList()
         this.vendorId = +this.$route.params.id
+        this.getVendor(this.vendorId)
+        this.getDomainList()
+    }
+
+    // 厂商信息
+
+    public vendorId = 0
+    public vendor?: VendorItem
+
+    async getVendor(id: number) {
+        const res = await LoApi.vendor.detail(id)
+        this.vendor = res
     }
 
     // 已绑定域名
@@ -36,8 +46,14 @@ export default class VendorBindCloudflare extends Vue {
             <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            <el-breadcrumb-item to="/vendor/cloudflare">
                 Cloudflare
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                {{ vendor?.Description || vendorId }}
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                导入
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div class="space-10" />

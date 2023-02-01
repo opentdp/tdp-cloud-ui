@@ -91,11 +91,6 @@ export default class DnspodDomain extends Vue {
             <el-table-column prop="Type" label="记录类型" show-overflow-tooltip />
             <el-table-column prop="Line" label="线路类型" show-overflow-tooltip />
             <el-table-column prop="Value" label="记录值" show-overflow-tooltip />
-            <el-table-column label="MX" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.MX > 0 ? scope.row.MX : "-" }}
-                </template>
-            </el-table-column>
             <el-table-column prop="TTL" label="TTL" show-overflow-tooltip />
             <el-table-column label="状态" show-overflow-tooltip>
                 <template #default="scope">

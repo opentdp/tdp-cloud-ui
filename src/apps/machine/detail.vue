@@ -37,8 +37,11 @@ export default class MachineDetail extends Vue {
             <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
+            <el-breadcrumb-item to="/machine/list">
+                主机管理
+            </el-breadcrumb-item>
             <el-breadcrumb-item>
-                主机详情
+                {{ machine.HostName || machine.Id }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />

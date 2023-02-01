@@ -4,6 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import { LoApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 import { MachineItem } from "@/api/local/machine"
+import { VendorItem } from "@/api/local/vendor"
 
 import CvmBind from "@/provider/qcloud/cvm/bind.vue"
 import LighthouseBind from "@/provider/qcloud/lighthouse/bind.vue"
@@ -13,16 +14,25 @@ import DnspodBind from "@/provider/qcloud/dnspod/bind.vue"
     components: { CvmBind, LighthouseBind, DnspodBind }
 })
 export default class VendorBindQcloud extends Vue {
-    public vendorId = 0
-
     public curTab = {
         id: "cvm", label: ""
     }
 
     public created() {
+        this.vendorId = +this.$route.params.id
+        this.getVendor(this.vendorId)
         this.getDomainList()
         this.getMachineList()
-        this.vendorId = +this.$route.params.id
+    }
+
+    // 厂商信息
+
+    public vendorId = 0
+    public vendor?: VendorItem
+
+    async getVendor(id: number) {
+        const res = await LoApi.vendor.detail(id)
+        this.vendor = res
     }
 
     // 已绑定主机
@@ -56,8 +66,11 @@ export default class VendorBindQcloud extends Vue {
             <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            <el-breadcrumb-item to="/vendor/qcloud">
                 腾讯云
+            </el-breadcrumb-item>
+            <el-breadcrumb-item>
+                {{ vendor?.Description || vendorId }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
