@@ -2,10 +2,11 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
-import { DomainItem } from "@/api/local/domain"
+import { DomainModels, DomainItem } from "@/api/local/domain"
 
 @Component
 export default class DomainList extends Vue {
+    public DomainModels = DomainModels
     public loading = true
 
     public created() {
@@ -52,7 +53,11 @@ export default class DomainList extends Vue {
             <el-table v-loading="loading" :data="domainList" table-layout="fixed">
                 <el-table-column fixed prop="Name" label="域名" min-width="120" />
                 <el-table-column prop="NSList" label="NS 服务器" />
-                <el-table-column prop="Model" label="来源" />
+                <el-table-column prop="Model" label="类型">
+                    <template #default="scope">
+                        {{ DomainModels[scope.row.Model] }}
+                    </template>
+                </el-table-column>
                 <el-table-column fixed="right" label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">

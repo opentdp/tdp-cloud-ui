@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
-import { MachineItem } from "@/api/local/machine"
+import { MachineModels, MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
 import { TaskScriptItem } from "@/api/local/task_script"
 
@@ -10,6 +10,7 @@ import shellList, { installTDPWorker } from "@/helper/script/shell"
 
 @Component
 export default class MachineList extends Vue {
+    public MachineModels = MachineModels
     public installTDPWorker = installTDPWorker
     public loading = true
 
@@ -101,7 +102,11 @@ export default class MachineList extends Vue {
                 <el-table-column fixed prop="HostName" label="名称" min-width="120" />
                 <el-table-column prop="IpAddress" label="公网 IP" />
                 <el-table-column prop="Region" label="地域" />
-                <el-table-column prop="Model" label="来源" />
+                <el-table-column prop="Model" label="类型">
+                    <template #default="scope">
+                        {{ MachineModels[scope.row.Model] }}
+                    </template>
+                </el-table-column>
                 <el-table-column label="子节点">
                     <template #default="scope">
                         <el-button v-if="scope.row.WorkerId.length == 32" link type="success">

@@ -22,10 +22,10 @@ export class MachineModel extends HttpClient {
     }
 }
 
-export const MachineModels = {
-    "local/worker": "TDP Worker",
-    "qcloud/cvm": "腾讯云 CVM",
-    "qcloud/lighthouse": "腾讯云 LH",
+export const MachineModels: Record<string, string> = {
+    "local/worker": "独立节点",
+    "qcloud/cvm": "腾讯云/CVM",
+    "qcloud/lighthouse": "腾讯云/LH",
 }
 
 export interface MachineOrig {

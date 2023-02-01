@@ -22,7 +22,7 @@ export class DomainModel extends HttpClient {
     }
 }
 
-export const DomainModels = {
+export const DomainModels: Record<string, string> = {
     "cloudflare/zone": "Cloudflare",
     "qcloud/dnspod": "Dnspod",
 }
