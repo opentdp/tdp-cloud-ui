@@ -2,7 +2,7 @@
 import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 import { DomainItem } from "@/api/local/domain"
 
 import RecordCreate from "./record_create.vue"
@@ -14,7 +14,7 @@ import RecordUpdate from "./record_update.vue"
 export default class DnspodDomain extends Vue {
     @Prop
     public meta!: Omit<DomainItem, "CloudMeta"> & {
-        CloudMeta: Qcloud.Dnspod.DomainListItem
+        CloudMeta: QC.Dnspod.DomainListItem
     }
 
     @Ref
@@ -35,7 +35,7 @@ export default class DnspodDomain extends Vue {
 
     // 域名概要
 
-    public domainInfo!: Qcloud.Dnspod.DomainInfo
+    public domainInfo!: QC.Dnspod.DomainInfo
 
     async getDomain() {
         const res = await QcApi.dnspod.describeDomain({
@@ -48,8 +48,8 @@ export default class DnspodDomain extends Vue {
 
     // 域名记录
 
-    public recordList!: Qcloud.Dnspod.RecordListItem[]
-    public recordCountInfo!: Qcloud.Dnspod.RecordCountInfo
+    public recordList!: QC.Dnspod.RecordListItem[]
+    public recordCountInfo!: QC.Dnspod.RecordCountInfo
 
     async getRecordList() {
         const res = await QcApi.dnspod.describeRecordList({
@@ -64,7 +64,7 @@ export default class DnspodDomain extends Vue {
     // 删除记录
 
     async deleteRecord(recordId: number) {
-        const query: Qcloud.Dnspod.DeleteRecordRequest = {
+        const query: QC.Dnspod.DeleteRecordRequest = {
             Domain: this.domainInfo.Domain,
             RecordId: recordId
         }

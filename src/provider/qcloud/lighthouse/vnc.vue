@@ -2,7 +2,7 @@
 import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
 
 import { LoApi, QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 import { TaskScriptItem } from "@/api/local/task_script"
 
@@ -12,7 +12,7 @@ import shellList from "@/helper/script/shell"
 export default class LighthouseVnc extends Vue {
     @Prop
     public meta!: Omit<MachineItem, "CloudMeta"> & {
-        CloudMeta: Qcloud.Lighthouse.Instance
+        CloudMeta: QC.Lighthouse.Instance
     }
 
     public created() {

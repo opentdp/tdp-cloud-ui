@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { LoApi, QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 
 import { dateFormat } from "@/helper/format"
@@ -26,9 +26,9 @@ export default class LighthouseBind extends Vue {
 
     // 获取列表
 
-    public regionList: Record<string, Qcloud.Lighthouse.RegionInfo> = {}
+    public regionList: Record<string, QC.Lighthouse.RegionInfo> = {}
 
-    public instanceList: Qcloud.Lighthouse.Instance[] = []
+    public instanceList: QC.Lighthouse.Instance[] = []
     public instanceCount = 0
 
     async getRegionInstanceList() {
@@ -48,7 +48,7 @@ export default class LighthouseBind extends Vue {
 
     // 执行脚本
 
-    async runCommand(instance: Qcloud.Lighthouse.Instance, code: string) {
+    async runCommand(instance: QC.Lighthouse.Instance, code: string) {
         const region = instance.Zone.replace(/-(\d+)$/, '')
         const res = await QcApi.tat.runCommand(region, {
             InstanceIds: [instance.InstanceId],
@@ -62,7 +62,7 @@ export default class LighthouseBind extends Vue {
 
     // 绑定主机
 
-    public bindMachine(item: Qcloud.Lighthouse.Instance) {
+    public bindMachine(item: QC.Lighthouse.Instance) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         LoApi.machine.create({
             VendorId: this.meta.vendorId,
@@ -82,7 +82,7 @@ export default class LighthouseBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: Qcloud.Lighthouse.Instance) {
+    public syncMachine(item: QC.Lighthouse.Instance) {
         const bd = this.meta.boundList[item.InstanceId]
         LoApi.machine.update({
             Id: bd ? bd.Id : 0,

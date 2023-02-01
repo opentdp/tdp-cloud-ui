@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 import { InstanceStateMap } from "@/api/qcloud/lighthouse"
 import { MachineItem } from "@/api/local/machine"
 
@@ -21,7 +21,7 @@ export default class LighthouseInstance extends Vue {
 
     @Prop
     public meta!: Omit<MachineItem, "CloudMeta"> & {
-        CloudMeta: Qcloud.Lighthouse.Instance
+        CloudMeta: QC.Lighthouse.Instance
     }
 
     public created() {
@@ -38,7 +38,7 @@ export default class LighthouseInstance extends Vue {
 
     // 实例信息
 
-    public instance!: Qcloud.Lighthouse.Instance
+    public instance!: QC.Lighthouse.Instance
 
     async getInstance() {
         const res = await QcApi.lighthouse.describeInstances(this.region, {

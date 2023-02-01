@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 import { InstanceStateMap } from "@/api/qcloud/cvm"
 import { MachineItem } from "@/api/local/machine"
 
@@ -15,7 +15,7 @@ export default class CvmInstance extends Vue {
 
     @Prop
     public meta!: Omit<MachineItem, "CloudMeta"> & {
-        CloudMeta: Required<Qcloud.Cvm.Instance>
+        CloudMeta: Required<QC.Cvm.Instance>
     }
 
     public created() {
@@ -32,7 +32,7 @@ export default class CvmInstance extends Vue {
 
     // 实例信息
 
-    public instance!: Required<Qcloud.Cvm.Instance>
+    public instance!: Required<QC.Cvm.Instance>
 
     async getInstance() {
         const res = await QcApi.cvm.describeInstances(this.region, {

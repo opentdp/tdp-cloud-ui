@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { LoApi, QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
 import { DomainItem } from "@/api/local/domain"
 
@@ -25,7 +25,7 @@ export default class DnspodBind extends Vue {
 
     // 获取列表
 
-    public domainList: Qcloud.Dnspod.DomainListItem[] = []
+    public domainList: QC.Dnspod.DomainListItem[] = []
     public domainCount = 0
 
     async getDomainList() {
@@ -39,7 +39,7 @@ export default class DnspodBind extends Vue {
 
     // 绑定域名
 
-    public bindDomian(item: Qcloud.Dnspod.DomainListItem) {
+    public bindDomian(item: QC.Dnspod.DomainListItem) {
         LoApi.domain.create({
             VendorId: this.meta.vendorId,
             Name: item.Name,
@@ -54,7 +54,7 @@ export default class DnspodBind extends Vue {
 
     // 同步域名
 
-    public syncDomian(item: Qcloud.Dnspod.DomainListItem) {
+    public syncDomian(item: QC.Dnspod.DomainListItem) {
         const bd = this.meta.boundList[item.DomainId]
         LoApi.domain.update({
             Id: bd ? bd.Id : 0,

@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -13,7 +13,7 @@ export default class LighthouseSnapshot extends Vue {
     public dateFormat = dateFormat
 
     @Prop
-    public instance!: Qcloud.Lighthouse.Instance
+    public instance!: QC.Lighthouse.Instance
 
     public created() {
         this.getSnapshotList()
@@ -27,7 +27,7 @@ export default class LighthouseSnapshot extends Vue {
 
     // 快照列表
 
-    public snapshotList!: Qcloud.Lighthouse.DescribeSnapshotsResponse
+    public snapshotList!: QC.Lighthouse.DescribeSnapshotsResponse
 
     async getSnapshotList() {
         const res = await QcApi.lighthouse.describeSnapshots(this.region, {
@@ -65,7 +65,7 @@ export default class LighthouseSnapshot extends Vue {
 
     // 回滚快照
 
-    async applySnapshot(item: Qcloud.Lighthouse.Snapshot) {
+    async applySnapshot(item: QC.Lighthouse.Snapshot) {
         await QcApi.lighthouse.applyInstanceSnapshot(this.region, {
             InstanceId: this.instance.InstanceId,
             SnapshotId: item.SnapshotId
@@ -75,7 +75,7 @@ export default class LighthouseSnapshot extends Vue {
 
     // 删除快照
 
-    async deleteSnapshot(item: Qcloud.Lighthouse.Snapshot) {
+    async deleteSnapshot(item: QC.Lighthouse.Snapshot) {
         await QcApi.lighthouse.deleteSnapshots(this.region, {
             SnapshotIds: [item.SnapshotId],
         })

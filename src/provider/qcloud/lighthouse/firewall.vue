@@ -2,12 +2,12 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 
 @Component
 export default class LighthouseFirewall extends Vue {
     @Prop
-    public instance!: Qcloud.Lighthouse.Instance
+    public instance!: QC.Lighthouse.Instance
 
     public created() {
         this.getFirewallRuleList()
@@ -21,7 +21,7 @@ export default class LighthouseFirewall extends Vue {
 
     // 规则列表
 
-    public firewallRuleList!: Qcloud.Lighthouse.FirewallRule[]
+    public firewallRuleList!: QC.Lighthouse.FirewallRule[]
     public firewallRuleCount = 0
 
     async getFirewallRuleList() {
@@ -29,7 +29,7 @@ export default class LighthouseFirewall extends Vue {
             InstanceId: this.instance.InstanceId,
         })
         this.firewallRuleList = res.FirewallRuleSet.map(item => {
-            delete (item as Partial<Qcloud.Lighthouse.FirewallRuleInfo>).AppType
+            delete (item as Partial<QC.Lighthouse.FirewallRuleInfo>).AppType
             return item
         })
         this.firewallRuleCount = res.TotalCount
@@ -87,7 +87,7 @@ export default class LighthouseFirewall extends Vue {
         this.getFirewallRuleList()
     }
 
-    public modifyFirewallRuleDailog(item: Qcloud.Lighthouse.FirewallRule, idx: number) {
+    public modifyFirewallRuleDailog(item: QC.Lighthouse.FirewallRule, idx: number) {
         this.modifyFirewallRuleBus.model = Object.assign({}, item)
         this.modifyFirewallRuleBus.index = idx
         this.modifyFirewallRuleBus.dailog = true
@@ -112,7 +112,7 @@ export default class LighthouseFirewall extends Vue {
         this.getFirewallRuleList()
     }
 
-    public modifyFirewallRuleDescriptionDailog(item: Qcloud.Lighthouse.FirewallRule) {
+    public modifyFirewallRuleDescriptionDailog(item: QC.Lighthouse.FirewallRule) {
         this.modifyFirewallRuleDescriptionBus.model = Object.assign({}, item)
         this.modifyFirewallRuleDescriptionBus.dailog = true
     }
@@ -132,7 +132,7 @@ interface FirewallRuleBus {
     dailog: boolean
     loading: boolean
     index?: number
-    model: Qcloud.Lighthouse.FirewallRule
+    model: QC.Lighthouse.FirewallRule
 }
 </script>
 

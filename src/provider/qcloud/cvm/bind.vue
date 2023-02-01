@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { LoApi, QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
 
 import { dateFormat } from "@/helper/format"
@@ -26,9 +26,9 @@ export default class CvmBind extends Vue {
 
     // 获取列表
 
-    public regionList: Record<string, Qcloud.Cvm.RegionInfo> = {}
+    public regionList: Record<string, QC.Cvm.RegionInfo> = {}
 
-    public instanceList: Qcloud.Cvm.Instance[] = []
+    public instanceList: QC.Cvm.Instance[] = []
     public instanceCount = 0
 
     async getRegionInstanceList() {
@@ -48,7 +48,7 @@ export default class CvmBind extends Vue {
 
     // 执行脚本
 
-    async runCommand(instance: Required<Qcloud.Cvm.Instance>, code: string) {
+    async runCommand(instance: Required<QC.Cvm.Instance>, code: string) {
         const region = instance.Placement.Zone.replace(/-(\d+)$/, '')
         const res = await QcApi.tat.runCommand(region, {
             InstanceIds: [instance.InstanceId],
@@ -62,7 +62,7 @@ export default class CvmBind extends Vue {
 
     // 绑定主机
 
-    public bindMachine(item: Required<Qcloud.Cvm.Instance>) {
+    public bindMachine(item: Required<QC.Cvm.Instance>) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         LoApi.machine.create({
             VendorId: this.meta.vendorId,
@@ -82,7 +82,7 @@ export default class CvmBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: Required<Qcloud.Cvm.Instance>) {
+    public syncMachine(item: Required<QC.Cvm.Instance>) {
         const bd = this.meta.boundList[item.InstanceId]
         LoApi.machine.update({
             Id: bd ? bd.Id : 0,

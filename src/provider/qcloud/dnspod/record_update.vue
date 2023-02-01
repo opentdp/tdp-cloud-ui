@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 
 @Component({
     emits: ["close"],
@@ -11,11 +11,11 @@ import * as Qcloud from "@/api/qcloud/typings"
 export default class DnspodRecordUpdate extends Vue {
     public loading = false
 
-    public domainInfo!: Qcloud.Dnspod.DomainInfo
+    public domainInfo!: QC.Dnspod.DomainInfo
 
     // 创建表单
 
-    public formModel!: Qcloud.Dnspod.RecordListItem
+    public formModel!: QC.Dnspod.RecordListItem
 
     public formRules = {
         Name: [{ required: true, message: "别名 不能为空" }],
@@ -33,7 +33,7 @@ export default class DnspodRecordUpdate extends Vue {
 
     async formSubmit() {
         this.loading = false
-        const query: Qcloud.Dnspod.ModifyRecordRequest = {
+        const query: QC.Dnspod.ModifyRecordRequest = {
             Domain: this.domainInfo.Domain,
             SubDomain: this.formModel.Name,
             RecordType: this.formModel.Type,
@@ -52,7 +52,7 @@ export default class DnspodRecordUpdate extends Vue {
     // 记录类型及线路
 
     public recordType: string[] = []
-    public recordLineList: Qcloud.Dnspod.LineInfo[] = []
+    public recordLineList: QC.Dnspod.LineInfo[] = []
 
     async getRecordType() {
         const res = await QcApi.dnspod.describeRecordType({
@@ -78,7 +78,7 @@ export default class DnspodRecordUpdate extends Vue {
         this.$emit("close")
     }
 
-    public open(info: Qcloud.Dnspod.DomainInfo, record: Qcloud.Dnspod.RecordListItem) {
+    public open(info: QC.Dnspod.DomainInfo, record: QC.Dnspod.RecordListItem) {
         this.dailog = true
         this.loading = false
         this.domainInfo = info

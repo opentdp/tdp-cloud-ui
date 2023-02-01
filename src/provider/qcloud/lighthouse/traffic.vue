@@ -4,7 +4,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 import { EChartsOption } from "echarts"
 
 import { QcApi } from "@/api"
-import * as Qcloud from "@/api/qcloud/typings"
+import * as QC from "@/api/qcloud/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/format"
 
@@ -13,7 +13,7 @@ export default class LighthouseTraffic extends Vue {
     public bytesToSize = bytesToSize
 
     @Prop
-    public instance!: Qcloud.Lighthouse.Instance
+    public instance!: QC.Lighthouse.Instance
 
     public created() {
         this.getTrafficPackage()
@@ -28,7 +28,7 @@ export default class LighthouseTraffic extends Vue {
 
     // 流量信息
 
-    public trafficPackage!: Qcloud.Lighthouse.TrafficPackage
+    public trafficPackage!: QC.Lighthouse.TrafficPackage
 
     async getTrafficPackage() {
         const res = await QcApi.lighthouse.describeInstancesTrafficPackages(this.region, {
