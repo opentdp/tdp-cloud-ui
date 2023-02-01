@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
-import { DomainItem } from "@/api/local/domain"
+import { DomainModels, DomainItem } from "@/api/local/domain"
 
 import CloudflareZone from "@/provider/cloudflare/domain.vue"
 import DnspodDomain from "@/provider/qcloud/dnspod/domain.vue"
@@ -11,6 +11,7 @@ import DnspodDomain from "@/provider/qcloud/dnspod/domain.vue"
     components: { CloudflareZone, DnspodDomain }
 })
 export default class DomainDetail extends Vue {
+    public DomainModels = DomainModels
     public loading = true
 
     public created() {
@@ -39,8 +40,8 @@ export default class DomainDetail extends Vue {
             <el-breadcrumb-item to="/domain/list">
                 域名管理
             </el-breadcrumb-item>
-            <el-breadcrumb-item>
-                {{ domain?.Name }}
+            <el-breadcrumb-item v-if="domain">
+                {{ DomainModels[domain.Model] }} · {{ domain.Name }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />

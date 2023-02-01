@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
-import { MachineItem } from "@/api/local/machine"
+import { MachineModels, MachineItem } from "@/api/local/machine"
 
 import WorkerInstance from "@/provider/worker/instance.vue"
 import CvmInstance from "@/provider/qcloud/cvm/instance.vue"
@@ -12,6 +12,7 @@ import LighthouseInstance from "@/provider/qcloud/lighthouse/instance.vue"
     components: { CvmInstance, LighthouseInstance, WorkerInstance }
 })
 export default class MachineDetail extends Vue {
+    public MachineModels = MachineModels
     public loading = true
 
     public created() {
@@ -40,8 +41,8 @@ export default class MachineDetail extends Vue {
             <el-breadcrumb-item to="/machine/list">
                 主机管理
             </el-breadcrumb-item>
-            <el-breadcrumb-item>
-                {{ machine.HostName || machine.Id }}
+            <el-breadcrumb-item v-if="machine">
+                {{ MachineModels[machine.Model] }} · {{ machine.HostName || machine.Id }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />

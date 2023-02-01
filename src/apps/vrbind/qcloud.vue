@@ -69,8 +69,8 @@ export default class VendorBindQcloud extends Vue {
             <el-breadcrumb-item to="/vendor/qcloud">
                 腾讯云
             </el-breadcrumb-item>
-            <el-breadcrumb-item>
-                {{ vendor?.Description || vendorId }}
+            <el-breadcrumb-item v-if="vendor">
+                {{ vendor.Description || vendorId }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
