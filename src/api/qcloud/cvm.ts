@@ -1,40 +1,40 @@
-import * as Qcloud from "./typings"
 import { QcloudClient } from "./base"
+import { Cvm as QCvm } from "./typings"
 
 export class CvmModel extends QcloudClient {
     protected Service = "cvm"
     protected Version = "2017-03-12"
 
-    public describeRegions(): Promise<Qcloud.Cvm.DescribeRegionsResponse> {
+    public describeRegions(): Promise<QCvm.DescribeRegionsResponse> {
         return this.bus({ Action: "DescribeRegions" }, 600)
     }
 
-    public describeInstances(region: string, query?: Qcloud.Cvm.DescribeInstancesRequest): Promise<Qcloud.Cvm.DescribeInstancesResponse> {
+    public describeInstances(region: string, query?: QCvm.DescribeInstancesRequest): Promise<QCvm.DescribeInstancesResponse> {
         query = Object.assign({ Limit: 100 }, query)
         return this.bus({ Action: "DescribeInstances", Region: region, Payload: query })
     }
 
-    public modifyInstancesAttribute(region: string, query: Qcloud.Cvm.ModifyInstancesAttributeRequest): Promise<Qcloud.Cvm.ModifyInstancesAttributeResponse> {
+    public modifyInstancesAttribute(region: string, query: QCvm.ModifyInstancesAttributeRequest): Promise<QCvm.ModifyInstancesAttributeResponse> {
         return this.bus({ Action: "ModifyInstancesAttribute", Region: region, Payload: query })
     }
 
     // 电源
 
-    public stopInstances(region: string, query: Qcloud.Cvm.StopInstancesRequest): Promise<Qcloud.Cvm.StopInstancesResponse> {
+    public stopInstances(region: string, query: QCvm.StopInstancesRequest): Promise<QCvm.StopInstancesResponse> {
         return this.bus({ Action: "StopInstances", Region: region, Payload: query })
     }
 
-    public startInstances(region: string, query: Qcloud.Cvm.StartInstancesRequest): Promise<Qcloud.Cvm.StartInstancesResponse> {
+    public startInstances(region: string, query: QCvm.StartInstancesRequest): Promise<QCvm.StartInstancesResponse> {
         return this.bus({ Action: "StartInstances", Region: region, Payload: query })
     }
 
-    public rebootInstances(region: string, query: Qcloud.Cvm.RebootInstancesRequest): Promise<Qcloud.Cvm.RebootInstancesResponse> {
+    public rebootInstances(region: string, query: QCvm.RebootInstancesRequest): Promise<QCvm.RebootInstancesResponse> {
         return this.bus({ Action: "RebootInstances", Region: region, Payload: query })
     }
 
     // VNC
 
-    public describeInstanceVncUrl(region: string, query: Qcloud.Cvm.DescribeInstanceVncUrlRequest): Promise<Qcloud.Cvm.DescribeInstanceVncUrlResponse> {
+    public describeInstanceVncUrl(region: string, query: QCvm.DescribeInstanceVncUrlRequest): Promise<QCvm.DescribeInstanceVncUrlResponse> {
         return this.bus({ Action: "DescribeInstanceVncUrl", Region: region, Payload: query })
     }
 }

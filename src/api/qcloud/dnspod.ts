@@ -1,35 +1,35 @@
-import * as Qcloud from "./typings"
 import { QcloudClient } from "./base"
+import { Dnspod as QDnspod } from "./typings"
 
 export class DnspodModel extends QcloudClient {
     protected Service = "dnspod"
     protected Version = "2021-03-23"
 
-    public describeDomainList(query?: Qcloud.Dnspod.DescribeDomainListRequest): Promise<Qcloud.Dnspod.DescribeDomainListResponse> {
+    public describeDomainList(query?: QDnspod.DescribeDomainListRequest): Promise<QDnspod.DescribeDomainListResponse> {
         return this.bus({ Action: "DescribeDomainList", Payload: query })
     }
-    public describeRecordList(query: Qcloud.Dnspod.DescribeRecordListRequest): Promise<Qcloud.Dnspod.DescribeRecordListResponse> {
+    public describeRecordList(query: QDnspod.DescribeRecordListRequest): Promise<QDnspod.DescribeRecordListResponse> {
         return this.bus({ Action: "DescribeRecordList", Payload: query })
     }
 
-    public describeDomain(query?: Qcloud.Dnspod.DescribeDomainRequest): Promise<Qcloud.Dnspod.DescribeDomainResponse> {
+    public describeDomain(query?: QDnspod.DescribeDomainRequest): Promise<QDnspod.DescribeDomainResponse> {
         return this.bus({ Action: "DescribeDomain", Payload: query })
     }
 
-    public describeRecordType(query: Qcloud.Dnspod.DescribeRecordTypeRequest): Promise<Qcloud.Dnspod.DescribeRecordTypeResponse> {
+    public describeRecordType(query: QDnspod.DescribeRecordTypeRequest): Promise<QDnspod.DescribeRecordTypeResponse> {
         return this.bus({ Action: "DescribeRecordType", Payload: query }, 600)
     }
-    public describeRecordLineList(query: Qcloud.Dnspod.DescribeRecordLineListRequest): Promise<Qcloud.Dnspod.DescribeRecordLineListResponse> {
+    public describeRecordLineList(query: QDnspod.DescribeRecordLineListRequest): Promise<QDnspod.DescribeRecordLineListResponse> {
         return this.bus({ Action: "DescribeRecordLineList", Payload: query }, 600)
     }
 
-    public createRecord(query: Qcloud.Dnspod.CreateRecordRequest): Promise<Qcloud.Dnspod.CreateRecordResponse> {
+    public createRecord(query: QDnspod.CreateRecordRequest): Promise<QDnspod.CreateRecordResponse> {
         return this.bus({ Action: "CreateRecord", Payload: query })
     }
-    public modifyRecord(query: Qcloud.Dnspod.ModifyRecordRequest): Promise<Qcloud.Dnspod.ModifyRecordResponse> {
+    public modifyRecord(query: QDnspod.ModifyRecordRequest): Promise<QDnspod.ModifyRecordResponse> {
         return this.bus({ Action: "ModifyRecord", Payload: query })
     }
-    public deleteRecord(query: Qcloud.Dnspod.DeleteRecordRequest): Promise<Qcloud.Dnspod.DeleteRecordResponse> {
+    public deleteRecord(query: QDnspod.DeleteRecordRequest): Promise<QDnspod.DeleteRecordResponse> {
         return this.bus({ Action: "DeleteRecord", Payload: query })
     }
 }
