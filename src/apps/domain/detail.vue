@@ -40,7 +40,7 @@ export default class DomainDetail extends Vue {
                 域名管理
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                {{ domain.Name }}
+                {{ domain?.Name }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />

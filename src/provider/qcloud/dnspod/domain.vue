@@ -25,10 +25,6 @@ export default class DnspodDomain extends Vue {
 
     public created() {
         QcApi.vendor(this.meta.VendorId)
-        this.domainInfo = {
-            Domain: this.meta.Name,
-            Grade: this.meta.CloudMeta.Grade,
-        }
         this.getDomain()
         this.getRecordList()
     }
@@ -39,7 +35,7 @@ export default class DnspodDomain extends Vue {
 
     async getDomain() {
         const res = await QcApi.dnspod.describeDomain({
-            Domain: this.domainInfo.Domain
+            Domain: this.meta.Name
         })
         if (res.DomainInfo) {
             this.domainInfo = res.DomainInfo
@@ -53,7 +49,7 @@ export default class DnspodDomain extends Vue {
 
     async getRecordList() {
         const res = await QcApi.dnspod.describeRecordList({
-            Domain: this.domainInfo.Domain
+            Domain: this.meta.Name
         })
         if (res.RecordCountInfo) {
             this.recordList = res.RecordList || []
@@ -65,7 +61,7 @@ export default class DnspodDomain extends Vue {
 
     async deleteRecord(recordId: number) {
         const query: QC.Dnspod.DeleteRecordRequest = {
-            Domain: this.domainInfo.Domain,
+            Domain: this.meta.Name,
             RecordId: recordId
         }
         await QcApi.dnspod.deleteRecord(query)
@@ -113,8 +109,7 @@ export default class DnspodDomain extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-
-        <RecordCreate ref="createModal" @close="getRecordList" />
-        <RecordUpdate ref="updateModal" @close="getRecordList" />
     </el-card>
+    <RecordCreate ref="createModal" @close="getRecordList" />
+    <RecordUpdate ref="updateModal" @close="getRecordList" />
 </template>
