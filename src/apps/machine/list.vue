@@ -100,7 +100,7 @@ export default class MachineList extends Vue {
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
                 @current-change="tableRowChange"
             >
-                <el-table-column fixed prop="HostName" label="名称" show-overflow-tooltip />
+                <el-table-column prop="HostName" label="名称" show-overflow-tooltip fixed />
                 <el-table-column prop="IpAddress" label="公网 IP" show-overflow-tooltip />
                 <el-table-column prop="Region" label="地域" show-overflow-tooltip />
                 <el-table-column prop="Model" label="类型" show-overflow-tooltip>
@@ -118,7 +118,7 @@ export default class MachineList extends Vue {
                         </el-button>
                     </template>
                 </el-table-column>
-                <el-table-column fixed="right" label="操作" width="180" align="center">
+                <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">
                             <router-link :to="'/machine/detail/' + scope.row.Id">

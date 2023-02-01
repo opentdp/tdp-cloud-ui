@@ -121,7 +121,7 @@ export default class CvmBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
-            <el-table-column fixed prop="InstanceName" label="名称" show-overflow-tooltip />
+            <el-table-column prop="InstanceName" label="名称" show-overflow-tooltip fixed />
             <el-table-column label="地域" show-overflow-tooltip>
                 <template #default="scope">
                     {{ parseRegion(scope.row.Placement.Zone) }}
@@ -144,7 +144,7 @@ export default class CvmBind extends Vue {
                     {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="90" align="center">
+            <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="meta.boundList[scope.row.InstanceId]" link icon="View"
                         @click="syncMachine(scope.row)"

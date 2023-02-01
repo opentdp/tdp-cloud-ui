@@ -106,7 +106,7 @@ export default class LighthouseSnapshot extends Vue {
             </div>
         </template>
         <el-table :data="snapshotList.SnapshotSet" table-layout="fixed">
-            <el-table-column fixed prop="SnapshotName" label="名称" show-overflow-tooltip />
+            <el-table-column prop="SnapshotName" label="名称" show-overflow-tooltip fixed />
             <el-table-column label="容量" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.DiskSize + "GB" }}
@@ -127,7 +127,7 @@ export default class LighthouseSnapshot extends Vue {
                     {{ dateFormat(scope.row.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="180" align="center">
+            <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
                     <el-popconfirm title="确定回滚?" @confirm="applySnapshot(scope.row)">
                         <template #reference>

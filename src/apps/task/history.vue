@@ -65,7 +65,7 @@ export default class TaskHistory extends Vue {
                 </div>
             </template>
             <el-table :data="historyList" @expand-change="expandChange">
-                <el-table-column prop="Id" label="任务ID" show-overflow-tooltip />
+                <el-table-column prop="Id" label="任务ID" show-overflow-tooltip fixed />
                 <el-table-column prop="HostName" label="主机名" show-overflow-tooltip />
                 <el-table-column prop="Subject" label="任务名称" show-overflow-tooltip />
                 <el-table-column prop="Status" label="执行状态" show-overflow-tooltip />
@@ -74,7 +74,7 @@ export default class TaskHistory extends Vue {
                         {{ dateFormat(scope.row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
                     </template>
                 </el-table-column>
-                <el-table-column label="详情" type="expand" show-overflow-tooltip>
+                <el-table-column label="详情" type="expand" width="90">
                     <template #default="scope">
                         <div class="detail">
                             <h3>请求信息</h3>

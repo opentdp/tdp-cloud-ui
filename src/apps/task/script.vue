@@ -65,10 +65,10 @@ export default class TaskScript extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="scriptList">
-                <el-table-column fixed prop="Name" label="名称" show-overflow-tooltip />
+                <el-table-column prop="Name" label="名称" show-overflow-tooltip fixed />
                 <el-table-column prop="CommandType" label="类型" show-overflow-tooltip />
                 <el-table-column prop="Content" label="脚本" show-overflow-tooltip />
-                <el-table-column fixed="right" label="操作" width="180" align="center">
+                <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="updateModal?.open(scope.row)">
                             修改

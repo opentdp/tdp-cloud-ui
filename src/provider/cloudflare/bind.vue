@@ -71,7 +71,7 @@ export default class CloudflareBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column fixed prop="name" label="域名" show-overflow-tooltip />
+            <el-table-column prop="name" label="域名" show-overflow-tooltip fixed />
             <el-table-column label="状态" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.status }}
@@ -97,7 +97,7 @@ export default class CloudflareBind extends Vue {
                     {{ scope.row.plan.name }}
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="90" align="center">
+            <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="meta.boundList[scope.row.id]" link icon="View" @click="syncDomian(scope.row)">
                         同步

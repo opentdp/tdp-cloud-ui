@@ -82,7 +82,7 @@ export default class WorkerBind extends Vue {
             </div>
         </template>
         <el-table ref="tableRef" :data="workerList" highlight-current-row>
-            <el-table-column label="主机名" show-overflow-tooltip>
+            <el-table-column label="主机名" show-overflow-tooltip fixed>
                 <template #default="scope">
                     {{ scope.row.WorkerMeta.HostName }}
                 </template>
@@ -135,7 +135,7 @@ export default class WorkerBind extends Vue {
                     {{ (scope.row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="90" align="center">
+            <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="meta.boundList[scope.row.WorkerId]" link icon="View"
                         @click="syncMachine(scope.row)"

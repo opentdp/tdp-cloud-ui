@@ -87,7 +87,7 @@ export default class DnspodDomain extends Vue {
             </div>
         </template>
         <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
-            <el-table-column fixed prop="Name" label="主机记录" show-overflow-tooltip />
+            <el-table-column prop="Name" label="主机记录" show-overflow-tooltip fixed />
             <el-table-column prop="Type" label="记录类型" show-overflow-tooltip />
             <el-table-column prop="Line" label="线路类型" show-overflow-tooltip />
             <el-table-column prop="Value" label="记录值" show-overflow-tooltip />
@@ -103,7 +103,7 @@ export default class DnspodDomain extends Vue {
                 </template>
             </el-table-column>
             <el-table-column prop="Remark" label="备注" show-overflow-tooltip />
-            <el-table-column fixed="right" label="操作" width="180" align="center">
+            <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
                     <el-button link type="primary" icon="Edit" @click="updateModal?.open(domainInfo, scope.row)">
                         编辑

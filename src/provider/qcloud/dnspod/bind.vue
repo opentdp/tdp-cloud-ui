@@ -75,7 +75,7 @@ export default class DnspodBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column fixed prop="Name" label="域名" show-overflow-tooltip />
+            <el-table-column prop="Name" label="域名" show-overflow-tooltip fixed />
             <el-table-column label="状态" show-overflow-tooltip>
                 <template #default="scope">
                     {{ DomainStatusMap[scope.row.Status] }}
@@ -90,7 +90,7 @@ export default class DnspodBind extends Vue {
             </el-table-column>
             <el-table-column prop="GradeTitle" label="套餐" show-overflow-tooltip />
             <el-table-column prop="VipEndAt" label="套餐有效期" show-overflow-tooltip />
-            <el-table-column fixed="right" label="操作" width="90" align="center">
+            <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="meta.boundList[scope.row.DomainId]" link icon="View"
                         @click="syncDomian(scope.row)"

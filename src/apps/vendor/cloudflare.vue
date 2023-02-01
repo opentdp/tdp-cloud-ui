@@ -83,10 +83,10 @@ export default class VendorListCloudflare extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="vendorList">
-                <el-table-column prop="Description" label="别名" show-overflow-tooltip />
+                <el-table-column prop="Description" label="别名" show-overflow-tooltip fixed />
                 <el-table-column prop="SecretId" label="邮箱" show-overflow-tooltip />
                 <el-table-column prop="SecretKey" label="令牌" show-overflow-tooltip />
-                <el-table-column fixed="right" label="操作" width="180" align="center">
+                <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="View">
                             <router-link :to="'/vrbind/cloudflare/' + scope.row.Id">
