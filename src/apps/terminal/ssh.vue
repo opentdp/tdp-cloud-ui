@@ -28,10 +28,10 @@ export default class TerminalSsh extends Vue {
         id: "new", label: ""
     }
 
-    public tabList: tabItem[] = []
+    public tabList: TabItem[] = []
 
-    public createTab(config: sshConfig) {
-        const tab: tabItem = {
+    public createTab(config: SshConfig) {
+        const tab: TabItem = {
             id: "tab-" + Date.now(),
             label: config.Addr
         }
@@ -94,13 +94,13 @@ export default class TerminalSsh extends Vue {
 
 }
 
-interface tabItem {
+interface TabItem {
     id: string
     label: string
     webssh?: WebSSH
 }
 
-interface sshConfig {
+interface SshConfig {
     Addr: string
     User: string
     Password: string
