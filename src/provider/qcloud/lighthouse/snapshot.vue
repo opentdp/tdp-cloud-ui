@@ -15,6 +15,8 @@ export default class LighthouseSnapshot extends Vue {
     @Prop
     public instance!: QC.Lighthouse.Instance
 
+    // 初始化
+
     public created() {
         this.getSnapshotList()
     }

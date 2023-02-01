@@ -13,7 +13,10 @@ import LighthouseInstance from "@/provider/qcloud/lighthouse/instance.vue"
 })
 export default class MachineDetail extends Vue {
     public MachineModels = MachineModels
+
     public loading = true
+
+    // 初始化
 
     public created() {
         const machineId = +this.$route.params.id

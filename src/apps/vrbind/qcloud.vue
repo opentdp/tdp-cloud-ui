@@ -18,6 +18,8 @@ export default class VendorBindQcloud extends Vue {
         id: "cvm", label: ""
     }
 
+    // 初始化
+
     public created() {
         this.vendorId = +this.$route.params.id
         this.getVendor(this.vendorId)

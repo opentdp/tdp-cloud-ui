@@ -15,6 +15,8 @@ export default class CloudflareBind extends Vue {
         boundList: Record<string, DomainItem>
     }
 
+    // 初始化
+
     public created() {
         CfApi.vendor(this.meta.vendorId)
         this.getDomainlist()

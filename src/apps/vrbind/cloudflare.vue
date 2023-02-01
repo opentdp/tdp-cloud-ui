@@ -11,6 +11,9 @@ import CloudflareBind from "@/provider/cloudflare/bind.vue"
     components: { CloudflareBind }
 })
 export default class VendorBindCloudflare extends Vue {
+
+    // 初始化
+
     public created() {
         this.vendorId = +this.$route.params.id
         this.getVendor(this.vendorId)

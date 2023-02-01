@@ -12,7 +12,10 @@ import DnspodDomain from "@/provider/qcloud/dnspod/domain.vue"
 })
 export default class DomainDetail extends Vue {
     public DomainModels = DomainModels
+
     public loading = true
+
+    // 初始化
 
     public created() {
         const domainId = +this.$route.params.id

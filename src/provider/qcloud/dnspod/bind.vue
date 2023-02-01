@@ -18,6 +18,8 @@ export default class DnspodBind extends Vue {
         boundList: Record<string, DomainItem>
     }
 
+    // 初始化
+
     public created() {
         QcApi.vendor(this.meta.vendorId)
         this.getDomainList()

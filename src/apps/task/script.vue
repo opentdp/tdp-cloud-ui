@@ -19,6 +19,8 @@ export default class TaskScript extends Vue {
     @Ref
     public updateModal!: typeof ScriptUpdate
 
+    // 初始化
+
     public created() {
         this.getScriptList()
     }

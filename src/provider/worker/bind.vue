@@ -18,6 +18,8 @@ export default class WorkerBind extends Vue {
         boundList: Record<string, MachineItem>
     }
 
+    // 初始化
+
     public created() {
         this.getWorkerList()
         this.timer = setInterval(() => {

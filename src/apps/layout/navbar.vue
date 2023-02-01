@@ -10,6 +10,8 @@ export default class LayoutNavbar extends Vue {
     public layout = layoutStore()
     public session = sessionStore()
 
+    // 初始化
+
     public created() {
         // 小屏自动折叠
         if (document.body.clientWidth < 1000) {

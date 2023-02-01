@@ -1,6 +1,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
+import { ElMessage, FormRules, FormInstance } from "element-plus"
+
 import { CfApi } from "@/api"
 import { ZoneRecordTypes } from "@/api/cloudflare/zones"
 import * as CF from "@/api/cloudflare/typings"
@@ -11,7 +13,6 @@ import * as CF from "@/api/cloudflare/typings"
 })
 export default class DnspodRecordUpdate extends Vue {
     public ZoneRecordTypes = ZoneRecordTypes
-    public loading = false
 
     public recordInfo!: CF.ZoneRecordItem
 
@@ -19,7 +20,7 @@ export default class DnspodRecordUpdate extends Vue {
 
     public formModel!: CF.ZoneRecordCreate
 
-    public formRules = {
+    public formRules: FormRules = {
         name: [{ required: true, message: "主机记录 不能为空" }],
         type: [{ required: true, message: "记录类型 不能为空" }],
         content: [{ required: true, message: "别名 不能为空" }],
@@ -30,25 +31,28 @@ export default class DnspodRecordUpdate extends Vue {
     }
 
     // 提交表单
-
-    async formSubmit() {
-        this.loading = true
-        await CfApi.zones.dnsRecordUpdate(
-            this.recordInfo.zone_id,
-            this.recordInfo.id,
-            {
-                name: this.formModel.name,
-                type: this.formModel.type,
-                content: this.formModel.content,
-                proxied: this.formModel.proxied,
-                priority: this.formModel.priority || 0,
-                ttl: +this.formModel.ttl || 1,
-                comment: this.formModel.comment || "",
-                tags: this.formModel.tags || []
+    public formSubmit(form: FormInstance | undefined) {
+        form && form.validate(async valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
             }
-        )
-        this.loading = false
-        this.close()
+            await CfApi.zones.dnsRecordUpdate(
+                this.recordInfo.zone_id,
+                this.recordInfo.id,
+                {
+                    name: this.formModel.name,
+                    type: this.formModel.type,
+                    content: this.formModel.content,
+                    proxied: this.formModel.proxied,
+                    priority: this.formModel.priority || 0,
+                    ttl: +this.formModel.ttl || 1,
+                    comment: this.formModel.comment || "",
+                    tags: this.formModel.tags || []
+                }
+            )
+            this.close()
+        })
     }
 
     // 对话框管理
@@ -62,7 +66,6 @@ export default class DnspodRecordUpdate extends Vue {
 
     public open(record: CF.ZoneRecordItem) {
         this.dailog = true
-        this.loading = false
         this.recordInfo = record
         this.formModel = {
             name: record.name.replace(record.zone_name, "").replace(/\.$/, "") || "@",
@@ -94,8 +97,12 @@ export default class DnspodRecordUpdate extends Vue {
             </el-form-item>
             <el-form-item prop="proxied" label="加速">
                 <el-radio-group v-model="formModel.proxied">
-                    <el-radio :label="true">启用</el-radio>
-                    <el-radio :label="false">禁用</el-radio>
+                    <el-radio :label="true">
+                        启用
+                    </el-radio>
+                    <el-radio :label="false">
+                        禁用
+                    </el-radio>
                 </el-radio-group>
             </el-form-item>
             <el-form-item prop="priority" label="权重">
@@ -108,7 +115,7 @@ export default class DnspodRecordUpdate extends Vue {
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" :loading="loading" @click="formSubmit">
+                <el-button type="primary" @click="formSubmit">
                     保存
                 </el-button>
             </span>

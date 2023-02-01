@@ -12,16 +12,18 @@ import RecordUpdate from "./record_update.vue"
     components: { RecordCreate, RecordUpdate }
 })
 export default class CloudflareDomain extends Vue {
-    @Prop
-    public meta!: Omit<DomainItem, "CloudMeta"> & {
-        CloudMeta: CF.ZoneItem
-    }
-
     @Ref
     public createModal!: typeof RecordCreate
 
     @Ref
     public updateModal!: typeof RecordUpdate
+
+    @Prop
+    public meta!: Omit<DomainItem, "CloudMeta"> & {
+        CloudMeta: CF.ZoneItem
+    }
+
+    // 初始化
 
     public created() {
         CfApi.vendor(this.meta.VendorId)

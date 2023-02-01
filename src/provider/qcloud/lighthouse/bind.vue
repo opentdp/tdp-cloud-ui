@@ -19,6 +19,8 @@ export default class LighthouseBind extends Vue {
         boundList: Record<string, MachineItem>
     }
 
+    // 初始化
+
     public created() {
         QcApi.vendor(this.meta.vendorId)
         this.getRegionInstanceList()

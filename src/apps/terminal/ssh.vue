@@ -14,6 +14,8 @@ import shellList from "@/helper/script/shell"
 @Component
 export default class TerminalSsh extends Vue {
 
+    // 初始化
+
     public created() {
         this.formModel.Addr = this.$route.params.addr + ""
         this.getMachineList()
@@ -221,7 +223,7 @@ interface sshTab {
                     </el-form-item>
                     <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">
                         <el-input v-model="formModel.PrivateKey" type="textarea"
-                            :autosize="{ minRows: 3, maxRows: 10 }"
+                            :autosize="{ minRows: 3 }"
                         />
                     </el-form-item>
                     <el-form-item>

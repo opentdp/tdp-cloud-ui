@@ -14,6 +14,8 @@ import WorkerBind from "@/provider/worker/bind.vue"
 export default class VendorBindWorker extends Vue {
     public installTDPWorker = installTDPWorker
 
+    // 初始化
+
     public created() {
         this.getMachineList()
     }

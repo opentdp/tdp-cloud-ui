@@ -1,6 +1,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
+import { ElMessage, FormRules, FormInstance } from "element-plus"
+
 import { QcApi } from "@/api"
 import * as QC from "@/api/qcloud/typings"
 
@@ -9,15 +11,13 @@ import * as QC from "@/api/qcloud/typings"
     expose: ["open"],
 })
 export default class DnspodRecordUpdate extends Vue {
-    public loading = false
-
     public domainInfo!: QC.Dnspod.DomainInfo
 
     // 创建表单
 
     public formModel!: QC.Dnspod.RecordListItem
 
-    public formRules = {
+    public formRules: FormRules = {
         Name: [{ required: true, message: "主机记录 不能为空" }],
         Type: [{ required: true, message: "记录类型 不能为空" }],
         Line: [{ required: true, message: "线路类型 不能为空" }],
@@ -30,23 +30,26 @@ export default class DnspodRecordUpdate extends Vue {
     }
 
     // 提交表单
-
-    async formSubmit() {
-        this.loading = true
-        const query: QC.Dnspod.ModifyRecordRequest = {
-            Domain: this.domainInfo.Domain,
-            SubDomain: this.formModel.Name,
-            RecordType: this.formModel.Type,
-            RecordLine: this.formModel.Line,
-            Value: this.formModel.Value,
-            MX: +this.formModel.MX || 0,
-            TTL: +this.formModel.TTL || 600,
-            Weight: +this.formModel.Weight || 0,
-            RecordId: this.formModel.RecordId || 0
-        }
-        await QcApi.dnspod.modifyRecord(query)
-        this.loading = false
-        this.close()
+    public formSubmit(form: FormInstance | undefined) {
+        form && form.validate(async valid => {
+            if (!valid) {
+                ElMessage.error("请检查表单")
+                return false
+            }
+            const query: QC.Dnspod.ModifyRecordRequest = {
+                Domain: this.domainInfo.Domain,
+                SubDomain: this.formModel.Name,
+                RecordType: this.formModel.Type,
+                RecordLine: this.formModel.Line,
+                Value: this.formModel.Value,
+                MX: +this.formModel.MX || 0,
+                TTL: +this.formModel.TTL || 600,
+                Weight: +this.formModel.Weight || 0,
+                RecordId: this.formModel.RecordId || 0
+            }
+            await QcApi.dnspod.modifyRecord(query)
+            this.close()
+        })
     }
 
     // 记录类型及线路
@@ -80,10 +83,9 @@ export default class DnspodRecordUpdate extends Vue {
 
     public open(info: QC.Dnspod.DomainInfo, record: QC.Dnspod.RecordListItem) {
         this.dailog = true
-        this.loading = false
         this.domainInfo = info
         this.formModel = record
-	this.formModel.Weight = record.Weight || 0
+        this.formModel.Weight = record.Weight || 0
         // 加载数据
         this.recordType.length == 0 && this.getRecordType()
         this.recordLineList.length == 0 && this.getRecordLine()
@@ -123,7 +125,7 @@ export default class DnspodRecordUpdate extends Vue {
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" :loading="loading" @click="formSubmit">
+                <el-button type="primary" @click="formSubmit">
                     保存
                 </el-button>
             </span>

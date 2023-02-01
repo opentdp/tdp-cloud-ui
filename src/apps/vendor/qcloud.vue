@@ -10,6 +10,8 @@ import { VendorItem } from "@/api/local/vendor"
 export default class VendorListCloudflare extends Vue {
     public loading = true
 
+    // 初始化
+
     public created() {
         this.getVendorList()
     }

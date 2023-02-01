@@ -17,6 +17,8 @@ export default class TaskHistory extends Vue {
 
     public timer = 0
 
+    // 初始化
+
     public created() {
         this.getHistory()
         this.timer = setInterval(() => {

@@ -12,7 +12,10 @@ import shellList, { installTDPWorker } from "@/helper/script/shell"
 export default class MachineList extends Vue {
     public MachineModels = MachineModels
     public installTDPWorker = installTDPWorker
+
     public loading = true
+
+    // 初始化
 
     public created() {
         this.getMachineList()

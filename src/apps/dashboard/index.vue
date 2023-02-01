@@ -7,6 +7,8 @@ import { LoApi } from "@/api"
 export default class DashboardIndex extends Vue {
     public loading = true
 
+    // 初始化
+
     public created() {
         this.getAccountSummary()
     }

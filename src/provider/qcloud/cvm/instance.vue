@@ -18,6 +18,8 @@ export default class CvmInstance extends Vue {
         CloudMeta: Required<QC.Cvm.Instance>
     }
 
+    // 初始化
+
     public created() {
         QcApi.vendor(this.meta.VendorId)
         this.instance = this.meta.CloudMeta

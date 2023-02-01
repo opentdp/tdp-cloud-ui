@@ -7,7 +7,10 @@ import { DomainModels, DomainItem } from "@/api/local/domain"
 @Component
 export default class DomainList extends Vue {
     public DomainModels = DomainModels
+
     public loading = true
+
+    // 初始化
 
     public created() {
         this.getDomainList()

@@ -12,16 +12,18 @@ import RecordUpdate from "./record_update.vue"
     components: { RecordCreate, RecordUpdate }
 })
 export default class DnspodDomain extends Vue {
-    @Prop
-    public meta!: Omit<DomainItem, "CloudMeta"> & {
-        CloudMeta: QC.Dnspod.DomainListItem
-    }
-
     @Ref
     public createModal!: typeof RecordCreate
 
     @Ref
     public updateModal!: typeof RecordUpdate
+
+    @Prop
+    public meta!: Omit<DomainItem, "CloudMeta"> & {
+        CloudMeta: QC.Dnspod.DomainListItem
+    }
+
+    // 初始化
 
     public created() {
         QcApi.vendor(this.meta.VendorId)

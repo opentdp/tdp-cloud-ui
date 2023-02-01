@@ -24,6 +24,8 @@ export default class LighthouseInstance extends Vue {
         CloudMeta: QC.Lighthouse.Instance
     }
 
+    // 初始化
+
     public created() {
         QcApi.vendor(this.meta.VendorId)
         this.instance = this.meta.CloudMeta
