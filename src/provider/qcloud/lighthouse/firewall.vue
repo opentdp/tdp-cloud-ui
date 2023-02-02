@@ -1,11 +1,26 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-facing-decorator"
+import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
 import * as QC from "@/api/qcloud/typings"
 
-@Component
+import CreateModel from "./firewall_create.vue"
+import UpdateModel from "./firewall_update.vue"
+import RemarkModel from "./firewall_remark.vue"
+
+@Component({
+    components: { CreateModel, UpdateModel, RemarkModel }
+})
 export default class LighthouseFirewall extends Vue {
+    @Ref
+    public createModel!: CreateModel
+
+    @Ref
+    public updateModel!: UpdateModel
+
+    @Ref
+    public remarkModel!: RemarkModel
+
     @Prop
     public instance!: QC.Lighthouse.Instance
 
@@ -37,104 +52,15 @@ export default class LighthouseFirewall extends Vue {
         this.firewallRuleCount = res.TotalCount
     }
 
-    // 添加规则
-
-    public createFirewallRuleBus: FirewallRuleBus = {
-        dailog: false,
-        loading: false,
-        model: {
-            Protocol: "TCP",
-            Port: "",
-            CidrBlock: "0.0.0.0/0",
-            Action: "ACCEPT",
-            FirewallRuleDescription: "",
-        }
-    }
-
-    async createFirewallRule() {
-        this.createFirewallRuleBus.loading = true
-        await QcApi.lighthouse.createFirewallRules(this.region, {
-            InstanceId: this.instance.InstanceId,
-            FirewallRules: [this.createFirewallRuleBus.model]
-        })
-        this.createFirewallRuleBus.dailog = false
-        this.createFirewallRuleBus.loading = false
-        this.getFirewallRuleList()
-    }
-
-    // 修改规则
-
-    public modifyFirewallRuleBus: FirewallRuleBus = {
-        dailog: false,
-        loading: false,
-        model: { Protocol: "" }
-    }
-
-    async modifyFirewallRule() {
-        if (!this.firewallRuleList) {
-            return
-        }
-        this.modifyFirewallRuleBus.loading = true
-        await QcApi.lighthouse.modifyFirewallRules(this.region, {
-            InstanceId: this.instance.InstanceId,
-            FirewallRules: this.firewallRuleList.map((item, idx) => {
-                if (this.modifyFirewallRuleBus.index == idx) {
-                    Object.assign(item, this.modifyFirewallRuleBus.model)
-                }
-                return item
-            })
-        })
-        this.modifyFirewallRuleBus.dailog = false
-        this.modifyFirewallRuleBus.loading = false
-        this.getFirewallRuleList()
-    }
-
-    public modifyFirewallRuleDailog(item: QC.Lighthouse.FirewallRule, idx: number) {
-        this.modifyFirewallRuleBus.model = Object.assign({}, item)
-        this.modifyFirewallRuleBus.index = idx
-        this.modifyFirewallRuleBus.dailog = true
-    }
-
-    // 修改规则描述
-
-    public modifyFirewallRuleDescriptionBus: FirewallRuleBus = {
-        dailog: false,
-        loading: false,
-        model: { Protocol: "" }
-    }
-
-    async modifyFirewallRuleDescription() {
-        this.modifyFirewallRuleDescriptionBus.loading = true
-        await QcApi.lighthouse.modifyFirewallRuleDescription(this.region, {
-            InstanceId: this.instance.InstanceId,
-            FirewallRule: this.modifyFirewallRuleDescriptionBus.model
-        })
-        this.modifyFirewallRuleDescriptionBus.dailog = false
-        this.modifyFirewallRuleDescriptionBus.loading = false
-        this.getFirewallRuleList()
-    }
-
-    public modifyFirewallRuleDescriptionDailog(item: QC.Lighthouse.FirewallRule) {
-        this.modifyFirewallRuleDescriptionBus.model = Object.assign({}, item)
-        this.modifyFirewallRuleDescriptionBus.dailog = true
-    }
-
     // 删除规则
 
-    async deleteFirewallRule(item: FirewallRuleBus["model"]) {
+    async deleteFirewallRule(item: QC.Lighthouse.FirewallRule) {
         await QcApi.lighthouse.deleteFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRules: [item]
         })
         this.getFirewallRuleList()
     }
-}
-
-interface FirewallRuleBus {
-    dailog: boolean
-    loading: boolean
-    index?: number
-    model: QC.Lighthouse.FirewallRule
 }
 </script>
 
@@ -145,7 +71,7 @@ interface FirewallRuleBus {
                 <b>防火墙</b> &nbsp; &nbsp;
                 <small>规则总数: {{ firewallRuleCount }}</small>
                 <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createFirewallRuleBus.dailog = true">
+                <el-button type="primary" plain size="small" @click="createModel?.open(instance)">
                     添加规则
                 </el-button>
             </div>
@@ -158,14 +84,12 @@ interface FirewallRuleBus {
             <el-table-column prop="FirewallRuleDescription" label="备注" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.FirewallRuleDescription }}
-                    <el-button link icon="EditPen" @click="modifyFirewallRuleDescriptionDailog(scope.row)" />
+                    <el-button link icon="EditPen" @click="remarkModel?.open(instance, scope.row)" />
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit"
-                        @click="modifyFirewallRuleDailog(scope.row, scope.$index)"
-                    >
+                    <el-button link type="primary" icon="Edit" @click="updateModel?.open(instance, firewallRuleList, scope.$index)">
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">
@@ -179,92 +103,7 @@ interface FirewallRuleBus {
             </el-table-column>
         </el-table>
     </el-card>
-
-    <el-dialog v-model="createFirewallRuleBus.dailog" destroy-on-close title="添加规则" width="400px">
-        <el-form v-if="instance" :model="createFirewallRuleBus.model">
-            <el-form-item label="来源">
-                <el-input v-model="createFirewallRuleBus.model.CidrBlock" />
-            </el-form-item>
-            <el-form-item label="协议">
-                <el-select v-model="createFirewallRuleBus.model.Protocol">
-                    <el-option label="TCP" value="TCP" />
-                    <el-option label="UDP" value="UDP" />
-                    <el-option label="ICMP" value="ICMP" />
-                </el-select>
-            </el-form-item>
-            <el-form-item v-if="/TCP|UDP/.test(createFirewallRuleBus.model.Protocol)" label="端口">
-                <el-input v-model="createFirewallRuleBus.model.Port" />
-            </el-form-item>
-            <el-form-item label="策略">
-                <el-select v-model="createFirewallRuleBus.model.Action">
-                    <el-option label="允许" value="ACCEPT" />
-                    <el-option label="拒绝" value="DROP" />
-                </el-select>
-            </el-form-item>
-            <el-form-item label="备注">
-                <el-input v-model="createFirewallRuleBus.model.FirewallRuleDescription" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="createFirewallRuleBus.dailog = false">取消</el-button>
-                <el-button type="primary" :loading="createFirewallRuleBus.loading" @click="createFirewallRule">
-                    保存
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
-
-    <el-dialog v-model="modifyFirewallRuleBus.dailog" destroy-on-close title="修改规则" width="400px">
-        <el-form v-if="instance" :model="modifyFirewallRuleBus.model">
-            <el-form-item label="来源">
-                <el-input v-model="modifyFirewallRuleBus.model.CidrBlock" />
-            </el-form-item>
-            <el-form-item label="协议">
-                <el-select v-model="modifyFirewallRuleBus.model.Protocol" width="100%">
-                    <el-option label="TCP" value="TCP" />
-                    <el-option label="UDP" value="UDP" />
-                    <el-option label="ICMP" value="ICMP" />
-                </el-select>
-            </el-form-item>
-            <el-form-item v-if="/TCP|UDP/.test(modifyFirewallRuleBus.model.Protocol)" label="端口">
-                <el-input v-model="modifyFirewallRuleBus.model.Port" />
-            </el-form-item>
-            <el-form-item label="策略">
-                <el-select v-model="modifyFirewallRuleBus.model.Action">
-                    <el-option label="允许" value="ACCEPT" />
-                    <el-option label="拒绝" value="DROP" />
-                </el-select>
-            </el-form-item>
-            <el-form-item label="备注">
-                <el-input v-model="modifyFirewallRuleBus.model.FirewallRuleDescription" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="modifyFirewallRuleBus.dailog = false">取消</el-button>
-                <el-button type="primary" :loading="modifyFirewallRuleBus.loading" @click="modifyFirewallRule">
-                    保存
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
-
-    <el-dialog v-model="modifyFirewallRuleDescriptionBus.dailog" destroy-on-close title="修改备注" width="400px">
-        <el-form v-if="instance" :model="modifyFirewallRuleDescriptionBus.model">
-            <el-form-item label="备注">
-                <el-input v-model="modifyFirewallRuleDescriptionBus.model.FirewallRuleDescription" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="modifyFirewallRuleDescriptionBus.dailog = false">取消</el-button>
-                <el-button type="primary" :loading="modifyFirewallRuleDescriptionBus.loading"
-                    @click="modifyFirewallRuleDescription"
-                >
-                    保存
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
+    <CreateModel ref="createModel" @close="getFirewallRuleList" />
+    <UpdateModel ref="updateModel" @close="getFirewallRuleList" />
+    <RemarkModel ref="remarkModel" @close="getFirewallRuleList" />
 </template>

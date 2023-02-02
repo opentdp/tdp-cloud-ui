@@ -1,16 +1,22 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-facing-decorator"
+import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
 import * as QC from "@/api/qcloud/typings"
 
 import { dateFormat } from "@/helper/format"
 
+import SnapshotCreate from "./snapshot_create.vue"
+
 @Component({
-    emits: ["change"]
+    emits: ["change"],
+    components: { SnapshotCreate }
 })
 export default class LighthouseSnapshot extends Vue {
     public dateFormat = dateFormat
+
+    @Ref
+    public createModal!: SnapshotCreate
 
     @Prop
     public instance!: QC.Lighthouse.Instance
@@ -38,31 +44,13 @@ export default class LighthouseSnapshot extends Vue {
         this.snapshotList = res
     }
 
-    // 创建快照
+    // 刷新列表
 
-    public createSnapshotBus = {
-        dailog: false,
-        loading: false,
-        model: {
-            name: ""
+    async refreshSnapshot() {
+        await this.getSnapshotList()
+        if (this.snapshotList.SnapshotSet.find((item) => item.Percent < 100)) {
+            setTimeout(this.refreshSnapshot, 3000)
         }
-    }
-
-    async createSnapshot() {
-        this.createSnapshotBus.loading = true
-        await QcApi.lighthouse.createInstanceSnapshot(this.region, {
-            InstanceId: this.instance.InstanceId,
-            SnapshotName: this.createSnapshotBus.model.name
-        })
-        this.createSnapshotBus.dailog = false
-        this.createSnapshotBus.loading = false
-        this.refreshSnapshot()
-        this.$emit("change")
-    }
-
-    public createSnapshotDailog() {
-        this.createSnapshotBus.model.name = 'Snapshot-' + Date.now()
-        this.createSnapshotBus.dailog = true
     }
 
     // 回滚快照
@@ -83,15 +71,6 @@ export default class LighthouseSnapshot extends Vue {
         })
         this.refreshSnapshot()
     }
-
-    // 刷新列表
-
-    async refreshSnapshot() {
-        await this.getSnapshotList()
-        if (this.snapshotList.SnapshotSet.find((item) => item.Percent < 100)) {
-            setTimeout(this.refreshSnapshot, 1500)
-        }
-    }
 }
 </script>
 
@@ -102,7 +81,7 @@ export default class LighthouseSnapshot extends Vue {
                 <b>快照</b> &nbsp; &nbsp;
                 <small>快照总数: {{ snapshotList.TotalCount }}</small>
                 <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createSnapshotDailog">
+                <el-button type="primary" plain size="small" @click="createModal?.open(instance)">
                     创建快照
                 </el-button>
             </div>
@@ -149,20 +128,5 @@ export default class LighthouseSnapshot extends Vue {
             </el-table-column>
         </el-table>
     </el-card>
-
-    <el-dialog v-model="createSnapshotBus.dailog" destroy-on-close title="创建快照" width="400px">
-        <el-form v-if="instance" :model="createSnapshotBus.model">
-            <el-form-item label="名称">
-                <el-input v-model="createSnapshotBus.model.name" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="createSnapshotBus.dailog = false">取消</el-button>
-                <el-button type="primary" :loading="createSnapshotBus.loading" @click="createSnapshot">
-                    保存
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
+    <SnapshotCreate ref="createModal" @close="refreshSnapshot" />
 </template>

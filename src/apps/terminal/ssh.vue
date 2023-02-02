@@ -2,6 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
+import { SSHRequest } from "@/api/local/terminal"
 import { TaskScriptItem } from "@/api/local/task_script"
 
 import { WebSSH } from "@/helper/webssh"
@@ -30,7 +31,7 @@ export default class TerminalSsh extends Vue {
 
     public tabList: TabItem[] = []
 
-    public createTab(config: SshConfig) {
+    public createTab(config: SSHRequest) {
         const tab: TabItem = {
             id: "tab-" + Date.now(),
             label: config.Addr
@@ -98,13 +99,6 @@ interface TabItem {
     id: string
     label: string
     webssh?: WebSSH
-}
-
-interface SshConfig {
-    Addr: string
-    User: string
-    Password: string
-    PrivateKey: string
 }
 </script>
 

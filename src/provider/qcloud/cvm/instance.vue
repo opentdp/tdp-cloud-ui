@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-facing-decorator"
+import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { QcApi } from "@/api"
 import * as QC from "@/api/qcloud/typings"
@@ -8,10 +8,17 @@ import { MachineItem } from "@/api/local/machine"
 
 import { dateFormat } from "@/helper/format"
 
-@Component
+import RenameModel from "./instance_rename.vue"
+
+@Component({
+    components: { RenameModel }
+})
 export default class CvmInstance extends Vue {
     public InstanceStateMap = InstanceStateMap
     public dateFormat = dateFormat
+
+    @Ref
+    public renameModal!: RenameModel
 
     @Prop
     public meta!: Omit<MachineItem, "CloudMeta"> & {
@@ -83,29 +90,6 @@ export default class CvmInstance extends Vue {
             setTimeout(this.refreshInstance, 1500)
         }
     }
-
-    // 修改实例名
-
-    public modifyInstanceNameBus = {
-        dailog: false,
-        loading: false,
-        model: {
-            name: ""
-        }
-    }
-
-    async modifyInstanceName() {
-        this.modifyInstanceNameBus.loading = true
-        if (this.modifyInstanceNameBus.model.name && this.instance.InstanceName != this.modifyInstanceNameBus.model.name) {
-            await QcApi.cvm.modifyInstancesAttribute(this.region, {
-                InstanceIds: [this.instance.InstanceId],
-                InstanceName: this.modifyInstanceNameBus.model.name
-            })
-            this.instance.InstanceName = this.modifyInstanceNameBus.model.name
-        }
-        this.modifyInstanceNameBus.dailog = false
-        this.modifyInstanceNameBus.loading = false
-    }
 }
 </script>
 
@@ -149,7 +133,7 @@ export default class CvmInstance extends Vue {
             </el-descriptions-item>
             <el-descriptions-item label="实例名">
                 {{ instance.InstanceName }}
-                <el-button link icon="EditPen" @click="modifyInstanceNameBus.dailog = true" />
+                <el-button link icon="EditPen" @click="renameModal?.open(instance)" />
             </el-descriptions-item>
             <el-descriptions-item label="规格">
                 CPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB
@@ -177,20 +161,5 @@ export default class CvmInstance extends Vue {
             </el-descriptions-item>
         </el-descriptions>
     </el-card>
-
-    <el-dialog v-model="modifyInstanceNameBus.dailog" destroy-on-close title="修改实例名" width="400px">
-        <el-form v-if="instance" :model="modifyInstanceNameBus.model">
-            <el-form-item label="实例名">
-                <el-input v-model="modifyInstanceNameBus.model.name" :value="instance.InstanceName" />
-            </el-form-item>
-        </el-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <el-button @click="modifyInstanceNameBus.dailog = false">取消</el-button>
-                <el-button type="primary" :loading="modifyInstanceNameBus.loading" @click="modifyInstanceName">
-                    保存
-                </el-button>
-            </span>
-        </template>
-    </el-dialog>
+    <RenameModel ref="renameModal" @close="getInstance" />
 </template>

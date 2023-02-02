@@ -5,6 +5,7 @@ import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { LoApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
+import { SSHRequest } from "@/api/local/terminal"
 import { SSHKeyItem } from "@/api/local/sshkey"
 
 @Component({
@@ -57,7 +58,7 @@ export default class TerminalSshConnect extends Vue {
     @Ref
     public formRef!: FormInstance
 
-    public formModel = {
+    public formModel: SSHRequest = {
         Addr: "",
         User: "root",
         Password: "",
@@ -129,7 +130,8 @@ export default class TerminalSshConnect extends Vue {
         <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
             <el-select v-model="formModel.PrivateKey">
                 <el-option v-for="item in sshkeyList" :key="item.Id" :label="item.Description"
-                    :value="item.PrivateKey" />
+                    :value="item.PrivateKey"
+                />
             </el-select>
         </el-form-item>
         <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">

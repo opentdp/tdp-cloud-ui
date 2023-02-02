@@ -109,7 +109,6 @@ export default class CvmBind extends Vue {
     public parseOSType(s: string) {
         return /windows/i.test(s) ? "windows" : "linux"
     }
-
 }
 </script>
 
