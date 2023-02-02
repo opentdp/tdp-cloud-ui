@@ -68,8 +68,8 @@ export default class LighthouseInstanceRename extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="修改描述" width="400px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules">
-            <el-form-item label="备注">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
+            <el-form-item prop="FirewallRuleDescription" label="备注">
                 <el-input v-model="formModel.FirewallRuleDescription" />
             </el-form-item>
         </el-form>

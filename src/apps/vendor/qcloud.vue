@@ -123,7 +123,7 @@ export default class VendorListCloudflare extends Vue {
                     </el-link>
                 </div>
             </template>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="90px">
                 <el-form-item prop="Description" label="别名">
                     <el-input v-model="formModel.Description" />
                 </el-form-item>

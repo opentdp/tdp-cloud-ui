@@ -24,10 +24,11 @@ export default class LighthouseInstanceRename extends Vue {
     public formRef!: FormInstance
 
     public formModel: QC.Lighthouse.FirewallRule = {
-        CidrBlock: "",
-        Protocol: "",
-        Action: "",
-        FirewallRuleDescription: ""
+        Protocol: "TCP",
+        Port: "",
+        CidrBlock: "0.0.0.0/0",
+        Action: "ACCEPT",
+        FirewallRuleDescription: "",
     }
 
     public formRules: FormRules = {
@@ -71,12 +72,12 @@ export default class LighthouseInstanceRename extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="修改规则" width="400px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules">
-            <el-form-item label="来源">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
+            <el-form-item prop="CidrBlock" label="来源">
                 <el-input v-model="formModel.CidrBlock" />
             </el-form-item>
-            <el-form-item label="协议">
-                <el-select v-model="formModel.Protocol" width="100%">
+            <el-form-item prop="Protocol" label="协议">
+                <el-select v-model="formModel.Protocol">
                     <el-option label="TCP" value="TCP" />
                     <el-option label="UDP" value="UDP" />
                     <el-option label="ICMP" value="ICMP" />
@@ -85,7 +86,7 @@ export default class LighthouseInstanceRename extends Vue {
             <el-form-item v-if="/TCP|UDP/.test(formModel.Protocol)" label="端口">
                 <el-input v-model="formModel.Port" />
             </el-form-item>
-            <el-form-item label="策略">
+            <el-form-item prop="Action" label="策略">
                 <el-select v-model="formModel.Action">
                     <el-option label="允许" value="ACCEPT" />
                     <el-option label="拒绝" value="DROP" />

@@ -58,7 +58,7 @@ export default class TerminalSshkeyCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加密钥" width="600px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="55px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
             <el-form-item prop="Description" label="别名">
                 <el-input v-model="formModel.Description" />
             </el-form-item>

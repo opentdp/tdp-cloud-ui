@@ -86,14 +86,14 @@ export default class MemberPassword extends Vue {
                             <span>修改密码</span>
                         </div>
                     </template>
-                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="64px">
+                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
                         <el-form-item label="原密码" prop="OldPassword">
                             <el-input v-model="formModel.OldPassword" type="password" autocomplete="off" />
                         </el-form-item>
                         <el-form-item label="新密码" prop="NewPassword">
                             <el-input v-model="formModel.NewPassword" type="password" autocomplete="off" />
                         </el-form-item>
-                        <el-form-item label="新密码" prop="NewPassword2">
+                        <el-form-item label="确认密码" prop="NewPassword2">
                             <el-input v-model="formModel.NewPassword2" type="password" autocomplete="off" />
                         </el-form-item>
                         <el-form-item>

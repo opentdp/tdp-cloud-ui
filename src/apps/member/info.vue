@@ -18,7 +18,7 @@ export default class MemberInfo extends Vue {
     }
 
     public formRules: FormRules = {
-        desc: [
+        Description: [
             { required: true, message: "个人简介 不能为空" },
             {
                 validator: (rule, value, callback) => {
@@ -84,14 +84,14 @@ export default class MemberInfo extends Vue {
                             <span>账户编辑</span>
                         </div>
                     </template>
-                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="72px">
+                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
                         <el-form-item label="用户名">
                             <b>{{ session.username }}</b>
                         </el-form-item>
                         <el-form-item label="App Id">
                             {{ session.appid }}
                         </el-form-item>
-                        <el-form-item label="个人简介" prop="description">
+                        <el-form-item prop="Description" label="个人简介">
                             <el-input v-model="formModel.Description" />
                         </el-form-item>
                         <el-form-item>

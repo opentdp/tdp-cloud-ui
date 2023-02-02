@@ -106,7 +106,7 @@ export default class TerminalSshConnect extends Vue {
 </script>
 
 <template>
-    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
+    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
         <el-form-item prop="Addr" label="主机">
             <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="machineFilter" clearable>
                 <template #default="{ item }">

@@ -64,34 +64,34 @@ export default class TaskScriptUpdate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="修改脚本" width="600px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="100px" label-suffix=":">
-            <el-form-item label="类型">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
+            <el-form-item prop="CommandType" label="类型">
                 <el-radio-group v-model="formModel.CommandType">
                     <el-radio label="SHELL" />
                     <el-radio label="POWERSHELL" />
                     <el-radio label="CMD" />
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="名称">
+            <el-form-item prop="Name" label="名称">
                 <el-input v-model="formModel.Name" :maxlength="60" />
             </el-form-item>
-            <el-form-item label="执行用户">
+            <el-form-item prop="Username" label="执行用户">
                 <el-input v-model="formModel.Username"
                     :placeholder="formModel.CommandType == 'SHELL' ? '默认为 root' : '默认为 System'"
                 />
             </el-form-item>
-            <el-form-item label="执行路径">
+            <el-form-item prop="WorkDirectory" label="执行路径">
                 <el-input v-model="formModel.WorkDirectory"
                     :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'"
                 />
             </el-form-item>
-            <el-form-item label="脚本内容">
+            <el-form-item prop="Content" label="脚本内容">
                 <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 2 }" />
             </el-form-item>
-            <el-form-item label="脚本描述">
+            <el-form-item prop="Description" label="脚本描述">
                 <el-input v-model="formModel.Description" type="textarea" :autosize="{ minRows: 2 }" />
             </el-form-item>
-            <el-form-item label="超时时间">
+            <el-form-item prop="Timeout" label="超时时间">
                 <el-input-number v-model="formModel.Timeout" placeholder="默认为 300s" :min="1" :max="86400" />
             </el-form-item>
         </el-form>

@@ -85,7 +85,7 @@ export default class DnspodRecordCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加记录" width="400px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="88px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
             <el-form-item prop="name" label="主机记录">
                 <el-input v-model="formModel.name" />
             </el-form-item>
