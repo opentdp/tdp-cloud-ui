@@ -55,20 +55,6 @@ export default class DashboardIndex extends Vue {
                 </el-card>
                 <div class="space-10" />
                 <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                    <div class="grid-content grid-con-1">
-                        <el-icon class="grid-con-icon">
-                            <Lightning />
-                        </el-icon>
-                        <div class="grid-cont-right">
-                            <div class="grid-num">
-                                {{ summary.domain }}
-                            </div>
-                            <div>域名</div>
-                        </div>
-                    </div>
-                </el-card>
-                <div class="space-10" />
-                <el-card shadow="hover" :body-style="{ padding: '0px' }">
                     <div class="grid-content grid-con-3">
                         <el-icon class="grid-con-icon">
                             <Monitor />
@@ -78,6 +64,20 @@ export default class DashboardIndex extends Vue {
                                 {{ summary.machine }}
                             </div>
                             <div>主机</div>
+                        </div>
+                    </div>
+                </el-card>
+                <div class="space-10" />
+                <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                    <div class="grid-content grid-con-1">
+                        <el-icon class="grid-con-icon">
+                            <Lightning />
+                        </el-icon>
+                        <div class="grid-cont-right">
+                            <div class="grid-num">
+                                {{ summary.domain }}
+                            </div>
+                            <div>域名</div>
                         </div>
                     </div>
                 </el-card>
