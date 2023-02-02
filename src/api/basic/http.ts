@@ -82,11 +82,12 @@ export class HttpClient {
             }
             throw new Error(err)
         }
+        // 显示提示消息
+        if (data.Message) {
+            okMessage(data.Message)
+        }
         // 处理正确结果
         if (data.Payload) {
-            if (data.Payload.Message) {
-                okMessage(data.Payload.Message)
-            }
             return data.Payload
         }
         return data

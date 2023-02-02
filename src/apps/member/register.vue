@@ -29,7 +29,6 @@ export default class MemberRegister extends Vue {
                 return false
             }
             await LoApi.user.register(this.formModel)
-            ElMessage.success("注册成功")
             // 切换到登陆页面
             this.$router.push("/member/login")
         })

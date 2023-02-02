@@ -30,9 +30,6 @@ export default class MemberLogin extends Vue {
                 return false
             }
             const res = await LoApi.user.login(this.formModel)
-            if (res.Username) {
-                ElMessage.success("登录成功")
-            }
             this.session.appid = res.AppId
             this.session.username = res.Username
             this.session.description = res.Description
