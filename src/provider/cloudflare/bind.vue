@@ -5,7 +5,9 @@ import { LoApi, CfApi } from "@/api"
 import * as CF from "@/api/cloudflare/typings"
 import { DomainItem } from "@/api/local/domain"
 
-@Component
+@Component({
+    emits: ["change"]
+})
 export default class CloudflareBind extends Vue {
     public loading = true
 
@@ -35,9 +37,9 @@ export default class CloudflareBind extends Vue {
 
     // 绑定域名
 
-    public bindDomian(item: CF.ZoneItem) {
+    async bindDomian(item: CF.ZoneItem) {
         const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
-        LoApi.domain.create({
+        await LoApi.domain.create({
             VendorId: this.meta.vendorId,
             Name: item.name,
             NSList: ns,
@@ -47,6 +49,7 @@ export default class CloudflareBind extends Vue {
             Description: "",
             Status: 1,
         })
+        this.$emit("change")
     }
 
     // 同步域名

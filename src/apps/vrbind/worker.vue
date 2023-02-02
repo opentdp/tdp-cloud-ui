@@ -47,6 +47,6 @@ export default class VendorBindWorker extends Vue {
             <pre>{{ installTDPWorker.Content }}</pre>
         </el-alert>
         <div class="space-10" />
-        <WorkerBind :meta="{ boundList: machineList }" />
+        <WorkerBind :meta="{ boundList: machineList }" @change="getMachineList" />
     </div>
 </template>

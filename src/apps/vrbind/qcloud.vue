@@ -77,13 +77,13 @@ export default class VendorBindQcloud extends Vue {
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
             <el-tab-pane label="CVM服务器" name="cvm">
-                <CvmBind :meta="{ vendorId, boundList: machineList }" />
+                <CvmBind :meta="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </el-tab-pane>
             <el-tab-pane label="轻量服务器" name="lighthouse">
-                <LighthouseBind :meta="{ vendorId, boundList: machineList }" />
+                <LighthouseBind :meta="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </el-tab-pane>
             <el-tab-pane label="域名解析" name="dnspod">
-                <DnspodBind :meta="{ vendorId, boundList: domainList }" />
+                <DnspodBind :meta="{ vendorId, boundList: domainList }" @change="getDomainList" />
             </el-tab-pane>
         </el-tabs>
     </div>

@@ -6,7 +6,9 @@ import * as QC from "@/api/qcloud/typings"
 import { DomainStatusMap } from "@/api/qcloud/dnspod"
 import { DomainItem } from "@/api/local/domain"
 
-@Component
+@Component({
+    emits: ["change"]
+})
 export default class DnspodBind extends Vue {
     public DomainStatusMap = DomainStatusMap
 
@@ -41,8 +43,8 @@ export default class DnspodBind extends Vue {
 
     // 绑定域名
 
-    public bindDomian(item: QC.Dnspod.DomainListItem) {
-        LoApi.domain.create({
+    async bindDomian(item: QC.Dnspod.DomainListItem) {
+        await LoApi.domain.create({
             VendorId: this.meta.vendorId,
             Name: item.Name,
             NSList: item.EffectiveDNS.join(","),
@@ -52,6 +54,7 @@ export default class DnspodBind extends Vue {
             Description: "",
             Status: 1,
         })
+        this.$emit("change")
     }
 
     // 同步域名

@@ -7,7 +7,9 @@ import { WorkerItem } from "@/api/local/workhub"
 
 import { bytesToSize } from "@/helper/format"
 
-@Component
+@Component({
+    emits: ["change"]
+})
 export default class WorkerBind extends Vue {
     public bytesToSize = bytesToSize
 
@@ -62,9 +64,9 @@ export default class WorkerBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: WorkerItem) {
+    async syncMachine(item: WorkerItem) {
         const bd = this.meta.boundList[item.WorkerId]
-        LoApi.machine.update({
+        await LoApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.WorkerMeta.HostName,
             IpAddress: item.WorkerMeta.IpAddress,
@@ -72,6 +74,7 @@ export default class WorkerBind extends Vue {
             WorkerId: item.WorkerId,
             WorkerMeta: item.WorkerMeta,
         })
+        this.$emit("change")
     }
 }
 </script>

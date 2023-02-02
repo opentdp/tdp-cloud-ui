@@ -7,7 +7,9 @@ import { MachineItem } from "@/api/local/machine"
 
 import { dateFormat } from "@/helper/format"
 
-@Component
+@Component({
+    emits: ["change"]
+})
 export default class CvmBind extends Vue {
     public dateFormat = dateFormat
 
@@ -64,9 +66,9 @@ export default class CvmBind extends Vue {
 
     // 绑定主机
 
-    public bindMachine(item: Required<QC.Cvm.Instance>) {
+    async bindMachine(item: Required<QC.Cvm.Instance>) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
-        LoApi.machine.create({
+        await LoApi.machine.create({
             VendorId: this.meta.vendorId,
             HostName: item.InstanceName || "",
             IpAddress: item.PublicIpAddresses[0],
@@ -80,6 +82,7 @@ export default class CvmBind extends Vue {
             Description: "",
             Status: 1,
         })
+        this.$emit("change")
     }
 
     // 同步主机
