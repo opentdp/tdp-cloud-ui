@@ -87,7 +87,7 @@ export default class TaskScript extends Vue {
             </el-table>
         </el-card>
 
-        <ScriptCreate ref="createModal" @close="getScriptList" />
-        <ScriptUpdate ref="updateModal" @close="getScriptList" />
+        <ScriptCreate ref="createModal" @submit="getScriptList" />
+        <ScriptUpdate ref="updateModal" @submit="getScriptList" />
     </div>
 </template>

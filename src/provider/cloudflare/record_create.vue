@@ -8,7 +8,7 @@ import { ZoneRecordTypes } from "@/api/cloudflare/zones"
 import * as CF from "@/api/cloudflare/typings"
 
 @Component({
-    emits: ["close"],
+    emits: ["submit"],
     expose: ["open"],
 })
 export default class DnspodRecordCreate extends Vue {
@@ -63,7 +63,7 @@ export default class DnspodRecordCreate extends Vue {
 
     public close() {
         this.dailog = false
-        this.$emit("close")
+        this.$emit("submit")
     }
 
     public open(domain: CF.ZoneItem) {

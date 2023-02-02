@@ -7,7 +7,7 @@ import { QcApi } from "@/api"
 import * as QC from "@/api/qcloud/typings"
 
 @Component({
-    emits: ["close"],
+    emits: ["submit"],
     expose: ["open"],
 })
 export default class CvmInstanceRename extends Vue {
@@ -57,7 +57,7 @@ export default class CvmInstanceRename extends Vue {
 
     public close() {
         this.dailog = false
-        this.$emit("close")
+        this.$emit("submit")
     }
 
     public open(instance: Required<QC.Cvm.Instance>) {

@@ -7,7 +7,7 @@ import { LoApi } from "@/api"
 import { TaskScriptOrig } from "@/api/local/task_script"
 
 @Component({
-    emits: ['close'],
+    emits: ['submit'],
     expose: ['open']
 })
 export default class TaskScriptCreate extends Vue {
@@ -50,7 +50,7 @@ export default class TaskScriptCreate extends Vue {
 
     public close() {
         this.dailog = false
-        this.$emit("close")
+        this.$emit("submit")
     }
 
     public open() {

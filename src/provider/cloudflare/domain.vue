@@ -107,6 +107,6 @@ export default class CloudflareDomain extends Vue {
         </el-table>
     </el-card>
 
-    <RecordCreate ref="createModal" @close="getRecordList" />
-    <RecordUpdate ref="updateModal" @close="getRecordList" />
+    <RecordCreate ref="createModal" @submit="getRecordList" />
+    <RecordUpdate ref="updateModal" @submit="getRecordList" />
 </template>

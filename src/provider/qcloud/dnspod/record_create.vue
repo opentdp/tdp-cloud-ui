@@ -7,7 +7,7 @@ import { QcApi } from "@/api"
 import * as QC from "@/api/qcloud/typings"
 
 @Component({
-    emits: ["close"],
+    emits: ["submit"],
     expose: ["open"],
 })
 export default class DnspodRecordCreate extends Vue {
@@ -80,7 +80,7 @@ export default class DnspodRecordCreate extends Vue {
 
     public close() {
         this.dailog = false
-        this.$emit("close")
+        this.$emit("submit")
     }
 
     public open(info: QC.Dnspod.DomainInfo) {

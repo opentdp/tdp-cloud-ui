@@ -6,7 +6,7 @@ import { ElMessage, FormRules, FormInstance } from "element-plus"
 import { LoApi } from "@/api"
 
 @Component({
-    emits: ["close"],
+    emits: ["submit"],
     expose: ["open"],
 })
 export default class TerminalSshkeyCreate extends Vue {
@@ -37,7 +37,7 @@ export default class TerminalSshkeyCreate extends Vue {
                 return false
             }
             await LoApi.sshkey.create(this.formModel)
-            this.formRef.resetFields()
+            this.close()
         })
     }
 
@@ -47,7 +47,7 @@ export default class TerminalSshkeyCreate extends Vue {
 
     public close() {
         this.dailog = false
-        this.$emit("close")
+        this.$emit("submit")
     }
 
     public open() {

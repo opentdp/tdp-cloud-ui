@@ -79,6 +79,6 @@ export default class TerminalSshkey extends Vue {
                 </el-table-column>
             </el-table>
         </el-card>
-        <SshkeyCreate ref="createModal" @close="getSshkeyList" />
+        <SshkeyCreate ref="createModal" @submit="getSshkeyList" />
     </div>
 </template>

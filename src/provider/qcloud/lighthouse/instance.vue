@@ -164,7 +164,7 @@ export default class LighthouseInstance extends Vue {
             </el-descriptions-item>
         </el-descriptions>
     </el-card>
-    <RenameModel ref="renameModal" @close="getInstance" />
+    <RenameModel ref="renameModal" @submit="getInstance" />
     <div class="space-10" />
     <Firwwall :instance="instance" />
     <div class="space-10" />

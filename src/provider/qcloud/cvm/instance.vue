@@ -161,5 +161,5 @@ export default class CvmInstance extends Vue {
             </el-descriptions-item>
         </el-descriptions>
     </el-card>
-    <RenameModel ref="renameModal" @close="getInstance" />
+    <RenameModel ref="renameModal" @submit="getInstance" />
 </template>

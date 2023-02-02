@@ -103,7 +103,7 @@ export default class LighthouseFirewall extends Vue {
             </el-table-column>
         </el-table>
     </el-card>
-    <CreateModel ref="createModel" @close="getFirewallRuleList" />
-    <UpdateModel ref="updateModel" @close="getFirewallRuleList" />
-    <RemarkModel ref="remarkModel" @close="getFirewallRuleList" />
+    <CreateModel ref="createModel" @submit="getFirewallRuleList" />
+    <UpdateModel ref="updateModel" @submit="getFirewallRuleList" />
+    <RemarkModel ref="remarkModel" @submit="getFirewallRuleList" />
 </template>

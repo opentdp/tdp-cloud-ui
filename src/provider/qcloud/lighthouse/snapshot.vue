@@ -128,5 +128,5 @@ export default class LighthouseSnapshot extends Vue {
             </el-table-column>
         </el-table>
     </el-card>
-    <SnapshotCreate ref="createModal" @close="refreshSnapshot" />
+    <SnapshotCreate ref="createModal" @submit="refreshSnapshot" />
 </template>
