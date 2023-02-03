@@ -147,6 +147,11 @@ export default class MachineList extends Vue {
                 </div>
             </template>
             <div v-if="selectedRow.WorkerId.length == 32" class="button-list">
+                <p v-if="rowScriptList.length == 0">
+                    暂无可用命令，请在 <router-link to="/script/list">
+                        <b>脚本管理</b>
+                    </router-link> 页面添加命令。
+                </p>
                 <template v-for="item in rowScriptList" :key="item.Id">
                     <el-button @click="workerExec(item)">
                         {{ item.Name }}
@@ -163,3 +168,10 @@ export default class MachineList extends Vue {
         </el-card>
     </div>
 </template>
+
+<style lang="scss">
+div.p {
+    margin: 0;
+    color: var(--el-color-info);
+}
+</style>
