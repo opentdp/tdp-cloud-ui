@@ -170,7 +170,7 @@ export default class MachineList extends Vue {
 </template>
 
 <style lang="scss">
-div.p {
+div>p {
     margin: 0;
     color: var(--el-color-info);
 }
