@@ -33,13 +33,13 @@ export default class LayoutNavbar extends Vue {
                 break
             case "loginout":
                 this.session.$reset()
-                this.$router.push({ name: "member-login" })
+                this.$router.push({ name: "passport-login" })
                 break
             case "user":
-                this.$router.push({ name: "member-info" })
+                this.$router.push({ name: "passport-info" })
                 break
             case "password":
-                this.$router.push({ name: "member-password" })
+                this.$router.push({ name: "passport-password" })
                 break
         }
     }

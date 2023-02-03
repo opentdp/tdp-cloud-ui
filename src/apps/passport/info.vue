@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "vue-facing-decorator"
+import { Component, Ref, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
@@ -7,42 +7,40 @@ import { LoApi } from "@/api"
 import sessionStore from "@/store/session"
 
 @Component
-export default class MemberPassword extends Vue {
+export default class PassportInfo extends Vue {
     public session = sessionStore()
 
     @Ref
     public formRef!: FormInstance
 
     public formModel = {
-        OldPassword: "",
-        NewPassword: "",
-        NewPassword2: "",
+        Description: this.session.description,
     }
 
     public formRules: FormRules = {
-        OldPassword: [{ required: true, message: "原始密码 不能为空" }],
-        NewPassword: [{ required: true, message: "密码 不能为空" }],
-        NewPassword2: [
-            { required: true, message: "密码 不能为空" },
+        Description: [
+            { required: true, message: "个人简介 不能为空" },
             {
                 validator: (rule, value, callback) => {
-                    if (this.formModel.NewPassword != this.formModel.NewPassword2) {
-                        callback(new Error("两次密码不一致"))
+                    if (value.trim().length == 0) {
+                        callback(new Error("个人简介 不能为空"))
                     } else {
                         callback()
                     }
-                }
+                },
+                trigger: "blur"
             },
         ],
     }
 
     public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(valid => {
+        form && form.validate(async valid => {
             if (!valid) {
                 ElMessage.error("请检查表单")
                 return false
             }
-            LoApi.passport.updatePassword(this.formModel)
+            await LoApi.passport.updateInfo(this.formModel)
+            this.session.description = this.formModel.Description
         })
     }
 }
@@ -55,7 +53,7 @@ export default class MemberPassword extends Vue {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                修改密码
+                个人中心
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="20">
@@ -83,18 +81,18 @@ export default class MemberPassword extends Vue {
                 <el-card shadow="hover">
                     <template #header>
                         <div class="flex-between">
-                            <span>修改密码</span>
+                            <span>账户编辑</span>
                         </div>
                     </template>
                     <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
-                        <el-form-item label="原密码" prop="OldPassword">
-                            <el-input v-model="formModel.OldPassword" type="password" autocomplete="off" />
+                        <el-form-item label="用户名">
+                            <b>{{ session.username }}</b>
                         </el-form-item>
-                        <el-form-item label="新密码" prop="NewPassword">
-                            <el-input v-model="formModel.NewPassword" type="password" autocomplete="off" />
+                        <el-form-item label="App Id">
+                            {{ session.appid }}
                         </el-form-item>
-                        <el-form-item label="确认密码" prop="NewPassword2">
-                            <el-input v-model="formModel.NewPassword2" type="password" autocomplete="off" />
+                        <el-form-item prop="Description" label="个人简介">
+                            <el-input v-model="formModel.Description" />
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="formSubmit(formRef)">

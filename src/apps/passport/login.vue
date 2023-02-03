@@ -4,22 +4,23 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { LoApi } from "@/api"
+import sessionStore from "@/store/session"
 
 @Component
-export default class MemberRegister extends Vue {
+export default class PassportLogin extends Vue {
+    public session = sessionStore()
+
     @Ref
     public formRef!: FormInstance
 
     public formModel = {
-        Username: "",
-        Password: "",
-        Password2: "",
+        Username: import.meta.env.VITE_USERNAME || "",
+        Password: import.meta.env.VITE_PASSWORD || "",
     }
 
     public formRules: FormRules = {
         Username: [{ required: true, message: "用户名 不能为空" }],
         Password: [{ required: true, message: "密码 不能为空" }],
-        Password2: [{ required: true, message: "密码 不能为空" }],
     }
 
     public formSubmit(form: FormInstance | undefined) {
@@ -28,17 +29,20 @@ export default class MemberRegister extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.passport.register(this.formModel)
-            // 切换到登陆页面
-            this.$router.push("/member/login")
+            const res = await LoApi.passport.login(this.formModel)
+            this.session.appid = res.AppId
+            this.session.username = res.Username
+            this.session.description = res.Description
+            this.session.token = res.Token
+            this.$router.push("/")
         })
     }
 }
 </script>
 
 <template>
-    <div class="register-wrap">
-        <div class="vt-register">
+    <div class="login-wrap">
+        <div class="vt-login">
             <div class="vt-title">
                 TDP Cloud
             </div>
@@ -53,16 +57,7 @@ export default class MemberRegister extends Vue {
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="Password">
-                    <el-input v-model="formModel.Password" type="password" placeholder="密码">
-                        <template #prepend>
-                            <el-icon>
-                                <Lock />
-                            </el-icon>
-                        </template>
-                    </el-input>
-                </el-form-item>
-                <el-form-item prop="Password2">
-                    <el-input v-model="formModel.Password2" type="password" placeholder="确认密码"
+                    <el-input v-model="formModel.Password" type="password" placeholder="密码"
                         @keyup.enter="formSubmit(formRef)"
                     >
                         <template #prepend>
@@ -72,14 +67,14 @@ export default class MemberRegister extends Vue {
                         </template>
                     </el-input>
                 </el-form-item>
-                <div class="register-btn">
+                <div class="login-btn">
                     <el-button type="primary" @click="formSubmit(formRef)">
-                        注册
+                        登录
                     </el-button>
                 </div>
-                <div class="register-btn">
-                    <router-link to="/member/login">
-                        <el-button>登录</el-button>
+                <div class="login-btn">
+                    <router-link to="/passport/register">
+                        <el-button>注册</el-button>
                     </router-link>
                 </div>
             </el-form>
@@ -88,7 +83,7 @@ export default class MemberRegister extends Vue {
 </template>
 
 <style lang="scss" scoped>
-.register-wrap {
+.login-wrap {
     position: relative;
     width: 100%;
     height: 100%;
@@ -106,7 +101,7 @@ export default class MemberRegister extends Vue {
     border-bottom: 1px solid #ddd;
 }
 
-.vt-register {
+.vt-login {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -121,11 +116,11 @@ export default class MemberRegister extends Vue {
     padding: 30px 30px;
 }
 
-.register-btn {
+.login-btn {
     text-align: center;
 }
 
-.register-btn button {
+.login-btn button {
     width: 100%;
     height: 36px;
     margin-bottom: 10px;

@@ -109,22 +109,22 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/member/info",
-                name: "member-info",
+                path: "/passport/info",
+                name: "passport-info",
                 meta: {
                     title: "个人中心",
                     login: true,
                 },
-                component: () => import("@/apps/member/info.vue"),
+                component: () => import("@/apps/passport/info.vue"),
             },
             {
-                path: "/member/password",
-                name: "member-password",
+                path: "/passport/password",
+                name: "passport-password",
                 meta: {
                     title: "修改密码",
                     login: true,
                 },
-                component: () => import("@/apps/member/password.vue"),
+                component: () => import("@/apps/passport/password.vue"),
             },
             //////
             {
@@ -196,20 +196,20 @@ export const routes: RouteRecordRaw[] = [
     },
     //////
     {
-        path: "/member/login",
-        name: "member-login",
+        path: "/passport/login",
+        name: "passport-login",
         meta: {
             title: "登录",
         },
-        component: () => import("@/apps/member/login.vue"),
+        component: () => import("@/apps/passport/login.vue"),
     },
     {
-        path: "/member/register",
-        name: "member-register",
+        path: "/passport/register",
+        name: "passport-register",
         meta: {
             title: "注册",
         },
-        component: () => import("@/apps/member/register.vue"),
+        component: () => import("@/apps/passport/register.vue"),
     },
     //////
     {
