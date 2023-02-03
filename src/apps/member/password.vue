@@ -42,7 +42,7 @@ export default class MemberPassword extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            LoApi.user.updatePassword(this.formModel)
+            LoApi.passport.updatePassword(this.formModel)
         })
     }
 }

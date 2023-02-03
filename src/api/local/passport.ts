@@ -1,24 +1,24 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
-export class UserModel extends HttpClient {
+export class PassportModel extends HttpClient {
     public login(rq: UserRequest): Promise<LoginResponse> {
-        return this.post("/user/login", rq)
+        return this.post("/passport/login", rq)
     }
 
     public register(rq: UserRequest): Promise<HttpMessage> {
-        return this.post("/user/register", rq)
+        return this.post("/passport/register", rq)
     }
 
     public detail(): Promise<UserInfoResponse> {
-        return this.get("/user/info")
+        return this.get("/passport/info")
     }
 
     public updateInfo(rq: UpdateInfoRequest): Promise<HttpMessage> {
-        return this.patch("/user/info", rq)
+        return this.patch("/passport/info", rq)
     }
 
     public updatePassword(rq: UpdatePasswordRequest): Promise<HttpMessage> {
-        return this.patch("/user/password", rq)
+        return this.patch("/passport/password", rq)
     }
 }
 

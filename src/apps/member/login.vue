@@ -29,7 +29,7 @@ export default class MemberLogin extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            const res = await LoApi.user.login(this.formModel)
+            const res = await LoApi.passport.login(this.formModel)
             this.session.appid = res.AppId
             this.session.username = res.Username
             this.session.description = res.Description

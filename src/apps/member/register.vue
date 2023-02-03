@@ -28,7 +28,7 @@ export default class MemberRegister extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.user.register(this.formModel)
+            await LoApi.passport.register(this.formModel)
             // 切换到登陆页面
             this.$router.push("/member/login")
         })

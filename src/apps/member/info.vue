@@ -39,7 +39,7 @@ export default class MemberInfo extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.user.updateInfo(this.formModel)
+            await LoApi.passport.updateInfo(this.formModel)
             this.session.description = this.formModel.Description
         })
     }
