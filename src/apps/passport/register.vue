@@ -37,12 +37,12 @@ export default class PassportRegister extends Vue {
 </script>
 
 <template>
-    <div class="register-wrap">
-        <div class="vt-register">
-            <div class="vt-title">
-                TDP Cloud
+    <div class="magic-bg">
+        <div class="magic-box">
+            <div class="magic-title">
+                管理后台
             </div>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="0px" class="vt-content">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="0px" class="magic-body">
                 <el-form-item prop="Username">
                     <el-input v-model="formModel.Username" placeholder="用户名">
                         <template #prepend>
@@ -72,23 +72,26 @@ export default class PassportRegister extends Vue {
                         </template>
                     </el-input>
                 </el-form-item>
-                <div class="register-btn">
+                <div class="magic-btn">
                     <el-button type="primary" @click="formSubmit(formRef)">
                         注册
                     </el-button>
                 </div>
-                <div class="register-btn">
+                <div class="magic-btn">
                     <router-link to="/passport/login">
                         <el-button>登录</el-button>
                     </router-link>
                 </div>
             </el-form>
         </div>
+        <div class="copyright">
+            <small>Powered by TDP Cloud</small>
+        </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.register-wrap {
+.magic-bg {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -99,7 +102,7 @@ export default class PassportRegister extends Vue {
     background-size: cover;
 }
 
-.vt-register {
+.magic-box {
     width: 350px;
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.35);
@@ -107,26 +110,33 @@ export default class PassportRegister extends Vue {
     overflow: hidden;
 }
 
-.vt-title {
+.magic-title {
     width: 100%;
-    line-height: 50px;
+    line-height: 60px;
     text-align: center;
     font-size: 20px;
     color: #333;
     border-bottom: 1px solid #ddd;
 }
 
-.vt-content {
+.magic-body {
     padding: 30px 30px;
 }
 
-.register-btn {
+.magic-btn {
     text-align: center;
+
+    button {
+        width: 100%;
+        height: 36px;
+        margin-bottom: 10px;
+    }
 }
 
-.register-btn button {
-    width: 100%;
-    height: 36px;
-    margin-bottom: 10px;
+.copyright {
+    user-select: none;
+    position: absolute;
+    bottom: 10px;
+    color: #ddd;
 }
 </style>

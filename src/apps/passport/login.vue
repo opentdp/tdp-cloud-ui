@@ -41,12 +41,12 @@ export default class PassportLogin extends Vue {
 </script>
 
 <template>
-    <div class="login-wrap">
-        <div class="vt-login">
-            <div class="vt-title">
-                TDP Cloud
+    <div class="magic-bg">
+        <div class="magic-box">
+            <div class="magic-title">
+                管理后台
             </div>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="0px" class="vt-content">
+            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="0px" class="magic-body">
                 <el-form-item prop="Username">
                     <el-input v-model="formModel.Username" placeholder="用户名">
                         <template #prepend>
@@ -58,8 +58,7 @@ export default class PassportLogin extends Vue {
                 </el-form-item>
                 <el-form-item prop="Password">
                     <el-input v-model="formModel.Password" type="password" placeholder="密码"
-                        @keyup.enter="formSubmit(formRef)"
-                    >
+                        @keyup.enter="formSubmit(formRef)">
                         <template #prepend>
                             <el-icon>
                                 <Lock />
@@ -67,23 +66,26 @@ export default class PassportLogin extends Vue {
                         </template>
                     </el-input>
                 </el-form-item>
-                <div class="login-btn">
+                <div class="magic-btn">
                     <el-button type="primary" @click="formSubmit(formRef)">
                         登录
                     </el-button>
                 </div>
-                <div class="login-btn">
+                <div class="magic-btn">
                     <router-link to="/passport/register">
                         <el-button>注册</el-button>
                     </router-link>
                 </div>
             </el-form>
         </div>
+        <div class="copyright">
+            <small>Powered by TDP Cloud</small>
+        </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.login-wrap {
+.magic-bg {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -94,7 +96,7 @@ export default class PassportLogin extends Vue {
     background-size: cover;
 }
 
-.vt-login {
+.magic-box {
     width: 350px;
     border-radius: 5px;
     background: rgba(255, 255, 255, 0.35);
@@ -102,26 +104,33 @@ export default class PassportLogin extends Vue {
     overflow: hidden;
 }
 
-.vt-title {
+.magic-title {
     width: 100%;
-    line-height: 50px;
+    line-height: 60px;
     text-align: center;
     font-size: 20px;
     color: #333;
     border-bottom: 1px solid #ddd;
 }
 
-.vt-content {
+.magic-body {
     padding: 30px 30px;
 }
 
-.login-btn {
+.magic-btn {
     text-align: center;
+
+    button {
+        width: 100%;
+        height: 36px;
+        margin-bottom: 10px;
+    }
 }
 
-.login-btn button {
-    width: 100%;
-    height: 36px;
-    margin-bottom: 10px;
+.copyright {
+    user-select: none;
+    position: absolute;
+    bottom: 10px;
+    color: #ddd;
 }
 </style>
