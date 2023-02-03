@@ -37,53 +37,51 @@ export default class DashboardIndex extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-row :gutter="20">
-            <el-col>
-                <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                    <div class="grid-content grid-con-2">
-                        <el-icon class="grid-con-icon">
-                            <Connection />
-                        </el-icon>
-                        <div class="grid-cont-right">
-                            <div class="grid-num">
-                                {{ summary.vendor }}
-                            </div>
-                            <div>厂商</div>
+    <el-row :gutter="20">
+        <el-col>
+            <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                <div class="grid-content grid-con-2">
+                    <el-icon class="grid-con-icon">
+                        <Connection />
+                    </el-icon>
+                    <div class="grid-cont-right">
+                        <div class="grid-num">
+                            {{ summary.vendor }}
                         </div>
+                        <div>厂商</div>
                     </div>
-                </el-card>
-                <div class="space-10" />
-                <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                    <div class="grid-content grid-con-3">
-                        <el-icon class="grid-con-icon">
-                            <Monitor />
-                        </el-icon>
-                        <div class="grid-cont-right">
-                            <div class="grid-num">
-                                {{ summary.machine }}
-                            </div>
-                            <div>主机</div>
+                </div>
+            </el-card>
+            <div class="space-10" />
+            <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                <div class="grid-content grid-con-3">
+                    <el-icon class="grid-con-icon">
+                        <Monitor />
+                    </el-icon>
+                    <div class="grid-cont-right">
+                        <div class="grid-num">
+                            {{ summary.machine }}
                         </div>
+                        <div>主机</div>
                     </div>
-                </el-card>
-                <div class="space-10" />
-                <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                    <div class="grid-content grid-con-1">
-                        <el-icon class="grid-con-icon">
-                            <Lightning />
-                        </el-icon>
-                        <div class="grid-cont-right">
-                            <div class="grid-num">
-                                {{ summary.domain }}
-                            </div>
-                            <div>域名</div>
+                </div>
+            </el-card>
+            <div class="space-10" />
+            <el-card shadow="hover" :body-style="{ padding: '0px' }">
+                <div class="grid-content grid-con-1">
+                    <el-icon class="grid-con-icon">
+                        <Lightning />
+                    </el-icon>
+                    <div class="grid-cont-right">
+                        <div class="grid-num">
+                            {{ summary.domain }}
                         </div>
+                        <div>域名</div>
                     </div>
-                </el-card>
-            </el-col>
-        </el-row>
-    </div>
+                </div>
+            </el-card>
+        </el-col>
+    </el-row>
 </template>
 
 <style lang="scss" scoped>

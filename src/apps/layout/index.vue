@@ -17,29 +17,45 @@ export default class LayoutIndex extends Vue {
 <template>
     <Navbar />
     <Sidebar />
-    <div class="content-box" :class="{ collapse: layout.collapse }">
+    <div class="container" :class="{ collapse: layout.collapse }">
         <router-view v-slot="{ Component }">
             <transition name="move" mode="out-in">
                 <component :is="Component" />
             </transition>
         </router-view>
+        <div class="flex-auto" />
+        <div class="copyright">
+            <small>Powered by TDP Cloud</small>
+        </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.content-box {
+.container {
     position: absolute;
-    left: 250px;
-    right: 0;
     top: 70px;
+    right: 0;
     bottom: 0;
-    padding: 10px 10px 30px 10px;
-    transition: left 0.3s ease-in-out;
-    background: #f0f0f0;
+    left: 250px;
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+
     overflow-y: scroll;
+    background: #f0f0f0;
+    transition: left 0.3s ease-in-out;
 
     &.collapse {
         left: 65px;
+    }
+
+    .copyright {
+        user-select: none;
+        padding: 20px 0 10px;
+        color: var(--el-color-info);
+        text-align: center;
+        line-height: 1;
     }
 }
 
