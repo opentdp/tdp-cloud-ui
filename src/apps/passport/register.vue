@@ -89,12 +89,22 @@ export default class PassportRegister extends Vue {
 
 <style lang="scss" scoped>
 .register-wrap {
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    background: #324157;
     background-image: url(@/assets/img/bg01.jpg);
+    background-position: center center;
     background-size: cover;
+}
+
+.vt-register {
+    width: 350px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 4px 12px 12px rgb(0 0 0 / 10%);
+    overflow: hidden;
 }
 
 .vt-title {
@@ -104,17 +114,6 @@ export default class PassportRegister extends Vue {
     font-size: 20px;
     color: #333;
     border-bottom: 1px solid #ddd;
-}
-
-.vt-register {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 350px;
-    margin: -190px 0 0 -175px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.3);
-    overflow: hidden;
 }
 
 .vt-content {
