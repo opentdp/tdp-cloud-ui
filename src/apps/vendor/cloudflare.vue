@@ -91,10 +91,10 @@ export default class VendorListCloudflare extends Vue {
                     <template #default="scope">
                         <el-button link type="primary" icon="View">
                             <router-link :to="'/vrbind/cloudflare/' + scope.row.Id">
-                                导入
+                                管理
                             </router-link>
                         </el-button>
-                        <el-popconfirm title="确定删除?" @confirm="deleteVendor(scope.$index)">
+                        <el-popconfirm title="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">
                                     删除
