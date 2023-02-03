@@ -32,13 +32,13 @@ export default class LayoutSidebar extends Vue {
             subs: [
                 {
                     icon: "Crop",
-                    index: "/task/script",
+                    index: "/script/list",
                     title: "脚本管理",
                 },
                 {
                     icon: "Finished",
-                    index: "/task/history",
-                    title: "历史记录",
+                    index: "/taskline/list",
+                    title: "任务记录",
                 },
             ]
         },

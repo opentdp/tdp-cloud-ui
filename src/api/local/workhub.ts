@@ -1,6 +1,6 @@
 import { HttpClient } from "@/api/basic/http"
 
-import { TaskScriptOrig } from "./task_script"
+import { ScriptOrig } from "./script"
 
 export class WorkhubModel extends HttpClient {
     public list(): Promise<WorkerPaged> {
@@ -54,5 +54,5 @@ export interface WorkerPaged {
 
 export interface WorkerExecRequest {
     WorkerId: string
-    Payload: TaskScriptOrig
+    Payload: ScriptOrig
 }

@@ -3,7 +3,7 @@ import { Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
 import { SSHRequest } from "@/api/local/terminal"
-import { TaskScriptItem } from "@/api/local/task_script"
+import { ScriptItem } from "@/api/local/script"
 
 import { WebSSH } from "@/helper/webssh"
 import shellList from "@/helper/script/shell"
@@ -75,13 +75,13 @@ export default class TerminalSsh extends Vue {
 
     // 获取快捷命令
 
-    public scriptList: TaskScriptItem[] = []
+    public scriptList: ScriptItem[] = []
 
     async getScriptList() {
-        const res = await LoApi.taskScript.list()
+        const res = await LoApi.script.list()
         const list = [...shellList, ...res.Datasets]
         // 根据操作系统过滤脚本
-        this.scriptList = LoApi.taskScript.osFilter(list, "linux")
+        this.scriptList = LoApi.script.osFilter(list, "linux")
     }
 
     // 执行快捷命令

@@ -6,13 +6,13 @@ import VueJsonPretty from "vue-json-pretty"
 import "vue-json-pretty/lib/styles.css"
 
 import { LoApi } from "@/api"
-import { TaskHistoryItem } from "@/api/local/task_history"
+import { TasklineItem } from "@/api/local/taskline"
 import { dateFormat } from "@/helper/format"
 
 @Component({
     components: { VueJsonPretty }
 })
-export default class TaskHistory extends Vue {
+export default class Taskline extends Vue {
     public dateFormat = dateFormat
 
     public timer = 0
@@ -32,10 +32,10 @@ export default class TaskHistory extends Vue {
 
     // 历史记录
 
-    public historyList: TaskHistoryItem[] = []
+    public historyList: TasklineItem[] = []
 
     async getHistory() {
-        const res = await LoApi.taskHistory.list()
+        const res = await LoApi.taskline.list()
         this.historyList = res.Datasets
     }
 
@@ -43,7 +43,7 @@ export default class TaskHistory extends Vue {
 
     public expanded = false
 
-    async expandChange(row: TaskHistoryItem[], rs: TaskHistoryItem[]) {
+    async expandChange(row: TasklineItem[], rs: TasklineItem[]) {
         this.expanded = rs.length > 0
     }
 }

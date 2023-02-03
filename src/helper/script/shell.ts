@@ -1,11 +1,11 @@
 import { LoApi } from "@/api"
-import { TaskScriptItem } from "@/api/local/task_script"
+import { ScriptItem } from "@/api/local/script"
 
 function trim(s: string) {
     return s.replace(/\n {8}/g, "\n").trim()
 }
 
-export const installTDPWorker: TaskScriptItem = {
+export const installTDPWorker: ScriptItem = {
     Id: 0,
     Name: "安装 TDP Worker",
     Username: "root",

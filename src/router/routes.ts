@@ -71,22 +71,42 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/task/history",
-                name: "task-history",
+                path: "/passport/info",
+                name: "passport-info",
                 meta: {
-                    title: "任务记录",
+                    title: "个人中心",
                     login: true,
                 },
-                component: () => import("@/apps/task/history.vue"),
+                component: () => import("@/apps/passport/info.vue"),
             },
             {
-                path: "/task/script",
-                name: "task-script",
+                path: "/passport/password",
+                name: "passport-password",
+                meta: {
+                    title: "修改密码",
+                    login: true,
+                },
+                component: () => import("@/apps/passport/password.vue"),
+            },
+            //////
+            {
+                path: "/script/list",
+                name: "script-list",
                 meta: {
                     title: "脚本管理",
                     login: true,
                 },
-                component: () => import("@/apps/task/script.vue"),
+                component: () => import("@/apps/script/list.vue"),
+            },
+            //////
+            {
+                path: "/taskline/list",
+                name: "taskline-list",
+                meta: {
+                    title: "任务记录",
+                    login: true,
+                },
+                component: () => import("@/apps/taskline/list.vue"),
             },
             //////
             {
@@ -106,25 +126,6 @@ export const routes: RouteRecordRaw[] = [
                     login: true,
                 },
                 component: () => import("@/apps/terminal/sshkey.vue"),
-            },
-            //////
-            {
-                path: "/passport/info",
-                name: "passport-info",
-                meta: {
-                    title: "个人中心",
-                    login: true,
-                },
-                component: () => import("@/apps/passport/info.vue"),
-            },
-            {
-                path: "/passport/password",
-                name: "passport-password",
-                meta: {
-                    title: "修改密码",
-                    login: true,
-                },
-                component: () => import("@/apps/passport/password.vue"),
             },
             //////
             {

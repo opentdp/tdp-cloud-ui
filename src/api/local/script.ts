@@ -1,23 +1,23 @@
 import { HttpClient, HttpMessage } from "@/api/basic/http"
 
-export class TaskScriptModel extends HttpClient {
-    public list(): Promise<TaskScriptPaged> {
-        return this.get("/task/script")
+export class ScriptModel extends HttpClient {
+    public list(): Promise<ScriptPaged> {
+        return this.get("/script")
     }
 
-    public create(rq: TaskScriptOrig): Promise<HttpMessage> {
-        return this.post("/task/script/", rq)
+    public create(rq: ScriptOrig): Promise<HttpMessage> {
+        return this.post("/script/", rq)
     }
 
-    public update(rq: Partial<TaskScriptItem>): Promise<HttpMessage> {
-        return this.patch("/task/script/" + rq.Id, rq)
+    public update(rq: Partial<ScriptItem>): Promise<HttpMessage> {
+        return this.patch("/script/" + rq.Id, rq)
     }
 
     public remove(id: number): Promise<HttpMessage> {
-        return this.delete("/task/script/" + id)
+        return this.delete("/script/" + id)
     }
 
-    public osFilter(list: TaskScriptItem[], os: string) {
+    public osFilter(list: ScriptItem[], os: string) {
         return list.filter(s => {
             if (s.CommandType == "SHELL") {
                 return os != "windows"
@@ -29,7 +29,7 @@ export class TaskScriptModel extends HttpClient {
     }
 }
 
-export interface TaskScriptOrig {
+export interface ScriptOrig {
     Name: string
     CommandType: string
     Username: string
@@ -39,14 +39,14 @@ export interface TaskScriptOrig {
     Timeout: number
 }
 
-export interface TaskScriptItem extends TaskScriptOrig {
+export interface ScriptItem extends ScriptOrig {
     Id: number
     UserId: number
     CreatedAt: string
     UpdatedAt: string
 }
 
-export interface TaskScriptPaged {
-    Datasets: TaskScriptItem[]
+export interface ScriptPaged {
+    Datasets: ScriptItem[]
     Datainfo?: unknown
 }

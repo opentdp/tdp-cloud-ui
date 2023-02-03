@@ -4,7 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import { LoApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
-import { TaskScriptItem } from "@/api/local/task_script"
+import { ScriptItem } from "@/api/local/script"
 
 import shellList, { installTDPWorker } from "@/helper/script/shell"
 
@@ -54,16 +54,16 @@ export default class MachineList extends Vue {
 
     // 获取快捷命令
 
-    public scriptList: TaskScriptItem[] = []
+    public scriptList: ScriptItem[] = []
 
     async getScriptList() {
-        const res = await LoApi.taskScript.list()
+        const res = await LoApi.script.list()
         this.scriptList = [...shellList, ...res.Datasets]
     }
 
     // 执行快捷命令
 
-    public workerExec(cmd: TaskScriptItem) {
+    public workerExec(cmd: ScriptItem) {
         LoApi.workhub.exec({
             WorkerId: this.selectedRow.WorkerId,
             Payload: cmd
@@ -73,10 +73,10 @@ export default class MachineList extends Vue {
     // 选择主机
 
     public selectedRow!: MachineItem
-    public rowScriptList: TaskScriptItem[] = []
+    public rowScriptList: ScriptItem[] = []
 
     public tableRowChange(row: MachineItem) {
-        this.rowScriptList = LoApi.taskScript.osFilter(this.scriptList, row.OSType)
+        this.rowScriptList = LoApi.script.osFilter(this.scriptList, row.OSType)
         this.selectedRow = row
     }
 }

@@ -2,7 +2,7 @@
 import { Ref,Component, Vue } from "vue-facing-decorator"
 
 import { LoApi } from "@/api"
-import { TaskScriptItem } from "@/api/local/task_script"
+import { ScriptItem } from "@/api/local/script"
 
 import ScriptCreate from "./script_create.vue"
 import ScriptUpdate from "./script_update.vue"
@@ -10,7 +10,7 @@ import ScriptUpdate from "./script_update.vue"
 @Component({
     components: { ScriptCreate, ScriptUpdate }
 })
-export default class TaskScript extends Vue {
+export default class Script extends Vue {
     public loading = true
 
     @Ref
@@ -27,10 +27,10 @@ export default class TaskScript extends Vue {
 
     // 获取脚本列表
 
-    public scriptList: TaskScriptItem[] = []
+    public scriptList: ScriptItem[] = []
 
     async getScriptList() {
-        const res = await LoApi.taskScript.list()
+        const res = await LoApi.script.list()
         this.scriptList = res.Datasets
         this.loading = false
     }
@@ -39,7 +39,7 @@ export default class TaskScript extends Vue {
 
     async removeScript(id: number) {
         this.loading = true
-        await LoApi.taskScript.remove(id)
+        await LoApi.script.remove(id)
         await this.getScriptList()
     }
 }

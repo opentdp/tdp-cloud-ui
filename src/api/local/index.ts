@@ -4,9 +4,9 @@ import { ConfigModel } from "./config"
 import { DomainModel } from "./domain"
 import { MachineModel } from "./machine"
 import { PassportModel } from "./passport"
+import { ScriptModel } from "./script"
 import { SSHKeyModel } from "./sshkey"
-import { TaskHistoryModel } from "./task_history"
-import { TaskScriptModel } from "./task_script"
+import { TasklineModel } from "./taskline"
 import { TerminalModel } from "./terminal"
 import { VendorModel } from "./vendor"
 import { WorkhubModel } from "./workhub"
@@ -18,9 +18,9 @@ export default {
     domain: new DomainModel(),
     machine: new MachineModel(),
     passport: new PassportModel(),
+    script: new ScriptModel(),
     sshkey: new SSHKeyModel(),
-    taskHistory: new TaskHistoryModel(),
-    taskScript: new TaskScriptModel(),
+    taskline: new TasklineModel(),
     vendor: new VendorModel(),
     workhub: new WorkhubModel(),
     terminal: new TerminalModel(),

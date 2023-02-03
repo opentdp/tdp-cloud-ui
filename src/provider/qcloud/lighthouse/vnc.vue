@@ -4,7 +4,7 @@ import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
 import { LoApi, QcApi } from "@/api"
 import * as QC from "@/api/qcloud/typings"
 import { MachineItem } from "@/api/local/machine"
-import { TaskScriptItem } from "@/api/local/task_script"
+import { ScriptItem } from "@/api/local/script"
 
 import shellList from "@/helper/script/shell"
 
@@ -46,13 +46,13 @@ export default class LighthouseVnc extends Vue {
 
     // 获取快捷命令
 
-    public scriptList: TaskScriptItem[] = []
+    public scriptList: ScriptItem[] = []
 
     async getScriptList() {
-        const res = await LoApi.taskScript.list()
+        const res = await LoApi.script.list()
         const list = [...shellList, ...res.Datasets]
         // 根据操作系统过滤脚本
-        this.scriptList = LoApi.taskScript.osFilter(list, this.meta.OSType)
+        this.scriptList = LoApi.script.osFilter(list, this.meta.OSType)
     }
 
     // 执行快捷命令
