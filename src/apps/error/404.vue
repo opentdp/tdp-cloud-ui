@@ -18,11 +18,11 @@ export default class Error404 extends Vue {
             啊哦~ 你所访问的页面不存在
         </div>
         <div class="error-handle">
-            <el-button type="primary" size="large">
-                <router-link to="/">
+            <router-link to="/">
+                <el-button type="primary" size="large">
                     返回首页
-                </router-link>
-            </el-button>
+                </el-button>
+            </router-link>
             <el-button class="error-btn" type="primary" size="large" @click="goBack">
                 返回上一页
             </el-button>

@@ -120,11 +120,11 @@ export default class LighthouseInstance extends Vue {
                 >
                     重启
                 </el-button>
-                <el-button v-if="instance.InstanceState == 'RUNNING'" type="primary" plain size="small">
-                    <router-link :to="'/machine/vnc/' + meta.Id">
+                <router-link v-if="instance.InstanceState == 'RUNNING'" :to="'/machine/vnc/' + meta.Id">
+                    <el-button type="primary" plain size="small">
                         VNC 终端
-                    </router-link>
-                </el-button>
+                    </el-button>
+                </router-link>
                 <el-button v-else type="primary" plain size="small" disabled>
                     VNC 终端
                 </el-button>

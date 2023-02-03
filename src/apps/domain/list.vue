@@ -63,11 +63,11 @@ export default class DomainList extends Vue {
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="View">
-                            <router-link :to="'/domain/detail/' + scope.row.Id">
+                        <router-link :to="'/domain/detail/' + scope.row.Id">
+                            <el-button link type="primary" icon="View">
                                 管理
-                            </router-link>
-                        </el-button>
+                            </el-button>
+                        </router-link>
                         <el-popconfirm title="确定删除?" @confirm="deleteDomain(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">

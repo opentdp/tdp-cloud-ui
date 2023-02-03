@@ -5,6 +5,8 @@
     border-radius: 5px;
 }
 
+// 导航
+
 .crumbs {
     margin: 5px 0 15px;
 
@@ -17,6 +19,8 @@
     }
 }
 
+// 提示
+
 .plugins-tips {
     padding: 20px 10px;
     margin-bottom: 20px;
@@ -26,6 +30,8 @@
         color: #20a0ff;
     }
 }
+
+// 表格
 
 .el-table {
     th {
@@ -37,13 +43,18 @@
     }
 }
 
+// 表单项目
+
 .el-form-item .el-select,
 .el-form-item .el-autocomplete {
     width: 100%;
 }
 
-.el-button+.el-tooltip {
-    margin-left: 10px;
+// 按钮上下文
+
+.el-button+a,
+a+.el-button {
+    margin-left: 12px;
 }
 
 .button-list {
@@ -52,7 +63,12 @@
     display: flex;
     flex-wrap: wrap;
 
+    a+.el-button,
     .el-button+.el-button {
         margin-left: 0;
     }
+}
+
+.el-button+.el-tooltip {
+    margin-left: 12px;
 }
