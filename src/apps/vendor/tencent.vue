@@ -7,7 +7,7 @@ import { NaApi } from "@/api"
 import { VendorItem } from "@/api/native/vendor"
 
 @Component
-export default class VendorListCloudflare extends Vue {
+export default class VendorListTencent extends Vue {
     public loading = true
 
     // 初始化

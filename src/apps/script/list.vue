@@ -10,7 +10,7 @@ import ScriptUpdate from "./script_update.vue"
 @Component({
     components: { ScriptCreate, ScriptUpdate }
 })
-export default class Script extends Vue {
+export default class ScriptList extends Vue {
     public loading = true
 
     @Ref

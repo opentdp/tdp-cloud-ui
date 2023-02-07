@@ -10,7 +10,7 @@ import * as QC from "@/api/tencent/typings"
     emits: ["submit"],
     expose: ["open"],
 })
-export default class LighthouseInstanceRename extends Vue {
+export default class LighthouseFirewallCreate extends Vue {
     public instance!: QC.Lighthouse.Instance
 
     public get region() {

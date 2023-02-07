@@ -12,7 +12,7 @@ import { dateFormat } from "@/helper/format"
 @Component({
     components: { VueJsonPretty }
 })
-export default class Taskline extends Vue {
+export default class TasklineList extends Vue {
     public dateFormat = dateFormat
 
     public timer = 0
