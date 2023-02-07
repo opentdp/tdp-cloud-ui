@@ -4,21 +4,21 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class DnspodRecordUpdate extends Vue {
-    public domainInfo!: QC.Dnspod.DomainInfo
+    public domainInfo!: TC.Dnspod.DomainInfo
 
     // 创建表单
 
     @Ref
     public formRef!: FormInstance
 
-    public formModel!: QC.Dnspod.RecordListItem
+    public formModel!: TC.Dnspod.RecordListItem
 
     public formRules: FormRules = {
         Name: [{ required: true, message: "主机记录 不能为空" }],
@@ -39,7 +39,7 @@ export default class DnspodRecordUpdate extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            const query: QC.Dnspod.ModifyRecordRequest = {
+            const query: TC.Dnspod.ModifyRecordRequest = {
                 Domain: this.domainInfo.Domain,
                 SubDomain: this.formModel.Name,
                 RecordType: this.formModel.Type,
@@ -58,7 +58,7 @@ export default class DnspodRecordUpdate extends Vue {
     // 记录类型及线路
 
     public recordType: string[] = []
-    public recordLineList: QC.Dnspod.LineInfo[] = []
+    public recordLineList: TC.Dnspod.LineInfo[] = []
 
     async getRecordType() {
         const res = await TcApi.dnspod.describeRecordType({
@@ -84,7 +84,7 @@ export default class DnspodRecordUpdate extends Vue {
         this.$emit("submit")
     }
 
-    public open(info: QC.Dnspod.DomainInfo, record: QC.Dnspod.RecordListItem) {
+    public open(info: TC.Dnspod.DomainInfo, record: TC.Dnspod.RecordListItem) {
         this.dailog = true
         this.domainInfo = info
         this.formModel = record

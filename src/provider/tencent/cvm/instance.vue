@@ -2,9 +2,9 @@
 import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
 import { InstanceStateMap } from "@/api/tencent/cvm"
 import { MachineItem } from "@/api/native/machine"
+import * as TC from "@/api/tencent/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -22,7 +22,7 @@ export default class CvmInstance extends Vue {
 
     @Prop
     public meta!: Omit<MachineItem, "CloudMeta"> & {
-        CloudMeta: Required<QC.Cvm.Instance>
+        CloudMeta: Required<TC.Cvm.Instance>
     }
 
     // 初始化
@@ -41,7 +41,7 @@ export default class CvmInstance extends Vue {
 
     // 实例信息
 
-    public instance!: Required<QC.Cvm.Instance>
+    public instance!: Required<TC.Cvm.Instance>
 
     async getInstance() {
         const res = await TcApi.cvm.describeInstances(this.region, {

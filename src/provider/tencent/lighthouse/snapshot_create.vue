@@ -4,14 +4,14 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class LighthouseSnapshotCreate extends Vue {
-    public instance!: QC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance
 
     public get region() {
         return this.instance.Zone.replace(/-\d$/, "")
@@ -55,7 +55,7 @@ export default class LighthouseSnapshotCreate extends Vue {
         this.$emit("submit")
     }
 
-    public open(instance: QC.Lighthouse.Instance) {
+    public open(instance: TC.Lighthouse.Instance) {
         this.instance = instance
         this.dailog = true
     }

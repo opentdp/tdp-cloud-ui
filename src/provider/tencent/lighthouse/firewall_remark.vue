@@ -4,14 +4,14 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class LighthouseFirewallRemark extends Vue {
-    public instance!: QC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance
 
     public get region() {
         return this.instance.Zone.replace(/-\d$/, "")
@@ -22,7 +22,7 @@ export default class LighthouseFirewallRemark extends Vue {
     @Ref
     public formRef!: FormInstance
 
-    public formModel: QC.Lighthouse.FirewallRule = {
+    public formModel: TC.Lighthouse.FirewallRule = {
         CidrBlock: "",
         Protocol: "",
         Action: "",
@@ -58,7 +58,7 @@ export default class LighthouseFirewallRemark extends Vue {
         this.$emit("submit")
     }
 
-    public open(instance: QC.Lighthouse.Instance, rule: QC.Lighthouse.FirewallRule) {
+    public open(instance: TC.Lighthouse.Instance, rule: TC.Lighthouse.FirewallRule) {
         this.instance = instance
         this.formModel = rule
         this.dailog = true

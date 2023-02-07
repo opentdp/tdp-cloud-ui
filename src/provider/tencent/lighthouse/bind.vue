@@ -2,8 +2,8 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
 import { MachineItem } from "@/api/native/machine"
+import * as TC from "@/api/tencent/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -30,9 +30,9 @@ export default class LighthouseBind extends Vue {
 
     // 获取列表
 
-    public regionList: Record<string, QC.Lighthouse.RegionInfo> = {}
+    public regionList: Record<string, TC.Lighthouse.RegionInfo> = {}
 
-    public instanceList: QC.Lighthouse.Instance[] = []
+    public instanceList: TC.Lighthouse.Instance[] = []
     public instanceCount = 0
 
     async getRegionInstanceList() {
@@ -52,7 +52,7 @@ export default class LighthouseBind extends Vue {
 
     // 执行脚本
 
-    async runCommand(instance: QC.Lighthouse.Instance, code: string) {
+    async runCommand(instance: TC.Lighthouse.Instance, code: string) {
         const region = instance.Zone.replace(/-(\d+)$/, '')
         const res = await TcApi.tat.runCommand(region, {
             InstanceIds: [instance.InstanceId],
@@ -66,7 +66,7 @@ export default class LighthouseBind extends Vue {
 
     // 绑定主机
 
-    async bindMachine(item: QC.Lighthouse.Instance) {
+    async bindMachine(item: TC.Lighthouse.Instance) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         await NaApi.machine.create({
             VendorId: this.meta.vendorId,
@@ -87,7 +87,7 @@ export default class LighthouseBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: QC.Lighthouse.Instance) {
+    public syncMachine(item: TC.Lighthouse.Instance) {
         const bd = this.meta.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,

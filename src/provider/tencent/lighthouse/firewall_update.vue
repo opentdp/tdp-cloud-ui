@@ -4,15 +4,15 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class LighthouseFirewallUpdate extends Vue {
-    public instance!: QC.Lighthouse.Instance
-    public firewallRuleList!: QC.Lighthouse.FirewallRule[]
+    public instance!: TC.Lighthouse.Instance
+    public firewallRuleList!: TC.Lighthouse.FirewallRule[]
 
     public get region() {
         return this.instance.Zone.replace(/-\d$/, "")
@@ -23,7 +23,7 @@ export default class LighthouseFirewallUpdate extends Vue {
     @Ref
     public formRef!: FormInstance
 
-    public formModel: QC.Lighthouse.FirewallRule = {
+    public formModel: TC.Lighthouse.FirewallRule = {
         Protocol: "TCP",
         Port: "",
         CidrBlock: "0.0.0.0/0",
@@ -61,7 +61,7 @@ export default class LighthouseFirewallUpdate extends Vue {
         this.$emit("submit")
     }
 
-    public open(instance: QC.Lighthouse.Instance, rules: QC.Lighthouse.FirewallRule[], idx: number) {
+    public open(instance: TC.Lighthouse.Instance, rules: TC.Lighthouse.FirewallRule[], idx: number) {
         this.instance = instance
         this.firewallRuleList = rules
         this.formModel = rules[idx]

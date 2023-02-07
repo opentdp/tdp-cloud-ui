@@ -2,7 +2,7 @@
 import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -19,7 +19,7 @@ export default class LighthouseSnapshot extends Vue {
     public createModal!: SnapshotCreate
 
     @Prop
-    public instance!: QC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance
 
     // 初始化
 
@@ -35,7 +35,7 @@ export default class LighthouseSnapshot extends Vue {
 
     // 快照列表
 
-    public snapshotList!: QC.Lighthouse.DescribeSnapshotsResponse
+    public snapshotList!: TC.Lighthouse.DescribeSnapshotsResponse
 
     async getSnapshotList() {
         const res = await TcApi.lighthouse.describeSnapshots(this.region, {
@@ -55,7 +55,7 @@ export default class LighthouseSnapshot extends Vue {
 
     // 回滚快照
 
-    async applySnapshot(item: QC.Lighthouse.Snapshot) {
+    async applySnapshot(item: TC.Lighthouse.Snapshot) {
         await TcApi.lighthouse.applyInstanceSnapshot(this.region, {
             InstanceId: this.instance.InstanceId,
             SnapshotId: item.SnapshotId
@@ -65,7 +65,7 @@ export default class LighthouseSnapshot extends Vue {
 
     // 删除快照
 
-    async deleteSnapshot(item: QC.Lighthouse.Snapshot) {
+    async deleteSnapshot(item: TC.Lighthouse.Snapshot) {
         await TcApi.lighthouse.deleteSnapshots(this.region, {
             SnapshotIds: [item.SnapshotId],
         })

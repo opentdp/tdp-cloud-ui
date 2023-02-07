@@ -4,7 +4,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 import { EChartsOption } from "echarts"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/format"
 
@@ -13,7 +13,7 @@ export default class LighthouseTraffic extends Vue {
     public bytesToSize = bytesToSize
 
     @Prop
-    public instance!: QC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance
 
     // 初始化
 
@@ -30,7 +30,7 @@ export default class LighthouseTraffic extends Vue {
 
     // 流量信息
 
-    public trafficPackage!: QC.Lighthouse.TrafficPackage
+    public trafficPackage!: TC.Lighthouse.TrafficPackage
 
     async getTrafficPackage() {
         const res = await TcApi.lighthouse.describeInstancesTrafficPackages(this.region, {

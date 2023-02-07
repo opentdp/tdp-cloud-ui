@@ -4,14 +4,14 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class CvmInstanceRename extends Vue {
-    public instance!: Required<QC.Cvm.Instance>
+    public instance!: Required<TC.Cvm.Instance>
 
     public get region() {
         return this.instance.Placement.Zone.replace(/-\d$/, "")
@@ -60,7 +60,7 @@ export default class CvmInstanceRename extends Vue {
         this.$emit("submit")
     }
 
-    public open(instance: Required<QC.Cvm.Instance>) {
+    public open(instance: Required<TC.Cvm.Instance>) {
         this.formModel.name = instance.InstanceName
         this.instance = instance
         this.dailog = true

@@ -4,7 +4,7 @@ import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 import { TcApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
 import { InstanceStateMap } from "@/api/tencent/lighthouse"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -25,7 +25,7 @@ export default class LighthouseInstance extends Vue {
 
     @Prop
     public meta!: Omit<MachineItem, "CloudMeta"> & {
-        CloudMeta: QC.Lighthouse.Instance
+        CloudMeta: TC.Lighthouse.Instance
     }
 
     // 初始化
@@ -44,7 +44,7 @@ export default class LighthouseInstance extends Vue {
 
     // 实例信息
 
-    public instance!: QC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance
 
     async getInstance() {
         const res = await TcApi.lighthouse.describeInstances(this.region, {

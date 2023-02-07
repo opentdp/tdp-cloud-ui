@@ -2,7 +2,7 @@
 import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { TcApi } from "@/api"
-import * as QC from "@/api/tencent/typings"
+import * as TC from "@/api/tencent/typings"
 
 import CreateModel from "./firewall_create.vue"
 import UpdateModel from "./firewall_update.vue"
@@ -22,7 +22,7 @@ export default class LighthouseFirewall extends Vue {
     public remarkModel!: RemarkModel
 
     @Prop
-    public instance!: QC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance
 
     // 初始化
 
@@ -38,7 +38,7 @@ export default class LighthouseFirewall extends Vue {
 
     // 规则列表
 
-    public firewallRuleList!: QC.Lighthouse.FirewallRule[]
+    public firewallRuleList!: TC.Lighthouse.FirewallRule[]
     public firewallRuleCount = 0
 
     async getFirewallRuleList() {
@@ -46,7 +46,7 @@ export default class LighthouseFirewall extends Vue {
             InstanceId: this.instance.InstanceId,
         })
         this.firewallRuleList = res.FirewallRuleSet.map(item => {
-            delete (item as Partial<QC.Lighthouse.FirewallRuleInfo>).AppType
+            delete (item as Partial<TC.Lighthouse.FirewallRuleInfo>).AppType
             return item
         })
         this.firewallRuleCount = res.TotalCount
@@ -54,7 +54,7 @@ export default class LighthouseFirewall extends Vue {
 
     // 删除规则
 
-    async deleteFirewallRule(item: QC.Lighthouse.FirewallRule) {
+    async deleteFirewallRule(item: TC.Lighthouse.FirewallRule) {
         await TcApi.lighthouse.deleteFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRules: [item]
