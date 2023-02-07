@@ -23,7 +23,7 @@ export default class VendorListAlibaba extends Vue {
     async getVendorList() {
         const res = await NaApi.vendor.list()
         this.vendorList = res.Datasets.filter(item => {
-            return item.Provider == "tencent"
+            return item.Provider == "alibaba"
         })
         this.loading = false
     }
@@ -44,7 +44,7 @@ export default class VendorListAlibaba extends Vue {
     public formModel = {
         SecretId: "",
         SecretKey: "",
-        Provider: "tencent",
+        Provider: "alibaba",
         Description: "",
     }
 
@@ -75,7 +75,7 @@ export default class VendorListAlibaba extends Vue {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                腾讯云
+                阿里云
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover">
@@ -89,7 +89,7 @@ export default class VendorListAlibaba extends Vue {
                 <el-table-column prop="SecretId" label="密钥 ID" show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <router-link :to="'/vrbind/tencent/' + scope.row.Id">
+                        <router-link :to="'/vrbind/alibaba/' + scope.row.Id">
                             <el-button link type="primary" icon="View">
                                 管理
                             </el-button>

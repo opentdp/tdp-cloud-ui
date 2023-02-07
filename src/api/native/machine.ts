@@ -26,6 +26,8 @@ export const MachineModels: Record<string, string> = {
     "native/worker": "独立节点",
     "tencent/cvm": "腾讯云/CVM",
     "tencent/lighthouse": "腾讯云/LH",
+    "alibaba/ecs": "阿里云/ECS",
+    "alibaba/swas": "阿里云/SWAS",
 }
 
 export interface MachineOrig {

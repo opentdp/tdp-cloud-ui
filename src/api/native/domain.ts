@@ -25,6 +25,7 @@ export class DomainModel extends HttpClient {
 export const DomainModels: Record<string, string> = {
     "cloudflare/zone": "Cloudflare",
     "tencent/dnspod": "DNSPod",
+    "alibaba/dns": "阿里云/DNS",
 }
 
 export interface DomainOrig {

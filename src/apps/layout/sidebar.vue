@@ -76,6 +76,11 @@ export default class LayoutSidebar extends Vue {
                 },
                 {
                     icon: "PartlyCloudy",
+                    index: "/vendor/alibaba",
+                    title: "阿里云",
+                },
+                {
+                    icon: "PartlyCloudy",
                     index: "/vendor/cloudflare",
                     title: "Cloudflare",
                 },

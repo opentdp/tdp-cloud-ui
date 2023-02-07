@@ -129,6 +129,15 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
+                path: "/vendor/alibaba",
+                name: "vendor-alibaba",
+                meta: {
+                    title: "阿里云",
+                    login: true,
+                },
+                component: () => import("@/apps/vendor/alibaba.vue"),
+            },
+            {
                 path: "/vendor/cloudflare",
                 name: "vendor-cloudflare",
                 meta: {
@@ -147,6 +156,15 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/vendor/tencent.vue"),
             },
             //////
+            {
+                path: "/vrbind/alibaba/:id",
+                name: "vrbind-alibaba",
+                meta: {
+                    title: "阿里云",
+                    login: true,
+                },
+                component: () => import("@/apps/vrbind/alibaba.vue"),
+            },
             {
                 path: "/vrbind/cloudflare/:id",
                 name: "vrbind-cloudflare",
