@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { SSHRequest } from "@/api/local/terminal"
 import { ScriptItem } from "@/api/local/script"
 
@@ -40,7 +40,7 @@ export default class TerminalSsh extends Vue {
         // 延迟连接
         this.changeTab(tab.id)
         setTimeout(() => {
-            const url = LoApi.terminal.getWebsshURL(config)
+            const url = NaApi.terminal.getWebsshURL(config)
             tab.webssh = new WebSSH(tab.id, url)
         }, 100)
     }
@@ -78,10 +78,10 @@ export default class TerminalSsh extends Vue {
     public scriptList: ScriptItem[] = []
 
     async getScriptList() {
-        const res = await LoApi.script.list()
+        const res = await NaApi.script.list()
         const list = [...shellList, ...res.Datasets]
         // 根据操作系统过滤脚本
-        this.scriptList = LoApi.script.osFilter(list, "linux")
+        this.scriptList = NaApi.script.osFilter(list, "linux")
     }
 
     // 执行快捷命令

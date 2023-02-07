@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { LoApi, TcApi } from "@/api"
+import { NaApi, TcApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 import { DomainStatusMap } from "@/api/tencent/dnspod"
 import * as QC from "@/api/tencent/typings"
@@ -44,7 +44,7 @@ export default class DnspodBind extends Vue {
     // 绑定域名
 
     async bindDomian(item: QC.Dnspod.DomainListItem) {
-        await LoApi.domain.create({
+        await NaApi.domain.create({
             VendorId: this.meta.vendorId,
             Name: item.Name,
             NSList: item.EffectiveDNS.join(","),
@@ -61,7 +61,7 @@ export default class DnspodBind extends Vue {
 
     public syncDomian(item: QC.Dnspod.DomainListItem) {
         const bd = this.meta.boundList[item.DomainId]
-        LoApi.domain.update({
+        NaApi.domain.update({
             Id: bd ? bd.Id : 0,
             NSList: item.EffectiveDNS.join(","),
             CloudId: item.DomainId + '',

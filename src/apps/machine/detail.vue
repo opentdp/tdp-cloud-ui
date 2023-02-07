@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/local/machine"
 
 import CvmInstance from "@/provider/tencent/cvm/instance.vue"
@@ -28,7 +28,7 @@ export default class MachineDetail extends Vue {
     public machine!: MachineItem
 
     async getMachine(id: number) {
-        const res = await LoApi.machine.detail(id)
+        const res = await NaApi.machine.detail(id)
         this.machine = res || {}
         this.loading = false
     }

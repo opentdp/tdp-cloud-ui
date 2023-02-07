@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { DomainModels, DomainItem } from "@/api/local/domain"
 
 import CloudflareZone from "@/provider/cloudflare/domain.vue"
@@ -27,7 +27,7 @@ export default class DomainDetail extends Vue {
     public domain!: DomainItem
 
     async getDomain(id: number) {
-        const res = await LoApi.domain.detail(id)
+        const res = await NaApi.domain.detail(id)
         this.domain = res || {}
         this.loading = false
     }

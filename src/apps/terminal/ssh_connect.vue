@@ -3,7 +3,7 @@ import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { SSHRequest } from "@/api/local/terminal"
 import { SSHKeyItem } from "@/api/local/sshkey"
@@ -28,7 +28,7 @@ export default class TerminalSshConnect extends Vue {
     public sshkeyList: SSHKeyItem[] = []
 
     async getSshkeyList() {
-        const res = await LoApi.sshkey.list()
+        const res = await NaApi.sshkey.list()
         this.sshkeyList = res.Datasets
     }
 
@@ -37,7 +37,7 @@ export default class TerminalSshConnect extends Vue {
     public machineList: MachineItem[] = []
 
     async getMachineList() {
-        const res = await LoApi.machine.list()
+        const res = await NaApi.machine.list()
         this.machineList = res.Datasets
     }
 

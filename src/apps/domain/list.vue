@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { DomainModels, DomainItem } from "@/api/local/domain"
 
 @Component
@@ -21,7 +21,7 @@ export default class DomainList extends Vue {
     public domainList: DomainItem[] = []
 
     async getDomainList() {
-        const res = await LoApi.domain.list()
+        const res = await NaApi.domain.list()
         this.domainList = res.Datasets
         this.loading = false
     }
@@ -30,7 +30,7 @@ export default class DomainList extends Vue {
 
     async deleteDomain(idx: number) {
         const item = this.domainList[idx]
-        await LoApi.domain.remove(item.Id)
+        await NaApi.domain.remove(item.Id)
         this.domainList.splice(idx, 1)
     }
 }

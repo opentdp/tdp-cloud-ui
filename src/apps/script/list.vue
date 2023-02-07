@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref,Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { ScriptItem } from "@/api/local/script"
 
 import ScriptCreate from "./script_create.vue"
@@ -30,7 +30,7 @@ export default class Script extends Vue {
     public scriptList: ScriptItem[] = []
 
     async getScriptList() {
-        const res = await LoApi.script.list()
+        const res = await NaApi.script.list()
         this.scriptList = res.Datasets
         this.loading = false
     }
@@ -39,7 +39,7 @@ export default class Script extends Vue {
 
     async removeScript(id: number) {
         this.loading = true
-        await LoApi.script.remove(id)
+        await NaApi.script.remove(id)
         await this.getScriptList()
     }
 }

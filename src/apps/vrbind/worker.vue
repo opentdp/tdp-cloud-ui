@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
 import { installTDPWorker } from "@/helper/script/shell"
@@ -25,7 +25,7 @@ export default class VendorBindWorker extends Vue {
     public machineList: Record<string, MachineItem> = {}
 
     async getMachineList() {
-        const res = await LoApi.machine.list()
+        const res = await NaApi.machine.list()
         res.Datasets.forEach((item) => {
             this.machineList[item.WorkerId] = item
         })

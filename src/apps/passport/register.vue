@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 
 @Component
 export default class PassportRegister extends Vue {
@@ -28,7 +28,7 @@ export default class PassportRegister extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.passport.register(this.formModel)
+            await NaApi.passport.register(this.formModel)
             // 切换到登陆页面
             this.$router.push("/passport/login")
         })

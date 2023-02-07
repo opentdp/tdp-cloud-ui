@@ -5,7 +5,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import VueJsonPretty from "vue-json-pretty"
 import "vue-json-pretty/lib/styles.css"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { TasklineItem } from "@/api/local/taskline"
 import { dateFormat } from "@/helper/format"
 
@@ -35,7 +35,7 @@ export default class Taskline extends Vue {
     public historyList: TasklineItem[] = []
 
     async getHistory() {
-        const res = await LoApi.taskline.list()
+        const res = await NaApi.taskline.list()
         this.historyList = res.Datasets
     }
 

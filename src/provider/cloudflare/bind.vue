@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { LoApi, CfApi } from "@/api"
+import { NaApi, CfApi } from "@/api"
 import * as CF from "@/api/cloudflare/typings"
 import { DomainItem } from "@/api/local/domain"
 
@@ -39,7 +39,7 @@ export default class CloudflareBind extends Vue {
 
     async bindDomian(item: CF.ZoneItem) {
         const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
-        await LoApi.domain.create({
+        await NaApi.domain.create({
             VendorId: this.meta.vendorId,
             Name: item.name,
             NSList: ns,
@@ -57,7 +57,7 @@ export default class CloudflareBind extends Vue {
     public syncDomian(item: CF.ZoneItem) {
         const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
         const bd = this.meta.boundList[item.id]
-        LoApi.domain.update({
+        NaApi.domain.update({
             Id: bd ? bd.Id : 0,
             NSList: ns,
             CloudId: item.id + '',

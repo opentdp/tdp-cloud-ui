@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
 import LighthouseVNC from "@/provider/tencent/lighthouse/vnc.vue"
@@ -24,7 +24,7 @@ export default class MachineVnc extends Vue {
     public machine!: MachineItem
 
     async getMachine(id: number) {
-        const res = await LoApi.machine.detail(id)
+        const res = await NaApi.machine.detail(id)
         this.machine = res || {}
         this.loading = false
     }

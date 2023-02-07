@@ -1,5 +1,5 @@
-import { LoApi } from "@/api"
-import { ScriptItem } from "@/api/local/script"
+import { NaApi } from "@/api"
+import { ScriptItem } from "@/api/native/script"
 
 function trim(s: string) {
     return s.replace(/\n {8}/g, "\n").trim()
@@ -11,7 +11,7 @@ export const installTDPWorker: ScriptItem = {
     Username: "root",
     Description: "",
     Content: trim(`
-        export TDP_EXEC_ARGS="--remote ${LoApi.workhub.getRegisterURL()}"
+        export TDP_EXEC_ARGS="--remote ${NaApi.workhub.getRegisterURL()}"
         wget -qO- https://apps.rehiy.com/tdp-cloud/worker-linux | sh -
     `),
     CommandType: "shell",

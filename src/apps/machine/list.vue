@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
 import { ScriptItem } from "@/api/local/script"
@@ -28,7 +28,7 @@ export default class MachineList extends Vue {
     public machineList: MachineItem[] = []
 
     async getMachineList() {
-        const res = await LoApi.machine.list()
+        const res = await NaApi.machine.list()
         this.machineList = res.Datasets
         this.loading = false
     }
@@ -37,7 +37,7 @@ export default class MachineList extends Vue {
 
     async deleteMachine(idx: number) {
         const item = this.machineList[idx]
-        await LoApi.machine.remove(item.Id)
+        await NaApi.machine.remove(item.Id)
         this.machineList.splice(idx, 1)
     }
 
@@ -46,7 +46,7 @@ export default class MachineList extends Vue {
     public workerList: Record<string, WorkerItem> = {}
 
     async getWorkerList() {
-        const res = await LoApi.workhub.list()
+        const res = await NaApi.workhub.list()
         res.Datasets.forEach(item => {
             this.workerList[item.WorkerId] = item
         })
@@ -57,14 +57,14 @@ export default class MachineList extends Vue {
     public scriptList: ScriptItem[] = []
 
     async getScriptList() {
-        const res = await LoApi.script.list()
+        const res = await NaApi.script.list()
         this.scriptList = [...shellList, ...res.Datasets]
     }
 
     // 执行快捷命令
 
     public workerExec(cmd: ScriptItem) {
-        LoApi.workhub.exec({
+        NaApi.workhub.exec({
             WorkerId: this.selectedRow.WorkerId,
             Payload: cmd
         })
@@ -76,7 +76,7 @@ export default class MachineList extends Vue {
     public rowScriptList: ScriptItem[] = []
 
     public tableRowChange(row: MachineItem) {
-        this.rowScriptList = LoApi.script.osFilter(this.scriptList, row.OSType)
+        this.rowScriptList = NaApi.script.osFilter(this.scriptList, row.OSType)
         this.selectedRow = row
     }
 }

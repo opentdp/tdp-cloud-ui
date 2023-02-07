@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { ScriptOrig } from "@/api/local/script"
 
 @Component({
@@ -39,7 +39,7 @@ export default class ScriptCreate extends Vue {
             if (this.formModel.WorkDirectory == "") {
                 this.formModel.WorkDirectory = this.formModel.CommandType == "SHELL" ? "/root" : "C:\\"
             }
-            await LoApi.script.create(this.formModel)
+            await NaApi.script.create(this.formModel)
             this.close()
         })
     }

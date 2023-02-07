@@ -1,5 +1,5 @@
-import LoApi from "./local"
+import NaApi from "./native"
 import CfApi from "./cloudflare"
 import TcApi from "./tencent"
 
-export { LoApi, CfApi, TcApi }
+export { NaApi, CfApi, TcApi }

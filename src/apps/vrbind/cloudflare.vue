@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { DomainItem } from "@/api/local/domain"
 import { VendorItem } from "@/api/local/vendor"
 
@@ -26,7 +26,7 @@ export default class VendorBindCloudflare extends Vue {
     public vendor?: VendorItem
 
     async getVendor(id: number) {
-        const res = await LoApi.vendor.detail(id)
+        const res = await NaApi.vendor.detail(id)
         this.vendor = res
     }
 
@@ -35,7 +35,7 @@ export default class VendorBindCloudflare extends Vue {
     public domainList: Record<string, DomainItem> = {}
 
     async getDomainList() {
-        const res = await LoApi.domain.list()
+        const res = await NaApi.domain.list()
         res.Datasets.forEach((item) => {
             this.domainList[item.CloudId] = item
         })

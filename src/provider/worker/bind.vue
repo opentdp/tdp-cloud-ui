@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { WorkerItem } from "@/api/local/workhub"
 
@@ -38,7 +38,7 @@ export default class WorkerBind extends Vue {
     public workerList: WorkerItem[] = []
 
     async getWorkerList() {
-        const res = await LoApi.workhub.list()
+        const res = await NaApi.workhub.list()
         this.workerList = res.Datasets
     }
 
@@ -46,7 +46,7 @@ export default class WorkerBind extends Vue {
 
     public bindMachine(item: WorkerItem) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
-        LoApi.machine.create({
+        NaApi.machine.create({
             VendorId: 0,
             HostName: item.WorkerMeta.HostName,
             IpAddress: item.WorkerMeta.IpAddress,
@@ -66,7 +66,7 @@ export default class WorkerBind extends Vue {
 
     async syncMachine(item: WorkerItem) {
         const bd = this.meta.boundList[item.WorkerId]
-        await LoApi.machine.update({
+        await NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.WorkerMeta.HostName,
             IpAddress: item.WorkerMeta.IpAddress,

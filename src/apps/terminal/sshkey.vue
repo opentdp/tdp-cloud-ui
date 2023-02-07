@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { SSHKeyItem } from "@/api/local/sshkey"
 
 import SshkeyCreate from "./sshkey_create.vue"
@@ -26,7 +26,7 @@ export default class TerminalSshkey extends Vue {
     public keylist: SSHKeyItem[] = []
 
     async getSshkeyList() {
-        const res = await LoApi.sshkey.list()
+        const res = await NaApi.sshkey.list()
         this.keylist = res.Datasets
         this.loading = false
     }
@@ -35,7 +35,7 @@ export default class TerminalSshkey extends Vue {
 
     async deleteKey(idx: number) {
         const item = this.keylist[idx]
-        await LoApi.sshkey.remove(item.Id)
+        await NaApi.sshkey.remove(item.Id)
         this.keylist.splice(idx, 1)
     }
 }

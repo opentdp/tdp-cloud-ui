@@ -3,7 +3,7 @@ import { Component, Ref, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import sessionStore from "@/store/session"
 
 @Component
@@ -39,7 +39,7 @@ export default class PassportInfo extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.passport.updateInfo(this.formModel)
+            await NaApi.passport.updateInfo(this.formModel)
             this.session.description = this.formModel.Description
         })
     }

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { LoApi, TcApi } from "@/api"
+import { NaApi, TcApi } from "@/api"
 import * as QC from "@/api/tencent/typings"
 import { MachineItem } from "@/api/local/machine"
 
@@ -68,7 +68,7 @@ export default class LighthouseBind extends Vue {
 
     async bindMachine(item: QC.Lighthouse.Instance) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
-        await LoApi.machine.create({
+        await NaApi.machine.create({
             VendorId: this.meta.vendorId,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
@@ -89,7 +89,7 @@ export default class LighthouseBind extends Vue {
 
     public syncMachine(item: QC.Lighthouse.Instance) {
         const bd = this.meta.boundList[item.InstanceId]
-        LoApi.machine.update({
+        NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],

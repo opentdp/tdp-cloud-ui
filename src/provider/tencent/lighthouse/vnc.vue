@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
 
-import { LoApi, TcApi } from "@/api"
+import { NaApi, TcApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 import { ScriptItem } from "@/api/local/script"
 import * as QC from "@/api/tencent/typings"
@@ -49,10 +49,10 @@ export default class LighthouseVnc extends Vue {
     public scriptList: ScriptItem[] = []
 
     async getScriptList() {
-        const res = await LoApi.script.list()
+        const res = await NaApi.script.list()
         const list = [...shellList, ...res.Datasets]
         // 根据操作系统过滤脚本
-        this.scriptList = LoApi.script.osFilter(list, this.meta.OSType)
+        this.scriptList = NaApi.script.osFilter(list, this.meta.OSType)
     }
 
     // 执行快捷命令

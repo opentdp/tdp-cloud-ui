@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 
 @Component({
     emits: ["submit"],
@@ -36,7 +36,7 @@ export default class TerminalSshkeyCreate extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.sshkey.create(this.formModel)
+            await NaApi.sshkey.create(this.formModel)
             this.close()
         })
     }

@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { ScriptItem } from "@/api/local/script"
 
 @Component({
@@ -41,7 +41,7 @@ export default class ScriptUpdate extends Vue {
             if (this.formModel.WorkDirectory == "") {
                 this.formModel.WorkDirectory = this.formModel.CommandType == "SHELL" ? "/root" : "C:\\"
             }
-            await LoApi.script.update(this.formModel)
+            await NaApi.script.update(this.formModel)
             this.close()
         })
     }

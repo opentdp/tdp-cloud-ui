@@ -3,7 +3,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
-import { LoApi } from "@/api"
+import { NaApi } from "@/api"
 import { VendorItem } from "@/api/local/vendor"
 
 @Component
@@ -21,7 +21,7 @@ export default class VendorListCloudflare extends Vue {
     public vendorList: VendorItem[] = []
 
     async getVendorList() {
-        const res = await LoApi.vendor.list()
+        const res = await NaApi.vendor.list()
         this.vendorList = res.Datasets.filter(item => {
             return item.Provider == "cloudflare"
         })
@@ -32,7 +32,7 @@ export default class VendorListCloudflare extends Vue {
 
     async deleteVendor(idx: number) {
         const item = this.vendorList[idx]
-        await LoApi.vendor.remove(item.Id)
+        await NaApi.vendor.remove(item.Id)
         this.vendorList.splice(idx, 1)
     }
 
@@ -60,7 +60,7 @@ export default class VendorListCloudflare extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await LoApi.vendor.create(this.formModel)
+            await NaApi.vendor.create(this.formModel)
             this.formRef.resetFields()
             this.getVendorList()
         })
