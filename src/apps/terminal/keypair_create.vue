@@ -64,7 +64,7 @@ export default class KeypairCreate extends Vue {
         <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
             <el-form-item prop="KeyType" label="类型">
                 <el-select v-model="formModel.KeyType" placeholder="Select">
-                    <el-option v-for="k, v in KeypairTypeList" :key="k" :label="k" :value="v" />
+                    <el-option v-for="v, k in KeypairTypeList" :label="v" :value="Number(k)" />
                 </el-select>
             </el-form-item>
             <el-form-item prop="Description" label="别名">
