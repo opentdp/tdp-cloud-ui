@@ -4,7 +4,7 @@ import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 import { TcApi } from "@/api"
 import * as QC from "@/api/tencent/typings"
 import { InstanceStateMap } from "@/api/tencent/cvm"
-import { MachineItem } from "@/api/local/machine"
+import { MachineItem } from "@/api/native/machine"
 
 import { dateFormat } from "@/helper/format"
 

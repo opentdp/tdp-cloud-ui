@@ -2,8 +2,8 @@
 import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, TcApi } from "@/api"
-import { MachineItem } from "@/api/local/machine"
-import { ScriptItem } from "@/api/local/script"
+import { MachineItem } from "@/api/native/machine"
+import { ScriptItem } from "@/api/native/script"
 import * as QC from "@/api/tencent/typings"
 
 import shellList from "@/helper/script/shell"

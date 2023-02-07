@@ -3,7 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, TcApi } from "@/api"
 import * as QC from "@/api/tencent/typings"
-import { MachineItem } from "@/api/local/machine"
+import { MachineItem } from "@/api/native/machine"
 
 import { dateFormat } from "@/helper/format"
 

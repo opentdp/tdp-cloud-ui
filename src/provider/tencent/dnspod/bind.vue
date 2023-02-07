@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, TcApi } from "@/api"
-import { DomainItem } from "@/api/local/domain"
+import { DomainItem } from "@/api/native/domain"
 import { DomainStatusMap } from "@/api/tencent/dnspod"
 import * as QC from "@/api/tencent/typings"
 

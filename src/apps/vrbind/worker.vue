@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { MachineItem } from "@/api/local/machine"
+import { MachineItem } from "@/api/native/machine"
 
 import { installTDPWorker } from "@/helper/script/shell"
 

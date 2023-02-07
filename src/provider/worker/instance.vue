@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { MachineItem } from "@/api/local/machine"
-import { WorkerMeta } from "@/api/local/workhub"
+import { MachineItem } from "@/api/native/machine"
+import { WorkerMeta } from "@/api/native/workhub"
 
 import { bytesToSize } from "@/helper/format"
 

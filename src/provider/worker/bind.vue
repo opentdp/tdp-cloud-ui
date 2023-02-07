@@ -2,8 +2,8 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { MachineItem } from "@/api/local/machine"
-import { WorkerItem } from "@/api/local/workhub"
+import { MachineItem } from "@/api/native/machine"
+import { WorkerItem } from "@/api/native/workhub"
 
 import { bytesToSize } from "@/helper/format"
 
@@ -52,7 +52,7 @@ export default class WorkerBind extends Vue {
             IpAddress: item.WorkerMeta.IpAddress,
             OSType: item.WorkerMeta.OS,
             Region: "",
-            Model: "local/worker",
+            Model: "native/worker",
             CloudId: "rand-" + rand,
             CloudMeta: {},
             WorkerId: item.WorkerId,

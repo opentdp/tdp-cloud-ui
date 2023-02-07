@@ -4,7 +4,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { NaApi } from "@/api"
-import { VendorItem } from "@/api/local/vendor"
+import { VendorItem } from "@/api/native/vendor"
 
 @Component
 export default class VendorListCloudflare extends Vue {

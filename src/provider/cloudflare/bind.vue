@@ -3,7 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, CfApi } from "@/api"
 import * as CF from "@/api/cloudflare/typings"
-import { DomainItem } from "@/api/local/domain"
+import { DomainItem } from "@/api/native/domain"
 
 @Component({
     emits: ["change"]

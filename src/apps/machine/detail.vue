@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { MachineModels, MachineItem } from "@/api/local/machine"
+import { MachineModels, MachineItem } from "@/api/native/machine"
 
 import CvmInstance from "@/provider/tencent/cvm/instance.vue"
 import LighthouseInstance from "@/provider/tencent/lighthouse/instance.vue"
@@ -55,7 +55,7 @@ export default class MachineDetail extends Vue {
         <template v-if="machine?.Model == 'tencent/lighthouse'">
             <LighthouseInstance :meta="machine" />
         </template>
-        <template v-if="machine?.Model == 'local/worker'">
+        <template v-if="machine?.Model == 'native/worker'">
             <WorkerInstance :meta="machine" />
         </template>
     </div>

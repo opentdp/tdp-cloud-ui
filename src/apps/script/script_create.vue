@@ -4,7 +4,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { NaApi } from "@/api"
-import { ScriptOrig } from "@/api/local/script"
+import { ScriptOrig } from "@/api/native/script"
 
 @Component({
     emits: ['submit'],

@@ -2,8 +2,8 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { DomainItem } from "@/api/local/domain"
-import { VendorItem } from "@/api/local/vendor"
+import { DomainItem } from "@/api/native/domain"
+import { VendorItem } from "@/api/native/vendor"
 
 import CloudflareBind from "@/provider/cloudflare/bind.vue"
 

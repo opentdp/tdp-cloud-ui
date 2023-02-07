@@ -6,7 +6,7 @@ import VueJsonPretty from "vue-json-pretty"
 import "vue-json-pretty/lib/styles.css"
 
 import { NaApi } from "@/api"
-import { TasklineItem } from "@/api/local/taskline"
+import { TasklineItem } from "@/api/native/taskline"
 import { dateFormat } from "@/helper/format"
 
 @Component({

@@ -2,7 +2,7 @@
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { SSHKeyItem } from "@/api/local/sshkey"
+import { SSHKeyItem } from "@/api/native/sshkey"
 
 import SshkeyCreate from "./sshkey_create.vue"
 

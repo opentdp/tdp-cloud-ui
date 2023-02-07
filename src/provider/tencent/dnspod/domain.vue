@@ -3,7 +3,7 @@ import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
 import { TcApi } from "@/api"
 import * as QC from "@/api/tencent/typings"
-import { DomainItem } from "@/api/local/domain"
+import { DomainItem } from "@/api/native/domain"
 
 import RecordCreate from "./record_create.vue"
 import RecordUpdate from "./record_update.vue"

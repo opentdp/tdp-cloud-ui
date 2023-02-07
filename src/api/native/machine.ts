@@ -23,7 +23,7 @@ export class MachineModel extends HttpClient {
 }
 
 export const MachineModels: Record<string, string> = {
-    "local/worker": "独立节点",
+    "native/worker": "独立节点",
     "tencent/cvm": "腾讯云/CVM",
     "tencent/lighthouse": "腾讯云/LH",
 }

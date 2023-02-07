@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { DomainModels, DomainItem } from "@/api/local/domain"
+import { DomainModels, DomainItem } from "@/api/native/domain"
 
 import CloudflareZone from "@/provider/cloudflare/domain.vue"
 import DnspodDomain from "@/provider/tencent/dnspod/domain.vue"

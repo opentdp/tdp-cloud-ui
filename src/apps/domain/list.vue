@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { DomainModels, DomainItem } from "@/api/local/domain"
+import { DomainModels, DomainItem } from "@/api/native/domain"
 
 @Component
 export default class DomainList extends Vue {

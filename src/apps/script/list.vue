@@ -2,7 +2,7 @@
 import { Ref,Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { ScriptItem } from "@/api/local/script"
+import { ScriptItem } from "@/api/native/script"
 
 import ScriptCreate from "./script_create.vue"
 import ScriptUpdate from "./script_update.vue"

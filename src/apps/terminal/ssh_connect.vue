@@ -4,9 +4,9 @@ import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { NaApi } from "@/api"
-import { MachineItem } from "@/api/local/machine"
-import { SSHRequest } from "@/api/local/terminal"
-import { SSHKeyItem } from "@/api/local/sshkey"
+import { MachineItem } from "@/api/native/machine"
+import { SSHRequest } from "@/api/native/terminal"
+import { SSHKeyItem } from "@/api/native/sshkey"
 
 @Component({
     emits: ["submit"],
