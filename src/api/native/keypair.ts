@@ -18,14 +18,14 @@ export class KeypairModel extends HttpClient {
     }
 }
 
-export const KeypairTypeList: Record<number, string> = {
-    1: "SSH 登录密钥",
+export const KeypairTypeList: Record<string, string> = {
+    "ssh": "SSH 登录密钥",
 }
 
 export interface KeypairOrig {
     PublicKey: string
     PrivateKey: string
-    KeyType: number
+    KeyType: string
     Description: string
 }
 
