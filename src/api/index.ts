@@ -1,5 +1,5 @@
 import LoApi from "./local"
-import QcApi from "./qcloud"
 import CfApi from "./cloudflare"
+import TcApi from "./tencent"
 
-export { LoApi, QcApi, CfApi }
+export { LoApi, CfApi, TcApi }

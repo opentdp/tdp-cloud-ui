@@ -24,7 +24,7 @@ export class DomainModel extends HttpClient {
 
 export const DomainModels: Record<string, string> = {
     "cloudflare/zone": "Cloudflare",
-    "qcloud/dnspod": "Dnspod",
+    "tencent/dnspod": "Dnspod",
 }
 
 export interface DomainOrig {

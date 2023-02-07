@@ -138,13 +138,13 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/vendor/cloudflare.vue"),
             },
             {
-                path: "/vendor/qcloud",
-                name: "vendor-qcloud",
+                path: "/vendor/tencent",
+                name: "vendor-tencent",
                 meta: {
                     title: "腾讯云",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/qcloud.vue"),
+                component: () => import("@/apps/vendor/tencent.vue"),
             },
             //////
             {
@@ -157,13 +157,13 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/vrbind/cloudflare.vue"),
             },
             {
-                path: "/vrbind/qcloud/:id",
-                name: "vrbind-qcloud",
+                path: "/vrbind/tencent/:id",
+                name: "vrbind-tencent",
                 meta: {
                     title: "腾讯云",
                     login: true,
                 },
-                component: () => import("@/apps/vrbind/qcloud.vue"),
+                component: () => import("@/apps/vrbind/tencent.vue"),
             },
             {
                 path: "/vrbind/worker",

@@ -4,9 +4,9 @@ import { Component, Vue } from "vue-facing-decorator"
 import { LoApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/local/machine"
 
+import CvmInstance from "@/provider/tencent/cvm/instance.vue"
+import LighthouseInstance from "@/provider/tencent/lighthouse/instance.vue"
 import WorkerInstance from "@/provider/worker/instance.vue"
-import CvmInstance from "@/provider/qcloud/cvm/instance.vue"
-import LighthouseInstance from "@/provider/qcloud/lighthouse/instance.vue"
 
 @Component({
     components: { CvmInstance, LighthouseInstance, WorkerInstance }
@@ -49,10 +49,10 @@ export default class MachineDetail extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
-        <template v-if="machine?.Model == 'qcloud/cvm'">
+        <template v-if="machine?.Model == 'tencent/cvm'">
             <CvmInstance :meta="machine" />
         </template>
-        <template v-if="machine?.Model == 'qcloud/lighthouse'">
+        <template v-if="machine?.Model == 'tencent/lighthouse'">
             <LighthouseInstance :meta="machine" />
         </template>
         <template v-if="machine?.Model == 'local/worker'">

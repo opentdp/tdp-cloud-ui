@@ -4,7 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import { LoApi } from "@/api"
 import { MachineItem } from "@/api/local/machine"
 
-import LighthouseVNC from "@/provider/qcloud/lighthouse/vnc.vue"
+import LighthouseVNC from "@/provider/tencent/lighthouse/vnc.vue"
 
 @Component({
     components: { LighthouseVNC }
@@ -42,7 +42,7 @@ export default class MachineVnc extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
-        <template v-if="machine?.Model == 'qcloud/lighthouse'">
+        <template v-if="machine?.Model == 'tencent/lighthouse'">
             <LighthouseVNC :meta="machine" />
         </template>
     </div>

@@ -5,7 +5,7 @@ import { LoApi } from "@/api"
 import { DomainModels, DomainItem } from "@/api/local/domain"
 
 import CloudflareZone from "@/provider/cloudflare/domain.vue"
-import DnspodDomain from "@/provider/qcloud/dnspod/domain.vue"
+import DnspodDomain from "@/provider/tencent/dnspod/domain.vue"
 
 @Component({
     components: { CloudflareZone, DnspodDomain }
@@ -51,7 +51,7 @@ export default class DomainDetail extends Vue {
         <template v-if="domain?.Model == 'cloudflare/zone'">
             <CloudflareZone :meta="domain" />
         </template>
-        <template v-if="domain?.Model == 'qcloud/dnspod'">
+        <template v-if="domain?.Model == 'tencent/dnspod'">
             <DnspodDomain :meta="domain" />
         </template>
     </div>

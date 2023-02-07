@@ -24,7 +24,7 @@ export class VendorModel extends HttpClient {
 
 export const ProviderList: Record<string, string> = {
     "cloudflare": "Cloudflare",
-    "qcloud": "腾讯云",
+    "tencent": "腾讯云",
 }
 
 export interface VendorOrig {

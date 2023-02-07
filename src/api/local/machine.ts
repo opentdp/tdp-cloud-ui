@@ -24,8 +24,8 @@ export class MachineModel extends HttpClient {
 
 export const MachineModels: Record<string, string> = {
     "local/worker": "独立节点",
-    "qcloud/cvm": "腾讯云/CVM",
-    "qcloud/lighthouse": "腾讯云/LH",
+    "tencent/cvm": "腾讯云/CVM",
+    "tencent/lighthouse": "腾讯云/LH",
 }
 
 export interface MachineOrig {
