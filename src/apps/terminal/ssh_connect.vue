@@ -6,7 +6,7 @@ import { ElMessage, FormRules, FormInstance } from "element-plus"
 import { NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
 import { SSHRequest } from "@/api/native/terminal"
-import { SSHKeyItem } from "@/api/native/sshkey"
+import { KeypairItem } from "@/api/native/keypair"
 
 @Component({
     emits: ["submit"],
@@ -20,16 +20,16 @@ export default class TerminalSshConnect extends Vue {
     public created() {
         this.formModel.Addr = this.addr
         this.getMachineList()
-        this.getSshkeyList()
+        this.getKeypairList()
     }
 
     // 获取密钥列表
 
-    public sshkeyList: SSHKeyItem[] = []
+    public keypairList: KeypairItem[] = []
 
-    async getSshkeyList() {
-        const res = await NaApi.sshkey.list()
-        this.sshkeyList = res.Datasets
+    async getKeypairList() {
+        const res = await NaApi.keypair.list()
+        this.keypairList = res.Datasets
     }
 
     // 获取主机列表
@@ -120,7 +120,7 @@ export default class TerminalSshConnect extends Vue {
         <el-form-item label="验证方式">
             <el-select v-model="authType">
                 <el-option label="用户密码" value="0" />
-                <el-option v-if="sshkeyList.length > 0" label="选择私玥" value="2" />
+                <el-option v-if="keypairList.length > 0" label="选择私玥" value="2" />
                 <el-option label="输入私玥" value="4" />
             </el-select>
         </el-form-item>
@@ -129,7 +129,7 @@ export default class TerminalSshConnect extends Vue {
         </el-form-item>
         <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
             <el-select v-model="formModel.PrivateKey">
-                <el-option v-for="item in sshkeyList" :key="item.Id" :label="item.Description"
+                <el-option v-for="item in keypairList" :key="item.Id" :label="item.Description"
                     :value="item.PrivateKey"
                 />
             </el-select>

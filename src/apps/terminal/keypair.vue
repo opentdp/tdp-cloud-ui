@@ -2,31 +2,31 @@
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { SSHKeyItem } from "@/api/native/sshkey"
+import { KeypairItem } from "@/api/native/keypair"
 
-import SshkeyCreate from "./sshkey_create.vue"
+import KeypairCreate from "./keypair_create.vue"
 
 @Component({
-    components: { SshkeyCreate }
+    components: { KeypairCreate }
 })
-export default class TerminalSshkey extends Vue {
+export default class KeypairList extends Vue {
     public loading = true
 
     @Ref
-    public createModal!: typeof SshkeyCreate
+    public createModal!: typeof KeypairCreate
 
     // 初始化
 
     public created() {
-        this.getSshkeyList()
+        this.getKeypairList()
     }
 
     // 密钥列表
 
-    public keylist: SSHKeyItem[] = []
+    public keylist: KeypairItem[] = []
 
-    async getSshkeyList() {
-        const res = await NaApi.sshkey.list()
+    async getKeypairList() {
+        const res = await NaApi.keypair.list()
         this.keylist = res.Datasets
         this.loading = false
     }
@@ -35,7 +35,7 @@ export default class TerminalSshkey extends Vue {
 
     async deleteKey(idx: number) {
         const item = this.keylist[idx]
-        await NaApi.sshkey.remove(item.Id)
+        await NaApi.keypair.remove(item.Id)
         this.keylist.splice(idx, 1)
     }
 }
@@ -48,7 +48,7 @@ export default class TerminalSshkey extends Vue {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                SSH 密钥
+                密钥管理
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-card shadow="hover">
@@ -79,6 +79,6 @@ export default class TerminalSshkey extends Vue {
                 </el-table-column>
             </el-table>
         </el-card>
-        <SshkeyCreate ref="createModal" @submit="getSshkeyList" />
+        <KeypairCreate ref="createModal" @submit="getKeypairList" />
     </div>
 </template>

@@ -54,8 +54,8 @@ export default class LayoutSidebar extends Vue {
                 },
                 {
                     icon: "Lock",
-                    index: "/terminal/sshkey",
-                    title: "SSH 密钥",
+                    index: "/terminal/keypair",
+                    title: "密钥管理",
                 },
             ]
         },

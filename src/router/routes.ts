@@ -119,13 +119,13 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/terminal/ssh.vue"),
             },
             {
-                path: "/terminal/sshkey",
-                name: "terminal-sshkey",
+                path: "/terminal/keypair",
+                name: "terminal-keypair",
                 meta: {
-                    title: "SSH 密钥",
+                    title: "密钥管理",
                     login: true,
                 },
-                component: () => import("@/apps/terminal/sshkey.vue"),
+                component: () => import("@/apps/terminal/keypair.vue"),
             },
             //////
             {

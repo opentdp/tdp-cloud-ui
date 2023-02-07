@@ -9,7 +9,7 @@ import { NaApi } from "@/api"
     emits: ["submit"],
     expose: ["open"],
 })
-export default class TerminalSshkeyCreate extends Vue {
+export default class KeypairCreate extends Vue {
 
     // 创建表单
 
@@ -19,6 +19,7 @@ export default class TerminalSshkeyCreate extends Vue {
     public formModel = {
         PublicKey: "",
         PrivateKey: "",
+        KeyType: 1, // SSH
         Description: "",
     }
 
@@ -36,7 +37,7 @@ export default class TerminalSshkeyCreate extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await NaApi.sshkey.create(this.formModel)
+            await NaApi.keypair.create(this.formModel)
             this.close()
         })
     }
