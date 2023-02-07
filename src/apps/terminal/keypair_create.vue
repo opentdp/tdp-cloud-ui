@@ -4,12 +4,14 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { NaApi } from "@/api"
+import { KeypairTypeList } from "@/api/native/keypair"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class KeypairCreate extends Vue {
+    public KeypairTypeList = KeypairTypeList
 
     // 创建表单
 
@@ -60,6 +62,11 @@ export default class KeypairCreate extends Vue {
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加密钥" width="600px">
         <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
+            <el-form-item prop="KeyType" label="类型">
+                <el-select v-model="formModel.KeyType" placeholder="Select">
+                    <el-option v-for="k, v in KeypairTypeList" :key="k" :label="k" :value="v" />
+                </el-select>
+            </el-form-item>
             <el-form-item prop="Description" label="别名">
                 <el-input v-model="formModel.Description" />
             </el-form-item>
