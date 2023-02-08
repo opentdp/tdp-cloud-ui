@@ -1,6 +1,6 @@
 /**
  * 代码高亮组件
- * https://www.npmjs.com/package/@highlightjs/vue-plugin
+ * https://www.npmjs.com/package/highlight.js
  */
 
 import type { App, Plugin } from 'vue'
