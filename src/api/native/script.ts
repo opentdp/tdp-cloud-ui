@@ -42,8 +42,8 @@ export interface ScriptOrig {
 export interface ScriptItem extends ScriptOrig {
     Id: number
     UserId: number
-    CreatedAt: string
-    UpdatedAt: string
+    CreatedAt: number
+    UpdatedAt: number
 }
 
 export interface ScriptPaged {

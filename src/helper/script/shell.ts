@@ -7,6 +7,7 @@ function trim(s: string) {
 
 export const installTDPWorker: ScriptItem = {
     Id: 0,
+    UserId: 0,
     Name: "安装 TDP Worker",
     Username: "root",
     Description: "",
@@ -16,7 +17,9 @@ export const installTDPWorker: ScriptItem = {
     `),
     CommandType: "shell",
     WorkDirectory: "/root",
-    Timeout: 300
+    Timeout: 300,
+    CreatedAt: 0,
+    UpdatedAt: 0,
 }
 
 // 导出所有脚本

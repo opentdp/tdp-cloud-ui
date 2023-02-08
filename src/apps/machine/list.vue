@@ -162,7 +162,7 @@ export default class MachineList extends Vue {
                 <p>主机未使用 <i>TDP Cloud Worker</i> 连接，请使用下述脚本完成注册。</p>
                 <p>此脚本仅支持在 <b>{{ selectedRow.HostName }}</b> 上注册客户端，请勿在其它主机上运行！</p>
                 <pre v-highlight>
-                    <code>{{ installTDPWorker.Content.replace("/worker", "/worker/" + selectedRow.Id) }}</code>
+                    <code>{{ installTDPWorker.Content.replace("/workhub", "/workhub/" + selectedRow.Id) }}</code>
                 </pre>
             </div>
         </el-card>

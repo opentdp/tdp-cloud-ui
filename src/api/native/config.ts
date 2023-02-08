@@ -31,8 +31,8 @@ export interface ConfigOrig {
 
 export interface ConfigItem extends ConfigOrig {
     Id: number
-    CreatedAt: string
-    UpdatedAt: string
+    CreatedAt: number
+    UpdatedAt: number
 }
 
 export interface ConfigPaged {
