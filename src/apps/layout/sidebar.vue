@@ -66,7 +66,7 @@ export default class LayoutSidebar extends Vue {
             subs: [
                 {
                     icon: "Cpu",
-                    index: "/vrbind/worker",
+                    index: "/vendor/worker",
                     title: "子节点",
                 },
                 {

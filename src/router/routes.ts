@@ -138,6 +138,15 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/vendor/alibaba.vue"),
             },
             {
+                path: "/vendor/alibaba/:id",
+                name: "vendor-alibaba-bind",
+                meta: {
+                    title: "阿里云",
+                    login: true,
+                },
+                component: () => import("@/apps/vendor/alibaba_bind.vue"),
+            },
+            {
                 path: "/vendor/cloudflare",
                 name: "vendor-cloudflare",
                 meta: {
@@ -145,6 +154,15 @@ export const routes: RouteRecordRaw[] = [
                     login: true,
                 },
                 component: () => import("@/apps/vendor/cloudflare.vue"),
+            },
+            {
+                path: "/vendor/cloudflare/:id",
+                name: "vendor-cloudflare-bind",
+                meta: {
+                    title: "Cloudflare",
+                    login: true,
+                },
+                component: () => import("@/apps/vendor/cloudflare_bind.vue"),
             },
             {
                 path: "/vendor/tencent",
@@ -155,42 +173,23 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/vendor/tencent.vue"),
             },
-            //////
             {
-                path: "/vrbind/alibaba/:id",
-                name: "vrbind-alibaba",
-                meta: {
-                    title: "阿里云",
-                    login: true,
-                },
-                component: () => import("@/apps/vrbind/alibaba.vue"),
-            },
-            {
-                path: "/vrbind/cloudflare/:id",
-                name: "vrbind-cloudflare",
-                meta: {
-                    title: "Cloudflare",
-                    login: true,
-                },
-                component: () => import("@/apps/vrbind/cloudflare.vue"),
-            },
-            {
-                path: "/vrbind/tencent/:id",
-                name: "vrbind-tencent",
+                path: "/vendor/tencent/:id",
+                name: "vendor-tencent-bind",
                 meta: {
                     title: "腾讯云",
                     login: true,
                 },
-                component: () => import("@/apps/vrbind/tencent.vue"),
+                component: () => import("@/apps/vendor/tencent_bind.vue"),
             },
             {
-                path: "/vrbind/worker",
-                name: "vrbind-worker",
+                path: "/vendor/worker",
+                name: "vendor-worker-bind",
                 meta: {
                     title: "子节点",
                     login: true,
                 },
-                component: () => import("@/apps/vrbind/worker.vue"),
+                component: () => import("@/apps/vendor/worker_bind.vue"),
             },
             //////
             {
