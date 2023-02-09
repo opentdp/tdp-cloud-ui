@@ -1,5 +1,5 @@
 // import {  } from "./typings"
-import { AlibabaVendor, AlibabaClient } from './base';
+import { AlibabaClient } from './base';
 
 export class EcsModel extends AlibabaClient {
     protected Service = 'ecs';
