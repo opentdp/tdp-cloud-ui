@@ -1,4 +1,4 @@
-import { HttpClient, HttpMessage } from "@/api/basic/http"
+import { HttpClient } from "@/api/basic/http"
 
 export class MachineModel extends HttpClient {
     public list(): Promise<MachinePaged> {
@@ -9,15 +9,15 @@ export class MachineModel extends HttpClient {
         return this.get("/machine/" + id)
     }
 
-    public create(rq: MachineOrig): Promise<HttpMessage> {
+    public create(rq: MachineOrig): Promise<{ Id: number }> {
         return this.post("/machine", rq)
     }
 
-    public update(rq: Partial<MachineItem>): Promise<HttpMessage> {
+    public update(rq: Partial<MachineItem>): Promise<null> {
         return this.patch("/machine/" + rq.Id, rq)
     }
 
-    public remove(id: number): Promise<HttpMessage> {
+    public remove(id: number): Promise<null> {
         return this.delete("/machine/" + id)
     }
 }

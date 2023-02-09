@@ -1,4 +1,4 @@
-import { HttpClient, HttpMessage } from "@/api/basic/http"
+import { HttpClient } from "@/api/basic/http"
 
 export class DomainModel extends HttpClient {
     public list(): Promise<DomainPaged> {
@@ -9,15 +9,15 @@ export class DomainModel extends HttpClient {
         return this.get("/domain/" + id)
     }
 
-    public create(rq: DomainOrig): Promise<HttpMessage> {
+    public create(rq: DomainOrig): Promise<{ Id: number }> {
         return this.post("/domain", rq)
     }
 
-    public update(rq: Partial<DomainItem>): Promise<HttpMessage> {
+    public update(rq: Partial<DomainItem>): Promise<null> {
         return this.patch("/domain/" + rq.Id, rq)
     }
 
-    public remove(id: number): Promise<HttpMessage> {
+    public remove(id: number): Promise<null> {
         return this.delete("/domain/" + id)
     }
 }

@@ -1,19 +1,19 @@
-import { HttpClient, HttpMessage } from "@/api/basic/http"
+import { HttpClient } from "@/api/basic/http"
 
 export class KeypairModel extends HttpClient {
     public list(): Promise<KeypairPaged> {
         return this.get("/keypair")
     }
 
-    public create(rq: KeypairOrig): Promise<HttpMessage> {
+    public create(rq: KeypairOrig): Promise<{ Id: number }> {
         return this.post("/keypair", rq)
     }
 
-    public update(rq: Partial<KeypairItem>): Promise<HttpMessage> {
+    public update(rq: Partial<KeypairItem>): Promise<null> {
         return this.patch("/keypair/" + rq.Id, rq)
     }
 
-    public remove(id: number): Promise<HttpMessage> {
+    public remove(id: number): Promise<null> {
         return this.delete("/keypair/" + id)
     }
 }

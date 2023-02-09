@@ -1,19 +1,19 @@
-import { HttpClient, HttpMessage } from "@/api/basic/http"
+import { HttpClient } from "@/api/basic/http"
 
 export class ScriptModel extends HttpClient {
     public list(): Promise<ScriptPaged> {
         return this.get("/script")
     }
 
-    public create(rq: ScriptOrig): Promise<HttpMessage> {
+    public create(rq: ScriptOrig): Promise<{ Id: number }> {
         return this.post("/script/", rq)
     }
 
-    public update(rq: Partial<ScriptItem>): Promise<HttpMessage> {
+    public update(rq: Partial<ScriptItem>): Promise<null> {
         return this.patch("/script/" + rq.Id, rq)
     }
 
-    public remove(id: number): Promise<HttpMessage> {
+    public remove(id: number): Promise<null> {
         return this.delete("/script/" + id)
     }
 

@@ -1,4 +1,4 @@
-import { HttpClient, HttpMessage } from "@/api/basic/http"
+import { HttpClient } from "@/api/basic/http"
 
 export class ConfigModel extends HttpClient {
     public list(): Promise<ConfigPaged> {
@@ -9,15 +9,15 @@ export class ConfigModel extends HttpClient {
         return this.get("/config/" + name)
     }
 
-    public create(rq: ConfigOrig): Promise<HttpMessage> {
+    public create(rq: ConfigOrig): Promise<{ Id: number }> {
         return this.post("/config", rq)
     }
 
-    public update(rq: Partial<ConfigItem>): Promise<HttpMessage> {
+    public update(rq: Partial<ConfigItem>): Promise<null> {
         return this.patch("/config/" + rq.Name, rq)
     }
 
-    public remove(name: string): Promise<HttpMessage> {
+    public remove(name: string): Promise<null> {
         return this.delete("/config/" + name)
     }
 }

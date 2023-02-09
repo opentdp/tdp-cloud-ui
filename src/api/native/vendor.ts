@@ -1,4 +1,4 @@
-import { HttpClient, HttpMessage } from "@/api/basic/http"
+import { HttpClient } from "@/api/basic/http"
 
 export class VendorModel extends HttpClient {
     public list(): Promise<VendorPaged> {
@@ -9,15 +9,15 @@ export class VendorModel extends HttpClient {
         return this.get("/vendor/" + id)
     }
 
-    public create(rq: VendorOrig): Promise<HttpMessage> {
+    public create(rq: VendorOrig): Promise<{ Id: number }> {
         return this.post("/vendor", rq)
     }
 
-    public update(rq: Partial<VendorItem>): Promise<HttpMessage> {
+    public update(rq: Partial<VendorItem>): Promise<null> {
         return this.patch("/vendor/" + rq.Id, rq)
     }
 
-    public remove(id: number): Promise<HttpMessage> {
+    public remove(id: number): Promise<null> {
         return this.delete("/vendor/" + id)
     }
 }
