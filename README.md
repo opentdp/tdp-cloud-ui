@@ -64,6 +64,6 @@
 
 ## 其他
 
-License [GPL-3.0](https://opensource.org/licenses/GPL-3.0)
+License [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
 
 Copyright (c) 2022 TDP Cloud
