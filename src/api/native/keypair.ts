@@ -32,8 +32,8 @@ export interface KeypairOrig {
 export interface KeypairItem extends KeypairOrig {
     Id: number
     UserId: number
-    CreatedAt: string
-    UpdatedAt: string
+    CreatedAt: number
+    UpdatedAt: number
 }
 
 export interface KeypairPaged {

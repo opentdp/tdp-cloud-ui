@@ -10,7 +10,7 @@ import CloudflareBind from "@/provider/cloudflare/bind.vue"
 @Component({
     components: { CloudflareBind }
 })
-export default class VendorBindCloudflare extends Vue {
+export default class VendorCloudflareBind extends Vue {
 
     // 初始化
 

@@ -6,16 +6,16 @@ import { DomainItem } from "@/api/native/domain"
 import { MachineItem } from "@/api/native/machine"
 import { VendorItem } from "@/api/native/vendor"
 
-import CvmBind from "@/provider/tencent/cvm/bind.vue"
-import LighthouseBind from "@/provider/tencent/lighthouse/bind.vue"
-import DnspodBind from "@/provider/tencent/dnspod/bind.vue"
+import EcsBind from "@/provider/alibaba/ecs/bind.vue"
+import SwasBind from "@/provider/alibaba/swas/bind.vue"
+import DnsBind from "@/provider/alibaba/dns/bind.vue"
 
 @Component({
-    components: { CvmBind, LighthouseBind, DnspodBind }
+    components: { EcsBind, SwasBind, DnsBind }
 })
-export default class VendorBindTencent extends Vue {
+export default class VendorAlibabaBind extends Vue {
     public curTab = {
-        id: "cvm", label: ""
+        id: "ecs", label: ""
     }
 
     // 初始化
@@ -68,22 +68,22 @@ export default class VendorBindTencent extends Vue {
             <el-breadcrumb-item to="/">
                 首页
             </el-breadcrumb-item>
-            <el-breadcrumb-item to="/vendor/tencent">
-                腾讯云
+            <el-breadcrumb-item to="/vendor/alibaba">
+                阿里云
             </el-breadcrumb-item>
             <el-breadcrumb-item v-if="vendor">
                 {{ vendor.Description || vendorId }}
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
-            <el-tab-pane label="CVM服务器" name="cvm">
-                <CvmBind :meta="{ vendorId, boundList: machineList }" @change="getMachineList" />
+            <el-tab-pane label="ECS服务器" name="ecs">
+                <EcsBind :meta="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </el-tab-pane>
-            <el-tab-pane label="轻量服务器" name="lighthouse">
-                <LighthouseBind :meta="{ vendorId, boundList: machineList }" @change="getMachineList" />
+            <el-tab-pane label="轻量服务器" name="swas">
+                <SwasBind :meta="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </el-tab-pane>
-            <el-tab-pane label="域名解析" name="dnspod">
-                <DnspodBind :meta="{ vendorId, boundList: domainList }" @change="getDomainList" />
+            <el-tab-pane label="域名解析" name="dns">
+                <DnsBind :meta="{ vendorId, boundList: domainList }" @change="getDomainList" />
             </el-tab-pane>
         </el-tabs>
     </div>

@@ -11,7 +11,7 @@ import WorkerBind from "@/provider/worker/bind.vue"
 @Component({
     components: { WorkerBind }
 })
-export default class VendorBindWorker extends Vue {
+export default class VendoWorkerBind extends Vue {
     public installTDPWorker = installTDPWorker
 
     // 初始化

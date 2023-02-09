@@ -75,7 +75,7 @@ export default class ScriptCreate extends Vue {
                 <el-radio-group v-model="formModel.CommandType">
                     <el-radio label="SHELL" />
                     <el-radio label="POWERSHELL" />
-                    <el-radio label="CMD" />
+                    <el-radio label="BAT" />
                 </el-radio-group>
             </el-form-item>
             <el-form-item prop="Name" label="名称">

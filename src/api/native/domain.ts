@@ -42,8 +42,8 @@ export interface DomainOrig {
 export interface DomainItem extends DomainOrig {
     Id: number
     UserId: number
-    CreatedAt: string
-    UpdatedAt: string
+    CreatedAt: number
+    UpdatedAt: number
 }
 
 export interface DomainPaged {

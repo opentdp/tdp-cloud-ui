@@ -7,7 +7,7 @@ import { NaApi } from "@/api"
 import { VendorItem } from "@/api/native/vendor"
 
 @Component
-export default class VendorListCloudflare extends Vue {
+export default class VendorCloudflare extends Vue {
     public loading = true
 
     // 初始化
@@ -89,7 +89,7 @@ export default class VendorListCloudflare extends Vue {
                 <el-table-column prop="SecretId" label="邮箱" show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <router-link :to="'/vrbind/cloudflare/' + scope.row.Id">
+                        <router-link :to="'/vendor/cloudflare/' + scope.row.Id">
                             <el-button link type="primary" icon="View">
                                 管理
                             </el-button>

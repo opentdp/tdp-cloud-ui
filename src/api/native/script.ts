@@ -22,7 +22,7 @@ export class ScriptModel extends HttpClient {
             if (s.CommandType == "SHELL") {
                 return os != "windows"
             }
-            if (s.CommandType == "CMD" || s.CommandType == "POWERSHELL") {
+            if (s.CommandType == "BAT" || s.CommandType == "POWERSHELL") {
                 return os == "windows"
             }
         })
@@ -42,8 +42,8 @@ export interface ScriptOrig {
 export interface ScriptItem extends ScriptOrig {
     Id: number
     UserId: number
-    CreatedAt: string
-    UpdatedAt: string
+    CreatedAt: number
+    UpdatedAt: number
 }
 
 export interface ScriptPaged {

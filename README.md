@@ -1,14 +1,14 @@
 # TDP Cloud UI
 
-[Cloud Panel](https://github.com/tdp-resource/cloud-panel) 的前端组件, 框架基于 [vue-admin-template](https://github.com/rehiy/vue-admin-template)
-
-*注意*：此项目无法独立工作，需要配合 [TDP Cloud 后端服务](https://github.com/tdp-resource/tdp-cloud) 或 [二进制可执行程序](https://github.com/tdp-resource/tdp-cloud/releases) 使用。
+[TDP Cloud](https://github.com/tdp-resource/cloud-panel) 的前端组件, 框架基于 [vue-admin-template](https://github.com/rehiy/vue-admin-template)
 
 ## 开发说明
 
 ### 启动开发服务
 
-在项目目录运行  `serve.bat` 或 `./serve.sh`
+首先，运行后端接口服务。然后，在项目目录运行 `serve.bat` 或 `./serve.sh`
+
+*注意*：数据展示需要调用后端接口，所以此项目无法独立使用。可下载稳定版 [二进制可执行程序](https://github.com/tdp-resource/tdp-cloud/releases) 作为后端配合开发工作。
 
 ### 提交代码时请使用下面标识
 
@@ -64,6 +64,6 @@
 
 ## 其他
 
-License [GPL-3.0](https://opensource.org/licenses/GPL-3.0)
+License [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
 
 Copyright (c) 2022 TDP Cloud

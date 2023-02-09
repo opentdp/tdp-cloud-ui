@@ -48,8 +48,8 @@ export interface MachineOrig {
 export interface MachineItem extends MachineOrig {
     Id: number
     UserId: number
-    CreatedAt: string
-    UpdatedAt: string
+    CreatedAt: number
+    UpdatedAt: number
 }
 
 export interface MachinePaged {

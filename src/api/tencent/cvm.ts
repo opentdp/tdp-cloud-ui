@@ -1,40 +1,40 @@
 import { TencentClient } from "./base"
-import { Cvm as QCvm } from "./typings"
+import { Cvm as ICvm } from "./typings"
 
 export class CvmModel extends TencentClient {
     protected Service = "cvm"
     protected Version = "2017-03-12"
 
-    public describeRegions(): Promise<QCvm.DescribeRegionsResponse> {
+    public describeRegions(): Promise<ICvm.DescribeRegionsResponse> {
         return this.bus({ Action: "DescribeRegions" }, 600)
     }
 
-    public describeInstances(region: string, query?: QCvm.DescribeInstancesRequest): Promise<QCvm.DescribeInstancesResponse> {
+    public describeInstances(region: string, query?: ICvm.DescribeInstancesRequest): Promise<ICvm.DescribeInstancesResponse> {
         query = Object.assign({ Limit: 100 }, query)
         return this.bus({ Action: "DescribeInstances", Region: region, Payload: query })
     }
 
-    public modifyInstancesAttribute(region: string, query: QCvm.ModifyInstancesAttributeRequest): Promise<QCvm.ModifyInstancesAttributeResponse> {
+    public modifyInstancesAttribute(region: string, query: ICvm.ModifyInstancesAttributeRequest): Promise<ICvm.ModifyInstancesAttributeResponse> {
         return this.bus({ Action: "ModifyInstancesAttribute", Region: region, Payload: query })
     }
 
     // 电源
 
-    public stopInstances(region: string, query: QCvm.StopInstancesRequest): Promise<QCvm.StopInstancesResponse> {
+    public stopInstances(region: string, query: ICvm.StopInstancesRequest): Promise<ICvm.StopInstancesResponse> {
         return this.bus({ Action: "StopInstances", Region: region, Payload: query })
     }
 
-    public startInstances(region: string, query: QCvm.StartInstancesRequest): Promise<QCvm.StartInstancesResponse> {
+    public startInstances(region: string, query: ICvm.StartInstancesRequest): Promise<ICvm.StartInstancesResponse> {
         return this.bus({ Action: "StartInstances", Region: region, Payload: query })
     }
 
-    public rebootInstances(region: string, query: QCvm.RebootInstancesRequest): Promise<QCvm.RebootInstancesResponse> {
+    public rebootInstances(region: string, query: ICvm.RebootInstancesRequest): Promise<ICvm.RebootInstancesResponse> {
         return this.bus({ Action: "RebootInstances", Region: region, Payload: query })
     }
 
     // VNC
 
-    public describeInstanceVncUrl(region: string, query: QCvm.DescribeInstanceVncUrlRequest): Promise<QCvm.DescribeInstanceVncUrlResponse> {
+    public describeInstanceVncUrl(region: string, query: ICvm.DescribeInstanceVncUrlRequest): Promise<ICvm.DescribeInstanceVncUrlResponse> {
         return this.bus({ Action: "DescribeInstanceVncUrl", Region: region, Payload: query })
     }
 }
