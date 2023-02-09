@@ -12,7 +12,7 @@ export const installTDPWorker: ScriptItem = {
     Username: "root",
     Description: "",
     Content: trim(`
-        export TDP_BIN_ARGS="--remote ${NaApi.workhub.getRegisterURL()}"
+        export TDP_REMOTE_URL="${NaApi.workhub.getRegisterURL()}"
         wget -qO- https://apps.rehiy.com/tdp-cloud/worker-linux | sh -
     `),
     CommandType: "shell",
