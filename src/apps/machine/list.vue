@@ -5,7 +5,7 @@ import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/native/machine"
 import { WorkerItem } from "@/api/native/workhub"
 
-import QuickExec from "@/apps/taskline/quick.vue"
+import QuickExec from "@/apps/script/quick.vue"
 
 @Component({
     components: { QuickExec }

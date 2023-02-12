@@ -78,11 +78,12 @@ export default class TasklineList extends Vue {
                 </el-table-column>
                 <el-table-column label="详情" type="expand" width="90">
                     <template #default="scope">
-                        <div class="detail">
+                        <div class="output">
                             <h3>请求信息</h3>
                             <vue-json-pretty :data="scope.row.Request" />
                             <h3>响应内容</h3>
-                            <pre class="console">{{ scope.row.Response.Output || "无" }}</pre>
+                            <pre v-if="scope.row.Response.Error" class="console">{{ scope.row.Response.Error }}</pre>
+                            <pre v-else class="console">{{ scope.row.Response.Output || "无" }}</pre>
                         </div>
                     </template>
                 </el-table-column>
@@ -92,7 +93,7 @@ export default class TasklineList extends Vue {
 </template>
 
 <style lang="scss" scoped>
-.detail {
+.output {
     margin: -8px 0;
     padding: 0 8px;
 

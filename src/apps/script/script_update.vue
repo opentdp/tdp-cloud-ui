@@ -84,7 +84,7 @@ export default class ScriptUpdate extends Vue {
                     :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
             </el-form-item>
             <el-form-item prop="Content" label="脚本内容">
-                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 2 }" />
+                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4 }" />
             </el-form-item>
             <el-form-item prop="Description" label="脚本描述">
                 <el-input v-model="formModel.Description" type="textarea" :autosize="{ minRows: 2 }" />

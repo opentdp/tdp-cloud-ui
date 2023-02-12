@@ -12,7 +12,7 @@ import { ScriptOrig } from "@/api/native/script"
 })
 export default class ScriptCreate extends Vue {
 
-    // 新建表单
+    // 创建表单
 
     @Ref
     public formRef!: FormInstance
@@ -26,6 +26,8 @@ export default class ScriptCreate extends Vue {
         Description: [{ required: true, message: "描述 不能为空" }],
         Timeout: [{ required: true, message: "超时时间 不能为空" }],
     }
+
+    // 提交表单
 
     public formSubmit(form: FormInstance | undefined) {
         form && form.validate(async valid => {

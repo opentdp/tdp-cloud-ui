@@ -4,14 +4,18 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { NaApi } from "@/api"
+import { MachineItem } from "@/api/native/machine"
 import { ScriptItem } from "@/api/native/script"
+import { TasklineItem } from "@/api/native/taskline"
 
 @Component({
     emits: ['submit'],
     expose: ['open']
 })
 export default class ScriptQuickExec extends Vue {
-    public workerId = ""
+    public machine!: MachineItem
+
+    public loading = false
 
     // 创建表单
 
@@ -22,23 +26,37 @@ export default class ScriptQuickExec extends Vue {
 
     public formRules: FormRules = {
         Content: [{ required: true, message: "脚本内容 不能为空" }],
-        Timeout: [{ required: true, message: "超时时间 不能为空" }],
     }
 
     // 提交表单
 
     public formSubmit(form: FormInstance | undefined) {
+        this.result = null
         form && form.validate(async valid => {
             if (!valid) {
                 ElMessage.error("请检查表单")
                 return false
             }
+            this.loading = true
             const res = await NaApi.workhub.exec({
-                WorkerId: this.workerId,
+                WorkerId: this.machine.WorkerId,
                 Payload: this.formModel
             })
-            console.log(res)
+            this.getOutput(res.Id)
         })
+    }
+
+    // 获取结果
+
+    public result!: TasklineItem | null
+
+    async getOutput(id: number) {
+        this.result = await NaApi.taskline.detail(id)
+        if (!this.result.Response) {
+            setTimeout(() => this.getOutput(id), 3000)
+        } else {
+            this.loading = false
+        }
     }
 
     // 对话框管理
@@ -50,10 +68,12 @@ export default class ScriptQuickExec extends Vue {
         this.$emit("submit")
     }
 
-    public open(workerId: string, data: ScriptItem) {
+    public open(machine: MachineItem, script: ScriptItem) {
+        this.result = null
         this.dailog = true
-        this.workerId = workerId
-        this.formModel = { ...data }
+        this.loading = false
+        this.machine = machine
+        this.formModel = { ...script }
     }
 }
 </script>
@@ -67,6 +87,9 @@ export default class ScriptQuickExec extends Vue {
             <el-form-item prop="Description" label="脚本描述">
                 {{ formModel.Description }}
             </el-form-item>
+            <el-form-item prop="Timeout" label="超时时间">
+                <el-input-number v-model="formModel.Timeout" placeholder="默认为 300s" :min="1" :max="86400" />
+            </el-form-item>
             <el-form-item prop="Username" label="执行用户">
                 <el-input v-model="formModel.Username"
                     :placeholder="formModel.CommandType == 'SHELL' ? '默认为 root' : '默认为 System'" />
@@ -76,19 +99,35 @@ export default class ScriptQuickExec extends Vue {
                     :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
             </el-form-item>
             <el-form-item prop="Content" label="脚本内容">
-                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 2 }" />
-            </el-form-item>
-            <el-form-item prop="Timeout" label="超时时间">
-                <el-input-number v-model="formModel.Timeout" placeholder="默认为 300s" :min="1" :max="86400" />
+                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4 }" />
             </el-form-item>
         </el-form>
+        <div v-if="result" class="output">
+            <h3>响应内容</h3>
+            <pre v-if="result.Response.Error" class="console">{{ result.Response.Error }}</pre>
+            <pre v-else class="console">{{ result.Response.Output }}</pre>
+        </div>
         <template #footer>
             <span class="dialog-footer">
                 <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" @click="formSubmit(formRef)">
+                <el-button type="primary" :loading="loading" @click="formSubmit(formRef)">
                     执行
                 </el-button>
             </span>
         </template>
     </el-dialog>
 </template>
+
+<style lang="scss" scoped>
+.output {
+
+    .console {
+        width: 100%;
+        max-height: 300px;
+        padding: 8px;
+        overflow: auto;
+        background: #000;
+        color: #fff;
+    }
+}
+</style>

@@ -58,7 +58,7 @@ export default class ScriptQuick extends Vue {
             </router-link> 页面添加命令。
         </p>
         <template v-for="item in scriptList" :key="item.Id">
-            <el-button @click="execModal.open(machine.WorkerId, item)">
+            <el-button @click="execModal.open(machine, item)">
                 {{ item.Name }}
             </el-button>
         </template>
