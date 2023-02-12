@@ -56,8 +56,9 @@ export default class ScriptQuickExec extends Vue {
 
     async getOutput(id: number) {
         this.result = await NaApi.taskline.detail(id)
-        if (this.result.Response) {
+        if (this.result.Status != "Doing") {
             clearInterval(this.timer)
+            this.loading = false
         }
     }
 
