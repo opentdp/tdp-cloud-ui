@@ -5,20 +5,22 @@ import { createApp } from "vue"
 import App from "@/app.vue"
 import "@/assets/style.scss"
 
-import setupEcharts from "@/helper/echarts"
-import setupElement from "@/helper/element"
-import setupHighlight from "@/helper/highlight"
-
 import setupStore from "@/store/index"
 import setupRouter from "@/router/index"
 
+import setupEcharts from "@/component/echarts"
+import setupElement from "@/component/element"
+import setupHighlight from "@/component/highlight"
+import setupJsonPretty from "@/component/jsonpretty"
+
 const app = createApp(App)
+
+setupStore(app)
+setupRouter(app)
 
 setupEcharts(app)
 setupElement(app)
 setupHighlight(app)
-
-setupStore(app)
-setupRouter(app)
+setupJsonPretty(app)
 
 app.mount("#app")
