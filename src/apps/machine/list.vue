@@ -4,14 +4,14 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/native/machine"
 import { WorkerItem } from "@/api/native/workhub"
-import { ScriptItem } from "@/api/native/script"
 
-import shellList, { installTDPWorker } from "@/helper/script/shell"
+import QuickExec from "@/apps/taskline/quick.vue"
 
-@Component
+@Component({
+    components: { QuickExec }
+})
 export default class MachineList extends Vue {
     public MachineModels = MachineModels
-    public installTDPWorker = installTDPWorker
 
     public loading = true
 
@@ -20,7 +20,6 @@ export default class MachineList extends Vue {
     public created() {
         this.getMachineList()
         this.getWorkerList()
-        this.getScriptList()
     }
 
     // 主机列表
@@ -52,31 +51,11 @@ export default class MachineList extends Vue {
         })
     }
 
-    // 获取快捷命令
-
-    public scriptList: ScriptItem[] = []
-
-    async getScriptList() {
-        const res = await NaApi.script.list()
-        this.scriptList = [...shellList, ...res.Datasets]
-    }
-
-    // 执行快捷命令
-
-    public workerExec(cmd: ScriptItem) {
-        NaApi.workhub.exec({
-            WorkerId: this.selectedRow.WorkerId,
-            Payload: cmd
-        })
-    }
-
     // 选择主机
 
     public selectedRow!: MachineItem
-    public rowScriptList: ScriptItem[] = []
 
     public tableRowChange(row: MachineItem) {
-        this.rowScriptList = NaApi.script.osFilter(this.scriptList, row.OSType)
         this.selectedRow = row
     }
 }
@@ -101,8 +80,7 @@ export default class MachineList extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
-                @current-change="tableRowChange"
-            >
+                @current-change="tableRowChange">
                 <el-table-column prop="HostName" label="名称" show-overflow-tooltip fixed />
                 <el-table-column prop="IpAddress" label="公网 IP" show-overflow-tooltip />
                 <el-table-column prop="Region" label="地域" show-overflow-tooltip />
@@ -113,10 +91,13 @@ export default class MachineList extends Vue {
                 </el-table-column>
                 <el-table-column label="子节点" show-overflow-tooltip>
                     <template #default="scope">
-                        <el-button v-if="scope.row.WorkerId.length == 32" link type="success">
-                            已注册
+                        <el-button v-if="scope.row.WorkerId.length == 32 && workerList[scope.row.WorkerId]" link type="success">
+                            已连接
                         </el-button>
-                        <el-button v-else link type="info">
+                        <el-button v-else-if="scope.row.WorkerId.length == 32" link type="danger">
+                            未连接
+                        </el-button>
+                        <el-button v-else link type="warning">
                             未注册
                         </el-button>
                     </template>
@@ -146,32 +127,7 @@ export default class MachineList extends Vue {
                     <b>快捷命令</b>
                 </div>
             </template>
-            <div v-if="selectedRow.WorkerId.length == 32" class="button-list">
-                <p v-if="rowScriptList.length == 0">
-                    暂无可用命令，请在 <router-link to="/script/list">
-                        <b>脚本管理</b>
-                    </router-link> 页面添加命令。
-                </p>
-                <template v-for="item in rowScriptList" :key="item.Id">
-                    <el-button @click="workerExec(item)">
-                        {{ item.Name }}
-                    </el-button>
-                </template>
-            </div>
-            <div v-else>
-                <p>主机未使用 <i>TDP Cloud Worker</i> 连接，请使用下述脚本完成注册。</p>
-                <p>此脚本仅支持在 <b>{{ selectedRow.HostName }}</b> 上注册客户端，请勿在其它主机上运行！</p>
-                <pre v-highlight>
-                    <code>{{ installTDPWorker.Content.replace("/workhub", "/workhub/" + selectedRow.Id) }}</code>
-                </pre>
-            </div>
+            <QuickExec :meta="selectedRow" />
         </el-card>
     </div>
 </template>
-
-<style lang="scss" scoped>
-div>p {
-    margin: 0;
-    color: var(--el-color-info);
-}
-</style>
