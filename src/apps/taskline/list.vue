@@ -2,16 +2,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import VueJsonPretty from "vue-json-pretty"
-import "vue-json-pretty/lib/styles.css"
-
 import { NaApi } from "@/api"
 import { TasklineItem } from "@/api/native/taskline"
 import { dateFormat } from "@/helper/format"
 
-@Component({
-    components: { VueJsonPretty }
-})
+@Component
 export default class TasklineList extends Vue {
     public dateFormat = dateFormat
 
@@ -80,10 +75,13 @@ export default class TasklineList extends Vue {
                     <template #default="scope">
                         <div class="output">
                             <h3>请求信息</h3>
-                            <vue-json-pretty :data="scope.row.Request" />
+                            <JsonPretty :data="scope.row.Request" />
+                            <template v-if="scope.row.Response.Error">
+                                <h3>错误信息</h3>
+                                <JsonPretty :data="scope.row.Response.Error" />
+                            </template>
                             <h3>响应内容</h3>
-                            <pre v-if="scope.row.Response.Error" class="console">{{ scope.row.Response.Error }}</pre>
-                            <pre v-else class="console">{{ scope.row.Response.Output || "无" }}</pre>
+                            <pre class="console">{{ scope.row.Response.Output }}</pre>
                         </div>
                     </template>
                 </el-table-column>
@@ -98,7 +96,10 @@ export default class TasklineList extends Vue {
     padding: 0 8px;
 
     .console {
+        width: 100%;
+        max-height: 300px;
         padding: 8px;
+        overflow: auto;
         background: #000;
         color: #fff;
     }

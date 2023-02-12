@@ -16,6 +16,7 @@ export default class ScriptQuickExec extends Vue {
     public machine!: MachineItem
 
     public loading = false
+    public timer = 0
 
     // 创建表单
 
@@ -42,7 +43,10 @@ export default class ScriptQuickExec extends Vue {
                 WorkerId: this.machine.WorkerId,
                 Payload: this.formModel
             })
-            this.getOutput(res.Id)
+            // 循环获取状态
+            this.timer = setInterval(() => {
+                this.getOutput(res.Id)
+            }, 1500)
         })
     }
 
@@ -52,10 +56,8 @@ export default class ScriptQuickExec extends Vue {
 
     async getOutput(id: number) {
         this.result = await NaApi.taskline.detail(id)
-        if (!this.result.Response) {
-            setTimeout(() => this.getOutput(id), 3000)
-        } else {
-            this.loading = false
+        if (this.result.Response) {
+            clearInterval(this.timer)
         }
     }
 
@@ -66,6 +68,7 @@ export default class ScriptQuickExec extends Vue {
     public close() {
         this.dailog = false
         this.$emit("submit")
+        clearInterval(this.timer)
     }
 
     public open(machine: MachineItem, script: ScriptItem) {
@@ -103,9 +106,12 @@ export default class ScriptQuickExec extends Vue {
             </el-form-item>
         </el-form>
         <div v-if="result" class="output">
+            <template v-if="result.Response.Error">
+                <h3>错误信息</h3>
+                <JsonPretty :data="result.Response.Error" />
+            </template>
             <h3>响应内容</h3>
-            <pre v-if="result.Response.Error" class="console">{{ result.Response.Error }}</pre>
-            <pre v-else class="console">{{ result.Response.Output }}</pre>
+            <pre class="console">{{ result.Response.Output }}</pre>
         </div>
         <template #footer>
             <span class="dialog-footer">
@@ -120,7 +126,6 @@ export default class ScriptQuickExec extends Vue {
 
 <style lang="scss" scoped>
 .output {
-
     .console {
         width: 100%;
         max-height: 300px;
