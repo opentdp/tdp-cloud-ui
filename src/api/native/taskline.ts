@@ -46,5 +46,6 @@ export interface TasklinePaged {
 }
 
 export interface TasklineResponse {
+    Error: string
     Output: string
 }
