@@ -7,7 +7,7 @@ export class WorkhubModel extends HttpClient {
         return this.get("/workhub")
     }
 
-    public exec(rq: WorkerExecRequest): Promise<[]> {
+    public exec(rq: WorkerExecRequest): Promise<{ Id: number }> {
         return this.post("/workhub/exec", rq)
     }
 

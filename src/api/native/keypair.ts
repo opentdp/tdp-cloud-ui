@@ -5,6 +5,10 @@ export class KeypairModel extends HttpClient {
         return this.get("/keypair")
     }
 
+    public detail(name: string): Promise<KeypairItem> {
+        return this.get("/keypair/" + name)
+    }
+
     public create(rq: KeypairOrig): Promise<{ Id: number }> {
         return this.post("/keypair", rq)
     }

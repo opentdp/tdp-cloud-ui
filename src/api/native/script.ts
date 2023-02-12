@@ -5,6 +5,10 @@ export class ScriptModel extends HttpClient {
         return this.get("/script")
     }
 
+    public detail(name: string): Promise<ScriptItem> {
+        return this.get("/script/" + name)
+    }
+
     public create(rq: ScriptOrig): Promise<{ Id: number }> {
         return this.post("/script/", rq)
     }

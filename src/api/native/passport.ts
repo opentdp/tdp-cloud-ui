@@ -1,11 +1,11 @@
-import { HttpClient, HttpMessage } from "@/api/basic/http"
+import { HttpClient } from "@/api/basic/http"
 
 export class PassportModel extends HttpClient {
     public login(rq: UserRequest): Promise<LoginResponse> {
         return this.post("/passport/login", rq)
     }
 
-    public register(rq: UserRequest): Promise<HttpMessage> {
+    public register(rq: UserRequest): Promise<{ Id: number }> {
         return this.post("/passport/register", rq)
     }
 
@@ -13,11 +13,11 @@ export class PassportModel extends HttpClient {
         return this.get("/passport/info")
     }
 
-    public updateInfo(rq: UpdateInfoRequest): Promise<HttpMessage> {
+    public updateInfo(rq: UpdateInfoRequest): Promise<null> {
         return this.patch("/passport/info", rq)
     }
 
-    public updatePassword(rq: UpdatePasswordRequest): Promise<HttpMessage> {
+    public updatePassword(rq: UpdatePasswordRequest): Promise<null> {
         return this.patch("/passport/password", rq)
     }
 }
