@@ -42,6 +42,13 @@
                 "ignores": []
             }
         ],
+        "vue/html-closing-bracket-newline": [
+            "error",
+            {
+                "singleline": "never",
+                "multiline": "never"
+            }
+        ],
         "vue/first-attribute-linebreak": "off",
         "vue/max-attributes-per-line": "off"
     }
