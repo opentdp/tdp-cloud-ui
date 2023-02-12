@@ -33,14 +33,15 @@
 
 // 表格
 
-.el-table {
-    th {
-        background-color: #f5f7fa !important;
-    }
+.el-table th {
+    background-color: #f5f7fa !important;
+}
 
-    tr:hover {
-        background: #f6faff;
-    }
+// 对话框
+
+.el-dialog__body {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 // 表单项目
