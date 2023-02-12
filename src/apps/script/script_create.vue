@@ -83,13 +83,11 @@ export default class ScriptCreate extends Vue {
             </el-form-item>
             <el-form-item prop="Username" label="执行用户">
                 <el-input v-model="formModel.Username"
-                    :placeholder="formModel.CommandType == 'SHELL' ? '默认为 root' : '默认为 System'"
-                />
+                    :placeholder="formModel.CommandType == 'SHELL' ? '默认为 root' : '默认为 System'" />
             </el-form-item>
             <el-form-item prop="WorkDirectory" label="执行路径">
                 <el-input v-model="formModel.WorkDirectory"
-                    :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'"
-                />
+                    :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
             </el-form-item>
             <el-form-item prop="Content" label="脚本内容">
                 <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4 }" />

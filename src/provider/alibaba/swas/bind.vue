@@ -1,69 +1,69 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-facing-decorator";
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { NaApi, AcApi } from "@/api";
-import { MachineItem } from "@/api/native/machine";
+import { NaApi, AcApi } from "@/api"
+import { MachineItem } from "@/api/native/machine"
 
-import { dateFormat } from "@/helper/format";
+import { dateFormat } from "@/helper/format"
 
 @Component({
     emits: ["change"],
 })
 export default class SwasBind extends Vue {
-    public dateFormat = dateFormat;
+    public dateFormat = dateFormat
 
-    public loading = 1;
+    public loading = 1
 
     @Prop
     public meta!: {
         vendorId: number;
         boundList: Record<string, MachineItem>;
-    };
+    }
 
     // 初始化
 
     public created() {
-        AcApi.vendor(this.meta.vendorId);
-        this.getRegionInstanceList();
+        AcApi.vendor(this.meta.vendorId)
+        this.getRegionInstanceList()
     }
 
     // 获取列表
 
-    public regionList = {};
+    public regionList = {}
 
-    public instanceList = [];
-    public instanceCount = 0;
+    public instanceList = []
+    public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await AcApi.swas.describeRegions();
-        console.log("res", res);
-        this.loading = res.TotalCount;
+        const res = await AcApi.swas.describeRegions()
+        console.log("res", res)
+        this.loading = res.TotalCount
         // res.Regions.Region.forEach(async (item: any) => {
         // const regionId = item?.RegionId || "";
         // const { LocalName } = item;
-        const regionId = "cn-beijing";
-        const LocalName = "华北2（北京）";
+        const regionId = "cn-beijing"
+        const LocalName = "华北2（北京）"
 
         this.regionList = {
             ...this.regionList,
             [regionId]: regionId,
-        };
+        }
         // 获取当前大区实例
-        const rs2 = await AcApi.swas.describeInstances(regionId);
+        const rs2 = await AcApi.swas.describeInstances(regionId)
         const {
             TotalCount,
             Instances: { Instance },
-        } = rs2;
+        } = rs2
         if (TotalCount && Instance) {
             const temp = Instance.map((i: any) => ({
                 ...i,
                 RegionName: LocalName,
-            }));
-            this.instanceList = this.instanceList.concat(temp);
-            this.instanceCount += rs2.TotalCount;
-            console.log("this.instanceList", temp, this.instanceList);
+            }))
+            this.instanceList = this.instanceList.concat(temp)
+            this.instanceCount += rs2.TotalCount
+            console.log("this.instanceList", temp, this.instanceList)
         }
-        this.loading--;
+        this.loading--
         // });
     }
 
@@ -76,7 +76,7 @@ export default class SwasBind extends Vue {
     // 绑定主机
 
     async bindMachine(item: any) {
-        const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000);
+        const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         // await NaApi.machine.create({
         //     VendorId: this.meta.vendorId,
         //     HostName: item.InstanceName || "",
@@ -91,13 +91,13 @@ export default class SwasBind extends Vue {
         //     Description: "",
         //     Status: 1,
         // });
-        this.$emit("change");
+        this.$emit("change")
     }
 
     // 同步主机
 
     public syncMachine(item: any) {
-        const bd = this.meta.boundList[item.InstanceId];
+        const bd = this.meta.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
@@ -106,13 +106,13 @@ export default class SwasBind extends Vue {
             Region: item.Placement.Zone,
             CloudId: item.InstanceId,
             CloudMeta: item,
-        });
+        })
     }
 
     // 系统类型
 
     public parseOSType(s: string) {
-        return /windows/i.test(s) ? "windows" : "linux";
+        return /windows/i.test(s) ? "windows" : "linux"
     }
 }
 </script>

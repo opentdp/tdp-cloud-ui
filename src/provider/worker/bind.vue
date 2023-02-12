@@ -100,8 +100,7 @@ export default class WorkerBind extends Vue {
             <el-table-column label="CPU" show-overflow-tooltip>
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="+scope.row.WorkerMeta.CpuPercent.toFixed(2)" status="success"
-                    >
+                        :percentage="+scope.row.WorkerMeta.CpuPercent.toFixed(2)" status="success">
                         {{ scope.row.WorkerMeta.CpuPercent.toFixed(2) }}%，
                         {{ scope.row.WorkerMeta.CpuCore }} Cores
                     </el-progress>
@@ -111,8 +110,7 @@ export default class WorkerBind extends Vue {
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.WorkerMeta.MemoryUsed / scope.row.WorkerMeta.MemoryTotal * 100"
-                        status="success"
-                    >
+                        status="success">
                         {{ bytesToSize(scope.row.WorkerMeta.MemoryUsed) }} /
                         {{ bytesToSize(scope.row.WorkerMeta.MemoryTotal) }}
                     </el-progress>
@@ -122,8 +120,7 @@ export default class WorkerBind extends Vue {
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.WorkerMeta.DiskUsed / scope.row.WorkerMeta.DiskTotal * 100"
-                        status="success"
-                    >
+                        status="success">
                         {{ bytesToSize(scope.row.WorkerMeta.DiskUsed) }} /
                         {{ bytesToSize(scope.row.WorkerMeta.DiskTotal) }}
                     </el-progress>
@@ -143,8 +140,7 @@ export default class WorkerBind extends Vue {
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="meta.boundList[scope.row.WorkerId]" link icon="View"
-                        @click="syncMachine(scope.row)"
-                    >
+                        @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

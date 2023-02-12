@@ -1,16 +1,16 @@
 // import {  } from "./typings"
-import { AlibabaVendor, AlibabaClient } from './base';
+import { AlibabaVendor, AlibabaClient } from './base'
 
 export class SwasModel extends AlibabaClient {
-    protected Service = 'swas';
-    protected Version = '2020-06-01';
+    protected Service = 'swas'
+    protected Version = '2020-06-01'
 
     public describeRegions(): Promise<any> {
-        return this.bus({ Action: 'ListRegions' }, 600);
+        return this.bus({ Action: 'ListRegions' }, 600)
     }
 
     public describeInstances(region: string, query?: any): Promise<any> {
-        query = Object.assign({ Limit: 100 }, query);
+        query = Object.assign({ Limit: 100 }, query)
         return this.bus({
             Action: 'ListInstances',
             RegionId: region,
@@ -18,7 +18,7 @@ export class SwasModel extends AlibabaClient {
                 ...query,
                 RegionId: region,
             },
-        });
+        })
     }
 }
 
@@ -34,4 +34,4 @@ export const InstanceStateMap: Record<string, string> = {
     TERMINATING: '销毁中',
     DELETING: '删除中',
     FREEZING: '冻结中',
-};
+}

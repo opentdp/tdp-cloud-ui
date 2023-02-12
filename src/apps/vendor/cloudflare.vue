@@ -111,8 +111,7 @@ export default class VendorCloudflare extends Vue {
                 <div class="flex-between">
                     <b>添加账号</b>
                     <el-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" icon="Position"
-                        :underline="false"
-                    >
+                        :underline="false">
                         &nbsp;操作指南
                     </el-link>
                 </div>

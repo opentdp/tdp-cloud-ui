@@ -98,8 +98,7 @@ export default class DnspodBind extends Vue {
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="meta.boundList[scope.row.DomainId]" link icon="View"
-                        @click="syncDomian(scope.row)"
-                    >
+                        @click="syncDomian(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindDomian(scope.row)">
