@@ -19,14 +19,14 @@ export default class DnspodDomain extends Vue {
     public updateModal!: typeof RecordUpdate
 
     @Prop
-    public meta!: Omit<DomainItem, "CloudMeta"> & {
+    public domain!: Omit<DomainItem, "CloudMeta"> & {
         CloudMeta: TC.Dnspod.DomainListItem
     }
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.meta.VendorId)
+        TcApi.vendor(this.domain.VendorId)
         this.getDomain()
         this.getRecordList()
     }
@@ -37,7 +37,7 @@ export default class DnspodDomain extends Vue {
 
     async getDomain() {
         const res = await TcApi.dnspod.describeDomain({
-            Domain: this.meta.Name
+            Domain: this.domain.Name
         })
         if (res.DomainInfo) {
             this.domainInfo = res.DomainInfo
@@ -51,7 +51,7 @@ export default class DnspodDomain extends Vue {
 
     async getRecordList() {
         const res = await TcApi.dnspod.describeRecordList({
-            Domain: this.meta.Name
+            Domain: this.domain.Name
         })
         if (res.RecordCountInfo) {
             this.recordList = res.RecordList || []
@@ -63,7 +63,7 @@ export default class DnspodDomain extends Vue {
 
     async deleteRecord(recordId: number) {
         const query: TC.Dnspod.DeleteRecordRequest = {
-            Domain: this.meta.Name,
+            Domain: this.domain.Name,
             RecordId: recordId
         }
         await TcApi.dnspod.deleteRecord(query)

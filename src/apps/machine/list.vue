@@ -127,7 +127,7 @@ export default class MachineList extends Vue {
                     <b>快捷命令</b>
                 </div>
             </template>
-            <QuickExec :meta="selectedRow" />
+            <QuickExec :machine="selectedRow" />
         </el-card>
     </div>
 </template>

@@ -18,7 +18,7 @@ export default class ScriptQuick extends Vue {
     public loading = true
 
     @Prop
-    public meta!: MachineItem
+    public machine!: MachineItem
 
     @Ref
     public execModal!: typeof QuickExec
@@ -43,7 +43,7 @@ export default class ScriptQuick extends Vue {
 
     public workerExec(cmd: ScriptItem) {
         NaApi.workhub.exec({
-            WorkerId: this.meta.WorkerId,
+            WorkerId: this.machine.WorkerId,
             Payload: cmd
         })
     }
@@ -51,23 +51,23 @@ export default class ScriptQuick extends Vue {
 </script>
 
 <template>
-    <div v-if="meta.WorkerId.length == 32" class="button-list" :loading="loading">
+    <div v-if="machine.WorkerId.length == 32" class="button-list" :loading="loading">
         <p v-if="scriptList.length == 0">
             暂无可用命令，请在 <router-link to="/script/list">
                 <b>脚本管理</b>
             </router-link> 页面添加命令。
         </p>
         <template v-for="item in scriptList" :key="item.Id">
-            <el-button @click="execModal.open(meta.WorkerId, item)">
+            <el-button @click="execModal.open(machine.WorkerId, item)">
                 {{ item.Name }}
             </el-button>
         </template>
     </div>
     <div v-else>
         <p>主机未使用 <i>TDP Cloud Worker</i> 连接，请使用下述脚本完成注册。</p>
-        <p>此脚本仅支持在 <b>{{ meta.HostName }}</b> 上注册客户端，请勿在其它主机上运行！</p>
+        <p>此脚本仅支持在 <b>{{ machine.HostName }}</b> 上注册客户端，请勿在其它主机上运行！</p>
         <pre v-highlight>
-            <code>{{ installTDPWorker.Content.replace("/workhub", "/workhub/" + meta.Id) }}</code>
+            <code>{{ installTDPWorker.Content.replace("/workhub", "/workhub/" + machine.Id) }}</code>
          </pre>
     </div>
     <QuickExec ref="execModal" />

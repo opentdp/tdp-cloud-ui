@@ -47,6 +47,6 @@ export default class VendoWorkerBind extends Vue {
             <pre>{{ installTDPWorker.Content }}</pre>
         </el-alert>
         <div class="space-10" />
-        <WorkerBind :meta="{ boundList: machineList }" @change="getMachineList" />
+        <WorkerBind v-bind="{ boundList: machineList }" @change="getMachineList" />
     </div>
 </template>

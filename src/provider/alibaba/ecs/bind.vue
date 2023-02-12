@@ -15,15 +15,15 @@ export default class EcsBind extends Vue {
     public loading = 1
 
     @Prop
-    public meta!: {
-        vendorId: number;
-        boundList: Record<string, MachineItem>;
-    }
+    public vendorId = 0
+
+    @Prop
+    public boundList: Record<string, MachineItem> = {}
 
     // 初始化
 
     public created() {
-        AcApi.vendor(this.meta.vendorId)
+        AcApi.vendor(this.vendorId)
         this.getRegionInstanceList()
     }
 
@@ -82,7 +82,7 @@ export default class EcsBind extends Vue {
     async bindMachine(item: Required<any>) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         await NaApi.machine.create({
-            VendorId: this.meta.vendorId,
+            VendorId: this.vendorId,
             HostName: item.InstanceName || "",
             IpAddress: item.PublicIpAddress.IpAddress[0],
             OSType: this.parseOSType(item.OsName),
@@ -101,7 +101,7 @@ export default class EcsBind extends Vue {
     // 同步主机
 
     public syncMachine(item: Required<any>) {
-        const bd = this.meta.boundList[item.InstanceId]
+        const bd = this.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
@@ -130,15 +130,8 @@ export default class EcsBind extends Vue {
                 <small>实例总数: {{ instanceCount }}</small>
             </div>
         </template>
-        <el-table
-            v-loading="loading && instanceList.length == 0"
-            :data="instanceList"
-            table-layout="fixed">
-            <el-table-column
-                prop="InstanceName"
-                label="名称"
-                show-overflow-tooltip
-                fixed />
+        <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
+            <el-table-column prop="InstanceName" label="名称" show-overflow-tooltip fixed />
             <el-table-column label="地域" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.RegionName }}
@@ -172,19 +165,11 @@ export default class EcsBind extends Vue {
 
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button
-                        v-if="meta.boundList[scope.row.InstanceId]"
-                        link
-                        icon="View"
+                    <el-button v-if="boundList[scope.row.InstanceId]" link icon="View"
                         @click="syncMachine(scope.row)">
                         同步
                     </el-button>
-                    <el-button
-                        v-else
-                        link
-                        type="primary"
-                        icon="View"
-                        @click="bindMachine(scope.row)">
+                    <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">
                         导入
                     </el-button>
                 </template>

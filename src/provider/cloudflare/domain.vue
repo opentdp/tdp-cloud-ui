@@ -19,15 +19,15 @@ export default class CloudflareDomain extends Vue {
     public updateModal!: typeof RecordUpdate
 
     @Prop
-    public meta!: Omit<DomainItem, "CloudMeta"> & {
+    public domain!: Omit<DomainItem, "CloudMeta"> & {
         CloudMeta: CF.ZoneItem
     }
 
     // 初始化
 
     public created() {
-        CfApi.vendor(this.meta.VendorId)
-        this.domainInfo = this.meta.CloudMeta
+        CfApi.vendor(this.domain.VendorId)
+        this.domainInfo = this.domain.CloudMeta
         this.getDomain()
         this.getRecordList()
     }

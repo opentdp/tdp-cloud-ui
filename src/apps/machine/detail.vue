@@ -50,13 +50,13 @@ export default class MachineDetail extends Vue {
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
         <template v-if="machine?.Model == 'tencent/cvm'">
-            <CvmInstance :meta="machine" />
+            <CvmInstance :machine="machine" />
         </template>
         <template v-if="machine?.Model == 'tencent/lighthouse'">
-            <LighthouseInstance :meta="machine" />
+            <LighthouseInstance :machine="machine" />
         </template>
         <template v-if="machine?.Model == 'native/worker'">
-            <WorkerInstance :meta="machine" />
+            <WorkerInstance :machine="machine" />
         </template>
     </div>
 </template>

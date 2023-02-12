@@ -43,7 +43,7 @@ export default class MachineVnc extends Vue {
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
         <template v-if="machine?.Model == 'tencent/lighthouse'">
-            <LighthouseVNC :meta="machine" />
+            <LighthouseVNC :machine="machine" />
         </template>
     </div>
 </template>

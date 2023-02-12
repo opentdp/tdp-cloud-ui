@@ -16,15 +16,15 @@ export default class LighthouseBind extends Vue {
     public loading = 1
 
     @Prop
-    public meta!: {
-        vendorId: number
-        boundList: Record<string, MachineItem>
-    }
+    public vendorId = 0
+
+    @Prop
+    public boundList: Record<string, MachineItem> = {}
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.meta.vendorId)
+        TcApi.vendor(this.vendorId)
         this.getRegionInstanceList()
     }
 
@@ -69,7 +69,7 @@ export default class LighthouseBind extends Vue {
     async bindMachine(item: TC.Lighthouse.Instance) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         await NaApi.machine.create({
-            VendorId: this.meta.vendorId,
+            VendorId: this.vendorId,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
             OSType: this.parseOSType(item.OsName),
@@ -88,7 +88,7 @@ export default class LighthouseBind extends Vue {
     // 同步主机
 
     public syncMachine(item: TC.Lighthouse.Instance) {
-        const bd = this.meta.boundList[item.InstanceId]
+        const bd = this.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
@@ -150,8 +150,7 @@ export default class LighthouseBind extends Vue {
             </el-table-column>
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="meta.boundList[scope.row.InstanceId]" link icon="View"
-                        @click="syncMachine(scope.row)">
+                    <el-button v-if="boundList[scope.row.InstanceId]" link icon="View" @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

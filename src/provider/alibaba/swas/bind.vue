@@ -15,15 +15,15 @@ export default class SwasBind extends Vue {
     public loading = 1
 
     @Prop
-    public meta!: {
-        vendorId: number;
-        boundList: Record<string, MachineItem>;
-    }
+    public vendorId = 0
+
+    @Prop
+    public boundList: Record<string, MachineItem> = {}
 
     // 初始化
 
     public created() {
-        AcApi.vendor(this.meta.vendorId)
+        AcApi.vendor(this.vendorId)
         this.getRegionInstanceList()
     }
 
@@ -78,7 +78,7 @@ export default class SwasBind extends Vue {
     async bindMachine(item: any) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         // await NaApi.machine.create({
-        //     VendorId: this.meta.vendorId,
+        //     VendorId: this.vendorId,
         //     HostName: item.InstanceName || "",
         //     IpAddress: item.PublicIpAddresses[0],
         //     OSType: this.parseOSType(item.OsName),
@@ -97,7 +97,7 @@ export default class SwasBind extends Vue {
     // 同步主机
 
     public syncMachine(item: any) {
-        const bd = this.meta.boundList[item.InstanceId]
+        const bd = this.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,

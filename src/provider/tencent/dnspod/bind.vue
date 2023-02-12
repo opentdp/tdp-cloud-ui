@@ -15,15 +15,15 @@ export default class DnspodBind extends Vue {
     public loading = true
 
     @Prop
-    public meta!: {
-        vendorId: number
-        boundList: Record<string, DomainItem>
-    }
+    public vendorId = 0
+
+    @Prop
+    public boundList: Record<string, DomainItem> = {}
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.meta.vendorId)
+        TcApi.vendor(this.vendorId)
         this.getDomainList()
     }
 
@@ -45,7 +45,7 @@ export default class DnspodBind extends Vue {
 
     async bindDomian(item: TC.Dnspod.DomainListItem) {
         await NaApi.domain.create({
-            VendorId: this.meta.vendorId,
+            VendorId: this.vendorId,
             Name: item.Name,
             NSList: item.EffectiveDNS.join(","),
             Model: "tencent/dnspod",
@@ -60,7 +60,7 @@ export default class DnspodBind extends Vue {
     // 同步域名
 
     public syncDomian(item: TC.Dnspod.DomainListItem) {
-        const bd = this.meta.boundList[item.DomainId]
+        const bd = this.boundList[item.DomainId]
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
             NSList: item.EffectiveDNS.join(","),
@@ -97,7 +97,7 @@ export default class DnspodBind extends Vue {
             <el-table-column prop="VipEndAt" label="套餐有效期" show-overflow-tooltip />
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="meta.boundList[scope.row.DomainId]" link icon="View"
+                    <el-button v-if="boundList[scope.row.DomainId]" link icon="View"
                         @click="syncDomian(scope.row)">
                         同步
                     </el-button>

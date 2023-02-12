@@ -11,14 +11,14 @@ export default class WorkerInstance extends Vue {
     public bytesToSize = bytesToSize
 
     @Prop
-    public meta!: Omit<MachineItem, "WorkerMeta"> & {
+    public machine!: Omit<MachineItem, "WorkerMeta"> & {
         WorkerMeta: WorkerMeta
     }
 }
 </script>
 
 <template>
-    <el-card v-if="meta" shadow="hover">
+    <el-card v-if="machine" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>实例信息</b>
@@ -26,25 +26,25 @@ export default class WorkerInstance extends Vue {
         </template>
         <el-descriptions :column="2" border>
             <el-descriptions-item label="实例ID" :span="2">
-                {{ meta.WorkerMeta.HostId }}
+                {{ machine.WorkerMeta.HostId }}
             </el-descriptions-item>
             <el-descriptions-item label="实例名">
-                {{ meta.WorkerMeta.HostName }}
+                {{ machine.WorkerMeta.HostName }}
             </el-descriptions-item>
             <el-descriptions-item label="CPU">
-                {{ meta.WorkerMeta.CpuCore }} 核
+                {{ machine.WorkerMeta.CpuCore }} 核
             </el-descriptions-item>
             <el-descriptions-item label="内存">
-                {{ bytesToSize(meta.WorkerMeta.MemoryTotal) }} GB
+                {{ bytesToSize(machine.WorkerMeta.MemoryTotal) }} GB
             </el-descriptions-item>
             <el-descriptions-item label="系统盘">
-                {{ bytesToSize(meta.WorkerMeta.DiskTotal) }} GB
+                {{ bytesToSize(machine.WorkerMeta.DiskTotal) }} GB
             </el-descriptions-item>
             <el-descriptions-item label="公网 IP">
-                {{ meta.WorkerMeta.IpAddress }}
+                {{ machine.WorkerMeta.IpAddress }}
             </el-descriptions-item>
             <el-descriptions-item label="操作系统">
-                {{ meta.WorkerMeta.OS }}
+                {{ machine.WorkerMeta.OS }}
             </el-descriptions-item>
         </el-descriptions>
     </el-card>

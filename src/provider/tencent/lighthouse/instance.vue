@@ -24,15 +24,15 @@ export default class LighthouseInstance extends Vue {
     public renameModal!: RenameModel
 
     @Prop
-    public meta!: Omit<MachineItem, "CloudMeta"> & {
+    public machine!: Omit<MachineItem, "CloudMeta"> & {
         CloudMeta: TC.Lighthouse.Instance
     }
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.meta.VendorId)
-        this.instance = this.meta.CloudMeta
+        TcApi.vendor(this.machine.VendorId)
+        this.instance = this.machine.CloudMeta
         this.getInstance()
     }
 
@@ -117,7 +117,7 @@ export default class LighthouseInstance extends Vue {
                     :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
                     重启
                 </el-button>
-                <router-link v-if="instance.InstanceState == 'RUNNING'" :to="'/machine/vnc/' + meta.Id">
+                <router-link v-if="instance.InstanceState == 'RUNNING'" :to="'/machine/vnc/' + machine.Id">
                     <el-button type="primary" plain size="small">
                         VNC 终端
                     </el-button>

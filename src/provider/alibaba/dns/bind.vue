@@ -12,15 +12,15 @@ export default class DnsBind extends Vue {
     public loading = true
 
     @Prop
-    public meta!: {
-        vendorId: number
-        boundList: Record<string, DomainItem>
-    }
+    public vendorId = 0
+
+    @Prop
+    public boundList: Record<string, DomainItem> = {}
 
     // 初始化
 
     public created() {
-    //     AlApi.vendor(this.meta.vendorId)
+        // AlApi.vendor(this.vendorId)
         this.getDomainList()
     }
 
@@ -37,7 +37,7 @@ export default class DnsBind extends Vue {
 
     async bindDomian(item: any) {
         await NaApi.domain.create({
-            VendorId: this.meta.vendorId,
+            VendorId: this.vendorId,
             Name: item.Name,
             NSList: item.EffectiveDNS.join(","),
             Model: "tencent/dnspod",
@@ -52,7 +52,7 @@ export default class DnsBind extends Vue {
     // 同步域名
 
     public syncDomian(item: any) {
-        const bd = this.meta.boundList[item.DomainId]
+        const bd = this.boundList[item.DomainId]
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
             NSList: item.EffectiveDNS.join(","),

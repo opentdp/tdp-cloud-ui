@@ -16,9 +16,7 @@ export default class WorkerBind extends Vue {
     public timer = 0
 
     @Prop
-    public meta!: {
-        boundList: Record<string, MachineItem>
-    }
+    public boundList: Record<string, MachineItem> = {}
 
     // 初始化
 
@@ -65,7 +63,7 @@ export default class WorkerBind extends Vue {
     // 同步主机
 
     async syncMachine(item: WorkerItem) {
-        const bd = this.meta.boundList[item.WorkerId]
+        const bd = this.boundList[item.WorkerId]
         await NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.WorkerMeta.HostName,
@@ -139,8 +137,7 @@ export default class WorkerBind extends Vue {
             </el-table-column>
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="meta.boundList[scope.row.WorkerId]" link icon="View"
-                        @click="syncMachine(scope.row)">
+                    <el-button v-if="boundList[scope.row.WorkerId]" link icon="View" @click="syncMachine(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">

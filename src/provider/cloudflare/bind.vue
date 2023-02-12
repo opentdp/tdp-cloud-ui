@@ -12,15 +12,15 @@ export default class CloudflareBind extends Vue {
     public loading = true
 
     @Prop
-    public meta!: {
-        vendorId: number
-        boundList: Record<string, DomainItem>
-    }
+    public vendorId = 0
+
+    @Prop
+    public boundList: Record<string, DomainItem> = {}
 
     // 初始化
 
     public created() {
-        CfApi.vendor(this.meta.vendorId)
+        CfApi.vendor(this.vendorId)
         this.getDomainlist()
     }
 
@@ -40,7 +40,7 @@ export default class CloudflareBind extends Vue {
     async bindDomian(item: CF.ZoneItem) {
         const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
         await NaApi.domain.create({
-            VendorId: this.meta.vendorId,
+            VendorId: this.vendorId,
             Name: item.name,
             NSList: ns,
             Model: "cloudflare/zone",
@@ -56,7 +56,7 @@ export default class CloudflareBind extends Vue {
 
     public syncDomian(item: CF.ZoneItem) {
         const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
-        const bd = this.meta.boundList[item.id]
+        const bd = this.boundList[item.id]
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
             NSList: ns,
@@ -103,7 +103,7 @@ export default class CloudflareBind extends Vue {
             </el-table-column>
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="meta.boundList[scope.row.id]" link icon="View" @click="syncDomian(scope.row)">
+                    <el-button v-if="boundList[scope.row.id]" link icon="View" @click="syncDomian(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindDomian(scope.row)">

@@ -11,14 +11,14 @@ import shellList from "@/helper/script/shell"
 @Component
 export default class LighthouseVnc extends Vue {
     @Prop
-    public meta!: Omit<MachineItem, "CloudMeta"> & {
+    public machine!: Omit<MachineItem, "CloudMeta"> & {
         CloudMeta: TC.Lighthouse.Instance
     }
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.meta.VendorId)
+        TcApi.vendor(this.machine.VendorId)
         this.getScriptList()
         this.vncInit()
     }
@@ -26,7 +26,7 @@ export default class LighthouseVnc extends Vue {
     // 获取区域
 
     public get region() {
-        return this.meta.CloudMeta.Zone.replace(/-\d$/, "")
+        return this.machine.CloudMeta.Zone.replace(/-\d$/, "")
     }
 
     // 加载VNC框架
@@ -36,7 +36,7 @@ export default class LighthouseVnc extends Vue {
 
     async vncInit() {
         const res = await TcApi.lighthouse.describeInstanceVncUrl(this.region, {
-            InstanceId: this.meta.CloudId,
+            InstanceId: this.machine.CloudId,
         })
         if (this.frame) {
             const vnc = '/api/tencent/vnc?InstanceVncUrl='
@@ -52,7 +52,7 @@ export default class LighthouseVnc extends Vue {
         const res = await NaApi.script.list()
         const list = [...shellList, ...res.Datasets]
         // 根据操作系统过滤脚本
-        this.scriptList = NaApi.script.osFilter(list, this.meta.OSType)
+        this.scriptList = NaApi.script.osFilter(list, this.machine.OSType)
     }
 
     // 执行快捷命令

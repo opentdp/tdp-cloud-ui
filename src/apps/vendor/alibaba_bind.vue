@@ -77,13 +77,13 @@ export default class VendorAlibabaBind extends Vue {
         </el-breadcrumb>
         <el-tabs v-model="curTab.id" type="border-card">
             <el-tab-pane label="ECS服务器" name="ecs">
-                <EcsBind :meta="{ vendorId, boundList: machineList }" @change="getMachineList" />
+                <EcsBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </el-tab-pane>
             <el-tab-pane label="轻量服务器" name="swas">
-                <SwasBind :meta="{ vendorId, boundList: machineList }" @change="getMachineList" />
+                <SwasBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </el-tab-pane>
             <el-tab-pane label="域名解析" name="dns">
-                <DnsBind :meta="{ vendorId, boundList: domainList }" @change="getDomainList" />
+                <DnsBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
             </el-tab-pane>
         </el-tabs>
     </div>

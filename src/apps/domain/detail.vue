@@ -49,10 +49,10 @@ export default class DomainDetail extends Vue {
         </el-breadcrumb>
         <div v-loading="loading" class="loading" />
         <template v-if="domain?.Model == 'cloudflare/zone'">
-            <CloudflareZone :meta="domain" />
+            <CloudflareZone :domain="domain" />
         </template>
         <template v-if="domain?.Model == 'tencent/dnspod'">
-            <DnspodDomain :meta="domain" />
+            <DnspodDomain :domain="domain" />
         </template>
     </div>
 </template>
