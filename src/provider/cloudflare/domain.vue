@@ -5,11 +5,13 @@ import { CfApi } from "@/api"
 import * as CF from "@/api/cloudflare/typings"
 import { DomainItem } from "@/api/native/domain"
 
+import CustomHostnames from "./custom_hostnames.vue"
+
 import RecordCreate from "./record_create.vue"
 import RecordUpdate from "./record_update.vue"
 
 @Component({
-    components: { RecordCreate, RecordUpdate }
+    components: { RecordCreate, RecordUpdate, CustomHostnames }
 })
 export default class CloudflareDomain extends Vue {
     @Ref
@@ -106,6 +108,11 @@ export default class CloudflareDomain extends Vue {
             </el-table-column>
         </el-table>
     </el-card>
+
+    <template v-if="domainInfo">
+        <div class="space-10" />
+        <CustomHostnames :domain-info="domainInfo" />
+    </template>
 
     <RecordCreate ref="createModal" @submit="getRecordList" />
     <RecordUpdate ref="updateModal" @submit="getRecordList" />

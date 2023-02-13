@@ -11,3 +11,4 @@ export interface Datainfo {
 
 export * from "./zone"
 export * from "./zone_record"
+export * from "./custom_hostnames"
