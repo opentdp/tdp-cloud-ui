@@ -73,7 +73,7 @@ export default class TasklineList extends Vue {
                 </el-table-column>
                 <el-table-column label="详情" type="expand" width="90">
                     <template #default="scope">
-                        <div class="output">
+                        <div class="expand-output">
                             <h3>请求信息</h3>
                             <JsonPretty :data="scope.row.Request" />
                             <template v-if="scope.row.Response.Error">
@@ -81,7 +81,9 @@ export default class TasklineList extends Vue {
                                 <JsonPretty :data="scope.row.Response.Error" />
                             </template>
                             <h3>响应内容</h3>
-                            <pre class="console">{{ scope.row.Response.Output }}</pre>
+                            <pre v-highlight data-remove-indent max-height="500">
+                                <code>{{ scope.row.Response.Output }}</code>
+                            </pre>
                         </div>
                     </template>
                 </el-table-column>
@@ -91,17 +93,8 @@ export default class TasklineList extends Vue {
 </template>
 
 <style lang="scss" scoped>
-.output {
+.expand-output {
     margin: -8px 0;
     padding: 0 8px;
-
-    .console {
-        width: 100%;
-        max-height: 300px;
-        padding: 8px;
-        overflow: auto;
-        background: #000;
-        color: #fff;
-    }
 }
 </style>

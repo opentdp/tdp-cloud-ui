@@ -1,17 +1,39 @@
 /**
  * 代码高亮组件
- * https://www.npmjs.com/package/highlight.js
+ * https://prismjs.com
  */
 
-import type { App, Plugin } from 'vue'
+import type { App, Plugin } from "vue"
 
-import hljs from 'highlight.js/lib/common'
-import 'highlight.js/styles/atom-one-dark.css'
+import Prism from "prismjs"
+import "prismjs/themes/prism.css"
+import "prismjs/themes/prism-okaidia.css"
+
+import "prismjs/components/prism-bash"
+import "prismjs/components/prism-batch"
+import "prismjs/components/prism-json"
+import "prismjs/components/prism-powershell"
+
+import 'prismjs/plugins/toolbar/prism-toolbar'
+import "prismjs/plugins/toolbar/prism-toolbar.css"
+import "prismjs/plugins/show-language/prism-show-language"
+import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard"
+
+import 'prismjs/plugins/line-numbers/prism-line-numbers'
+import "prismjs/plugins/line-numbers/prism-line-numbers.css"
+
+import "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace"
+
+Prism.hooks.add("before-highlight", env => {
+    env.code = env.code.trim()
+})
 
 const plugin: Plugin = {
     install: (app: App) => {
-        app.directive('highlight', (el) => {
-            el.querySelectorAll('code').forEach(hljs.highlightElement)
+        app.directive('highlight', pre => {
+            pre.querySelectorAll('code').forEach((code: Element) => {
+                Prism.highlightElement(code)
+            })
         })
     },
 }

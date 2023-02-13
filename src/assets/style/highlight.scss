@@ -1,15 +1,20 @@
-pre.highlight {
-    margin: 10px 0 0;
+pre[max-height] {
+    overflow: auto;
 
-    code.hljs {
-        padding: 0 10px !important;
+    &+.toolbar {
+        right: 20px !important;
 
-        &:first-child {
-            padding-top: 10px !important;
-        }
-
-        &:last-child {
-            padding-bottom: 10px !important;
+        .toolbar-item+.toolbar-item {
+            margin-left: 4px;
         }
     }
+}
+
+pre[max-height="300"] {
+    max-height: 300px !important;
+}
+
+
+pre[max-height="500"] {
+    max-height: 500px !important;
 }

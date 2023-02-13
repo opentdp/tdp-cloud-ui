@@ -66,8 +66,8 @@ export default class ScriptQuick extends Vue {
     <div v-else>
         <p>主机未使用 <i>TDP Cloud Worker</i> 连接，请使用下述脚本完成注册。</p>
         <p>此脚本仅支持在 <b>{{ machine.HostName }}</b> 上注册客户端，请勿在其它主机上运行！</p>
-        <pre v-highlight class="lang-bash line-numbers">
-            {{ installTDPWorker.Content.replace("/workhub", "/workhub/" + machine.Id) }}
+        <pre v-highlight data-remove-indent class="lang-bash line-numbers">
+            <code>{{ installTDPWorker.Content.replace("/workhub", "/workhub/" + machine.Id) }}</code>
         </pre>
     </div>
     <QuickExec ref="execModal" />

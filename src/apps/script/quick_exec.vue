@@ -106,13 +106,15 @@ export default class ScriptQuickExec extends Vue {
                 <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4 }" />
             </el-form-item>
         </el-form>
-        <div v-if="result" class="output">
+        <div v-if="result">
             <template v-if="result.Response.Error">
                 <h3>错误信息</h3>
                 <JsonPretty :data="result.Response.Error" />
             </template>
             <h3>响应内容</h3>
-            <pre class="console">{{ result.Response.Output }}</pre>
+            <pre v-highlight data-remove-indent max-height="300">
+                <code>{{ result.Response.Output }}</code>
+            </pre>
         </div>
         <template #footer>
             <span class="dialog-footer">
@@ -124,16 +126,3 @@ export default class ScriptQuickExec extends Vue {
         </template>
     </el-dialog>
 </template>
-
-<style lang="scss" scoped>
-.output {
-    .console {
-        width: 100%;
-        max-height: 300px;
-        padding: 8px;
-        overflow: auto;
-        background: #000;
-        color: #fff;
-    }
-}
-</style>

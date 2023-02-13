@@ -13,10 +13,10 @@
         "@element-plus/icons-vue": "^2.0.10",
         "echarts": "^5.4.1",
         "element-plus": "^2.2.28",
-        "highlight.js": "^11.7.0",
         "js-base64": "^3.7.4",
         "pinia": "^2.0.29",
         "pinia-plugin-persist": "^1.0.0",
+        "prismjs": "^1.29.0",
         "vue": "^3.2.45",
         "vue-echarts": "^6.5.1",
         "vue-facing-decorator": "^2.1.13",
@@ -27,6 +27,7 @@
         "xterm-addon-fit": "^0.7.0"
     },
     "devDependencies": {
+        "@types/prismjs": "^1.26.0",
         "@typescript-eslint/eslint-plugin": "^5.49.0",
         "@typescript-eslint/parser": "^5.49.0",
         "@vitejs/plugin-vue": "^4.0.0",
