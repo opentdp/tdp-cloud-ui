@@ -75,10 +75,14 @@ export default class TasklineList extends Vue {
                     <template #default="scope">
                         <div class="expand-output">
                             <h3>请求信息</h3>
-                            <JsonPretty :data="scope.row.Request" />
+                            <pre v-highlight data-remove-indent max-height="500" class="lang-json">
+                                <code>{{ JSON.stringify(scope.row.Request, null, 4) }}</code>
+                            </pre>
                             <template v-if="scope.row.Response.Error">
                                 <h3>错误信息</h3>
-                                <JsonPretty :data="scope.row.Response.Error" />
+                                <pre v-highlight data-remove-indent max-height="500" class="lang-json">
+                                    <code>{{ JSON.stringify(scope.row.Response.Error) }}</code>
+                                </pre>
                             </template>
                             <h3>响应内容</h3>
                             <pre v-highlight data-remove-indent max-height="500">

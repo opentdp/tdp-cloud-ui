@@ -11,7 +11,6 @@ import setupRouter from "@/router/index"
 import setupEcharts from "@/component/echarts"
 import setupElement from "@/component/element"
 import setupHighlight from "@/component/highlight"
-import setupJsonPretty from "@/component/jsonpretty"
 
 const app = createApp(App)
 
@@ -21,6 +20,5 @@ setupRouter(app)
 setupEcharts(app)
 setupElement(app)
 setupHighlight(app)
-setupJsonPretty(app)
 
 app.mount("#app")

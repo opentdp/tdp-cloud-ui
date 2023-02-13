@@ -109,7 +109,9 @@ export default class ScriptQuickExec extends Vue {
         <div v-if="result">
             <template v-if="result.Response.Error">
                 <h3>错误信息</h3>
-                <JsonPretty :data="result.Response.Error" />
+                <pre v-highlight data-remove-indent max-height="500" class="lang-json">
+                    <code>{{ JSON.stringify(result.Response.Error, null, 4) }}</code>
+                </pre>
             </template>
             <h3>响应内容</h3>
             <pre v-highlight data-remove-indent max-height="300">
