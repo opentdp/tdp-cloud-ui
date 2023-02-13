@@ -11,7 +11,7 @@ import * as CF from "@/api/cloudflare/typings"
     emits: ["submit"],
     expose: ["open"],
 })
-export default class DnspodRecordCreate extends Vue {
+export default class CloudflareRecordCreate extends Vue {
     public ZoneRecordTypes = ZoneRecordTypes
 
     public domainInfo!: CF.ZoneItem
