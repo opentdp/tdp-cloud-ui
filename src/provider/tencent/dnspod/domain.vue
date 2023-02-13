@@ -44,7 +44,7 @@ export default class DnspodDomain extends Vue {
         }
     }
 
-    // 域名记录
+    // 解析记录
 
     public recordList!: TC.Dnspod.RecordListItem[]
     public recordCountInfo!: TC.Dnspod.RecordCountInfo

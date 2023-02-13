@@ -41,7 +41,7 @@ export default class CloudflareDomain extends Vue {
         this.domainInfo = res.Datasets
     }
 
-    // 域名记录
+    // 解析记录
 
     public recordList!: CF.ZoneRecordItem[]
 
