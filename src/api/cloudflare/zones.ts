@@ -2,7 +2,7 @@ import { CloudflareClient } from "./base"
 import {
     Payload,
     ZoneItem, ZoneRecordItem, ZoneRecordCreate,
-    FallbackOrigin, CustomHostnameItem, CustomHostnameCreate
+    FallbackOrigin, CustomHostnameItem
 } from "./typings"
 
 export class ZonesModel extends CloudflareClient {
@@ -44,12 +44,18 @@ export class ZonesModel extends CloudflareClient {
         return this.bus({ Method: "GET", Path: "/zones/" + zone + "/custom_hostnames" })
     }
 
-    public customHostnamesCreate(zone: string, query: CustomHostnameCreate): Promise<Payload> {
-        return this.bus({ Method: "PUT", Path: "/zones/" + zone + "/custom_hostnames", Payload: query })
-    }
-
-    public customHostnamesUpdate(zone: string, query: CustomHostnameCreate): Promise<Payload> {
-        return this.bus({ Method: "PUT", Path: "/zones/" + zone + "/custom_hostnames", Payload: query })
+    public customHostnamesCreate(zone: string, hostname: string): Promise<Payload> {
+        const query = {
+            hostname: hostname,
+            ssl: {
+                method: "http",
+                type: "dv",
+                settings: {
+                    min_tls_version: "1.0"
+                }
+            }
+        }
+        return this.bus({ Method: "POST", Path: "/zones/" + zone + "/custom_hostnames", Payload: query })
     }
 
     public customHostnamesDelete(zone: string, rid: string): Promise<Payload> {

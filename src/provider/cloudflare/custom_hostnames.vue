@@ -4,8 +4,13 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 import { CfApi } from "@/api"
 import * as CF from "@/api/cloudflare/typings"
 
+import { dateFormat } from "@/helper/format"
+
 @Component
 export default class CloudflareCustomHostnames extends Vue {
+    public dateFormat = dateFormat
+
+    public loading = true
 
     @Prop
     public domainInfo!: CF.ZoneItem
@@ -13,11 +18,19 @@ export default class CloudflareCustomHostnames extends Vue {
     // 初始化
 
     public created() {
-        this.getFallbackOrigin()
-        this.getCustomHostnames()
+        this.refresh()
     }
 
-    // 回退源
+    // 刷新记录
+
+    async refresh() {
+        this.loading = true
+        await this.getFallbackOrigin()
+        await this.getCustomHostnames()
+        this.loading = false
+    }
+
+    // 默认回退源
 
     public fallbackOrigin: CF.FallbackOrigin = {
         origin: "",
@@ -41,6 +54,7 @@ export default class CloudflareCustomHostnames extends Vue {
 
     // 自定义主机名
 
+    public newHostname = ""
     public customHostnames: CF.CustomHostnameItem[] = []
 
     async getCustomHostnames() {
@@ -48,10 +62,14 @@ export default class CloudflareCustomHostnames extends Vue {
         this.customHostnames = res.Datasets
     }
 
-    // 删除记录
+    async createCustomHostnames() {
+        await CfApi.zones.customHostnamesCreate(this.domainInfo.id, this.newHostname)
+        this.getCustomHostnames()
+        this.newHostname = ""
+    }
 
-    async deleteRecord(id: string) {
-        await CfApi.zones.dnsRecordDelete(this.domainInfo.id, id)
+    async deleteCustomHostnames(rid: string) {
+        await CfApi.zones.customHostnamesDelete(this.domainInfo.id, rid)
         this.getCustomHostnames()
     }
 }
@@ -64,10 +82,16 @@ export default class CloudflareCustomHostnames extends Vue {
                 <b>自定义主机名</b> &nbsp; &nbsp;
                 <small>记录总数: {{ customHostnames?.length || 0 }}</small>
                 <div class="flex-auto" />
-                <!--el-button link type="primary" icon="Edit" @click="updateModal?.open(scope.row)">
-                        添加主机名
-                    </el-button-->
+                <el-button type="primary" plain size="small" @click="refresh">
+                    刷新记录
+                </el-button>
             </div>
+        </template>
+        <template v-if="fallbackOrigin.status != 'active'">
+            <el-alert type="warning" show-icon :closable="false">
+                <p>{{ fallbackOrigin.errors ? fallbackOrigin.errors[0] : fallbackOrigin.status }}</p>
+            </el-alert>
+            <div class="space-10" />
         </template>
         <el-form-item label="回退源">
             <el-input v-model="fallbackOrigin.origin">
@@ -78,15 +102,19 @@ export default class CloudflareCustomHostnames extends Vue {
                 </template>
             </el-input>
         </el-form-item>
-        <template v-if="fallbackOrigin.status != 'active'">
-            <div class="space-10" />
-            <el-alert type="warning" show-icon :closable="false">
-                <p>{{ fallbackOrigin.errors ? fallbackOrigin.errors[0] : fallbackOrigin.status }}</p>
-            </el-alert>
-        </template>
+        <el-form-item label="主机名">
+            <el-input v-model="newHostname">
+                <template #append>
+                    <el-button @click="createCustomHostnames">
+                        添加
+                    </el-button>
+                </template>
+            </el-input>
+        </el-form-item>
         <el-divider />
-        <el-table v-loading="!customHostnames" :data="customHostnames" table-layout="fixed">
+        <el-table v-loading="loading" :data="customHostnames" table-layout="fixed">
             <el-table-column prop="hostname" label="主机记录" show-overflow-tooltip fixed />
+            <el-table-column prop="status" label="域名状态" />
             <el-table-column label="证书状态">
                 <template #default="scope">
                     {{ scope.row.ssl.status }}
@@ -94,16 +122,15 @@ export default class CloudflareCustomHostnames extends Vue {
             </el-table-column>
             <el-table-column label="证书有效期">
                 <template #default="scope">
-                    {{ scope.row.ssl.certificates[0].expires_on }}
+                    {{
+                        scope.row.ssl.certificates &&
+                            dateFormat(scope.row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
+                    }}
                 </template>
             </el-table-column>
-            <el-table-column prop="status" label="域名状态" />
-            <el-table-column label="操作" width="180" align="center">
+            <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <!--el-button link type="primary" icon="Edit" @click="updateModal?.open(scope.row)">
-                        编辑
-                    </el-button-->
-                    <el-popconfirm title="确定删除?" @confirm="deleteRecord(scope.row.id)">
+                    <el-popconfirm title="确定删除?" @confirm="deleteCustomHostnames(scope.row.id)">
                         <template #reference>
                             <el-button link type="danger" icon="Delete">
                                 删除
