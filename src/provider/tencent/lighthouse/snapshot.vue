@@ -48,7 +48,7 @@ export default class LighthouseSnapshot extends Vue {
 
     async refreshSnapshot() {
         await this.getSnapshotList()
-        if (this.snapshotList.SnapshotSet.find((item) => item.Percent < 100)) {
+        if (this.snapshotList.SnapshotSet.find(item => item.Percent < 100)) {
             setTimeout(this.refreshSnapshot, 3000)
         }
     }

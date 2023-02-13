@@ -1,4 +1,4 @@
-import { AlibabaClient } from './base'
+import { AlibabaClient } from "./base"
 
 export class TatModel extends AlibabaClient {
     protected Service = 'tat'

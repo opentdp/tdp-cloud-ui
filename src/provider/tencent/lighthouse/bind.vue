@@ -38,7 +38,7 @@ export default class LighthouseBind extends Vue {
     async getRegionInstanceList() {
         const res = await TcApi.lighthouse.describeRegions()
         this.loading = res.TotalCount
-        res.RegionSet.forEach(async (item) => {
+        res.RegionSet.forEach(async item => {
             this.regionList[item.Region] = item
             // 获取当前大区实例
             const rs2 = await TcApi.lighthouse.describeInstances(item.Region)

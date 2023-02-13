@@ -43,7 +43,7 @@ export default class TerminalSshConnect extends Vue {
 
     public machineFilter(qr: string, cb: (a: unknown[]) => void) {
         const rs: unknown[] = []
-        this.machineList.forEach((item) => {
+        this.machineList.forEach(item => {
             if (item.OSType == "linux" && (item.IpAddress + item.Region).includes(qr)) {
                 rs.push({ value: item.IpAddress, region: item.Region })
             }
