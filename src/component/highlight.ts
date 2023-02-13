@@ -23,10 +23,6 @@ import "prismjs/plugins/line-numbers/prism-line-numbers.css"
 
 import "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace"
 
-Prism.hooks.add("before-highlight", env => {
-    env.code = env.code.trim()
-})
-
 const plugin: Plugin = {
     install: (app: App) => {
         app.directive('highlight', pre => {
