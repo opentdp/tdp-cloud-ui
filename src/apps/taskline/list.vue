@@ -74,18 +74,16 @@ export default class TasklineList extends Vue {
                 <el-table-column label="详情" type="expand" width="90">
                     <template #default="scope">
                         <div class="expand-output">
-                            <h3>请求信息</h3>
-                            <pre v-highlight data-remove-indent max-height="500" class="lang-json">
+                            <pre v-highlight max-height="500" class="lang-json">
+                                <h3>请求信息</h3>
                                 <code>{{ JSON.stringify(scope.row.Request, null, 4) }}</code>
                             </pre>
-                            <template v-if="scope.row.Response.Error">
+                            <pre v-if="scope.row.Response.Error" v-highlight max-height="500" class="lang-json">
                                 <h3>错误信息</h3>
-                                <pre v-highlight data-remove-indent max-height="500" class="lang-json">
-                                    <code>{{ JSON.stringify(scope.row.Response.Error) }}</code>
-                                </pre>
-                            </template>
-                            <h3>响应内容</h3>
-                            <pre v-highlight data-remove-indent max-height="500">
+                                <code>{{ JSON.stringify(scope.row.Response.Error) }}</code>
+                            </pre>
+                            <pre v-highlight max-height="500">
+                                <h3>响应内容</h3>
                                 <code>{{ scope.row.Response.Output }}</code>
                             </pre>
                         </div>

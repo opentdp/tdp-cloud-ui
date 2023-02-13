@@ -8,6 +8,10 @@ pre[max-height] {
             margin-left: 4px;
         }
     }
+
+    &>h3 {
+        margin-top: 0;
+    }
 }
 
 pre[max-height="300"] {
