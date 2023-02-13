@@ -6,7 +6,6 @@
 import type { App, Plugin } from "vue"
 
 import Prism from "prismjs"
-import "prismjs/themes/prism.css"
 import "prismjs/themes/prism-okaidia.css"
 
 import "prismjs/components/prism-bash"
