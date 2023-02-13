@@ -43,10 +43,11 @@ export default class VendoWorkerBind extends Vue {
                 子节点
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-alert title="注册子节点命令" type="warning">
-            <pre>{{ installTDPWorker.Content }}</pre>
-        </el-alert>
-        <div class="space-10" />
         <WorkerBind v-bind="{ boundList: machineList }" @change="getMachineList" />
+        <div class="space-10" />
+        <pre v-highlight max-height="300" class="lang-bash">
+            <h3>注册子节点</h3>
+            <code>{{ installTDPWorker.Content }}</code>
+        </pre>
     </div>
 </template>
