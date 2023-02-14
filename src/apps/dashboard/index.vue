@@ -71,12 +71,20 @@ export default class DashboardIndex extends Vue {
                 {
                     name: '处理器负载',
                     type: 'gauge',
-                    progress: {
-                        show: true
+                    axisLine: {
+                        lineStyle: {
+                            width: 10,
+                            color: [
+                                [0.3, '#67e0e3'],
+                                [0.7, '#37a2da'],
+                                [1, '#fd666d']
+                            ]
+                        }
                     },
                     detail: {
                         valueAnimation: true,
-                        formatter: '{value}'
+                        formatter: '{value}',
+                        fontSize: 20
                     },
                     data: [
                         {
@@ -103,12 +111,20 @@ export default class DashboardIndex extends Vue {
                 {
                     name: '内存用量',
                     type: 'gauge',
-                    progress: {
-                        show: true
+                    axisLine: {
+                        lineStyle: {
+                            width: 10,
+                            color: [
+                                [0.3, '#67e0e3'],
+                                [0.7, '#37a2da'],
+                                [1, '#fd666d']
+                            ]
+                        }
                     },
                     detail: {
                         valueAnimation: true,
-                        formatter: '{value}'
+                        formatter: '{value}',
+                        fontSize: 20
                     },
                     data: [
                         {
@@ -135,12 +151,20 @@ export default class DashboardIndex extends Vue {
                 {
                     name: '硬盘用量',
                     type: 'gauge',
-                    progress: {
-                        show: true
+                    axisLine: {
+                        lineStyle: {
+                            width: 10,
+                            color: [
+                                [0.3, '#67e0e3'],
+                                [0.7, '#37a2da'],
+                                [1, '#fd666d']
+                            ]
+                        }
                     },
                     detail: {
                         valueAnimation: true,
-                        formatter: '{value}'
+                        formatter: '{value}',
+                        fontSize: 20
                     },
                     data: [
                         {
