@@ -34,7 +34,7 @@ export default class CloudflareCustomHostnames extends Vue {
 
     public fallbackOrigin: CF.FallbackOrigin = {
         origin: "",
-        status: ""
+        status: "active"
     }
 
     async getFallbackOrigin() {
@@ -76,23 +76,23 @@ export default class CloudflareCustomHostnames extends Vue {
 </script>
 
 <template>
-    <el-card shadow="hover">
+    <el-card v-loading="loading" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>自定义主机名</b> &nbsp; &nbsp;
                 <small>记录总数: {{ customHostnames?.length || 0 }}</small>
                 <div class="flex-auto" />
                 <el-button type="primary" plain size="small" @click="refresh">
-                    刷新记录
+                    刷新状态
                 </el-button>
             </div>
         </template>
-        <template v-if="fallbackOrigin.status != 'active'">
-            <el-alert type="warning" show-icon :closable="false">
-                <p>{{ fallbackOrigin.errors ? fallbackOrigin.errors[0] : fallbackOrigin.status }}</p>
+
+        <el-form-item v-if="fallbackOrigin.status != 'active'">
+            <el-alert :closable="false" type="warning">
+                {{ fallbackOrigin.errors ? fallbackOrigin.errors[0] : fallbackOrigin.status }}
             </el-alert>
-            <div class="space-10" />
-        </template>
+        </el-form-item>
         <el-form-item label="回退源">
             <el-input v-model="fallbackOrigin.origin">
                 <template #append>
@@ -111,8 +111,9 @@ export default class CloudflareCustomHostnames extends Vue {
                 </template>
             </el-input>
         </el-form-item>
+
         <el-divider />
-        <el-table v-loading="loading" :data="customHostnames" table-layout="fixed">
+        <el-table :data="customHostnames" table-layout="fixed">
             <el-table-column prop="hostname" label="主机记录" show-overflow-tooltip fixed />
             <el-table-column prop="status" label="域名状态" />
             <el-table-column label="证书状态">

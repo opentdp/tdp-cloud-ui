@@ -38,7 +38,7 @@ export default class CloudflareBind extends Vue {
     // 绑定域名
 
     async bindDomian(item: CF.ZoneItem) {
-        const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
+        const ns = item.name_servers ? item.name_servers.join(",") : "Custom NS"
         await NaApi.domain.create({
             VendorId: this.vendorId,
             Name: item.name,
@@ -55,7 +55,7 @@ export default class CloudflareBind extends Vue {
     // 同步域名
 
     public syncDomian(item: CF.ZoneItem) {
-        const ns = item.name_servers ? item.name_servers.join(",") : "Unkown"
+        const ns = item.name_servers ? item.name_servers.join(",") : "Custom NS"
         const bd = this.boundList[item.id]
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,

@@ -109,7 +109,7 @@ export default class CloudflareDomain extends Vue {
         </el-table>
     </el-card>
 
-    <template v-if="domainInfo">
+    <template v-if="domainInfo?.type == 'full'">
         <div class="space-10" />
         <CustomHostnames :domain-info="domainInfo" />
     </template>
