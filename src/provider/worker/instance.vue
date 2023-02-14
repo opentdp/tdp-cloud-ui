@@ -35,10 +35,10 @@ export default class WorkerInstance extends Vue {
                 {{ machine.WorkerMeta.CpuCore }} 核
             </el-descriptions-item>
             <el-descriptions-item label="内存">
-                {{ bytesToSize(machine.WorkerMeta.MemoryTotal) }} GB
+                {{ bytesToSize(machine.WorkerMeta.MemoryTotal) }}
             </el-descriptions-item>
             <el-descriptions-item label="系统盘">
-                {{ bytesToSize(machine.WorkerMeta.DiskTotal) }} GB
+                {{ bytesToSize(machine.WorkerMeta.DiskTotal) }}
             </el-descriptions-item>
             <el-descriptions-item label="公网 IP">
                 {{ machine.WorkerMeta.IpAddress }}

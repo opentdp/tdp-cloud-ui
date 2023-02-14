@@ -77,10 +77,10 @@ export default class DashboardIndex extends Vue {
                     {{ server.HostInfo.CpuCore }} 核
                 </el-descriptions-item>
                 <el-descriptions-item label="内存">
-                    {{ bytesToSize(server.HostInfo.MemoryTotal) }} GB
+                    {{ bytesToSize(server.HostInfo.MemoryTotal) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="系统盘">
-                    {{ bytesToSize(server.HostInfo.DiskTotal) }} GB
+                    {{ bytesToSize(server.HostInfo.DiskTotal) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="公网 IP">
                     {{ server.HostInfo.IpAddress }}
