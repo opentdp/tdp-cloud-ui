@@ -144,6 +144,6 @@ export default class LighthouseTraffic extends Vue {
                 </small>
             </div>
         </template>
-        <v-chart :option="outtrafficChart" style="height: 400px" />
+        <v-chart style="height: 400px" :option="outtrafficChart" autoresize />
     </el-card>
 </template>
