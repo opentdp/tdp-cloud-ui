@@ -1,8 +1,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { EChartsOption } from "echarts"
-
 import { NaApi } from "@/api"
 import { UserSummary } from "@/api/native/passport"
 import { HostDetail } from "@/api/native/workhub"
@@ -39,10 +37,13 @@ export default class DashboardIndex extends Vue {
         if (res.HostInfo.CpuPercent) {
             this.setCpuUsedChartConfig(res.HostInfo.CpuPercent)
         }
-        if (res.HostInfo.MemoryUsed) {
+        if (res.HostInfo.MemoryTotal > 0) {
             this.setMemUsedChartConfig(res.HostInfo.MemoryUsed, res.HostInfo.MemoryTotal)
         }
-        if (res.HostInfo.DiskUsed) {
+        if (res.HostInfo.SwapTotal > 0) {
+            this.setSwapUsedChartConfig(res.HostInfo.SwapUsed, res.HostInfo.SwapTotal)
+        }
+        if (res.HostInfo.DiskTotal > 0) {
             this.setDiskUsedChartConfig(res.HostInfo.DiskUsed, res.HostInfo.DiskTotal)
         }
     }
@@ -58,125 +59,120 @@ export default class DashboardIndex extends Vue {
 
     // CPU 实时负载
 
-    public cpuUsedChart!: EChartsOption
+    public cpuUsedChart!: typeof GaugeOption
 
     public setCpuUsedChartConfig(cpus: number[]) {
+        if (this.cpuUsedChart == null) {
+            this.cpuUsedChart = JSON.parse(JSON.stringify(GaugeOption))
+        }
         let value = 0
         cpus.map(v => value += v)
-        this.cpuUsedChart = {
-            tooltip: {
-                formatter: '{a} <br/>{b} : {c}%'
-            },
-            series: [
-                {
-                    name: '处理器负载',
-                    type: 'gauge',
-                    axisLine: {
-                        lineStyle: {
-                            width: 10,
-                            color: [
-                                [0.3, '#67e0e3'],
-                                [0.7, '#37a2da'],
-                                [1, '#fd666d']
-                            ]
-                        }
-                    },
-                    detail: {
-                        valueAnimation: true,
-                        formatter: '{value}',
-                        fontSize: 20
-                    },
-                    data: [
-                        {
-                            name: 'CPU',
-                            value: Math.round(value)
-                        }
-                    ]
-                }
-            ]
-        }
+        value = Math.round(value)
+        this.cpuUsedChart.series.data[0].name = "CPU"
+        this.cpuUsedChart.series.data[0].value = value
+        this.cpuUsedChart.series.progress.itemStyle.color = this.barColor(value)
     }
 
     // 内存实时用量
 
-    public memUsedChart!: EChartsOption
+    public memUsedChart!: typeof GaugeOption
 
     public setMemUsedChartConfig(used: number, total: number) {
-        const value = used / total * 100
-        this.memUsedChart = {
-            tooltip: {
-                formatter: '{a} <br/>{b} : {c}%'
-            },
-            series: [
-                {
-                    name: '内存用量',
-                    type: 'gauge',
-                    axisLine: {
-                        lineStyle: {
-                            width: 10,
-                            color: [
-                                [0.3, '#67e0e3'],
-                                [0.7, '#37a2da'],
-                                [1, '#fd666d']
-                            ]
-                        }
-                    },
-                    detail: {
-                        valueAnimation: true,
-                        formatter: '{value}',
-                        fontSize: 20
-                    },
-                    data: [
-                        {
-                            name: 'Mem',
-                            value: Math.round(value)
-                        }
-                    ]
-                }
-            ]
+        if (this.memUsedChart == null) {
+            this.memUsedChart = JSON.parse(JSON.stringify(GaugeOption))
         }
+        const value = Math.round(used / total * 100)
+        this.memUsedChart.series.data[0].name = "内存"
+        this.memUsedChart.series.data[0].value = value
+        this.memUsedChart.series.progress.itemStyle.color = this.barColor(value)
+    }
+
+    // Swap实时用量
+
+    public swapUsedChart!: typeof GaugeOption
+
+    public setSwapUsedChartConfig(used: number, total: number) {
+        if (this.swapUsedChart == null) {
+            this.swapUsedChart = JSON.parse(JSON.stringify(GaugeOption))
+        }
+        const value = Math.round(used / total * 100)
+        this.swapUsedChart.series.data[0].name = "Swap"
+        this.swapUsedChart.series.data[0].value = value
+        this.swapUsedChart.series.progress.itemStyle.color = this.barColor(value)
     }
 
     // 硬盘实时用量
 
-    public diskUsedChart!: EChartsOption
+    public diskUsedChart!: typeof GaugeOption
 
     public setDiskUsedChartConfig(used: number, total: number) {
-        const value = used / total * 100
-        this.diskUsedChart = {
-            tooltip: {
-                formatter: '{a} <br/>{b} : {c}%'
-            },
-            series: [
-                {
-                    name: '硬盘用量',
-                    type: 'gauge',
-                    axisLine: {
-                        lineStyle: {
-                            width: 10,
-                            color: [
-                                [0.3, '#67e0e3'],
-                                [0.7, '#37a2da'],
-                                [1, '#fd666d']
-                            ]
-                        }
-                    },
-                    detail: {
-                        valueAnimation: true,
-                        formatter: '{value}',
-                        fontSize: 20
-                    },
-                    data: [
-                        {
-                            name: 'Disk',
-                            value: Math.round(value)
-                        }
-                    ]
-                }
-            ]
+        if (this.diskUsedChart == null) {
+            this.diskUsedChart = JSON.parse(JSON.stringify(GaugeOption))
         }
+        const value = Math.round(used / total * 100)
+        this.diskUsedChart.series.data[0].name = "硬盘"
+        this.diskUsedChart.series.data[0].value = value
+        this.diskUsedChart.series.progress.itemStyle.color = this.barColor(value)
     }
 
+    // 设置颜色
+
+    private barColor(n: number) {
+        if (n < 50) {
+            return "#529b2e"
+        }
+        if (n < 75) {
+            return "#b88230"
+        }
+        return "#c45656"
+    }
+}
+
+const GaugeOption = {
+    series: {
+        type: 'gauge',
+        startAngle: 90,
+        endAngle: -270,
+        axisLabel: {
+            show: false
+        },
+        axisTick: {
+            show: false
+        },
+        splitLine: {
+            show: false
+        },
+        pointer: {
+            show: false
+        },
+        progress: {
+            show: true,
+            overlap: false,
+            roundCap: true,
+            clip: false,
+            itemStyle: {
+                color: "#529b2e"
+            }
+        },
+        detail: {
+            fontSize: 14,
+            color: 'inherit',
+            formatter: '{value}%'
+        },
+        data: [
+            {
+                name: '内存',
+                value: 20,
+                title: {
+                    offsetCenter: ['0%', '15%']
+                },
+                detail: {
+                    valueAnimation: true,
+                    offsetCenter: ['0%', '-10%']
+                }
+            }
+        ]
+    }
 }
 </script>
 
@@ -186,6 +182,7 @@ export default class DashboardIndex extends Vue {
             <div class="chart-list">
                 <v-chart class="chart" :option="cpuUsedChart" />
                 <v-chart class="chart" :option="memUsedChart" />
+                <v-chart class="chart" :option="swapUsedChart" />
                 <v-chart class="chart" :option="diskUsedChart" />
             </div>
         </el-card>
@@ -223,26 +220,29 @@ export default class DashboardIndex extends Vue {
                 <div>系统信息</div>
             </template>
             <el-descriptions :column="1" border>
-                <el-descriptions-item label="实例ID">
-                    {{ server.HostInfo.HostId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="实例名">
+                <el-descriptions-item label="主机名">
                     {{ server.HostInfo.HostName }}
                 </el-descriptions-item>
-                <el-descriptions-item label="CPU">
-                    {{ server.HostInfo.CpuCore }} 核
+                <el-descriptions-item label="处理器">
+                    {{ server.HostInfo.CpuCore }} 核，{{ server.HostInfo.CpuModel[0] }}
                 </el-descriptions-item>
                 <el-descriptions-item label="内存">
                     {{ bytesToSize(server.HostInfo.MemoryTotal) }}
                 </el-descriptions-item>
-                <el-descriptions-item label="系统盘">
+                <el-descriptions-item label="虚拟内存">
+                    {{ bytesToSize(server.HostInfo.SwapTotal) }}
+                </el-descriptions-item>
+                <el-descriptions-item label="硬盘容量">
                     {{ bytesToSize(server.HostInfo.DiskTotal) }}
+                </el-descriptions-item>
+                <el-descriptions-item label="操作系统">
+                    {{ server.HostInfo.Platform }}（{{ server.HostInfo.KernelArch }}）
+                </el-descriptions-item>
+                <el-descriptions-item label="运行时长">
+                    {{ (server.HostInfo.Uptime / 86400).toFixed(1) }} 天
                 </el-descriptions-item>
                 <el-descriptions-item label="公网 IP">
                     {{ server.HostInfo.IpAddress }}
-                </el-descriptions-item>
-                <el-descriptions-item label="操作系统">
-                    {{ server.HostInfo.Platform }}
                 </el-descriptions-item>
             </el-descriptions>
         </el-card>
@@ -271,8 +271,8 @@ export default class DashboardIndex extends Vue {
     flex-wrap: wrap;
 
     .chart {
-        width: 300px;
-        height: 300px;
+        width: 200px;
+        height: 200px;
     }
 }
 </style>
