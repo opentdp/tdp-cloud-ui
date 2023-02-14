@@ -118,6 +118,12 @@ export default class EcsBind extends Vue {
     public parseOSType(s: string) {
         return /windows/i.test(s) ? "windows" : "linux"
     }
+
+    // 转换为GB显示
+
+    public parseToGB(s: string) {
+        return s ? (parseInt(s) / 1024).toFixed(2) + " GB" : "--"
+    }
 }
 </script>
 
@@ -130,8 +136,15 @@ export default class EcsBind extends Vue {
                 <small>实例总数: {{ instanceCount }}</small>
             </div>
         </template>
-        <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
-            <el-table-column prop="InstanceName" label="名称" show-overflow-tooltip fixed />
+        <el-table
+            v-loading="loading && instanceList.length == 0"
+            :data="instanceList"
+            table-layout="fixed">
+            <el-table-column
+                prop="InstanceName"
+                label="名称"
+                show-overflow-tooltip
+                fixed />
             <el-table-column label="地域" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.RegionName }}
@@ -140,16 +153,12 @@ export default class EcsBind extends Vue {
             <el-table-column prop="CPU" label="CPU" show-overflow-tooltip />
             <el-table-column label="内存" show-overflow-tooltip>
                 <template #default="scope">
-                    {{ scope.row.Memory + " GB" }}
+                    {{ parseToGB(scope.row.Memory) }}
                 </template>
             </el-table-column>
             <el-table-column label="系统盘" show-overflow-tooltip>
                 <template #default="scope">
-                    {{
-                        scope.row?.SystemDisk
-                            ? scope.row?.SystemDisk?.DiskSize + " GB"
-                            : "--"
-                    }}
+                    {{ parseToGB(scope.row?.SystemDisk?.DiskSize) }}
                 </template>
             </el-table-column>
             <el-table-column label="外网 IP" show-overflow-tooltip>
@@ -165,11 +174,19 @@ export default class EcsBind extends Vue {
 
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="boundList[scope.row.InstanceId]" link icon="View"
+                    <el-button
+                        v-if="boundList[scope.row.InstanceId]"
+                        link
+                        icon="View"
                         @click="syncMachine(scope.row)">
                         同步
                     </el-button>
-                    <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">
+                    <el-button
+                        v-else
+                        link
+                        type="primary"
+                        icon="View"
+                        @click="bindMachine(scope.row)">
                         导入
                     </el-button>
                 </template>
