@@ -3,8 +3,12 @@ import { HttpClient } from "@/api/basic/http"
 import { ScriptOrig } from "./script"
 
 export class WorkhubModel extends HttpClient {
-    public list(): Promise<WorkerPaged> {
+    public host(): Promise<HostResponse> {
         return this.get("/workhub")
+    }
+
+    public list(): Promise<WorkerPaged> {
+        return this.get("/workhub/list")
     }
 
     public exec(rq: WorkerExecRequest): Promise<{ Id: number }> {
@@ -32,6 +36,10 @@ export interface WorkerMeta {
     IpAddress: string
     NetBytesRecv: number
     NetBytesSent: number
+}
+
+export interface HostResponse {
+    HostInfo: WorkerMeta
 }
 
 export interface WorkerOrig {

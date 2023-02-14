@@ -20,6 +20,10 @@ export class PassportModel extends HttpClient {
     public updatePassword(rq: UpdatePasswordRequest): Promise<null> {
         return this.patch("/passport/password", rq)
     }
+
+    public summary(): Promise<SummaryResponse> {
+        return this.get("/passport/summary")
+    }
 }
 
 export interface UserRequest {
@@ -48,4 +52,12 @@ export interface UpdateInfoRequest {
 export interface UpdatePasswordRequest {
     OldPassword: string
     NewPassword: string
+}
+
+export interface SummaryResponse {
+    Domain: number
+    Keypair: number
+    Machine: number
+    Script: number
+    Vendor: number
 }

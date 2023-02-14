@@ -2,9 +2,15 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
+import { SummaryResponse } from "@/api/native/passport"
+import { HostResponse } from "@/api/native/workhub"
+
+import { bytesToSize } from "@/helper/format"
 
 @Component
 export default class DashboardIndex extends Vue {
+    public bytesToSize = bytesToSize
+
     public loading = true
 
     // 初始化
@@ -13,132 +19,94 @@ export default class DashboardIndex extends Vue {
         this.getAccountSummary()
     }
 
-    // 概要信息
+    // 资源统计
 
-    public summary = {
-        domain: 0,
-        machine: 0,
-        vendor: 0,
-    }
+    public summary!: SummaryResponse
+    public server!: HostResponse
 
     async getAccountSummary() {
-        const rs1 = await NaApi.domain.list()
-        this.summary.domain = rs1.Datasets.length
-
-        const rs2 = await NaApi.machine.list()
-        this.summary.machine = rs2.Datasets.length
-
-        const rs3 = await NaApi.vendor.list()
-        this.summary.vendor = rs3.Datasets.length
-
+        this.summary = await NaApi.passport.summary()
+        this.server = await NaApi.workhub.host()
         this.loading = false
     }
 }
 </script>
 
 <template>
-    <el-row :gutter="20">
-        <el-col>
-            <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                <div class="grid-content grid-con-2">
-                    <el-icon class="grid-con-icon">
-                        <Connection />
-                    </el-icon>
-                    <div class="grid-cont-right">
-                        <div class="grid-num">
-                            {{ summary.vendor }}
-                        </div>
-                        <div>厂商</div>
-                    </div>
-                </div>
-            </el-card>
-            <div class="space-10" />
-            <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                <div class="grid-content grid-con-3">
-                    <el-icon class="grid-con-icon">
-                        <Monitor />
-                    </el-icon>
-                    <div class="grid-cont-right">
-                        <div class="grid-num">
-                            {{ summary.machine }}
-                        </div>
-                        <div>主机</div>
-                    </div>
-                </div>
-            </el-card>
-            <div class="space-10" />
-            <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                <div class="grid-content grid-con-1">
-                    <el-icon class="grid-con-icon">
-                        <Lightning />
-                    </el-icon>
-                    <div class="grid-cont-right">
-                        <div class="grid-num">
-                            {{ summary.domain }}
-                        </div>
-                        <div>域名</div>
-                    </div>
-                </div>
-            </el-card>
-        </el-col>
-    </el-row>
+    <div :loading="loading">
+        <el-card v-if="summary" class="box-card">
+            <template #header>
+                <div>资源统计</div>
+            </template>
+            <el-space wrap>
+                <el-card shadow="hover" class="info-card">
+                    <div>厂商</div>
+                    <b>{{ summary.Vendor }}</b>
+                </el-card>
+                <el-card shadow="hover" class="info-card">
+                    <div>主机</div>
+                    <b>{{ summary.Machine }}</b>
+                </el-card>
+                <el-card shadow="hover" class="info-card">
+                    <div>域名</div>
+                    <b>{{ summary.Domain }}</b>
+                </el-card>
+                <el-card shadow="hover" class="info-card">
+                    <div>密钥</div>
+                    <b>{{ summary.Keypair }}</b>
+                </el-card>
+                <el-card shadow="hover" class="info-card">
+                    <div>脚本</div>
+                    <b>{{ summary.Script }}</b>
+                </el-card>
+            </el-space>
+        </el-card>
+        <div class="space-10" />
+        <el-card v-if="server" class="box-card">
+            <template #header>
+                <div>系统信息</div>
+            </template>
+            <el-descriptions :column="1" border>
+                <el-descriptions-item label="实例ID">
+                    {{ server.HostInfo.HostId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="实例名">
+                    {{ server.HostInfo.HostName }}
+                </el-descriptions-item>
+                <el-descriptions-item label="CPU">
+                    {{ server.HostInfo.CpuCore }} 核
+                </el-descriptions-item>
+                <el-descriptions-item label="内存">
+                    {{ bytesToSize(server.HostInfo.MemoryTotal) }} GB
+                </el-descriptions-item>
+                <el-descriptions-item label="系统盘">
+                    {{ bytesToSize(server.HostInfo.DiskTotal) }} GB
+                </el-descriptions-item>
+                <el-descriptions-item label="公网 IP">
+                    {{ server.HostInfo.IpAddress }}
+                </el-descriptions-item>
+                <el-descriptions-item label="操作系统">
+                    {{ server.HostInfo.OS }}
+                </el-descriptions-item>
+            </el-descriptions>
+        </el-card>
+    </div>
 </template>
 
 <style lang="scss" scoped>
-.grid-content {
-    display: flex;
-    align-items: center;
-    height: 100px;
+.info-card {
+    min-width: 150px;
+    text-align: center;
+    background-color: var(--el-color-info-light-9);
+    color: var(--el-color-info-light-3);
 
-    .grid-con-icon {
-        font-size: 50px;
-        width: 100px;
-        height: 100px;
-        text-align: center;
-        line-height: 100px;
-        color: #fff;
+    div {
+        margin-bottom: 10px;
     }
 
-    .grid-cont-right {
-        flex: 1;
-        text-align: center;
-        font-size: 14px;
-        color: #999;
-    }
-
-    .grid-num {
-        font-size: 30px;
-        font-weight: bold;
-    }
-}
-
-.grid-con-1 {
-    .grid-con-icon {
-        background: rgb(45, 140, 240);
-    }
-
-    .grid-num {
-        color: rgb(45, 140, 240);
-    }
-}
-
-.grid-con-2 {
-    .grid-con-icon {
-        background: rgb(100, 213, 114);
-    }
-
-    .grid-num {
-        color: rgb(45, 140, 240);
-    }
-}
-
-.grid-con-3 {
-    .grid-con-icon {
-        background: rgb(242, 94, 67);
-    }
-
-    .grid-num {
-        color: rgb(242, 94, 67);
+    b {
+        color: var(--el-color-primary-dark-2);
+        font-size: 2em;
     }
 }
 </style>
