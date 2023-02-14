@@ -56,7 +56,6 @@ export default class VendorCloudflareBind extends Vue {
                 {{ vendor.Description || vendorId }}
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <div class="space-10" />
         <CloudflareBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
     </div>
 </template>
