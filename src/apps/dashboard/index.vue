@@ -223,8 +223,11 @@ const GaugeOption = {
                 <el-descriptions-item label="主机名">
                     {{ server.HostInfo.HostName }}
                 </el-descriptions-item>
-                <el-descriptions-item label="处理器">
-                    {{ server.HostInfo.CpuCore }} 核，{{ server.HostInfo.CpuModel[0] }}
+                <el-descriptions-item label="CPU 型号">
+                    {{ server.HostInfo.CpuModel[0] }}
+                </el-descriptions-item>
+                <el-descriptions-item label="CPU 核心">
+                    内核：{{ server.HostInfo.CpuCore }}，逻辑处理器：{{ server.HostInfo.CpuCoreLogic }}
                 </el-descriptions-item>
                 <el-descriptions-item label="内存">
                     {{ bytesToSize(server.HostInfo.MemoryTotal) }}
