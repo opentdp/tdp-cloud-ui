@@ -6,6 +6,7 @@ export interface SummaryStat {
     Platform: string
     KernelArch: string
     CpuCore: number
+    CpuCoreLogic: number
     CpuPercent: number[]
     MemoryTotal: number
     MemoryUsed: number

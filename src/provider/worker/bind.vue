@@ -119,7 +119,7 @@ export default class WorkerBind extends Vue {
                     {{ scope.row.WorkerMeta.OS }}
                 </template>
             </el-table-column>
-            <el-table-column label="运行时间" show-overflow-tooltip>
+            <el-table-column label="运行时长" show-overflow-tooltip>
                 <template #default="scope">
                     {{ (scope.row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
                 </template>
