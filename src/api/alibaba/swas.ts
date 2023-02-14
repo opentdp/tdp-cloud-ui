@@ -1,12 +1,15 @@
 // import {  } from "./typings"
-import { AlibabaVendor, AlibabaClient } from "./base"
+import { AlibabaVendor, AlibabaClient } from './base'
 
 export class SwasModel extends AlibabaClient {
     protected Service = 'swas'
     protected Version = '2020-06-01'
 
     public describeRegions(): Promise<any> {
-        return this.bus({ Action: 'ListRegions' }, 600)
+        return this.bus(
+            { Action: 'ListRegions', RegionId: 'cn-hangzhou' },
+            600
+        )
     }
 
     public describeInstances(region: string, query?: any): Promise<any> {
