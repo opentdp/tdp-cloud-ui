@@ -4,7 +4,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { NaApi } from "@/api"
-import { ScriptOrig } from "@/api/native/script"
+import { ScriptPayload } from "@/api/native/typings"
 
 @Component({
     emits: ['submit'],
@@ -17,7 +17,7 @@ export default class ScriptCreate extends Vue {
     @Ref
     public formRef!: FormInstance
 
-    public formModel!: ScriptOrig
+    public formModel!: ScriptPayload
 
     public formRules: FormRules = {
         Name: [{ required: true, message: "名称 不能为空" }],

@@ -1,5 +1,7 @@
 import { HttpClient } from "@/api/basic/http"
 
+import { ScriptPayload } from "./typings"
+
 export class ScriptModel extends HttpClient {
     public list(): Promise<ScriptPaged> {
         return this.get("/script")
@@ -9,7 +11,7 @@ export class ScriptModel extends HttpClient {
         return this.get("/script/" + name)
     }
 
-    public create(rq: ScriptOrig): Promise<{ Id: number }> {
+    public create(rq: ScriptPayload): Promise<{ Id: number }> {
         return this.post("/script/", rq)
     }
 
@@ -33,17 +35,7 @@ export class ScriptModel extends HttpClient {
     }
 }
 
-export interface ScriptOrig {
-    Name: string
-    CommandType: string
-    Username: string
-    WorkDirectory: string
-    Content: string
-    Description: string
-    Timeout: number
-}
-
-export interface ScriptItem extends ScriptOrig {
+export interface ScriptItem extends ScriptPayload {
     Id: number
     UserId: number
     CreatedAt: number

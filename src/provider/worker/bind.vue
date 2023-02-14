@@ -98,8 +98,8 @@ export default class WorkerBind extends Vue {
             <el-table-column label="CPU" show-overflow-tooltip>
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="+scope.row.WorkerMeta.CpuPercent.toFixed(2)" status="success">
-                        {{ scope.row.WorkerMeta.CpuPercent.toFixed(2) }}%，
+                        :percentage="+scope.row.WorkerMeta.CpuPercent[0].toFixed(2)" status="success">
+                        {{ scope.row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，
                         {{ scope.row.WorkerMeta.CpuCore }} Cores
                     </el-progress>
                 </template>
@@ -114,20 +114,9 @@ export default class WorkerBind extends Vue {
                     </el-progress>
                 </template>
             </el-table-column>
-            <el-table-column label="硬盘" show-overflow-tooltip>
+            <el-table-column label="系统" show-overflow-tooltip>
                 <template #default="scope">
-                    <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="scope.row.WorkerMeta.DiskUsed / scope.row.WorkerMeta.DiskTotal * 100"
-                        status="success">
-                        {{ bytesToSize(scope.row.WorkerMeta.DiskUsed) }} /
-                        {{ bytesToSize(scope.row.WorkerMeta.DiskTotal) }}
-                    </el-progress>
-                </template>
-            </el-table-column>
-            <el-table-column label="网络 In/Out" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ bytesToSize(scope.row.WorkerMeta.NetBytesRecv) }} /
-                    {{ bytesToSize(scope.row.WorkerMeta.NetBytesSent) }}
+                    {{ scope.row.WorkerMeta.OS }}
                 </template>
             </el-table-column>
             <el-table-column label="运行时间" show-overflow-tooltip>

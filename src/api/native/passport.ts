@@ -21,7 +21,7 @@ export class PassportModel extends HttpClient {
         return this.patch("/passport/password", rq)
     }
 
-    public summary(): Promise<SummaryResponse> {
+    public summary(): Promise<UserSummary> {
         return this.get("/passport/summary")
     }
 }
@@ -54,7 +54,7 @@ export interface UpdatePasswordRequest {
     NewPassword: string
 }
 
-export interface SummaryResponse {
+export interface UserSummary {
     Domain: number
     Keypair: number
     Machine: number

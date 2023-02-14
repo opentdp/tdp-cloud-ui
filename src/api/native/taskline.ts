@@ -1,6 +1,6 @@
 import { HttpClient } from "@/api/basic/http"
 
-import { ScriptOrig } from "./script"
+import { ScriptPayload } from "./typings"
 
 export class TasklineModel extends HttpClient {
     public list(): Promise<TasklinePaged> {
@@ -28,7 +28,7 @@ export interface TasklineOrig {
     Subject: string
     HostName: string
     WorkerId: string
-    Request: ScriptOrig
+    Request: ScriptPayload
     Response: TasklineResponse
     Status: string
 }

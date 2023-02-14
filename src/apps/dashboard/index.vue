@@ -2,8 +2,8 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { SummaryResponse } from "@/api/native/passport"
-import { HostResponse } from "@/api/native/workhub"
+import { UserSummary } from "@/api/native/passport"
+import { HostDetail } from "@/api/native/workhub"
 
 import { bytesToSize } from "@/helper/format"
 
@@ -11,29 +11,35 @@ import { bytesToSize } from "@/helper/format"
 export default class DashboardIndex extends Vue {
     public bytesToSize = bytesToSize
 
-    public loading = true
-
     // 初始化
 
     public created() {
-        this.getAccountSummary()
+        this.getHostDetail()
+        this.getUserSummary()
+    }
+
+    // 系统信息
+
+    public server!: HostDetail
+
+    async getHostDetail() {
+        const res = await NaApi.workhub.host()
+        this.server = res
     }
 
     // 资源统计
 
-    public summary!: SummaryResponse
-    public server!: HostResponse
+    public summary!: UserSummary
 
-    async getAccountSummary() {
-        this.summary = await NaApi.passport.summary()
-        this.server = await NaApi.workhub.host()
-        this.loading = false
+    async getUserSummary() {
+        const res = await NaApi.passport.summary()
+        this.summary = res
     }
 }
 </script>
 
 <template>
-    <div :loading="loading">
+    <div :loading="!server && !summary">
         <el-card v-if="summary" class="box-card">
             <template #header>
                 <div>资源统计</div>
@@ -86,7 +92,7 @@ export default class DashboardIndex extends Vue {
                     {{ server.HostInfo.IpAddress }}
                 </el-descriptions-item>
                 <el-descriptions-item label="操作系统">
-                    {{ server.HostInfo.OS }}
+                    {{ server.HostInfo.Platform }}
                 </el-descriptions-item>
             </el-descriptions>
         </el-card>

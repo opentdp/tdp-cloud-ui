@@ -1,9 +1,9 @@
 import { HttpClient } from "@/api/basic/http"
 
-import { ScriptOrig } from "./script"
+import { SummaryStat, DetailStat, ScriptPayload } from "./typings"
 
 export class WorkhubModel extends HttpClient {
-    public host(): Promise<HostResponse> {
+    public host(): Promise<HostDetail> {
         return this.get("/workhub")
     }
 
@@ -22,29 +22,13 @@ export class WorkhubModel extends HttpClient {
     }
 }
 
-export interface WorkerMeta {
-    HostId: string
-    HostName: string
-    Uptime: number
-    OS: string
-    CpuCore: number
-    CpuPercent: number
-    MemoryTotal: number
-    MemoryUsed: number
-    DiskTotal: number
-    DiskUsed: number
-    IpAddress: string
-    NetBytesRecv: number
-    NetBytesSent: number
-}
-
-export interface HostResponse {
-    HostInfo: WorkerMeta
+export interface HostDetail {
+    HostInfo: DetailStat
 }
 
 export interface WorkerOrig {
     WorkerId: string
-    WorkerMeta: WorkerMeta
+    WorkerMeta: SummaryStat
 }
 
 export interface WorkerItem extends WorkerOrig {
@@ -62,5 +46,5 @@ export interface WorkerPaged {
 
 export interface WorkerExecRequest {
     WorkerId: string
-    Payload: ScriptOrig
+    Payload: ScriptPayload
 }

@@ -1,4 +1,6 @@
 import { HttpClient } from "@/api/basic/http"
+9
+import { SummaryStat } from "./typings"
 
 export class MachineModel extends HttpClient {
     public list(): Promise<MachinePaged> {
@@ -40,7 +42,7 @@ export interface MachineOrig {
     CloudId: string
     CloudMeta: unknown
     WorkerId: string
-    WorkerMeta: unknown
+    WorkerMeta: SummaryStat
     Description: string
     Status: number
 }

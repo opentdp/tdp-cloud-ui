@@ -2,7 +2,6 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { MachineItem } from "@/api/native/machine"
-import { WorkerMeta } from "@/api/native/workhub"
 
 import { bytesToSize } from "@/helper/format"
 
@@ -11,9 +10,7 @@ export default class WorkerInstance extends Vue {
     public bytesToSize = bytesToSize
 
     @Prop
-    public machine!: Omit<MachineItem, "WorkerMeta"> & {
-        WorkerMeta: WorkerMeta
-    }
+    public machine!: MachineItem
 }
 </script>
 
@@ -37,14 +34,11 @@ export default class WorkerInstance extends Vue {
             <el-descriptions-item label="内存">
                 {{ bytesToSize(machine.WorkerMeta.MemoryTotal) }}
             </el-descriptions-item>
-            <el-descriptions-item label="系统盘">
-                {{ bytesToSize(machine.WorkerMeta.DiskTotal) }}
-            </el-descriptions-item>
             <el-descriptions-item label="公网 IP">
                 {{ machine.WorkerMeta.IpAddress }}
             </el-descriptions-item>
             <el-descriptions-item label="操作系统">
-                {{ machine.WorkerMeta.OS }}
+                {{ machine.WorkerMeta.Platform }}
             </el-descriptions-item>
         </el-descriptions>
     </el-card>
