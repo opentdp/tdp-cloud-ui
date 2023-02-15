@@ -189,7 +189,7 @@ export default class LighthouseBind extends Vue {
                     {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
                 </template>
             </el-table-column>
-            <el-table-column label="子节点" show-overflow-tooltip>
+            <el-table-column label="土豆片" show-overflow-tooltip>
                 <template #default="scope">
                     {{ workerStatus[scope.row.InstanceId] || "Unkown" }}
                 </template>

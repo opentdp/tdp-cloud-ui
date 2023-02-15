@@ -89,7 +89,7 @@ export default class MachineList extends Vue {
                         {{ MachineModels[scope.row.Model] }}
                     </template>
                 </el-table-column>
-                <el-table-column label="子节点" show-overflow-tooltip>
+                <el-table-column label="土豆片" show-overflow-tooltip>
                     <template #default="scope">
                         <el-button v-if="scope.row.WorkerId.length == 32 && workerList[scope.row.WorkerId]" link type="success">
                             已连接
