@@ -41,7 +41,7 @@ export default class MachineVnc extends Vue {
                 VNC 控制台
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-loading="loading" class="loading" />
+        <div v-loading="loading" />
         <template v-if="machine?.Model == 'tencent/lighthouse'">
             <LighthouseVNC :machine="machine" />
         </template>

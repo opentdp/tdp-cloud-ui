@@ -43,14 +43,16 @@ export default class DashboardIndex extends Vue {
 </script>
 
 <template>
-    <div v-loading="!server && !summary">
-        <StatChart id="host" />
+    <div>
+        <el-card>
+            <StatChart id="host" />
+        </el-card>
         <div class="space-10" />
-        <el-card v-if="summary" class="box-card">
+        <el-card v-loading="!summary" class="box-card">
             <template #header>
                 <div>资源统计</div>
             </template>
-            <el-space wrap>
+            <el-space v-if="summary" wrap>
                 <el-card shadow="hover" class="info-card">
                     <div>厂商</div>
                     <b>{{ summary.Vendor }}</b>
@@ -74,11 +76,11 @@ export default class DashboardIndex extends Vue {
             </el-space>
         </el-card>
         <div class="space-10" />
-        <el-card v-if="server" class="box-card">
+        <el-card v-loading="!server" class="box-card">
             <template #header>
                 <div>系统信息</div>
             </template>
-            <el-descriptions :column="1" border>
+            <el-descriptions v-if="server" :column="1" border>
                 <el-descriptions-item label="主机名">
                     {{ server.Stat.HostName }}
                 </el-descriptions-item>
@@ -125,16 +127,6 @@ export default class DashboardIndex extends Vue {
     b {
         color: var(--el-color-primary-dark-2);
         font-size: 2em;
-    }
-}
-
-.chart-list {
-    display: flex;
-    flex-wrap: wrap;
-
-    .chart {
-        width: 200px;
-        height: 200px;
     }
 }
 </style>

@@ -129,14 +129,12 @@ export default class WorkerStatChart extends Vue {
 </script>
 
 <template>
-    <el-card v-loading="!diskUsedChart">
-        <div class="chart-list">
-            <v-chart class="chart" :option="cpuUsedChart" />
-            <v-chart class="chart" :option="memUsedChart" />
-            <v-chart class="chart" :option="swapUsedChart" />
-            <v-chart class="chart" :option="diskUsedChart" />
-        </div>
-    </el-card>
+    <div v-loading="!diskUsedChart" class="chart-list">
+        <v-chart class="chart" :option="cpuUsedChart" />
+        <v-chart class="chart" :option="memUsedChart" />
+        <v-chart class="chart" :option="swapUsedChart" />
+        <v-chart class="chart" :option="diskUsedChart" />
+    </div>
 </template>
 
 <style lang="scss" scoped>

@@ -19,9 +19,11 @@ export default class WorkerInstance extends Vue {
 </script>
 
 <template>
-    <StatChart :id="machine.WorkerId" />
+    <el-card>
+        <StatChart :id="machine.WorkerId" />
+    </el-card>
     <div class="space-10" />
-    <el-card v-if="machine" shadow="hover">
+    <el-card shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>实例信息</b>
