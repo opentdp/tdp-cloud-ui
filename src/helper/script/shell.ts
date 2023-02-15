@@ -1,25 +1,23 @@
 import { NaApi } from "@/api"
-import { ScriptItem } from "@/api/native/script"
+import { ScriptPayload } from "@/api/native/typings"
 
 function trim(s: string) {
     return s.replace(/\n {8}/g, "\n").trim()
 }
 
-export const installTDPWorker: ScriptItem = {
-    Id: 0,
-    UserId: 0,
-    Name: "安装 TDP Worker",
+// 安装 TDP-Worker
+
+export const installTDPWorker: ScriptPayload = {
+    Name: "安装 TDP-Worker",
     Username: "root",
     Description: "",
     Content: trim(`
         export TDP_REMOTE_URL="${NaApi.workhub.getRegisterURL()}"
         wget -qO- https://apps.rehiy.com/tdp-cloud/worker-linux | sh -
     `),
-    CommandType: "shell",
+    CommandType: "SHELL",
     WorkDirectory: "/root",
     Timeout: 300,
-    CreatedAt: 0,
-    UpdatedAt: 0,
 }
 
 // 导出所有脚本

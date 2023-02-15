@@ -30,7 +30,7 @@ export default class WorkerInstance extends Vue {
                 <b>实例信息</b>
             </div>
         </template>
-        <el-descriptions :column="1" border>
+        <el-descriptions v-if="machine.WorkerMeta" :column="1" border>
             <el-descriptions-item label="实例ID" :span="2">
                 {{ machine.WorkerMeta.HostId }}
             </el-descriptions-item>

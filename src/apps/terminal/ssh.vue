@@ -3,7 +3,7 @@ import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
 import { SSHRequest } from "@/api/native/terminal"
-import { ScriptItem } from "@/api/native/script"
+import { ScriptPayload } from "@/api/native/typings"
 
 import { WebSSH } from "@/helper/webssh"
 import shellList from "@/helper/script/shell"
@@ -75,7 +75,7 @@ export default class TerminalSsh extends Vue {
 
     // 获取快捷命令
 
-    public scriptList: ScriptItem[] = []
+    public scriptList: ScriptPayload[] = []
 
     async getScriptList() {
         const res = await NaApi.script.list()
