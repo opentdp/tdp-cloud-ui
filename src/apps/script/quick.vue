@@ -42,10 +42,7 @@ export default class ScriptQuick extends Vue {
     // 执行快捷命令
 
     public workerExec(cmd: ScriptItem) {
-        NaApi.workhub.exec({
-            WorkerId: this.machine.WorkerId,
-            Payload: cmd
-        })
+        NaApi.workhub.exec(this.machine.WorkerId, cmd)
     }
 }
 </script>

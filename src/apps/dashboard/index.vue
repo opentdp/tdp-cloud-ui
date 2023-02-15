@@ -34,17 +34,17 @@ export default class DashboardIndex extends Vue {
     async getHostDetail() {
         const res = await NaApi.workhub.host()
         this.server = res
-        if (res.HostInfo.CpuPercent) {
-            this.setCpuUsedChartConfig(res.HostInfo.CpuPercent)
+        if (res.Stat.CpuPercent) {
+            this.setCpuUsedChartConfig(res.Stat.CpuPercent)
         }
-        if (res.HostInfo.MemoryTotal > 0) {
-            this.setMemUsedChartConfig(res.HostInfo.MemoryUsed, res.HostInfo.MemoryTotal)
+        if (res.Stat.MemoryTotal > 0) {
+            this.setMemUsedChartConfig(res.Stat.MemoryUsed, res.Stat.MemoryTotal)
         }
-        if (res.HostInfo.SwapTotal > 0) {
-            this.setSwapUsedChartConfig(res.HostInfo.SwapUsed, res.HostInfo.SwapTotal)
+        if (res.Stat.SwapTotal > 0) {
+            this.setSwapUsedChartConfig(res.Stat.SwapUsed, res.Stat.SwapTotal)
         }
-        if (res.HostInfo.DiskTotal > 0) {
-            this.setDiskUsedChartConfig(res.HostInfo.DiskUsed, res.HostInfo.DiskTotal)
+        if (res.Stat.DiskTotal > 0) {
+            this.setDiskUsedChartConfig(res.Stat.DiskUsed, res.Stat.DiskTotal)
         }
     }
 
@@ -221,31 +221,31 @@ const GaugeOption = {
             </template>
             <el-descriptions :column="1" border>
                 <el-descriptions-item label="主机名">
-                    {{ server.HostInfo.HostName }}
+                    {{ server.Stat.HostName }}
                 </el-descriptions-item>
                 <el-descriptions-item label="CPU 型号">
-                    {{ server.HostInfo.CpuModel[0] }}
+                    {{ server.Stat.CpuModel[0] }}
                 </el-descriptions-item>
                 <el-descriptions-item label="CPU 核心">
-                    内核：{{ server.HostInfo.CpuCore }}，逻辑处理器：{{ server.HostInfo.CpuCoreLogic }}
+                    内核：{{ server.Stat.CpuCore }}，逻辑处理器：{{ server.Stat.CpuCoreLogic }}
                 </el-descriptions-item>
                 <el-descriptions-item label="内存">
-                    {{ bytesToSize(server.HostInfo.MemoryTotal) }}
+                    {{ bytesToSize(server.Stat.MemoryTotal) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="虚拟内存">
-                    {{ bytesToSize(server.HostInfo.SwapTotal) }}
+                    {{ bytesToSize(server.Stat.SwapTotal) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="硬盘容量">
-                    {{ bytesToSize(server.HostInfo.DiskTotal) }}
+                    {{ bytesToSize(server.Stat.DiskTotal) }}
                 </el-descriptions-item>
                 <el-descriptions-item label="操作系统">
-                    {{ server.HostInfo.Platform }}（{{ server.HostInfo.KernelArch }}）
+                    {{ server.Stat.Platform }}（{{ server.Stat.KernelArch }}）
                 </el-descriptions-item>
                 <el-descriptions-item label="运行时长">
-                    {{ (server.HostInfo.Uptime / 86400).toFixed(1) }} 天
+                    {{ (server.Stat.Uptime / 86400).toFixed(1) }} 天
                 </el-descriptions-item>
                 <el-descriptions-item label="公网 IP">
-                    {{ server.HostInfo.IpAddress }}
+                    {{ server.Stat.IpAddress }}
                 </el-descriptions-item>
             </el-descriptions>
         </el-card>
