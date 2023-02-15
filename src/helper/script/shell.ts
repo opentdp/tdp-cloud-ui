@@ -7,7 +7,7 @@ function trim(s: string) {
 
 // 安装 TDP-Worker
 
-export const installTDPWorker: ScriptPayload = {
+export const installWorker: ScriptPayload = {
     Name: "安装 TDP-Worker",
     Username: "root",
     Description: "",
@@ -22,4 +22,4 @@ export const installTDPWorker: ScriptPayload = {
 
 // 导出所有脚本
 
-export default [installTDPWorker]
+export default [installWorker]
