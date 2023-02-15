@@ -1,86 +1,86 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-facing-decorator"
+import { Prop, Component, Vue } from "vue-facing-decorator";
 
-import { AcApi, NaApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
+import { AcApi, NaApi } from "@/api";
+import { MachineItem } from "@/api/native/machine";
 
-import { dateFormat } from "@/helper/format"
+import { dateFormat } from "@/helper/format";
 
 @Component({
     emits: ["change"],
 })
 export default class EcsBind extends Vue {
-    public dateFormat = dateFormat
+    public dateFormat = dateFormat;
 
-    public loading = 1
-
-    @Prop
-    public vendorId = 0
+    public loading = 1;
 
     @Prop
-    public boundList: Record<string, MachineItem> = {}
+    public vendorId = 0;
+
+    @Prop
+    public boundList: Record<string, MachineItem> = {};
 
     // 初始化
 
     public created() {
-        AcApi.vendor(this.vendorId)
-        this.getRegionInstanceList()
+        AcApi.vendor(this.vendorId);
+        this.getRegionInstanceList();
     }
 
     // 获取列表
 
-    public regionList: Record<string, any> = {}
+    public regionList: Record<string, any> = {};
 
-    public instanceList = []
-    public instanceCount = 0
+    public instanceList = [];
+    public instanceCount = 0;
 
     async getRegionInstanceList() {
-        const res = await AcApi.ecs.describeRegions()
-        this.loading = res.TotalCount
+        const res = await AcApi.ecs.describeRegions();
+        this.loading = res.TotalCount;
         res.Regions.Region.forEach(async (item: any) => {
-            const regionId = item?.RegionId || ""
-            const { LocalName } = item
+            const regionId = item?.RegionId || "";
+            const { LocalName } = item;
 
             this.regionList = {
                 ...this.regionList,
                 [regionId]: regionId,
-            }
+            };
             // 获取当前大区实例
-            const rs2 = await AcApi.ecs.describeInstances(regionId)
+            const rs2 = await AcApi.ecs.describeInstances(regionId);
             const {
                 TotalCount,
                 Instances: { Instance },
-            } = rs2
+            } = rs2;
             if (TotalCount && Instance) {
                 const temp = Instance.map((i: any) => ({
                     ...i,
                     RegionName: LocalName,
-                }))
-                this.instanceList = this.instanceList.concat(temp)
-                this.instanceCount += rs2.TotalCount
+                }));
+                this.instanceList = this.instanceList.concat(temp);
+                this.instanceCount += rs2.TotalCount;
             }
-            this.loading--
-        })
+            this.loading--;
+        });
     }
 
     // 执行脚本
 
     async runCommand(instance: Required<any>, code: string) {
-        const region = instance.Placement.Zone.replace(/-(\d+)$/, "")
+        const region = instance.Placement.Zone.replace(/-(\d+)$/, "");
         const res = await AcApi.tat.runCommand(region, {
             InstanceIds: [instance.InstanceId],
             Content: code,
-        })
+        });
         const rs2 = AcApi.tat.describeInvocations(region, {
             InvocationIds: [res.InvocationId],
-        })
-        console.log(rs2)
+        });
+        console.log(rs2);
     }
 
     // 绑定主机
 
     async bindMachine(item: Required<any>) {
-        const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
+        const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000);
         await NaApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName || "",
@@ -93,14 +93,14 @@ export default class EcsBind extends Vue {
             WorkerId: "rand-" + rand,
             Description: "",
             Status: 1,
-        })
-        this.$emit("change")
+        });
+        this.$emit("change");
     }
 
     // 同步主机
 
     public syncMachine(item: Required<any>) {
-        const bd = this.boundList[item.InstanceId]
+        const bd = this.boundList[item.InstanceId];
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
@@ -109,13 +109,19 @@ export default class EcsBind extends Vue {
             Region: item.RegionName,
             CloudId: item.InstanceId,
             CloudMeta: item,
-        })
+        });
     }
 
     // 系统类型
 
     public parseOSType(s: string) {
-        return /windows/i.test(s) ? "windows" : "linux"
+        return /windows/i.test(s) ? "windows" : "linux";
+    }
+
+    // 转换为GB显示
+
+    public parseToGB(s: string) {
+        return s ? (parseInt(s) / 1024).toFixed(2) + " GB" : "--";
     }
 }
 </script>
@@ -129,8 +135,17 @@ export default class EcsBind extends Vue {
                 <small>实例总数: {{ instanceCount }}</small>
             </div>
         </template>
-        <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
-            <el-table-column prop="InstanceName" label="名称" show-overflow-tooltip fixed />
+        <el-table
+            v-loading="loading && instanceList.length == 0"
+            :data="instanceList"
+            table-layout="fixed"
+        >
+            <el-table-column
+                prop="InstanceName"
+                label="名称"
+                show-overflow-tooltip
+                fixed
+            />
             <el-table-column label="地域" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.RegionName }}
@@ -139,16 +154,12 @@ export default class EcsBind extends Vue {
             <el-table-column prop="CPU" label="CPU" show-overflow-tooltip />
             <el-table-column label="内存" show-overflow-tooltip>
                 <template #default="scope">
-                    {{ scope.row.Memory + " GB" }}
+                    {{ parseToGB(scope.row.Memory) }}
                 </template>
             </el-table-column>
             <el-table-column label="系统盘" show-overflow-tooltip>
                 <template #default="scope">
-                    {{
-                        scope.row?.SystemDisk
-                            ? scope.row?.SystemDisk?.DiskSize + " GB"
-                            : "--"
-                    }}
+                    {{ parseToGB(scope.row?.SystemDisk?.DiskSize) }}
                 </template>
             </el-table-column>
             <el-table-column label="外网 IP" show-overflow-tooltip>
@@ -164,10 +175,21 @@ export default class EcsBind extends Vue {
 
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="boundList[scope.row.InstanceId]" link icon="View" @click="syncMachine(scope.row)">
+                    <el-button
+                        v-if="boundList[scope.row.InstanceId]"
+                        link
+                        icon="View"
+                        @click="syncMachine(scope.row)"
+                    >
                         同步
                     </el-button>
-                    <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">
+                    <el-button
+                        v-else
+                        link
+                        type="primary"
+                        icon="View"
+                        @click="bindMachine(scope.row)"
+                    >
                         导入
                     </el-button>
                 </template>
