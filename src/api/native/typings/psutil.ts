@@ -1,4 +1,5 @@
 export interface SummaryStat {
+    CreateAt: number
     HostId: string
     HostName: string
     Uptime: number

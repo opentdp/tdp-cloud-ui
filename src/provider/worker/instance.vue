@@ -3,7 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { MachineItem } from "@/api/native/machine"
 
-import { bytesToSize } from "@/helper/format"
+import { bytesToSize, dateFormat } from "@/helper/format"
 
 import StatChart from "./stat_chart.vue"
 
@@ -12,6 +12,7 @@ import StatChart from "./stat_chart.vue"
 })
 export default class WorkerInstance extends Vue {
     public bytesToSize = bytesToSize
+    public dateFormat = dateFormat
 
     @Prop
     public machine!: MachineItem
@@ -47,6 +48,9 @@ export default class WorkerInstance extends Vue {
             </el-descriptions-item>
             <el-descriptions-item label="公网 IP">
                 {{ machine.WorkerMeta.IpAddress }}
+            </el-descriptions-item>
+            <el-descriptions-item label="上次同步">
+                {{ dateFormat(machine.WorkerMeta.CreateAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
             </el-descriptions-item>
         </el-descriptions>
     </el-card>
