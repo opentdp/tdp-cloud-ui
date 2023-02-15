@@ -78,7 +78,6 @@ export default class CvmBind extends Vue {
             CloudId: item.InstanceId,
             CloudMeta: item,
             WorkerId: "rand-" + rand,
-            WorkerMeta: {},
             Description: "",
             Status: 1,
         })
