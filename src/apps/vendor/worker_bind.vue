@@ -4,7 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
 
-import { installTDPWorker } from "@/helper/script/shell"
+import { installWorker } from "@/helper/script/shell"
 
 import WorkerBind from "@/provider/worker/bind.vue"
 
@@ -12,7 +12,7 @@ import WorkerBind from "@/provider/worker/bind.vue"
     components: { WorkerBind }
 })
 export default class VendoWorkerBind extends Vue {
-    public installTDPWorker = installTDPWorker
+    public installWorker = installWorker
 
     // 初始化
 
@@ -47,7 +47,7 @@ export default class VendoWorkerBind extends Vue {
         <div class="space-10" />
         <pre v-highlight max-height="300" class="lang-bash">
             <h3>注册子节点</h3>
-            <code>{{ installTDPWorker.Content }}</code>
+            <code>{{ installWorker.Content }}</code>
         </pre>
     </div>
 </template>

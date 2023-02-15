@@ -48,7 +48,7 @@ export default class MachineDetail extends Vue {
                 {{ MachineModels[machine.Model] }} · {{ machine.HostName || machine.Id }}
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-loading="loading" class="loading" />
+        <div v-loading="loading" />
         <template v-if="machine?.Model == 'tencent/cvm'">
             <CvmInstance :machine="machine" />
         </template>

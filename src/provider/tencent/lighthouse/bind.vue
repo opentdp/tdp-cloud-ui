@@ -6,6 +6,7 @@ import { MachineItem } from "@/api/native/machine"
 import * as TC from "@/api/tencent/typings"
 
 import { dateFormat } from "@/helper/format"
+import { installWorker } from "@/helper/script/shell"
 
 @Component({
     emits: ["change"]
@@ -58,17 +59,55 @@ export default class LighthouseBind extends Vue {
             InstanceIds: [instance.InstanceId],
             Content: code,
         })
-        const rs2 = TcApi.tat.describeInvocations(region, {
-            InvocationIds: [res.InvocationId]
+        return res.InvocationId
+    }
+
+    // PENDING 等待下发
+    // RUNNING 命令运行中
+    // SUCCESS 命令成功
+    // FAILED 命令失败
+    // TIMEOUT 命令超时
+    // PARTIAL_FAILED 命令部分失败
+    async getInvocationStatus(instance: TC.Lighthouse.Instance, id: string) {
+        const region = instance.Zone.replace(/-(\d+)$/, '')
+        const res = await TcApi.tat.describeInvocations(region, {
+            InvocationIds: [id]
         })
-        console.log(rs2)
+        return res.InvocationSet[0].InvocationStatus
+    }
+
+    // 安装 Worker
+
+    public workerStatus: Record<string, string> = {}
+
+    async installWorker(item: TC.Lighthouse.Instance, id: number) {
+        // 云助手状态
+        const region = item.Zone.replace(/-(\d+)$/, '')
+        const res = await TcApi.tat.describeAutomationAgentStatus(region, {
+            InstanceIds: [item.InstanceId]
+        })
+        if (!res || !res.AutomationAgentSet[0] || res.AutomationAgentSet[0].AgentStatus != "Online") {
+            this.workerStatus[item.InstanceId] = "UNINSTALL"
+            return
+        }
+        // 下发安装命令
+        const code = installWorker.Content.replace("/workhub", "/workhub/" + id)
+        const rcid = await this.runCommand(item, btoa(code))
+        // 检查执行状态
+        const siid = setInterval(async () => {
+            const rcst = await this.getInvocationStatus(item, rcid)
+            if (rcst != "PENDING" && rcst != "RUNNING") {
+                clearInterval(siid)
+            }
+            this.workerStatus[item.InstanceId] = rcst
+        }, 3000)
     }
 
     // 绑定主机
 
     async bindMachine(item: TC.Lighthouse.Instance) {
         const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
-        await NaApi.machine.create({
+        const res = await NaApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName,
             IpAddress: item.PublicAddresses[0],
@@ -78,10 +117,12 @@ export default class LighthouseBind extends Vue {
             CloudId: item.InstanceId,
             CloudMeta: item,
             WorkerId: "rand-" + rand,
-            WorkerMeta: {},
             Description: "",
             Status: 1,
         })
+        if (res.Id > 0) {
+            this.installWorker(item, 44)
+        }
         this.$emit("change")
     }
 
@@ -146,6 +187,11 @@ export default class LighthouseBind extends Vue {
             <el-table-column label="到期时间" show-overflow-tooltip>
                 <template #default="scope">
                     {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
+                </template>
+            </el-table-column>
+            <el-table-column label="土豆片" show-overflow-tooltip>
+                <template #default="scope">
+                    {{ workerStatus[scope.row.InstanceId] || "Unkown" }}
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="90" align="center">

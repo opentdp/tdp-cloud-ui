@@ -3,7 +3,7 @@ import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, TcApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
-import { ScriptItem } from "@/api/native/script"
+import { ScriptPayload } from "@/api/native/typings"
 import * as TC from "@/api/tencent/typings"
 
 import shellList from "@/helper/script/shell"
@@ -46,7 +46,7 @@ export default class LighthouseVnc extends Vue {
 
     // 获取快捷命令
 
-    public scriptList: ScriptItem[] = []
+    public scriptList: ScriptPayload[] = []
 
     async getScriptList() {
         const res = await NaApi.script.list()
@@ -86,7 +86,7 @@ export default class LighthouseVnc extends Vue {
             </div>
         </template>
         <div class="button-list">
-            <el-button v-for="item in scriptList" :key="item.Id" @click="vncExec(item.Content)">
+            <el-button v-for="item in scriptList" :key="item.Name" @click="vncExec(item.Content)">
                 {{ item.Name }}
             </el-button>
         </div>

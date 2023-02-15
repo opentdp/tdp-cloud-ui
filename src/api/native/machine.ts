@@ -42,7 +42,7 @@ export interface MachineOrig {
     CloudId: string
     CloudMeta: unknown
     WorkerId: string
-    WorkerMeta: SummaryStat
+    WorkerMeta?: SummaryStat
     Description: string
     Status: number
 }

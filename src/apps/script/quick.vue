@@ -5,7 +5,7 @@ import { NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
 import { ScriptItem } from "@/api/native/script"
 
-import { installTDPWorker } from "@/helper/script/shell"
+import { installWorker } from "@/helper/script/shell"
 
 import QuickExec from "./quick_exec.vue"
 
@@ -13,7 +13,7 @@ import QuickExec from "./quick_exec.vue"
     components: { QuickExec }
 })
 export default class ScriptQuick extends Vue {
-    public installTDPWorker = installTDPWorker
+    public installWorker = installWorker
 
     public loading = true
 
@@ -42,16 +42,13 @@ export default class ScriptQuick extends Vue {
     // 执行快捷命令
 
     public workerExec(cmd: ScriptItem) {
-        NaApi.workhub.exec({
-            WorkerId: this.machine.WorkerId,
-            Payload: cmd
-        })
+        NaApi.workhub.exec(this.machine.WorkerId, cmd)
     }
 }
 </script>
 
 <template>
-    <div v-if="machine.WorkerId.length == 32" class="button-list" :loading="loading">
+    <div v-if="machine.WorkerId.length == 32" v-loading="loading" class="button-list">
         <p v-if="scriptList.length == 0">
             暂无可用命令，请在 <router-link to="/script/list">
                 <b>脚本管理</b>
@@ -67,7 +64,7 @@ export default class ScriptQuick extends Vue {
         <p>主机未使用 <i>TDP Cloud Worker</i> 连接，请使用下述脚本完成注册。</p>
         <p>此脚本仅支持在 <b>{{ machine.HostName }}</b> 上注册客户端，请勿在其它主机上运行！</p>
         <pre v-highlight class="lang-bash">
-            <code>{{ installTDPWorker.Content.replace("/workhub", "/workhub/" + machine.Id) }}</code>
+            <code>{{ installWorker.Content.replace("/workhub", "/workhub/" + machine.Id) }}</code>
         </pre>
     </div>
     <QuickExec ref="execModal" />

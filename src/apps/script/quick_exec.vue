@@ -39,10 +39,9 @@ export default class ScriptQuickExec extends Vue {
                 return false
             }
             this.loading = true
-            const res = await NaApi.workhub.exec({
-                WorkerId: this.machine.WorkerId,
-                Payload: this.formModel
-            })
+            const res = await NaApi.workhub.exec(
+                this.machine.WorkerId, this.formModel
+            )
             // 循环获取状态
             this.timer = setInterval(() => {
                 this.getOutput(res.Id)

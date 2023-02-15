@@ -11,8 +11,12 @@ export class WorkhubModel extends HttpClient {
         return this.get("/workhub/list")
     }
 
-    public exec(rq: WorkerExecRequest): Promise<{ Id: number }> {
-        return this.post("/workhub/exec", rq)
+    public stat(id: string): Promise<DetailStat> {
+        return this.get("/workhub/stat/" + id)
+    }
+
+    public exec(id: string, rq: ScriptPayload): Promise<{ Id: number }> {
+        return this.post("/workhub/exec/" + id, rq)
     }
 
     public getRegisterURL() {
@@ -23,7 +27,7 @@ export class WorkhubModel extends HttpClient {
 }
 
 export interface HostDetail {
-    HostInfo: DetailStat
+    Stat: DetailStat
 }
 
 export interface WorkerOrig {
@@ -42,9 +46,4 @@ export interface WorkerItem extends WorkerOrig {
 export interface WorkerPaged {
     Datasets: WorkerItem[]
     Datainfo?: unknown
-}
-
-export interface WorkerExecRequest {
-    WorkerId: string
-    Payload: ScriptPayload
 }

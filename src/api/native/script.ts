@@ -23,7 +23,7 @@ export class ScriptModel extends HttpClient {
         return this.delete("/script/" + id)
     }
 
-    public osFilter(list: ScriptItem[], os: string) {
+    public osFilter(list: ScriptPayload[], os: string) {
         return list.filter(s => {
             if (s.CommandType == "SHELL") {
                 return os != "windows"

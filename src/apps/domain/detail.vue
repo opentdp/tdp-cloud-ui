@@ -47,7 +47,7 @@ export default class DomainDetail extends Vue {
                 {{ DomainModels[domain.Model] }} · {{ domain.Name }}
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <div v-loading="loading" class="loading" />
+        <div v-loading="loading" />
         <template v-if="domain?.Model == 'cloudflare/zone'">
             <CloudflareZone :domain="domain" />
         </template>
