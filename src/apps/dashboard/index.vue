@@ -7,24 +7,19 @@ import { HostDetail } from "@/api/native/workhub"
 
 import { bytesToSize } from "@/helper/format"
 
-@Component
+import StatChart from "@/provider/worker/stat_chart.vue"
+
+@Component({
+    components: { StatChart }
+})
 export default class DashboardIndex extends Vue {
     public bytesToSize = bytesToSize
-
-    public timer = 0
 
     // 初始化
 
     public created() {
         this.getHostDetail()
         this.getUserSummary()
-        this.timer = setInterval(() => {
-            this.getHostDetail()
-        }, 5000)
-    }
-
-    public unmounted() {
-        clearInterval(this.timer)
     }
 
     // 系统信息
@@ -34,18 +29,6 @@ export default class DashboardIndex extends Vue {
     async getHostDetail() {
         const res = await NaApi.workhub.host()
         this.server = res
-        if (res.Stat.CpuPercent) {
-            this.setCpuUsedChartConfig(res.Stat.CpuPercent)
-        }
-        if (res.Stat.MemoryTotal > 0) {
-            this.setMemUsedChartConfig(res.Stat.MemoryUsed, res.Stat.MemoryTotal)
-        }
-        if (res.Stat.SwapTotal > 0) {
-            this.setSwapUsedChartConfig(res.Stat.SwapUsed, res.Stat.SwapTotal)
-        }
-        if (res.Stat.DiskTotal > 0) {
-            this.setDiskUsedChartConfig(res.Stat.DiskUsed, res.Stat.DiskTotal)
-        }
     }
 
     // 资源统计
@@ -56,136 +39,12 @@ export default class DashboardIndex extends Vue {
         const res = await NaApi.passport.summary()
         this.summary = res
     }
-
-    // CPU 实时负载
-
-    public cpuUsedChart!: typeof GaugeOption
-
-    public setCpuUsedChartConfig(cpus: number[]) {
-        if (this.cpuUsedChart == null) {
-            this.cpuUsedChart = JSON.parse(JSON.stringify(GaugeOption))
-        }
-        let value = 0
-        cpus.map(v => value += v)
-        value = Math.round(value)
-        this.cpuUsedChart.series.data[0].name = "CPU"
-        this.cpuUsedChart.series.data[0].value = value
-        this.cpuUsedChart.series.progress.itemStyle.color = this.barColor(value)
-    }
-
-    // 内存实时用量
-
-    public memUsedChart!: typeof GaugeOption
-
-    public setMemUsedChartConfig(used: number, total: number) {
-        if (this.memUsedChart == null) {
-            this.memUsedChart = JSON.parse(JSON.stringify(GaugeOption))
-        }
-        const value = Math.round(used / total * 100)
-        this.memUsedChart.series.data[0].name = "内存"
-        this.memUsedChart.series.data[0].value = value
-        this.memUsedChart.series.progress.itemStyle.color = this.barColor(value)
-    }
-
-    // Swap实时用量
-
-    public swapUsedChart!: typeof GaugeOption
-
-    public setSwapUsedChartConfig(used: number, total: number) {
-        if (this.swapUsedChart == null) {
-            this.swapUsedChart = JSON.parse(JSON.stringify(GaugeOption))
-        }
-        const value = Math.round(used / total * 100)
-        this.swapUsedChart.series.data[0].name = "Swap"
-        this.swapUsedChart.series.data[0].value = value
-        this.swapUsedChart.series.progress.itemStyle.color = this.barColor(value)
-    }
-
-    // 硬盘实时用量
-
-    public diskUsedChart!: typeof GaugeOption
-
-    public setDiskUsedChartConfig(used: number, total: number) {
-        if (this.diskUsedChart == null) {
-            this.diskUsedChart = JSON.parse(JSON.stringify(GaugeOption))
-        }
-        const value = Math.round(used / total * 100)
-        this.diskUsedChart.series.data[0].name = "硬盘"
-        this.diskUsedChart.series.data[0].value = value
-        this.diskUsedChart.series.progress.itemStyle.color = this.barColor(value)
-    }
-
-    // 设置颜色
-
-    private barColor(n: number) {
-        if (n < 50) {
-            return "#529b2e"
-        }
-        if (n < 75) {
-            return "#b88230"
-        }
-        return "#c45656"
-    }
-}
-
-const GaugeOption = {
-    series: {
-        type: 'gauge',
-        startAngle: 90,
-        endAngle: -270,
-        axisLabel: {
-            show: false
-        },
-        axisTick: {
-            show: false
-        },
-        splitLine: {
-            show: false
-        },
-        pointer: {
-            show: false
-        },
-        progress: {
-            show: true,
-            overlap: false,
-            roundCap: true,
-            clip: false,
-            itemStyle: {
-                color: "#529b2e"
-            }
-        },
-        detail: {
-            fontSize: 14,
-            color: 'inherit',
-            formatter: '{value}%'
-        },
-        data: [
-            {
-                name: '内存',
-                value: 20,
-                title: {
-                    offsetCenter: ['0%', '15%']
-                },
-                detail: {
-                    valueAnimation: true,
-                    offsetCenter: ['0%', '-10%']
-                }
-            }
-        ]
-    }
 }
 </script>
 
 <template>
-    <div :loading="!server && !summary">
-        <el-card v-if="server">
-            <div class="chart-list">
-                <v-chart class="chart" :option="cpuUsedChart" />
-                <v-chart class="chart" :option="memUsedChart" />
-                <v-chart class="chart" :option="swapUsedChart" />
-                <v-chart class="chart" :option="diskUsedChart" />
-            </div>
-        </el-card>
+    <div v-loading="!server && !summary">
+        <StatChart id="host" />
         <div class="space-10" />
         <el-card v-if="summary" class="box-card">
             <template #header>

@@ -5,7 +5,11 @@ import { MachineItem } from "@/api/native/machine"
 
 import { bytesToSize } from "@/helper/format"
 
-@Component
+import StatChart from "./stat_chart.vue"
+
+@Component({
+    components: { StatChart }
+})
 export default class WorkerInstance extends Vue {
     public bytesToSize = bytesToSize
 
@@ -15,30 +19,32 @@ export default class WorkerInstance extends Vue {
 </script>
 
 <template>
+    <StatChart :id="machine.WorkerId" />
+    <div class="space-10" />
     <el-card v-if="machine" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>实例信息</b>
             </div>
         </template>
-        <el-descriptions :column="2" border>
+        <el-descriptions :column="1" border>
             <el-descriptions-item label="实例ID" :span="2">
                 {{ machine.WorkerMeta.HostId }}
             </el-descriptions-item>
-            <el-descriptions-item label="实例名">
+            <el-descriptions-item label="主机名">
                 {{ machine.WorkerMeta.HostName }}
             </el-descriptions-item>
-            <el-descriptions-item label="CPU">
-                {{ machine.WorkerMeta.CpuCore }} 核
+            <el-descriptions-item label="CPU 核心">
+                内核：{{ machine.WorkerMeta.CpuCore }}，逻辑处理器：{{ machine.WorkerMeta.CpuCoreLogic }}
             </el-descriptions-item>
             <el-descriptions-item label="内存">
                 {{ bytesToSize(machine.WorkerMeta.MemoryTotal) }}
             </el-descriptions-item>
+            <el-descriptions-item label="操作系统">
+                {{ machine.WorkerMeta.Platform }}（{{ machine.WorkerMeta.KernelArch }}）
+            </el-descriptions-item>
             <el-descriptions-item label="公网 IP">
                 {{ machine.WorkerMeta.IpAddress }}
-            </el-descriptions-item>
-            <el-descriptions-item label="操作系统">
-                {{ machine.WorkerMeta.Platform }}
             </el-descriptions-item>
         </el-descriptions>
     </el-card>
