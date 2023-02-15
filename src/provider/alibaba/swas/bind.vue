@@ -36,9 +36,8 @@ export default class SwasBind extends Vue {
 
     async getRegionInstanceList() {
         const res = await AcApi.swas.describeRegions();
-        console.log("res", res);
         this.loading = res.TotalCount;
-        res.Regions.Region.forEach(async (item: any) => {
+        res.Regions.forEach(async (item: any) => {
             const regionId = item?.RegionId || "";
             const { LocalName } = item;
 
