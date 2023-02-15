@@ -1,6 +1,10 @@
 {
     "recommendations": [
-        "humao.rest-client",
+        "akamud.vscode-caniuse",
+        "DavidAnson.vscode-markdownlint",
+        "dbaeumer.vscode-eslint",
+        "ecmel.vscode-html-css",
+        "mhutchie.git-graph",
         "Vue.volar"
     ]
 }
