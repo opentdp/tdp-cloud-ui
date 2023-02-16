@@ -1,6 +1,6 @@
 # TDP Cloud UI
 
-[TDP Cloud](https://github.com/open-tdp/cloud-panel) 的前端组件, 框架基于 [vue-admin-template](https://github.com/rehiy/vue-admin-template)
+[TDP Cloud](https://github.com/open-tdp/tdp-cloud) 的前端组件, 框架基于 [vue-admin-template](https://github.com/rehiy/vue-admin-template)
 
 ## 开发说明
 
@@ -66,4 +66,4 @@
 
 License [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
 
-Copyright (c) 2022 TDP Cloud
+Copyright (c) 2022 - 2023 TDP Cloud
