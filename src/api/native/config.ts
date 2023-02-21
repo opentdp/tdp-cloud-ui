@@ -5,8 +5,12 @@ export class ConfigModel extends HttpClient {
         return this.get("/config")
     }
 
-    public detail(name: string): Promise<ConfigItem> {
-        return this.get("/config/" + name)
+    public detail(id: number): Promise<ConfigItem> {
+        return this.get("/config/" + id)
+    }
+
+    public detailName(name: string): Promise<ConfigItem> {
+        return this.get("/config/name/" + name)
     }
 
     public create(rq: ConfigOrig): Promise<{ Id: number }> {
@@ -14,11 +18,11 @@ export class ConfigModel extends HttpClient {
     }
 
     public update(rq: Partial<ConfigItem>): Promise<null> {
-        return this.patch("/config/" + rq.Name, rq)
+        return this.patch("/config/" + rq.Id, rq)
     }
 
-    public remove(name: string): Promise<null> {
-        return this.delete("/config/" + name)
+    public remove(id: number): Promise<null> {
+        return this.delete("/config/" + id)
     }
 }
 
