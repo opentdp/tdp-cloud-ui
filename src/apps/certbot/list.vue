@@ -63,9 +63,9 @@ export default class CertbotList extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="certbotList" table-layout="fixed">
-                <el-table-column prop="Domain" label="证书" show-overflow-tooltip fixed />
+                <el-table-column prop="Domain" label="域名" show-overflow-tooltip fixed />
                 <el-table-column prop="Email" label="邮箱" show-overflow-tooltip fixed />
-                <el-table-column prop="CaType" label="CA 类型" show-overflow-tooltip fixed />
+                <el-table-column prop="CaType" label="CA" show-overflow-tooltip fixed />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <router-link :to="'/certbot/detail/' + scope.row.Id">
