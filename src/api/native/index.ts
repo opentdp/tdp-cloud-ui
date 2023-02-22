@@ -1,8 +1,8 @@
 import { CacheModel } from "./cache"
 
-import { CertjobModel } from "./certjob"
+import { CertbotModel } from "./certbot"
 import { ConfigModel } from "./config"
-import { CronjobModel } from "./cronjob"
+import { CrontabModel } from "./crontab"
 import { DomainModel } from "./domain"
 import { KeypairModel } from "./keypair"
 import { MachineModel } from "./machine"
@@ -16,9 +16,9 @@ import { WorkhubModel } from "./workhub"
 export default {
     cache: new CacheModel(),
 
-    certjob: new CertjobModel(),
+    certbot: new CertbotModel(),
     config: new ConfigModel(),
-    cronjob: new CronjobModel(),
+    crontab: new CrontabModel(),
     domain: new DomainModel(),
     keypair: new KeypairModel(),
     machine: new MachineModel(),
