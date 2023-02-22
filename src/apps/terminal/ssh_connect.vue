@@ -125,7 +125,7 @@ export default class TerminalSshConnect extends Vue {
             </el-select>
         </el-form-item>
         <el-form-item v-if="authType == '0'" prop="Password" label="密码">
-            <el-input v-model="formModel.Password" type="password" @keyup.enter="formSubmit(formRef)" />
+            <el-input v-model="formModel.Password" show-password @keyup.enter="formSubmit(formRef)" />
         </el-form-item>
         <el-form-item v-if="authType == '2'" prop="PrivateKey" label="私玥">
             <el-select v-model="formModel.PrivateKey">

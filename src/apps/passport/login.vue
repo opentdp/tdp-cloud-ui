@@ -57,7 +57,7 @@ export default class PassportLogin extends Vue {
                     </el-input>
                 </el-form-item>
                 <el-form-item prop="Password">
-                    <el-input v-model="formModel.Password" type="password" placeholder="密码"
+                    <el-input v-model="formModel.Password" placeholder="密码" show-password
                         @keyup.enter="formSubmit(formRef)">
                         <template #prepend>
                             <el-icon>
