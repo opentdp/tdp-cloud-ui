@@ -32,8 +32,8 @@ export default class LighthouseFirewallUpdate extends Vue {
     }
 
     public formRules: FormRules = {
-        Protocol: [{ required: true, message: "协议 不能为空" }],
-        Action: [{ required: true, message: "策略 不能为空" }]
+        Protocol: [{ required: true, message: "不能为空" }],
+        Action: [{ required: true, message: "不能为空" }]
     }
 
     // 提交表单

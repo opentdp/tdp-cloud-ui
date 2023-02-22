@@ -30,7 +30,7 @@ export default class LighthouseFirewallRemark extends Vue {
     }
 
     public formRules: FormRules = {
-        FirewallRuleDescription: [{ required: true, message: "描述 不能为空" }],
+        FirewallRuleDescription: [{ required: true, message: "不能为空" }],
     }
 
     // 提交表单

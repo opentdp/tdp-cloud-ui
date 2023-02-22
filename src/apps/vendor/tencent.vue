@@ -49,9 +49,9 @@ export default class VendorTencent extends Vue {
     }
 
     public formRules: FormRules = {
-        SecretId: [{ required: true, message: "密钥 ID 不能为空" }],
-        SecretKey: [{ required: true, message: "密钥 KEY 不能为空" }],
-        Description: [{ required: true, message: "别名或别名 不能为空" }],
+        SecretId: [{ required: true, message: "不能为空" }],
+        SecretKey: [{ required: true, message: "不能为空" }],
+        Description: [{ required: true, message: "不能为空" }],
     }
 
     public formSubmit(form: FormInstance | undefined) {

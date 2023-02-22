@@ -10,7 +10,7 @@ import { KeypairTypeList } from "@/api/native/keypair"
     emits: ["submit"],
     expose: ["open"],
 })
-export default class KeypairCreate extends Vue {
+export default class CertbotCreate extends Vue {
     public KeypairTypeList = KeypairTypeList
 
     // 创建表单
@@ -19,16 +19,17 @@ export default class KeypairCreate extends Vue {
     public formRef!: FormInstance
 
     public formModel = {
-        PublicKey: "",
-        PrivateKey: "",
-        KeyType: "ssh",
-        Description: "",
+        VendorId: 0,
+        Email: "",
+        Domain: "",
+        CaType: "",
     }
 
     public formRules: FormRules = {
-        PublicKey: [{ required: true, message: "不能为空" }],
-        PrivateKey: [{ required: true, message: "不能为空" }],
-        Description: [{ required: true, message: "不能为空" }],
+        VendorId: [{ required: true, message: "不能为空" }],
+        Email: [{ required: true, message: "不能为空" }],
+        Domain: [{ required: true, message: "不能为空" }],
+        CaType: [{ required: true, message: "不能为空" }],
     }
 
     // 提交表单

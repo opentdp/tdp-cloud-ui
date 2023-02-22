@@ -67,7 +67,7 @@ export default class TerminalSshConnect extends Vue {
 
     public formRules: FormRules = {
         Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
-        User: [{ required: true, message: "用户名 不能为空" }],
+        User: [{ required: true, message: "不能为空" }],
         Password: [{
             validator: (rule, value, callback) => {
                 if (!this.formModel.Password && !this.formModel.PrivateKey) {

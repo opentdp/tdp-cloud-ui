@@ -21,14 +21,14 @@ export default class DnspodRecordUpdate extends Vue {
     public formModel!: TC.Dnspod.RecordListItem
 
     public formRules: FormRules = {
-        Name: [{ required: true, message: "主机记录 不能为空" }],
-        Type: [{ required: true, message: "记录类型 不能为空" }],
-        Line: [{ required: true, message: "线路类型 不能为空" }],
-        Value: [{ required: true, message: "别名 不能为空" }],
-        MX: [{ required: true, message: "记录值 不能为空" }],
-        TTL: [{ required: true, message: "TTL 不能为空" }],
-        Weight: [{ required: true, message: "权重 不能为空" }],
-        Status: [{ required: true, message: "状态 不能为空" }],
+        Name: [{ required: true, message: "不能为空" }],
+        Type: [{ required: true, message: "不能为空" }],
+        Line: [{ required: true, message: "不能为空" }],
+        Value: [{ required: true, message: "不能为空" }],
+        MX: [{ required: true, message: "不能为空" }],
+        TTL: [{ required: true, message: "不能为空" }],
+        Weight: [{ required: true, message: "不能为空" }],
+        Status: [{ required: true, message: "不能为空" }],
     }
 
     // 提交表单

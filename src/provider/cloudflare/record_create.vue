@@ -24,12 +24,12 @@ export default class CloudflareRecordCreate extends Vue {
     public formModel!: CF.ZoneRecordCreate
 
     public formRules: FormRules = {
-        name: [{ required: true, message: "主机记录 不能为空" }],
-        type: [{ required: true, message: "记录类型 不能为空" }],
-        content: [{ required: true, message: "别名 不能为空" }],
-        proxied: [{ required: true, message: "加速 不能为空" }],
-        priority: [{ required: true, message: "权重 不能为空" }],
-        ttl: [{ required: true, message: "TTL 不能为空" }],
+        name: [{ required: true, message: "不能为空" }],
+        type: [{ required: true, message: "不能为空" }],
+        content: [{ required: true, message: "不能为空" }],
+        proxied: [{ required: true, message: "不能为空" }],
+        priority: [{ required: true, message: "不能为空" }],
+        ttl: [{ required: true, message: "不能为空" }],
     }
 
     // 提交表单

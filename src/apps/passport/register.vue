@@ -17,9 +17,9 @@ export default class PassportRegister extends Vue {
     }
 
     public formRules: FormRules = {
-        Username: [{ required: true, message: "用户名 不能为空" }],
-        Password: [{ required: true, message: "密码 不能为空" }],
-        Password2: [{ required: true, message: "密码 不能为空" }],
+        Username: [{ required: true, message: "不能为空" }],
+        Password: [{ required: true, message: "不能为空" }],
+        Password2: [{ required: true, message: "不能为空" }],
     }
 
     public formSubmit(form: FormInstance | undefined) {

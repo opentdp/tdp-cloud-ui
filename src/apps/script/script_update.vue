@@ -20,11 +20,11 @@ export default class ScriptUpdate extends Vue {
     public formModel!: ScriptItem
 
     public formRules: FormRules = {
-        Name: [{ required: true, message: "名称 不能为空" }],
-        CommandType: [{ required: true, message: "脚本类型 不能为空" }],
-        Content: [{ required: true, message: "脚本内容 不能为空" }],
-        Description: [{ required: true, message: "描述 不能为空" }],
-        Timeout: [{ required: true, message: "超时时间 不能为空" }],
+        Name: [{ required: true, message: "不能为空" }],
+        CommandType: [{ required: true, message: "不能为空" }],
+        Content: [{ required: true, message: "不能为空" }],
+        Description: [{ required: true, message: "不能为空" }],
+        Timeout: [{ required: true, message: "不能为空" }],
     }
 
     // 提交表单

@@ -26,7 +26,7 @@ export default class ScriptQuickExec extends Vue {
     public formModel!: ScriptItem
 
     public formRules: FormRules = {
-        Content: [{ required: true, message: "脚本内容 不能为空" }],
+        Content: [{ required: true, message: "不能为空" }],
     }
 
     // 提交表单

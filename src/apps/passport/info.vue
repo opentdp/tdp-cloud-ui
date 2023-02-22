@@ -19,11 +19,11 @@ export default class PassportInfo extends Vue {
 
     public formRules: FormRules = {
         Description: [
-            { required: true, message: "个人简介 不能为空" },
+            { required: true, message: "不能为空" },
             {
                 validator: (rule, value, callback) => {
                     if (value.trim().length == 0) {
-                        callback(new Error("个人简介 不能为空"))
+                        callback(new Error("不能为空"))
                     } else {
                         callback()
                     }

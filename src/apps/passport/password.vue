@@ -20,10 +20,10 @@ export default class PassportPassword extends Vue {
     }
 
     public formRules: FormRules = {
-        OldPassword: [{ required: true, message: "原始密码 不能为空" }],
-        NewPassword: [{ required: true, message: "密码 不能为空" }],
+        OldPassword: [{ required: true, message: "不能为空" }],
+        NewPassword: [{ required: true, message: "不能为空" }],
         NewPassword2: [
-            { required: true, message: "密码 不能为空" },
+            { required: true, message: "不能为空" },
             {
                 validator: (rule, value, callback) => {
                     if (this.formModel.NewPassword != this.formModel.NewPassword2) {

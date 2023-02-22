@@ -27,7 +27,7 @@ export default class LighthouseInstanceRename extends Vue {
     }
 
     public formRules: FormRules = {
-        name: [{ required: true, message: "名称 不能为空" }],
+        name: [{ required: true, message: "不能为空" }],
     }
 
     // 提交表单
