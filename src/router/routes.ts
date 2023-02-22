@@ -24,6 +24,25 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
+                path: "/certbot/list",
+                name: "certbot-list",
+                meta: {
+                    title: "证书列表",
+                    login: true,
+                },
+                component: () => import("@/apps/certbot/list.vue"),
+            },
+            {
+                path: "/certbot/detail/:id",
+                name: "certbot-detail",
+                meta: {
+                    title: "证书详情",
+                    login: true,
+                },
+                component: () => import("@/apps/certbot/detail.vue"),
+            },
+            //////
+            {
                 path: "/domain/list",
                 name: "domain-list",
                 meta: {

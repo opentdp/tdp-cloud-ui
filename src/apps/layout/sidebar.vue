@@ -21,6 +21,11 @@ export default class LayoutSidebar extends Vue {
             title: "域名解析",
         },
         {
+            icon: "Crop",
+            index: "/certbot/list",
+            title: "域名证书",
+        },
+        {
             icon: "Monitor",
             index: "/machine/list",
             title: "主机管理",
