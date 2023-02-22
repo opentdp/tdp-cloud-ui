@@ -67,9 +67,9 @@ export default class ScriptUpdate extends Vue {
         <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
             <el-form-item prop="CommandType" label="类型">
                 <el-radio-group v-model="formModel.CommandType">
-                    <el-radio label="SHELL" />
-                    <el-radio label="POWERSHELL" />
-                    <el-radio label="BAT" />
+                    <el-radio-button label="SHELL" />
+                    <el-radio-button label="POWERSHELL" />
+                    <el-radio-button label="BAT" />
                 </el-radio-group>
             </el-form-item>
             <el-form-item prop="Name" label="名称">

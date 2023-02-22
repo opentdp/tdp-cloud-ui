@@ -100,12 +100,12 @@ export default class CloudflareRecordUpdate extends Vue {
             </el-form-item>
             <el-form-item prop="proxied" label="加速">
                 <el-radio-group v-model="formModel.proxied">
-                    <el-radio :label="true">
+                    <el-radio-button :label="true">
                         启用
-                    </el-radio>
-                    <el-radio :label="false">
+                    </el-radio-button>
+                    <el-radio-button :label="false">
                         禁用
-                    </el-radio>
+                    </el-radio-button>
                 </el-radio-group>
             </el-form-item>
             <el-form-item prop="priority" label="权重">
