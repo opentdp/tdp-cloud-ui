@@ -6,7 +6,6 @@ import { ElMessage, FormRules, FormInstance } from "element-plus"
 import { NaApi } from "@/api"
 import { CaTypeList } from "@/api/native/certbot"
 import { DomainItem } from "@/api/native/domain"
-import DomainList from "../domain/list.vue"
 
 @Component({
     emits: ["submit"],
@@ -52,7 +51,11 @@ export default class CertbotCreate extends Vue {
                 return false
             }
             const domain = this.domainList[this.domainKey]
-            this.formModel.Domain += "." + domain.Name
+            if (this.formModel.Domain) {
+                this.formModel.Domain += "." + domain.Name
+            } else {
+                this.formModel.Domain = domain.Name
+            }
             this.formModel.VendorId = domain.VendorId
             await NaApi.certbot.create(this.formModel)
             this.close()
