@@ -35,15 +35,29 @@ export default class ScriptUpdate extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            if (this.formModel.Username == "") {
-                this.formModel.Username = this.formModel.CommandType == "SHELL" ? "root" : "System"
-            }
-            if (this.formModel.WorkDirectory == "") {
-                this.formModel.WorkDirectory = this.formModel.CommandType == "SHELL" ? "/root" : "C:\\"
+            if (this.formModel.CommandType == "SHELL" && this.formModel.Content.indexOf("#!/") !== 0) {
+                ElMessage.error("请在首行声明解释器，如 #!/bin/sh")
+                return false
             }
             await NaApi.script.update(this.formModel)
             this.close()
         })
+    }
+
+    // 表单事件
+
+    public updateCommandType() {
+        switch (this.formModel.CommandType) {
+            case "SHELL":
+                this.formModel.Username = "root"
+                this.formModel.WorkDirectory = "/root"
+                break
+            case "POWERSHELL":
+            case "BAT":
+                this.formModel.Username = "System"
+                this.formModel.WorkDirectory = "C:\\"
+                break
+        }
     }
 
     // 对话框管理
@@ -58,6 +72,7 @@ export default class ScriptUpdate extends Vue {
     public open(data: ScriptItem) {
         this.dailog = true
         this.formModel = data
+        this.updateCommandType()
     }
 }
 </script>
@@ -66,7 +81,7 @@ export default class ScriptUpdate extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="修改脚本" width="600px">
         <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
             <el-form-item prop="CommandType" label="类型">
-                <el-radio-group v-model="formModel.CommandType">
+                <el-radio-group v-model="formModel.CommandType" @change="updateCommandType">
                     <el-radio-button label="SHELL" />
                     <el-radio-button label="POWERSHELL" />
                     <el-radio-button label="BAT" />
@@ -76,12 +91,10 @@ export default class ScriptUpdate extends Vue {
                 <el-input v-model="formModel.Name" :maxlength="60" />
             </el-form-item>
             <el-form-item prop="Username" label="执行用户">
-                <el-input v-model="formModel.Username"
-                    :placeholder="formModel.CommandType == 'SHELL' ? '默认为 root' : '默认为 System'" />
+                <el-input v-model="formModel.Username" />
             </el-form-item>
             <el-form-item prop="WorkDirectory" label="执行路径">
-                <el-input v-model="formModel.WorkDirectory"
-                    :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
+                <el-input v-model="formModel.WorkDirectory" />
             </el-form-item>
             <el-form-item prop="Content" label="脚本内容">
                 <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4 }" />
