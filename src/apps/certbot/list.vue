@@ -5,20 +5,20 @@ import { NaApi } from "@/api"
 import { CertbotItem } from "@/api/native/certbot"
 
 @Component
-export default class DomainList extends Vue {
+export default class CertbotList extends Vue {
     public loading = true
 
     // 初始化
 
     public created() {
-        this.getDomainList()
+        this.getCertbotList()
     }
 
     // 证书列表
 
     public certbotList: CertbotItem[] = []
 
-    async getDomainList() {
+    async getCertbotList() {
         const res = await NaApi.certbot.list()
         this.certbotList = res.Datasets
         this.loading = false
@@ -26,7 +26,7 @@ export default class DomainList extends Vue {
 
     // 删除证书
 
-    async deleteDomain(idx: number) {
+    async deleteCertbot(idx: number) {
         const item = this.certbotList[idx]
         await NaApi.certbot.remove(item.Id)
         this.certbotList.splice(idx, 1)
@@ -62,7 +62,7 @@ export default class DomainList extends Vue {
                                 管理
                             </el-button>
                         </router-link>
-                        <el-popconfirm title="确定删除?" @confirm="deleteDomain(scope.$index)">
+                        <el-popconfirm title="确定删除?" @confirm="deleteCertbot(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">
                                     删除

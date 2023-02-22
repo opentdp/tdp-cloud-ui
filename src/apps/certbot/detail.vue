@@ -5,21 +5,21 @@ import { NaApi } from "@/api"
 import { CertbotItem } from "@/api/native/certbot"
 
 @Component
-export default class DomainDetail extends Vue {
+export default class CertbotDetail extends Vue {
     public loading = true
 
     // 初始化
 
     public created() {
         const certbotId = +this.$route.params.id
-        this.getDomain(certbotId)
+        this.getCertbot(certbotId)
     }
 
     // 域名信息
 
     public certbot!: CertbotItem
 
-    async getDomain(id: number) {
+    async getCertbot(id: number) {
         const res = await NaApi.certbot.detail(id)
         this.certbot = res || {}
         this.loading = false
