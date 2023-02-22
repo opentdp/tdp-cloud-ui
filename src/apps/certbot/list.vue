@@ -1,12 +1,19 @@
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
 import { CertbotItem } from "@/api/native/certbot"
 
-@Component
+import CertbotCreate from "./certbot_create.vue"
+
+@Component({
+    components: { CertbotCreate }
+})
 export default class CertbotList extends Vue {
     public loading = true
+
+    @Ref
+    public createModal!: typeof CertbotCreate
 
     // 初始化
 
@@ -49,6 +56,10 @@ export default class CertbotList extends Vue {
                 <div class="flex-between">
                     <b>证书列表</b>
                     <small>证书总数: {{ certbotList.length }}</small>
+                    <div class="flex-auto" />
+                    <el-button plain type="primary" size="small" icon="Plus" @click="createModal?.open()">
+                        添加
+                    </el-button>
                 </div>
             </template>
             <el-table v-loading="loading" :data="certbotList" table-layout="fixed">
@@ -73,5 +84,7 @@ export default class CertbotList extends Vue {
                 </el-table-column>
             </el-table>
         </el-card>
+
+        <CertbotCreate ref="createModal" @submit="getCertbotList" />
     </div>
 </template>

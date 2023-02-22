@@ -4,14 +4,27 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { NaApi } from "@/api"
-import { KeypairTypeList } from "@/api/native/keypair"
+import { CaTypeList } from "@/api/native/certbot"
+import { DomainItem } from "@/api/native/domain"
+import DomainList from "../domain/list.vue"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class CertbotCreate extends Vue {
-    public KeypairTypeList = KeypairTypeList
+    public CaTypeList = CaTypeList
+
+    // 域名列表
+
+    public domainKey = 0
+
+    public domainList: DomainItem[] = []
+
+    async getDomainList() {
+        const res = await NaApi.domain.list()
+        this.domainList = res.Datasets
+    }
 
     // 创建表单
 
@@ -26,9 +39,7 @@ export default class CertbotCreate extends Vue {
     }
 
     public formRules: FormRules = {
-        VendorId: [{ required: true, message: "不能为空" }],
         Email: [{ required: true, message: "不能为空" }],
-        Domain: [{ required: true, message: "不能为空" }],
         CaType: [{ required: true, message: "不能为空" }],
     }
 
@@ -40,7 +51,10 @@ export default class CertbotCreate extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await NaApi.keypair.create(this.formModel)
+            const domain = this.domainList[this.domainKey]
+            this.formModel.Domain += "." + domain.Name
+            this.formModel.VendorId = domain.VendorId
+            await NaApi.certbot.create(this.formModel)
             this.close()
         })
     }
@@ -56,26 +70,35 @@ export default class CertbotCreate extends Vue {
 
     public open() {
         this.dailog = true
+        // 加载数据
+        this.domainList.length == 0 && this.getDomainList()
     }
 }
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close title="添加密钥" width="600px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
-            <el-form-item prop="KeyType" label="类型">
-                <el-select v-model="formModel.KeyType" placeholder="Select">
-                    <el-option v-for="v, k in KeypairTypeList" :key="k" :label="v" :value="k" />
+    <el-dialog v-model="dailog" destroy-on-close title="添加计划" width="600px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
+            <el-form-item prop="Domain" label="域名">
+                <el-col :span="11">
+                    <el-input v-model="formModel.Domain" />
+                </el-col>
+                <el-col class="text-center" :span="1">
+                    <div>.</div>
+                </el-col>
+                <el-col :span="12">
+                    <el-select v-model="domainKey">
+                        <el-option v-for="v, k in domainList" :key="k" :label="v.Name" :value="k" />
+                    </el-select>
+                </el-col>
+            </el-form-item>
+            <el-form-item prop="Email" label="邮箱">
+                <el-input v-model="formModel.Email" />
+            </el-form-item>
+            <el-form-item prop="CaType" label="Ca 类型">
+                <el-select v-model="formModel.CaType">
+                    <el-option v-for="v, k in CaTypeList" :key="k" :label="v" :value="k" />
                 </el-select>
-            </el-form-item>
-            <el-form-item prop="Description" label="别名">
-                <el-input v-model="formModel.Description" />
-            </el-form-item>
-            <el-form-item prop="PublicKey" label="公钥">
-                <el-input v-model="formModel.PublicKey" type="textarea" :autosize="{ minRows: 5 }" />
-            </el-form-item>
-            <el-form-item prop="PrivateKey" label="私钥">
-                <el-input v-model="formModel.PrivateKey" type="textarea" :autosize="{ minRows: 5 }" />
             </el-form-item>
         </el-form>
         <template #footer>

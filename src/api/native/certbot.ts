@@ -22,6 +22,11 @@ export class CertbotModel extends HttpClient {
     }
 }
 
+export const CaTypeList: Record<string, string> = {
+    "letsencrypt": "Let's Encrypt",
+    "zerossl": "ZeroSSL",
+}
+
 export interface CertbotOrig {
     VendorId: number
     Email: string
