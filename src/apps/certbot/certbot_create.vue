@@ -16,8 +16,6 @@ export default class CertbotCreate extends Vue {
 
     // 域名列表
 
-    public domainKey = 0
-
     public domainList: DomainItem[] = []
 
     async getDomainList() {
@@ -26,6 +24,9 @@ export default class CertbotCreate extends Vue {
     }
 
     // 创建表单
+
+    public domainId = 0
+    public domainSub = ""
 
     @Ref
     public formRef!: FormInstance
@@ -50,12 +51,9 @@ export default class CertbotCreate extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            const domain = this.domainList[this.domainKey]
-            if (this.formModel.Domain) {
-                this.formModel.Domain += "." + domain.Name
-            } else {
-                this.formModel.Domain = domain.Name
-            }
+            const domain = this.domainList[this.domainId]
+            const prefix = this.domainSub ? this.domainSub + "." : ""
+            this.formModel.Domain = prefix + domain.Name
             this.formModel.VendorId = domain.VendorId
             await NaApi.certbot.create(this.formModel)
             this.close()
@@ -81,16 +79,16 @@ export default class CertbotCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加计划" width="600px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
             <el-form-item prop="Domain" label="域名">
                 <el-col :span="11">
-                    <el-input v-model="formModel.Domain" />
+                    <el-input v-model="domainSub" />
                 </el-col>
                 <el-col class="text-center" :span="1">
                     <div>.</div>
                 </el-col>
                 <el-col :span="12">
-                    <el-select v-model="domainKey">
+                    <el-select v-model="domainId">
                         <el-option v-for="v, k in domainList" :key="k" :label="v.Name" :value="k" />
                     </el-select>
                 </el-col>
@@ -98,7 +96,7 @@ export default class CertbotCreate extends Vue {
             <el-form-item prop="Email" label="邮箱">
                 <el-input v-model="formModel.Email" />
             </el-form-item>
-            <el-form-item prop="CaType" label="Ca 类型">
+            <el-form-item prop="CaType" label="CA">
                 <el-select v-model="formModel.CaType">
                     <el-option v-for="v, k in CaTypeList" :key="k" :label="v" :value="k" />
                 </el-select>
