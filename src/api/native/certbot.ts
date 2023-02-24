@@ -5,7 +5,7 @@ export class CertbotModel extends HttpClient {
         return this.get("/certbot")
     }
 
-    public detail(id: number): Promise<CertbotItem> {
+    public detail(id: number): Promise<CertbotItem & { Cert: Certificate }> {
         return this.get("/certbot/" + id)
     }
 
@@ -44,4 +44,11 @@ export interface CertbotItem extends CertbotOrig {
 export interface CertbotPaged {
     Datasets: CertbotItem[]
     Datainfo?: unknown
+}
+
+export interface Certificate {
+    Names: string
+    OCSPStaple: string
+    Certificate: string[]
+    PrivateKey: string
 }

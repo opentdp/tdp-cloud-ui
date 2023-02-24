@@ -2,7 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { CertbotItem } from "@/api/native/certbot"
+import { CertbotItem, Certificate } from "@/api/native/certbot"
 
 @Component
 export default class CertbotDetail extends Vue {
@@ -17,11 +17,18 @@ export default class CertbotDetail extends Vue {
 
     // 域名信息
 
-    public certbot!: CertbotItem
+    public crtText = ""
+    public pubText = ""
+
+    public certbot!: CertbotItem & { Cert: Certificate }
 
     async getCertbot(id: number) {
         const res = await NaApi.certbot.detail(id)
         this.certbot = res || {}
+        if (res.Cert) {
+            this.crtText = res.Cert.Certificate.join("\n")
+            this.pubText = res.Cert.PrivateKey
+        }
         this.loading = false
     }
 }
@@ -41,6 +48,11 @@ export default class CertbotDetail extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" />
-        <el-empty description="尚未实现" />
+        <el-card>
+            <h3>Cert</h3>
+            <el-input v-model="crtText" type="textarea" rows="10" />
+            <h3>Key</h3>
+            <el-input v-model="pubText" type="textarea" rows="10" />
+        </el-card>
     </div>
 </template>
