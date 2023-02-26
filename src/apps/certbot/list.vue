@@ -2,7 +2,7 @@
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { CertbotItem } from "@/api/native/certbot"
+import { CaTypeList, CertbotItem } from "@/api/native/certbot"
 
 import CertbotCreate from "./certbot_create.vue"
 
@@ -10,6 +10,8 @@ import CertbotCreate from "./certbot_create.vue"
     components: { CertbotCreate }
 })
 export default class CertbotList extends Vue {
+    public CaTypeList = CaTypeList
+
     public loading = true
 
     @Ref
@@ -64,8 +66,12 @@ export default class CertbotList extends Vue {
             </template>
             <el-table v-loading="loading" :data="certbotList" table-layout="fixed">
                 <el-table-column prop="Domain" label="域名" show-overflow-tooltip fixed />
-                <el-table-column prop="Email" label="邮箱" show-overflow-tooltip fixed />
-                <el-table-column prop="CaType" label="CA" show-overflow-tooltip fixed />
+                <el-table-column prop="Email" label="邮箱" show-overflow-tooltip />
+                <el-table-column prop="CaType" label="CA" show-overflow-tooltip>
+                    <template #default="scope">
+                        {{ CaTypeList[scope.row.CaType] }}
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <router-link :to="'/certbot/detail/' + scope.row.Id">
