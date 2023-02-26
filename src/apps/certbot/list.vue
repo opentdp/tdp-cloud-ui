@@ -15,7 +15,7 @@ export default class CertbotList extends Vue {
     public loading = true
 
     @Ref
-    public createModal!: typeof CertbotCreate
+    public createModal!: CertbotCreate
 
     // 初始化
 

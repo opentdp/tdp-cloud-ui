@@ -13,7 +13,7 @@ export default class KeypairList extends Vue {
     public loading = true
 
     @Ref
-    public createModal!: typeof KeypairCreate
+    public createModal!: KeypairCreate
 
     // 初始化
 

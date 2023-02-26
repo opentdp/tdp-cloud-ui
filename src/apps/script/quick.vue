@@ -21,7 +21,7 @@ export default class ScriptQuick extends Vue {
     public machine!: MachineItem
 
     @Ref
-    public execModal!: typeof QuickExec
+    public execModal!: QuickExec
 
     // 初始化
 

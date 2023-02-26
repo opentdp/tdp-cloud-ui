@@ -15,10 +15,10 @@ import RecordUpdate from "./record_update.vue"
 })
 export default class CloudflareDomain extends Vue {
     @Ref
-    public createModal!: typeof RecordCreate
+    public createModal!: RecordCreate
 
     @Ref
-    public updateModal!: typeof RecordUpdate
+    public updateModal!: RecordUpdate
 
     @Prop
     public domain!: Omit<DomainItem, "CloudMeta"> & {

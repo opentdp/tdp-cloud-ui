@@ -14,10 +14,10 @@ export default class ScriptList extends Vue {
     public loading = true
 
     @Ref
-    public createModal!: typeof ScriptCreate
+    public createModal!: ScriptCreate
 
     @Ref
-    public updateModal!: typeof ScriptUpdate
+    public updateModal!: ScriptUpdate
 
     // 初始化
 
