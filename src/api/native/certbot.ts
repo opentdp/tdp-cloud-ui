@@ -48,7 +48,8 @@ export interface CertbotPaged {
 
 export interface Certificate {
     Names: string
-    OCSPStaple: string
+    NotAfter: number
+    NotBefore: number
     Certificate: string[]
     PrivateKey: string
 }

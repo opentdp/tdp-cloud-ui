@@ -19,6 +19,7 @@ export default class CertbotDetail extends Vue {
 
     public crtText = ""
     public pubText = ""
+    public dateLimit!: [Date, Date]
 
     public certbot!: CertbotItem & { Cert: Certificate }
 
@@ -28,6 +29,10 @@ export default class CertbotDetail extends Vue {
         if (res.Cert) {
             this.crtText = this.crtFormat(res.Cert.Certificate)
             this.pubText = atob(res.Cert.PrivateKey)
+            this.dateLimit = [
+                new Date(res.Cert.NotBefore * 1000),
+                new Date(res.Cert.NotAfter * 1000),
+            ]
         }
         this.loading = false
     }
@@ -64,10 +69,12 @@ export default class CertbotDetail extends Vue {
         </el-breadcrumb>
         <div v-loading="loading" />
         <el-card>
-            <h3>Certificate</h3>
-            <el-input v-model="crtText" type="textarea" rows="10" />
-            <h3>PrivateKey</h3>
-            <el-input v-model="pubText" type="textarea" rows="10" />
+            <h3>有效期</h3>
+            <el-date-picker v-model="dateLimit" type="datetimerange" range-separator="To" readonly />
+            <h3>证书 (<small>Certificate</small>)</h3>
+            <el-input v-model="crtText" type="textarea" rows="10" readonly />
+            <h3>私钥 (<small>PrivateKey</small>)</h3>
+            <el-input v-model="pubText" type="textarea" rows="10" readonly />
         </el-card>
     </div>
 </template>
