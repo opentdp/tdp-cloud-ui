@@ -59,7 +59,7 @@ export default class ScriptList extends Vue {
             <template #header>
                 <div class="flex-between">
                     <b>脚本列表</b> &nbsp; &nbsp;
-                    <small>脚本总数: {{ scriptList.length }}</small>
+                    <small>记录总数: {{ scriptList.length }}</small>
                     <div class="flex-auto" />
                     <el-button plain type="primary" size="small" icon="Plus" @click="createModal.open()">
                         添加

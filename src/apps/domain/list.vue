@@ -50,7 +50,7 @@ export default class DomainList extends Vue {
             <template #header>
                 <div class="flex-between">
                     <b>域名列表</b>
-                    <small>域名总数: {{ domainList.length }}</small>
+                    <small>记录总数: {{ domainList.length }}</small>
                 </div>
             </template>
             <el-table v-loading="loading" :data="domainList" table-layout="fixed">

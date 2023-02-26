@@ -56,8 +56,8 @@ export default class CertbotList extends Vue {
         <el-card shadow="hover">
             <template #header>
                 <div class="flex-between">
-                    <b>证书列表</b>
-                    <small>证书总数: {{ certbotList.length }}</small>
+                    <b>证书列表</b> &nbsp; &nbsp;
+                    <small>记录总数: {{ certbotList.length }}</small>
                     <div class="flex-auto" />
                     <el-button plain type="primary" size="small" icon="Plus" @click="createModal.open()">
                         添加

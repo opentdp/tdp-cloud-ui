@@ -76,7 +76,7 @@ export default class DnspodBind extends Vue {
         <template #header>
             <div class="flex-between">
                 <b>域名列表</b>
-                <small>域名总数: {{ domainCount }}</small>
+                <small>记录总数: {{ domainCount }}</small>
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
@@ -97,8 +97,7 @@ export default class DnspodBind extends Vue {
             <el-table-column prop="VipEndAt" label="套餐有效期" show-overflow-tooltip />
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="boundList[scope.row.DomainId]" link icon="View"
-                        @click="syncDomian(scope.row)">
+                    <el-button v-if="boundList[scope.row.DomainId]" link icon="View" @click="syncDomian(scope.row)">
                         同步
                     </el-button>
                     <el-button v-else link type="primary" icon="View" @click="bindDomian(scope.row)">

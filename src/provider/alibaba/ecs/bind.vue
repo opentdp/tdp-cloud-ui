@@ -132,20 +132,11 @@ export default class EcsBind extends Vue {
             <div class="flex-between">
                 <b>实例列表</b>
                 <div class="flex-auto" />
-                <small>实例总数: {{ instanceCount }}</small>
+                <small>记录总数: {{ instanceCount }}</small>
             </div>
         </template>
-        <el-table
-            v-loading="loading && instanceList.length == 0"
-            :data="instanceList"
-            table-layout="fixed"
-        >
-            <el-table-column
-                prop="InstanceName"
-                label="名称"
-                show-overflow-tooltip
-                fixed
-            />
+        <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
+            <el-table-column prop="InstanceName" label="名称" show-overflow-tooltip fixed />
             <el-table-column label="地域" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.RegionName }}
@@ -175,21 +166,10 @@ export default class EcsBind extends Vue {
 
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button
-                        v-if="boundList[scope.row.InstanceId]"
-                        link
-                        icon="View"
-                        @click="syncMachine(scope.row)"
-                    >
+                    <el-button v-if="boundList[scope.row.InstanceId]" link icon="View" @click="syncMachine(scope.row)">
                         同步
                     </el-button>
-                    <el-button
-                        v-else
-                        link
-                        type="primary"
-                        icon="View"
-                        @click="bindMachine(scope.row)"
-                    >
+                    <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">
                         导入
                     </el-button>
                 </template>

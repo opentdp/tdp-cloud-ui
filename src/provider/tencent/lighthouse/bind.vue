@@ -162,7 +162,7 @@ export default class LighthouseBind extends Vue {
             <div class="flex-between">
                 <b>实例列表</b>
                 <div class="flex-auto" />
-                <small>实例总数: {{ instanceCount }}</small>
+                <small>记录总数: {{ instanceCount }}</small>
             </div>
         </template>
         <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">

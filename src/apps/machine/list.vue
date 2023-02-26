@@ -76,7 +76,7 @@ export default class MachineList extends Vue {
                 <div class="flex-between">
                     <b>主机列表</b>
                     <div class="flex-auto" />
-                    <small>主机总数: {{ machineList.length }}</small>
+                    <small>记录总数: {{ machineList.length }}</small>
                 </div>
             </template>
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row

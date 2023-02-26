@@ -16,6 +16,11 @@ export default class LayoutSidebar extends Vue {
             title: "首页",
         },
         {
+            icon: "Monitor",
+            index: "/machine/list",
+            title: "主机管理",
+        },
+        {
             icon: "Lightning",
             index: "/domain/list",
             title: "域名解析",
@@ -23,12 +28,7 @@ export default class LayoutSidebar extends Vue {
         {
             icon: "Crop",
             index: "/certbot/list",
-            title: "域名证书",
-        },
-        {
-            icon: "Monitor",
-            index: "/machine/list",
-            title: "主机管理",
+            title: "SSL 证书",
         },
         {
             icon: "Coin",
@@ -36,7 +36,7 @@ export default class LayoutSidebar extends Vue {
             title: "快捷命令",
             subs: [
                 {
-                    icon: "Crop",
+                    icon: "Filter",
                     index: "/script/list",
                     title: "脚本管理",
                 },

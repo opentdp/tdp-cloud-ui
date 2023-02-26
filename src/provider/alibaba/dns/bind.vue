@@ -72,16 +72,11 @@ export default class DnsBind extends Vue {
         <template #header>
             <div class="flex-between">
                 <b>域名列表</b>
-                <small>域名总数: {{ domainCount }}</small>
+                <small>记录总数: {{ domainCount }}</small>
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column
-                prop="name"
-                label="域名"
-                show-overflow-tooltip
-                fixed
-            />
+            <el-table-column prop="name" label="域名" show-overflow-tooltip fixed />
             <el-table-column label="状态" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.status }}
@@ -107,21 +102,10 @@ export default class DnsBind extends Vue {
             </el-table-column>
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button
-                        v-if="boundList[scope.row.id]"
-                        link
-                        icon="View"
-                        @click="syncDomian(scope.row)"
-                    >
+                    <el-button v-if="boundList[scope.row.id]" link icon="View" @click="syncDomian(scope.row)">
                         同步
                     </el-button>
-                    <el-button
-                        v-else
-                        link
-                        type="primary"
-                        icon="View"
-                        @click="bindDomian(scope.row)"
-                    >
+                    <el-button v-else link type="primary" icon="View" @click="bindDomian(scope.row)">
                         导入
                     </el-button>
                 </template>
