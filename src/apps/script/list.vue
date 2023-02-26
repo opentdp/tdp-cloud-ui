@@ -61,7 +61,7 @@ export default class ScriptList extends Vue {
                     <b>脚本列表</b> &nbsp; &nbsp;
                     <small>脚本总数: {{ scriptList.length }}</small>
                     <div class="flex-auto" />
-                    <el-button plain type="primary" size="small" icon="Plus" @click="createModal?.open()">
+                    <el-button plain type="primary" size="small" icon="Plus" @click="createModal.open()">
                         添加
                     </el-button>
                 </div>
@@ -72,7 +72,7 @@ export default class ScriptList extends Vue {
                 <el-table-column prop="Content" label="脚本" show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="Edit" @click="updateModal?.open(scope.row)">
+                        <el-button link type="primary" icon="Edit" @click="updateModal.open(scope.row)">
                             修改
                         </el-button>
                         <el-popconfirm title="确定删除?" @confirm="removeScript(scope.row.Id)">

@@ -71,7 +71,7 @@ export default class LighthouseFirewall extends Vue {
                 <b>防火墙</b> &nbsp; &nbsp;
                 <small>规则总数: {{ firewallRuleCount }}</small>
                 <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createModel?.open(instance)">
+                <el-button type="primary" plain size="small" @click="createModel.open(instance)">
                     添加规则
                 </el-button>
             </div>
@@ -84,12 +84,12 @@ export default class LighthouseFirewall extends Vue {
             <el-table-column prop="FirewallRuleDescription" label="备注" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.FirewallRuleDescription }}
-                    <el-button link icon="EditPen" @click="remarkModel?.open(instance, scope.row)" />
+                    <el-button link icon="EditPen" @click="remarkModel.open(instance, scope.row)" />
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="updateModel?.open(instance, firewallRuleList, scope.$index)">
+                    <el-button link type="primary" icon="Edit" @click="updateModel.open(instance, firewallRuleList, scope.$index)">
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">

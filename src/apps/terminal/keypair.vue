@@ -57,7 +57,7 @@ export default class KeypairList extends Vue {
                     <b>密钥列表</b> &nbsp; &nbsp;
                     <small>记录总数: {{ keylist?.length || 0 }}</small>
                     <div class="flex-auto" />
-                    <el-button type="primary" plain size="small" @click="createModal?.open()">
+                    <el-button type="primary" plain size="small" @click="createModal.open()">
                         添加密钥
                     </el-button>
                 </div>

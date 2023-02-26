@@ -130,7 +130,7 @@ export default class CvmInstance extends Vue {
             </el-descriptions-item>
             <el-descriptions-item label="实例名">
                 {{ instance.InstanceName }}
-                <el-button link icon="EditPen" @click="renameModal?.open(instance)" />
+                <el-button link icon="EditPen" @click="renameModal.open(instance)" />
             </el-descriptions-item>
             <el-descriptions-item label="规格">
                 CPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB

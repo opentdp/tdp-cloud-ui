@@ -81,7 +81,7 @@ export default class LighthouseSnapshot extends Vue {
                 <b>快照</b> &nbsp; &nbsp;
                 <small>快照总数: {{ snapshotList.TotalCount }}</small>
                 <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createModal?.open(instance)">
+                <el-button type="primary" plain size="small" @click="createModal.open(instance)">
                     创建快照
                 </el-button>
             </div>

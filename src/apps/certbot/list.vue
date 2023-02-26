@@ -59,7 +59,7 @@ export default class CertbotList extends Vue {
                     <b>证书列表</b>
                     <small>证书总数: {{ certbotList.length }}</small>
                     <div class="flex-auto" />
-                    <el-button plain type="primary" size="small" icon="Plus" @click="createModal?.open()">
+                    <el-button plain type="primary" size="small" icon="Plus" @click="createModal.open()">
                         添加
                     </el-button>
                 </div>

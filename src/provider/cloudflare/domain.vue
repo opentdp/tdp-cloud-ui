@@ -68,7 +68,7 @@ export default class CloudflareDomain extends Vue {
                 <b>解析列表</b> &nbsp; &nbsp;
                 <small>记录总数: {{ recordList?.length || 0 }}</small>
                 <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createModal?.open(domainInfo)">
+                <el-button type="primary" plain size="small" @click="createModal.open(domainInfo)">
                     添加记录
                 </el-button>
             </div>
@@ -94,7 +94,7 @@ export default class CloudflareDomain extends Vue {
             <el-table-column prop="comment" label="备注" show-overflow-tooltip />
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="updateModal?.open(scope.row)">
+                    <el-button link type="primary" icon="Edit" @click="updateModal.open(scope.row)">
                         编辑
                     </el-button>
                     <el-popconfirm title="确定删除?" @confirm="deleteRecord(scope.row.id)">
