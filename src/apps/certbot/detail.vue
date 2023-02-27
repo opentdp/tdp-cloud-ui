@@ -68,7 +68,13 @@ export default class CertbotDetail extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" />
-        <el-card>
+        <el-card v-if="certbot">
+            <h3>颁发给</h3>
+            {{ certbot.Cert.Names.join(", ") }}
+            <h3>颁发者</h3>
+            <pre>CN = {{ certbot.Cert.Issuer.CommonName }}</pre>
+            <pre>O  = {{ certbot.Cert.Issuer.Organization }}</pre>
+            <pre>C  = {{ certbot.Cert.Issuer.Country }}</pre>
             <h3>有效期</h3>
             <el-date-picker v-model="dateLimit" type="datetimerange" range-separator="To" readonly />
             <h3>证书 (<small>Certificate</small>)</h3>

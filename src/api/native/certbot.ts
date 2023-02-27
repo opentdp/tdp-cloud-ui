@@ -54,9 +54,14 @@ export interface CertbotPaged {
 }
 
 export interface Certificate {
-    Names: string
+    Names: string[]
     NotAfter: number
     NotBefore: number
     Certificate: string[]
     PrivateKey: string
+    Issuer: {
+        CommonName: string
+        Country: string
+        Organization: string
+    }
 }
