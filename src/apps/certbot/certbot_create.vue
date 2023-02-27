@@ -6,6 +6,7 @@ import { ElMessage, FormRules, FormInstance } from "element-plus"
 import { NaApi } from "@/api"
 import { CaTypeList } from "@/api/native/certbot"
 import { DomainItem } from "@/api/native/domain"
+import { ca } from "element-plus/es/locale"
 
 @Component({
     emits: ["submit"],
@@ -36,6 +37,8 @@ export default class CertbotCreate extends Vue {
         Email: "",
         Domain: "",
         CaType: "",
+        EabKeyId: "",
+        EabMacKey: ""
     }
 
     public formRules: FormRules = {
@@ -60,6 +63,15 @@ export default class CertbotCreate extends Vue {
         })
     }
 
+    // 表单事件
+
+    public caEab = 0
+
+    public updateCaEab() {
+        const ca = CaTypeList[this.formModel.CaType]
+        this.caEab = ca ? ca.Eab : 0
+    }
+
     // 对话框管理
 
     public dailog = false
@@ -79,7 +91,7 @@ export default class CertbotCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加计划" width="600px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="110px">
             <el-form-item prop="Domain" label="域名">
                 <el-col :span="11">
                     <el-input v-model="domainSub" />
@@ -97,9 +109,15 @@ export default class CertbotCreate extends Vue {
                 <el-input v-model="formModel.Email" />
             </el-form-item>
             <el-form-item prop="CaType" label="CA">
-                <el-select v-model="formModel.CaType">
-                    <el-option v-for="v, k in CaTypeList" :key="k" :label="v" :value="k" />
+                <el-select v-model="formModel.CaType" @change="updateCaEab">
+                    <el-option v-for="v, k in CaTypeList" :key="k" :label="v.Name" :value="k" />
                 </el-select>
+            </el-form-item>
+            <el-form-item prop="EabKeyId" label="EAB KeyId" :required="caEab == 2">
+                <el-input v-model="formModel.EabKeyId" :disabled="caEab == 0" />
+            </el-form-item>
+            <el-form-item prop="EabMacKey" label="EAB MacKey" :required="caEab == 2">
+                <el-input v-model="formModel.EabMacKey" :disabled="caEab == 0" />
             </el-form-item>
         </el-form>
         <template #footer>

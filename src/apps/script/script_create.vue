@@ -88,8 +88,8 @@ export default class ScriptCreate extends Vue {
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加脚本" width="600px">
         <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
-            <el-form-item prop="CommandType" label="类型" @change="updateCommandType">
-                <el-radio-group v-model="formModel.CommandType">
+            <el-form-item prop="CommandType" label="类型">
+                <el-radio-group v-model="formModel.CommandType" @change="updateCommandType">
                     <el-radio-button label="SHELL" />
                     <el-radio-button label="POWERSHELL" />
                     <el-radio-button label="BAT" />

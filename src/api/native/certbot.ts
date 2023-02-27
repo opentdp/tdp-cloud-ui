@@ -22,10 +22,14 @@ export class CertbotModel extends HttpClient {
     }
 }
 
-export const CaTypeList: Record<string, string> = {
-    "letsencrypt": "Let's Encrypt",
-    "zerossl": "ZeroSSL",
-    "debug": "调试模式",
+export const CaTypeList: Record<string, { Name: string, Eab: number }> = {
+    "letsencrypt": { Name: "Let's Encrypt", Eab: 0 },
+    "buypass": { Name: "Buypass", Eab: 0 }, // Eab 忽略
+    "google": { Name: "Google Public", Eab: 2 }, // Eab 必填
+    "sslcom-ecc": { Name: "SSL.com ECC", Eab: 2 }, // Eab 必填
+    "sslcom-rsa": { Name: "SSL.com RSA", Eab: 2 }, // Eab 必填
+    "zerossl": { Name: "ZeroSSL", Eab: 1 }, // Eab 选填
+    "debug": { Name: "测试证书", Eab: 0 },
 }
 
 export interface CertbotOrig {
@@ -33,6 +37,8 @@ export interface CertbotOrig {
     Email: string
     Domain: string
     CaType: string
+    EabKeyId: string
+    EabMacKey: string
 }
 
 export interface CertbotItem extends CertbotOrig {

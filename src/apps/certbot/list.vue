@@ -69,7 +69,7 @@ export default class CertbotList extends Vue {
                 <el-table-column prop="Email" label="邮箱" show-overflow-tooltip />
                 <el-table-column prop="CaType" label="CA" show-overflow-tooltip>
                     <template #default="scope">
-                        {{ CaTypeList[scope.row.CaType] }}
+                        {{ CaTypeList[scope.row.CaType].Name }}
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
