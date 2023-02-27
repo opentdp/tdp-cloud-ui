@@ -76,7 +76,7 @@ export default class CertbotDetail extends Vue {
             <pre>O  = {{ certbot.Cert.Issuer.Organization }}</pre>
             <pre>C  = {{ certbot.Cert.Issuer.Country }}</pre>
             <h3>有效期</h3>
-            <el-date-picker v-model="dateLimit" type="datetimerange" range-separator="To" readonly />
+            <el-date-picker v-model="dateLimit" type="datetimerange" range-separator="至" readonly />
             <h3>证书 (<small>Certificate</small>)</h3>
             <el-input v-model="crtText" type="textarea" rows="10" readonly />
             <h3>私钥 (<small>PrivateKey</small>)</h3>
