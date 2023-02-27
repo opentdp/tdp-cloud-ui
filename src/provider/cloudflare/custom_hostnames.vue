@@ -23,11 +23,12 @@ export default class CloudflareCustomHostnames extends Vue {
 
     // 刷新记录
 
-    async refresh() {
+    public refresh() {
         this.loading = true
-        await this.getFallbackOrigin()
-        await this.getCustomHostnames()
-        this.loading = false
+        this.getFallbackOrigin().finally(async () => {
+            await this.getCustomHostnames()
+            this.loading = false
+        })
     }
 
     // 默认回退源
@@ -88,11 +89,17 @@ export default class CloudflareCustomHostnames extends Vue {
             </div>
         </template>
 
+        <el-form-item v-if="fallbackOrigin.origin == ''">
+            <el-alert :closable="false" type="error">
+                错误，请设置回退域名，且必须已添加对应的A/AAAA/CNAME解析记录
+            </el-alert>
+        </el-form-item>
         <el-form-item v-if="fallbackOrigin.status != 'active'">
             <el-alert :closable="false" type="warning">
                 {{ fallbackOrigin.errors ? fallbackOrigin.errors[0] : fallbackOrigin.status }}
             </el-alert>
         </el-form-item>
+
         <el-form-item label="回退源">
             <el-input v-model="fallbackOrigin.origin">
                 <template #append>
