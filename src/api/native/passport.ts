@@ -32,16 +32,18 @@ export interface UserRequest {
 }
 
 export interface LoginResponse {
-    AppId: string
     Username: string
+    AppId: string
+    Email: string
     Description: string
     Token: string
 }
 
 export interface UserInfoResponse {
     Id: number
-    AppId: string
     Username: string
+    AppId: string
+    Email: string
     Description: string
 }
 

@@ -14,12 +14,14 @@ export default class PassportRegister extends Vue {
         Username: "",
         Password: "",
         Password2: "",
+        Email: "",
     }
 
     public formRules: FormRules = {
         Username: [{ required: true, message: "不能为空" }],
         Password: [{ required: true, message: "不能为空" }],
         Password2: [{ required: true, message: "不能为空" }],
+        Email: [{ required: true, message: "不能为空" }],
     }
 
     public formSubmit(form: FormInstance | undefined) {
@@ -48,6 +50,15 @@ export default class PassportRegister extends Vue {
                         <template #prepend>
                             <el-icon>
                                 <User />
+                            </el-icon>
+                        </template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item prop="Email">
+                    <el-input v-model="formModel.Email" placeholder="邮箱">
+                        <template #prepend>
+                            <el-icon>
+                                <Message />
                             </el-icon>
                         </template>
                     </el-input>

@@ -4,20 +4,45 @@ import { Component, Ref, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { NaApi } from "@/api"
+import { UserInfoResponse } from "@/api/native/passport"
+
 import sessionStore from "@/store/session"
 
 @Component
 export default class PassportInfo extends Vue {
     public session = sessionStore()
+    public loading = true
+
+    // 初始化
+
+    public created() {
+        this.getUserInfo()
+    }
+
+    // 获取用户信息
+
+    async getUserInfo() {
+        const res = await NaApi.passport.detail()
+        // 同步表单
+        this.formModel.Email = res.Email
+        this.formModel.Description = res.Description
+        this.loading = false
+    }
+
+    // 创建表单
 
     @Ref
     public formRef!: FormInstance
 
     public formModel = {
-        Description: this.session.description,
+        Email: "",
+        Description: "",
     }
 
     public formRules: FormRules = {
+        Email: [
+            { required: true, message: "不能为空" },
+        ],
         Description: [
             { required: true, message: "不能为空" },
             {
@@ -39,8 +64,7 @@ export default class PassportInfo extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            await NaApi.passport.updateInfo(this.formModel)
-            this.session.description = this.formModel.Description
+            NaApi.passport.updateInfo(this.formModel)
         })
     }
 }
@@ -72,7 +96,7 @@ export default class PassportInfo extends Vue {
                             {{ session.username }}
                         </div>
                         <div class="info-desc">
-                            {{ session.description }}
+                            {{ formModel.Description }}
                         </div>
                     </div>
                 </el-card>
@@ -91,7 +115,10 @@ export default class PassportInfo extends Vue {
                         <el-form-item label="App Id">
                             {{ session.appid }}
                         </el-form-item>
-                        <el-form-item prop="Description" label="个人简介">
+                        <el-form-item prop="Email" label="邮箱">
+                            <el-input v-model="formModel.Email" />
+                        </el-form-item>
+                        <el-form-item prop="Description" label="简介">
                             <el-input v-model="formModel.Description" />
                         </el-form-item>
                         <el-form-item>
