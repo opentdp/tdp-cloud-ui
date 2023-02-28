@@ -34,8 +34,6 @@ export interface UserRequest {
 export interface LoginResponse {
     Username: string
     AppId: string
-    Email: string
-    Description: string
     Token: string
 }
 
@@ -48,6 +46,7 @@ export interface UserInfoResponse {
 }
 
 export interface UpdateInfoRequest {
+    Email: string
     Description: string
 }
 
