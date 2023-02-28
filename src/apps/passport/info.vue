@@ -108,7 +108,7 @@ export default class PassportInfo extends Vue {
                             <span>账户编辑</span>
                         </div>
                     </template>
-                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
+                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="60px">
                         <el-form-item label="用户名">
                             <b>{{ session.username }}</b>
                         </el-form-item>
