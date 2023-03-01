@@ -3,11 +3,13 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, AcApi } from "@/api"
 import { DomainItem } from "@/api/native/domain"
+import { dateFormat } from "@/helper/format"
 
 @Component({
     emits: ["change"],
 })
 export default class DnsBind extends Vue {
+    public dateFormat = dateFormat
     public loading = true
 
     @Prop
@@ -30,8 +32,8 @@ export default class DnsBind extends Vue {
 
     async getDomainList() {
         const res = await AcApi.alidns.describeDomainList()
-        if (res.Domains) {
-            this.domainList = res.Domain || []
+        if (res.TotalCount > 0) {
+            this.domainList = res.Domains.Domain || []
             this.domainCount = res.TotalCount
         }
         this.loading = false
@@ -42,10 +44,10 @@ export default class DnsBind extends Vue {
     async bindDomian(item: any) {
         await NaApi.domain.create({
             VendorId: this.vendorId,
-            Name: item.Name,
-            NSList: item.EffectiveDNS.join(","),
+            Name: item.DomainName,
+            NSList: item.DnsServers.DnsServer.join(","),
             Model: "alibaba/alidns",
-            CloudId: item.DomainId + "",
+            CloudId: item.DomainId,
             CloudMeta: item,
             Description: "",
             Status: 1,
@@ -59,8 +61,8 @@ export default class DnsBind extends Vue {
         const bd = this.boundList[item.DomainId]
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
-            NSList: item.EffectiveDNS.join(","),
-            CloudId: item.DomainId + "",
+            NSList: item.DnsServers.DnsServer.join(","),
+            CloudId: item.DomainId,
             CloudMeta: item,
         })
     }
@@ -76,30 +78,17 @@ export default class DnsBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column prop="name" label="域名" show-overflow-tooltip fixed />
-            <el-table-column label="状态" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.status }}
-                </template>
-            </el-table-column>
-            <el-table-column label="接入方式" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.type == "full" ? "NS" : scope.row.host?.name }}
-                </template>
-            </el-table-column>
+            <el-table-column prop="DomainName" label="域名" show-overflow-tooltip fixed />
+            <el-table-column prop="RecordCount" label="记录数" />
             <el-table-column label="NS 服务器" show-overflow-tooltip>
                 <template #default="scope">
-                    <template v-if="scope.row.name_servers">
-                        {{ scope.row.name_servers.join(",") }}
-                    </template>
-                    <template v-else>
-                        Unknown
-                    </template>
+                    {{ scope.row.DnsServers.DnsServer.join(",") }}
                 </template>
             </el-table-column>
-            <el-table-column label="套餐" show-overflow-tooltip>
+            <el-table-column prop="VersionCode" label="套餐" show-overflow-tooltip />
+            <el-table-column label="接入时间" show-overflow-tooltip>
                 <template #default="scope">
-                    {{ scope.row.plan.name }}
+                    {{ dateFormat(scope.row.CreateTimestamp, "yyyy-MM-dd hh:mm:ss") }}
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="90" align="center">
