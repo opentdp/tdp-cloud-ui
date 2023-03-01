@@ -106,7 +106,6 @@ export default class LighthouseBind extends Vue {
     // 绑定主机
 
     async bindMachine(item: TC.Lighthouse.Instance) {
-        const rand = Date.now() + "-" + Math.round(Math.random() * 1000 + 1000)
         const res = await NaApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName,
@@ -116,7 +115,7 @@ export default class LighthouseBind extends Vue {
             Model: "tencent/lighthouse",
             CloudId: item.InstanceId,
             CloudMeta: item,
-            WorkerId: "rand-" + rand,
+            WorkerId: "",
             Description: "",
             Status: 1,
         })
