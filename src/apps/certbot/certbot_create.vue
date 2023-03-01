@@ -6,7 +6,6 @@ import { ElMessage, FormRules, FormInstance } from "element-plus"
 import { NaApi } from "@/api"
 import { CaTypeList } from "@/api/native/certbot"
 import { DomainItem } from "@/api/native/domain"
-import { ca } from "element-plus/es/locale"
 
 @Component({
     emits: ["submit"],
