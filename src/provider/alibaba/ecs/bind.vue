@@ -141,15 +141,10 @@ export default class EcsBind extends Vue {
                     {{ scope.row.RegionName }}
                 </template>
             </el-table-column>
-            <el-table-column prop="CPU" label="CPU" show-overflow-tooltip />
+            <el-table-column prop="Cpu" label="CPU" show-overflow-tooltip />
             <el-table-column label="内存" show-overflow-tooltip>
                 <template #default="scope">
                     {{ parseToGB(scope.row.Memory) }}
-                </template>
-            </el-table-column>
-            <el-table-column label="系统盘" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ parseToGB(scope.row?.SystemDisk?.DiskSize) }}
                 </template>
             </el-table-column>
             <el-table-column label="外网 IP" show-overflow-tooltip>

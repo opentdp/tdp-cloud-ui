@@ -139,21 +139,6 @@ export default class SwasBind extends Vue {
                     {{ scope.row.RegionName }}
                 </template>
             </el-table-column>
-            <el-table-column label="CPU" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.CPU || "--" }}
-                </template>
-            </el-table-column>
-            <el-table-column label="内存" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ parseToGB(scope.row.Memory) }}
-                </template>
-            </el-table-column>
-            <el-table-column label="系统盘" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ parseToGB(scope.row?.SystemDisk?.DiskSize) }}
-                </template>
-            </el-table-column>
             <el-table-column label="到期时间" show-overflow-tooltip>
                 <template #default="scope">
                     {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
