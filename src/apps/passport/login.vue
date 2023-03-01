@@ -4,11 +4,18 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { ElMessage, FormInstance, FormRules } from "element-plus"
 
 import { NaApi } from "@/api"
+import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
 @Component
 export default class PassportLogin extends Vue {
+    public layout = layoutStore()
     public session = sessionStore()
+
+    public created() {
+        this.layout.getOption()
+        console.log(this.layout)
+    }
 
     @Ref
     public formRef!: FormInstance
@@ -70,7 +77,7 @@ export default class PassportLogin extends Vue {
                         登录
                     </el-button>
                 </div>
-                <div class="magic-btn">
+                <div v-if="layout.register" class="magic-btn">
                     <router-link to="/passport/register">
                         <el-button>注册</el-button>
                     </router-link>

@@ -24,6 +24,10 @@ export class ConfigModel extends HttpClient {
     public remove(id: number): Promise<null> {
         return this.delete("/config/" + id)
     }
+
+    public ui(): Promise<UIOption> {
+        return this.get("/config/ui")
+    }
 }
 
 export interface ConfigOrig {
@@ -42,4 +46,8 @@ export interface ConfigItem extends ConfigOrig {
 export interface ConfigPaged {
     Datasets: ConfigItem[]
     Datainfo?: unknown
+}
+
+export interface UIOption {
+    register: boolean
 }

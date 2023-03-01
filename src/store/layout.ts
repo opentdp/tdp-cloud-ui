@@ -1,9 +1,12 @@
 import { defineStore } from "pinia"
 
+import { NaApi } from "@/api"
+
 export default defineStore("layout", {
     state() {
         return {
             collapse: false,
+            register: false,
         }
     },
     actions: {
@@ -11,6 +14,12 @@ export default defineStore("layout", {
         setCollapse(data: boolean) {
             this.collapse = data
         },
+        // 获取前端配置
+        getOption() {
+            NaApi.config.ui().then(res => {
+                this.register = res.register
+            })
+        }
     },
     persist: {
         enabled: true,
