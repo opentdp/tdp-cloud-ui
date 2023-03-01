@@ -17,7 +17,7 @@ export default class LayoutIndex extends Vue {
 <template>
     <Navbar />
     <Sidebar />
-    <div class="container" :class="{ collapse: layout.collapse }">
+    <div class="body" :class="{ collapse: layout.collapse }">
         <router-view v-slot="{ Component }">
             <transition name="move" mode="out-in">
                 <component :is="Component" />
@@ -31,7 +31,7 @@ export default class LayoutIndex extends Vue {
 </template>
 
 <style lang="scss" scoped>
-.container {
+.body {
     position: absolute;
     top: 70px;
     right: 0;
@@ -47,7 +47,7 @@ export default class LayoutIndex extends Vue {
     transition: left 0.3s ease-in-out;
 
     &.collapse {
-        left: 65px;
+        left: 64px;
     }
 
     .copyright {
