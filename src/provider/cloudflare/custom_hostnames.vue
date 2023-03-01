@@ -23,10 +23,24 @@ export default class CloudflareCustomHostnames extends Vue {
 
     // 刷新记录
 
+    public saasError = 0
+
     public refresh() {
         this.loading = true
-        this.getFallbackOrigin().finally(async () => {
-            await this.getCustomHostnames()
+        this.getFallbackOrigin().then(
+            () => {
+                this.getCustomHostnames()
+            },
+            (e: Error) => {
+                const msg = e && e.message || ""
+                if (msg.indexOf("has not been granted") >= 0) {
+                    return this.saasError = 4
+                }
+                if (msg.indexOf("Resource not found") >= 0) {
+                    return this.saasError = 2
+                }
+            }
+        ).finally(() => {
             this.loading = false
         })
     }
@@ -77,7 +91,14 @@ export default class CloudflareCustomHostnames extends Vue {
 </script>
 
 <template>
-    <el-card v-loading="loading" shadow="hover">
+    <el-form-item v-if="saasError == 4">
+        <el-alert type="error">
+            <h3>错误：如需使用自定义主机名功能，请登录Cloudflare官网，添加一个支付方式。</h3>
+            <p>此错误不影响解析及加速功能，非必要可忽略。</p>
+        </el-alert>
+    </el-form-item>
+
+    <el-card v-else v-loading="loading" shadow="hover">
         <template #header>
             <div class="flex-between">
                 <b>自定义主机名</b> &nbsp; &nbsp;
@@ -132,7 +153,7 @@ export default class CloudflareCustomHostnames extends Vue {
                 <template #default="scope">
                     {{
                         scope.row.ssl.certificates &&
-                            dateFormat(scope.row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
+                        dateFormat(scope.row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
                     }}
                 </template>
             </el-table-column>
