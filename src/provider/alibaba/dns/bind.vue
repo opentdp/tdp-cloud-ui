@@ -1,40 +1,40 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-facing-decorator";
+import { Prop, Component, Vue } from "vue-facing-decorator"
 
-import { NaApi, AcApi } from "@/api";
-import { DomainItem } from "@/api/native/domain";
+import { NaApi, AcApi } from "@/api"
+import { DomainItem } from "@/api/native/domain"
 
 @Component({
     emits: ["change"],
 })
 export default class DnsBind extends Vue {
-    public loading = true;
+    public loading = true
 
     @Prop
-    public vendorId = 0;
+    public vendorId = 0
 
     @Prop
-    public boundList: Record<string, DomainItem> = {};
+    public boundList: Record<string, DomainItem> = {}
 
     // 初始化
 
     public created() {
-        AcApi.vendor(this.vendorId);
-        this.getDomainList();
+        AcApi.vendor(this.vendorId)
+        this.getDomainList()
     }
 
     // 获取列表
 
-    public domainList = [];
-    public domainCount = 0;
+    public domainList = []
+    public domainCount = 0
 
     async getDomainList() {
-        const res = await AcApi.alidns.describeDomainList();
+        const res = await AcApi.alidns.describeDomainList()
         if (res.Domains) {
-            this.domainList = res.Domain || [];
-            this.domainCount = res.TotalCount;
+            this.domainList = res.Domain || []
+            this.domainCount = res.TotalCount
         }
-        this.loading = false;
+        this.loading = false
     }
 
     // 绑定域名
@@ -49,20 +49,20 @@ export default class DnsBind extends Vue {
             CloudMeta: item,
             Description: "",
             Status: 1,
-        });
-        this.$emit("change");
+        })
+        this.$emit("change")
     }
 
     // 同步域名
 
     public syncDomian(item: any) {
-        const bd = this.boundList[item.DomainId];
+        const bd = this.boundList[item.DomainId]
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
             NSList: item.EffectiveDNS.join(","),
             CloudId: item.DomainId + "",
             CloudMeta: item,
-        });
+        })
     }
 }
 </script>
@@ -92,7 +92,9 @@ export default class DnsBind extends Vue {
                     <template v-if="scope.row.name_servers">
                         {{ scope.row.name_servers.join(",") }}
                     </template>
-                    <template v-else> Unknown </template>
+                    <template v-else>
+                        Unknown
+                    </template>
                 </template>
             </el-table-column>
             <el-table-column label="套餐" show-overflow-tooltip>
