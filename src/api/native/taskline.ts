@@ -29,7 +29,7 @@ export interface TasklineOrig {
     HostName: string
     WorkerId: string
     Request: ScriptPayload
-    Response: TasklineResponse
+    Response: TasklineResult
     Status: string
 }
 
@@ -45,7 +45,7 @@ export interface TasklinePaged {
     Datainfo?: unknown
 }
 
-export interface TasklineResponse {
+export interface TasklineResult {
     Error: string
     Output: string
 }

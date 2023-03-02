@@ -1,19 +1,19 @@
 import { HttpClient } from "@/api/basic/http"
 
 export class PassportModel extends HttpClient {
-    public login(rq: UserRequest): Promise<LoginResponse> {
+    public login(rq: UserLogin): Promise<LoginResult> {
         return this.post("/passport/login", rq)
     }
 
-    public register(rq: UserRequest): Promise<{ Id: number }> {
+    public register(rq: UserRegister): Promise<{ Id: number }> {
         return this.post("/passport/register", rq)
     }
 
-    public detail(): Promise<UserInfoResponse> {
+    public detail(): Promise<UserItem> {
         return this.get("/passport/info")
     }
 
-    public updateInfo(rq: UpdateInfoRequest): Promise<null> {
+    public update(rq: UserUpdate): Promise<null> {
         return this.patch("/passport/info", rq)
     }
 
@@ -22,18 +22,24 @@ export class PassportModel extends HttpClient {
     }
 }
 
-export interface UserRequest {
+export interface UserLogin {
     Username: string
     Password: string
 }
 
-export interface LoginResponse {
+export interface LoginResult {
     Username: string
     AppId: string
     Token: string
 }
 
-export interface UserInfoResponse {
+export interface UserRegister {
+    Username: string
+    Password: string
+    Email: string
+}
+
+export interface UserItem {
     Id: number
     Username: string
     AppId: string
@@ -41,18 +47,13 @@ export interface UserInfoResponse {
     Description: string
 }
 
-export interface UpdateInfoRequest {
+export interface UserUpdate {
     Username: string
     Password: string
     Password2: string
     Email: string
     Description: string
     OldPassword: string
-}
-
-export interface UpdatePasswordRequest {
-    OldPassword: string
-    NewPassword: string
 }
 
 export interface UserSummary {

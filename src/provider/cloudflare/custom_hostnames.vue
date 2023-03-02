@@ -153,7 +153,7 @@ export default class CloudflareCustomHostnames extends Vue {
                 <template #default="scope">
                     {{
                         scope.row.ssl.certificates &&
-                        dateFormat(scope.row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
+                            dateFormat(scope.row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
                     }}
                 </template>
             </el-table-column>

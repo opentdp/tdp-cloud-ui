@@ -66,7 +66,7 @@ export default class PassportInfo extends Vue {
                 ElMessage.error("请检查表单")
                 return false
             }
-            NaApi.passport.updateInfo(this.formModel)
+            NaApi.passport.update(this.formModel)
         })
     }
 }
