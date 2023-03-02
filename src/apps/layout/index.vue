@@ -25,7 +25,10 @@ export default class LayoutIndex extends Vue {
         </router-view>
         <div class="flex-auto" />
         <div class="copyright">
-            <small>Powered by TDP Cloud</small>
+            Powered by
+            <el-link href="https://apps.rehiy.com/tdp-cloud/" target="_blank" :underline="false">
+                TDP Cloud
+            </el-link>
         </div>
     </div>
 </template>
@@ -51,9 +54,11 @@ export default class LayoutIndex extends Vue {
     }
 
     .copyright {
+        --el-font-size-base: 75%;
         user-select: none;
         padding: 20px 0 10px;
         color: var(--el-color-info);
+        font-size: var(--el-font-size-base);
         text-align: center;
         line-height: 1;
     }

@@ -98,15 +98,6 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("@/apps/passport/info.vue"),
             },
-            {
-                path: "/passport/password",
-                name: "passport-password",
-                meta: {
-                    title: "修改密码",
-                    login: true,
-                },
-                component: () => import("@/apps/passport/password.vue"),
-            },
             //////
             {
                 path: "/script/list",

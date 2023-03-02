@@ -73,16 +73,8 @@ export default class LayoutNavbar extends Vue {
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item>
-                                <el-link href="https://apps.rehiy.com/tdp-cloud/" target="_blank" :underline="false">
-                                    项目主页
-                                </el-link>
-                            </el-dropdown-item>
                             <el-dropdown-item command="user">
                                 个人中心
-                            </el-dropdown-item>
-                            <el-dropdown-item command="password">
-                                修改密码
                             </el-dropdown-item>
                             <el-dropdown-item command="delcache">
                                 清理缓存

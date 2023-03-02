@@ -4,8 +4,6 @@ import { Component, Ref, Vue } from "vue-facing-decorator"
 import { ElMessage, FormRules, FormInstance } from "element-plus"
 
 import { NaApi } from "@/api"
-import { UserInfoResponse } from "@/api/native/passport"
-
 import sessionStore from "@/store/session"
 
 @Component
@@ -24,6 +22,7 @@ export default class PassportInfo extends Vue {
     async getUserInfo() {
         const res = await NaApi.passport.detail()
         // 同步表单
+        this.formModel.Username = res.Username
         this.formModel.Email = res.Email
         this.formModel.Description = res.Description
         this.loading = false
@@ -35,27 +34,30 @@ export default class PassportInfo extends Vue {
     public formRef!: FormInstance
 
     public formModel = {
+        Username: "",
+        Password: "",
+        Password2: "",
         Email: "",
         Description: "",
+        OldPassword: "",
     }
 
     public formRules: FormRules = {
-        Email: [
-            { required: true, message: "不能为空" },
-        ],
-        Description: [
-            { required: true, message: "不能为空" },
+        Username: [{ required: true, message: "不能为空" },],
+        Password2: [
             {
                 validator: (rule, value, callback) => {
-                    if (value.trim().length == 0) {
-                        callback(new Error("不能为空"))
+                    if (this.formModel.Password != this.formModel.Password2) {
+                        callback(new Error("两次密码不一致"))
                     } else {
                         callback()
                     }
-                },
-                trigger: "blur"
+                }
             },
         ],
+        Email: [{ required: true, message: "不能为空" },],
+        Description: [{ required: true, message: "不能为空" },],
+        OldPassword: [{ required: true, message: "不能为空" }],
     }
 
     public formSubmit(form: FormInstance | undefined) {
@@ -108,12 +110,21 @@ export default class PassportInfo extends Vue {
                             <span>账户编辑</span>
                         </div>
                     </template>
-                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="60px">
-                        <el-form-item label="用户名">
-                            <b>{{ session.username }}</b>
-                        </el-form-item>
+                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="70px">
                         <el-form-item label="App Id">
                             {{ session.appid }}
+                        </el-form-item>
+                        <el-form-item prop="Username" label="用户名">
+                            <el-input v-model="formModel.Username" />
+                        </el-form-item>
+                        <el-form-item prop="OldPassword" label="原密码">
+                            <el-input v-model="formModel.OldPassword" show-password />
+                        </el-form-item>
+                        <el-form-item prop="Password" label="新密码">
+                            <el-input v-model="formModel.Password" show-password />
+                        </el-form-item>
+                        <el-form-item prop="Password2" label="确认密码">
+                            <el-input v-model="formModel.Password2" show-password />
                         </el-form-item>
                         <el-form-item prop="Email" label="邮箱">
                             <el-input v-model="formModel.Email" />
