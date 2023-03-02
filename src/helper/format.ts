@@ -2,6 +2,10 @@
  * 工具仓库
  */
 
+export function codeTrim(s: string) {
+    return s.replace(/\n {8}/g, "\n").trim()
+}
+
 export function bytesToSize(a: number, d = 2) {
     if (a == 0) {
         return "0 Bytes"

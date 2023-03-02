@@ -1,5 +1,5 @@
 /**
- * 中后台组件库
+ * 中后台组件
  * https://element-plus.org/zh-CN
  * https://github.com/rehiy/vue-admin-template
  */

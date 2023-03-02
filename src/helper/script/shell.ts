@@ -1,9 +1,6 @@
 import { NaApi } from "@/api"
 import { ScriptPayload } from "@/api/native/typings"
-
-function trim(s: string) {
-    return s.replace(/\n {8}/g, "\n").trim()
-}
+import { codeTrim } from "@/helper/format"
 
 // 安装 TDP-Worker
 
@@ -11,7 +8,7 @@ export const installWorker: ScriptPayload = {
     Name: "安装 TDP-Worker",
     Username: "root",
     Description: "",
-    Content: trim(`
+    Content: codeTrim(`
         export TDP_REMOTE_URL="${NaApi.workhub.getRegisterURL()}"
         wget -qO- https://apps.rehiy.com/tdp-cloud/worker-linux | sh -
     `),
