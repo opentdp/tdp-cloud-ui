@@ -73,18 +73,22 @@ export default class CertbotList extends Vue {
                         {{ CaTypeList[scope.row.CaType].Name }}
                     </template>
                 </el-table-column>
-                <el-table-column label="状态" show-overflow-tooltip>
+                <el-table-column label="证书" show-overflow-tooltip>
                     <template #default="scope">
-                        {{ scope.row.History?.event ? JobStatus[scope.row.History.event] : "-" }}
+                        <router-link v-if="scope.row.History?.event != 'cached'" :to="'/certbot/detail/' + scope.row.Id">
+                            详情
+                        </router-link>
+                        <router-link v-else-if="scope.row.History?.event != 'obtained'"
+                            :to="'/certbot/detail/' + scope.row.Id">
+                            详情
+                        </router-link>
+                        <div v-else>
+                            {{ scope.row.History?.event ? JobStatus[scope.row.History.event] : "未知" }}
+                        </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
+                <el-table-column label="操作" width="90" align="center">
                     <template #default="scope">
-                        <router-link :to="'/certbot/detail/' + scope.row.Id">
-                            <el-button link type="primary" icon="View">
-                                管理
-                            </el-button>
-                        </router-link>
                         <el-popconfirm title="确定删除?" @confirm="deleteCertbot(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">

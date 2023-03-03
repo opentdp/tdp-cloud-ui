@@ -33,10 +33,11 @@ export const CaTypeList: Record<string, { Name: string, Eab: number }> = {
 }
 
 export const JobStatus: Record<string, string> = {
-    "queued": "准备中",
-    "cert_obtaining": "签发中",
-    "cert_failed": "签发失败",
-    "cert_obtained": "已签发",
+    "queued": "准备中", //刚提交
+    "cached": "已签发", //从缓存加载
+    "obtaining": "签发中",
+    "failed": "签发失败",
+    "obtained": "已签发",
 }
 
 export interface CertbotOrig {
