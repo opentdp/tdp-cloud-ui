@@ -6,12 +6,14 @@ import { ElMessage, FormRules, FormInstance } from "element-plus"
 import { NaApi } from "@/api"
 import { CaTypeList } from "@/api/native/certbot"
 import { DomainItem } from "@/api/native/domain"
+import sessionStore from "@/store/session"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class CertbotCreate extends Vue {
+    public session = sessionStore()
     public CaTypeList = CaTypeList
 
     // 域名列表
@@ -83,6 +85,7 @@ export default class CertbotCreate extends Vue {
 
     public open() {
         this.dailog = true
+        this.formModel.Email = this.session.Email
         // 加载数据
         this.domainList.length == 0 && this.getDomainList()
     }
