@@ -37,9 +37,7 @@ export default class PassportLogin extends Vue {
                 return false
             }
             const res = await NaApi.passport.login(this.formModel)
-            this.session.username = res.Username
-            this.session.appid = res.AppId
-            this.session.token = res.Token
+            Object.assign(this.session, res)
             this.$router.push("/")
         })
     }
@@ -77,7 +75,7 @@ export default class PassportLogin extends Vue {
                         登录
                     </el-button>
                 </div>
-                <div v-if="layout.register" class="magic-btn">
+                <div v-if="layout.Register" class="magic-btn">
                     <router-link to="/passport/register">
                         <el-button>注册</el-button>
                     </router-link>

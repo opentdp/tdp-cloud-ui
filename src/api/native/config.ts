@@ -49,5 +49,5 @@ export interface ConfigPaged {
 }
 
 export interface UIOption {
-    register: boolean
+    Register: boolean
 }

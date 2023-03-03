@@ -17,7 +17,7 @@ export default class LayoutIndex extends Vue {
 <template>
     <Navbar />
     <Sidebar />
-    <div class="body" :class="{ collapse: layout.collapse }">
+    <div class="body" :class="{ collapse: layout.Collapse }">
         <router-view v-slot="{ Component }">
             <transition name="move" mode="out-in">
                 <component :is="Component" />

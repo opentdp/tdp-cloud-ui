@@ -2,7 +2,7 @@
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { CaTypeList, CertbotItem } from "@/api/native/certbot"
+import { CaTypeList, JobStatus, CertbotItem } from "@/api/native/certbot"
 
 import CertbotCreate from "./certbot_create.vue"
 
@@ -11,6 +11,7 @@ import CertbotCreate from "./certbot_create.vue"
 })
 export default class CertbotList extends Vue {
     public CaTypeList = CaTypeList
+    public JobStatus = JobStatus
 
     public loading = true
 
@@ -74,7 +75,7 @@ export default class CertbotList extends Vue {
                 </el-table-column>
                 <el-table-column label="状态" show-overflow-tooltip>
                     <template #default="scope">
-                        {{ scope.row.History?.event || "-" }}
+                        {{ scope.row.History?.event ? JobStatus[scope.row.History.event] : "-" }}
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">

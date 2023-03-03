@@ -29,7 +29,14 @@ export const CaTypeList: Record<string, { Name: string, Eab: number }> = {
     "sslcom-ecc": { Name: "SSL.com ECC", Eab: 2 }, // Eab 必填
     "sslcom-rsa": { Name: "SSL.com RSA", Eab: 2 }, // Eab 必填
     "zerossl": { Name: "ZeroSSL", Eab: 1 }, // Eab 选填
-    "debug": { Name: "测试证书", Eab: 0 },
+    "debug": { Name: "Debug", Eab: 0 },
+}
+
+export const JobStatus: Record<string, string> = {
+    "queued": "准备中",
+    "cert_obtaining": "签发中",
+    "cert_failed": "签发失败",
+    "cert_obtained": "已签发",
 }
 
 export interface CertbotOrig {
@@ -39,6 +46,7 @@ export interface CertbotOrig {
     CaType: string
     EabKeyId: string
     EabMacKey: string
+    History: string
 }
 
 export interface CertbotItem extends CertbotOrig {

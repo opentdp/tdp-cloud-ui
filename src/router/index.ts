@@ -15,7 +15,7 @@ router.beforeEach((to, from, next) => {
 
     const session = sessionStore()
 
-    const isLogin = !!session.token
+    const isLogin = !!session.Token
 
     if (to.meta.login && !isLogin) {
         next("/passport/login")

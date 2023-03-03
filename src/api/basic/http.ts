@@ -50,8 +50,8 @@ export class HttpClient {
         if (req.header) {
             Object.assign(headers, req.header)
         }
-        if (this.session.token) {
-            headers.Authorization = this.session.token
+        if (this.session.Token) {
+            headers.Authorization = this.session.Token
         }
         // 构造请求参数
         const request: RequestInit = {

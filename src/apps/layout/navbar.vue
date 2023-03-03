@@ -21,7 +21,7 @@ export default class LayoutNavbar extends Vue {
 
     // 侧边栏折叠
     public collapseChange() {
-        this.layout.setCollapse(!this.layout.collapse)
+        this.layout.setCollapse(!this.layout.Collapse)
     }
 
     // 用户名下拉菜单选择事件
@@ -50,7 +50,7 @@ export default class LayoutNavbar extends Vue {
     <div class="header">
         <div class="collapse-btn" @click="collapseChange">
             <el-icon :size="30">
-                <Fold v-if="!layout.collapse" />
+                <Fold v-if="!layout.Collapse" />
                 <Expand v-else />
             </el-icon>
         </div>
@@ -66,7 +66,7 @@ export default class LayoutNavbar extends Vue {
                 <!-- 用户名下拉菜单 -->
                 <el-dropdown class="user-name" trigger="click" @command="userDropdown">
                     <span class="el-dropdown-link">
-                        &nbsp;{{ session.username }}&nbsp;
+                        &nbsp;{{ session.Username }}&nbsp;
                         <el-icon>
                             <CaretBottom />
                         </el-icon>

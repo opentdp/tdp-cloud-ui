@@ -3,9 +3,10 @@ import { defineStore } from "pinia"
 export default defineStore("session", {
     state() {
         return {
-            username: "",
-            appid: "",
-            token: "",
+            Username: "",
+            AppId: "",
+            Token: "",
+            Email: "",
         }
     },
     actions: {

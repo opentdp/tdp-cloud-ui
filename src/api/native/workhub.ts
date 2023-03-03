@@ -21,7 +21,7 @@ export class WorkhubModel extends HttpClient {
 
     public getRegisterURL() {
         const origin = location.origin.replace(/^http/, "ws")
-        const wsurl = "/wsi/" + this.session.appid + "/workhub"
+        const wsurl = "/wsi/" + this.session.AppId + "/workhub"
         return origin + wsurl
     }
 }

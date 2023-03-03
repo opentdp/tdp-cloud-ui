@@ -95,7 +95,7 @@ export default class PassportInfo extends Vue {
                             <img src="@/assets/img/avatar.jpg">
                         </div>
                         <div class="info-name">
-                            {{ session.username }}
+                            {{ session.Username }}
                         </div>
                         <div class="info-desc">
                             {{ formModel.Description }}
@@ -112,7 +112,7 @@ export default class PassportInfo extends Vue {
                     </template>
                     <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="70px">
                         <el-form-item label="App Id">
-                            {{ session.appid }}
+                            {{ session.AppId }}
                         </el-form-item>
                         <el-form-item prop="Username" label="用户名">
                             <el-input v-model="formModel.Username" />

@@ -37,7 +37,8 @@ export default class CertbotCreate extends Vue {
         Domain: "",
         CaType: "",
         EabKeyId: "",
-        EabMacKey: ""
+        EabMacKey: "",
+        History: `{"event":"queued"}`,
     }
 
     public formRules: FormRules = {
