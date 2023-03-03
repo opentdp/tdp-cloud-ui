@@ -72,6 +72,11 @@ export default class CertbotList extends Vue {
                         {{ CaTypeList[scope.row.CaType].Name }}
                     </template>
                 </el-table-column>
+                <el-table-column label="状态" show-overflow-tooltip>
+                    <template #default="scope">
+                        {{ scope.row.History?.event || "-" }}
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <router-link :to="'/certbot/detail/' + scope.row.Id">
