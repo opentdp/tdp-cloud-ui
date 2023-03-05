@@ -2,23 +2,23 @@ import { HttpClient } from "@/api/basic/http"
 
 export class CertbotModel extends HttpClient {
     public list(): Promise<CertbotPaged> {
-        return this.get("/certbot")
+        return this.post("/certbot/list", {})
     }
 
     public detail(id: number): Promise<CertbotItem & { Cert: Certificate }> {
-        return this.get("/certbot/" + id)
+        return this.post("/certbot/detail", { Id: id })
     }
 
     public create(rq: CertbotOrig): Promise<{ Id: number }> {
-        return this.post("/certbot", rq)
+        return this.post("/certbot/create", rq)
     }
 
     public update(rq: Partial<CertbotItem>): Promise<null> {
-        return this.patch("/certbot/" + rq.Id, rq)
+        return this.post("/certbot/update", rq)
     }
 
     public remove(id: number): Promise<null> {
-        return this.delete("/certbot/" + id)
+        return this.post("/certbot/delete", { Id: id })
     }
 }
 

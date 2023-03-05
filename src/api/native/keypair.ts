@@ -2,23 +2,23 @@ import { HttpClient } from "@/api/basic/http"
 
 export class KeypairModel extends HttpClient {
     public list(): Promise<KeypairPaged> {
-        return this.get("/keypair")
+        return this.post("/keypair/list", {})
     }
 
     public detail(name: string): Promise<KeypairItem> {
-        return this.get("/keypair/" + name)
+        return this.post("/keypair/detail", { Name: name })
     }
 
     public create(rq: KeypairOrig): Promise<{ Id: number }> {
-        return this.post("/keypair", rq)
+        return this.post("/keypair/create", rq)
     }
 
     public update(rq: Partial<KeypairItem>): Promise<null> {
-        return this.patch("/keypair/" + rq.Id, rq)
+        return this.post("/keypair/update", rq)
     }
 
     public remove(id: number): Promise<null> {
-        return this.delete("/keypair/" + id)
+        return this.post("/keypair/delete", { Id: id })
     }
 }
 
