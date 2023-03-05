@@ -47,15 +47,22 @@ export default class SwasBind extends Vue {
             }
             // 获取当前大区实例
             const rs2 = await AcApi.swas.describeInstances(regionId)
+            const rsPlan = await AcApi.swas.describeListPlans(regionId)
+
             const { TotalCount, Instances } = rs2
             if (TotalCount && Instances) {
-                const temp = Instances.map((i: any) => ({
-                    ...i,
-                    RegionName: LocalName,
-                }))
+                const temp = Instances.map((i: any) => {
+                    const { PlanId } = i
+                    const instancePlan = rsPlan.Plans.find((x: any) => x.PlanId === PlanId)
+                    return ({
+                        ...i,
+                        ...instancePlan,
+                        RegionName: LocalName,
+                    })
+                })
+
                 this.instanceList = this.instanceList.concat(temp)
                 this.instanceCount += rs2.TotalCount
-                console.log("this.instanceList", temp, this.instanceList)
             }
             this.loading--
         })
@@ -137,6 +144,17 @@ export default class SwasBind extends Vue {
             <el-table-column prop="RegionName" label="地域" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.RegionName }}
+                </template>
+            </el-table-column>
+            <el-table-column prop="Core" label="CPU" sortable show-overflow-tooltip />
+            <el-table-column prop="Memory" label="内存" sortable show-overflow-tooltip>
+                <template #default="scope">
+                    {{ scope.row.Memory}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="PublicIpAddress" label="外网 IP" show-overflow-tooltip>
+                <template #default="scope">
+                    {{ scope.row?.PublicIpAddress || "--" }}
                 </template>
             </el-table-column>
             <el-table-column prop="ExpiredTime" label="到期时间" sortable show-overflow-tooltip>

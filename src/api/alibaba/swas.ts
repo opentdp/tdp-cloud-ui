@@ -23,6 +23,16 @@ export class SwasModel extends AlibabaClient {
             },
         })
     }
+    public describeListPlans(region: string): Promise<any> {
+        return this.bus({
+            Action: 'ListPlans',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+            },
+        })
+    }
+    
 }
 
 export const InstanceStateMap: Record<string, string> = {
