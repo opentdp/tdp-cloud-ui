@@ -77,10 +77,10 @@ export default class LighthouseFirewall extends Vue {
             </div>
         </template>
         <el-table :data="firewallRuleList" table-layout="fixed">
-            <el-table-column prop="CidrBlock" label="来源" show-overflow-tooltip fixed />
-            <el-table-column prop="Protocol" label="协议" show-overflow-tooltip />
-            <el-table-column prop="Port" label="端口" show-overflow-tooltip />
-            <el-table-column prop="Action" label="策略" show-overflow-tooltip />
+            <el-table-column prop="CidrBlock" label="来源" fixed sortable show-overflow-tooltip />
+            <el-table-column prop="Protocol" label="协议" sortable show-overflow-tooltip />
+            <el-table-column prop="Port" label="端口" sortable show-overflow-tooltip />
+            <el-table-column prop="Action" label="策略" sortable show-overflow-tooltip />
             <el-table-column prop="FirewallRuleDescription" label="备注" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.FirewallRuleDescription }}

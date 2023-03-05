@@ -54,9 +54,9 @@ export default class DomainList extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-                <el-table-column prop="Name" label="域名" show-overflow-tooltip fixed />
-                <el-table-column prop="NSList" label="NS 服务器" show-overflow-tooltip />
-                <el-table-column prop="Model" label="类型" show-overflow-tooltip>
+                <el-table-column prop="Name" label="域名" fixed sortable show-overflow-tooltip />
+                <el-table-column prop="NSList" label="NS 服务器" sortable show-overflow-tooltip />
+                <el-table-column prop="Model" label="类型" sortable show-overflow-tooltip>
                     <template #default="scope">
                         {{ DomainModels[scope.row.Model] }}
                     </template>

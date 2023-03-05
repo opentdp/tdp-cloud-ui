@@ -67,9 +67,9 @@ export default class ScriptList extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="scriptList">
-                <el-table-column prop="Name" label="名称" show-overflow-tooltip fixed />
-                <el-table-column prop="CommandType" label="类型" show-overflow-tooltip />
-                <el-table-column prop="Content" label="脚本" show-overflow-tooltip />
+                <el-table-column prop="Name" label="名称" fixed sortable show-overflow-tooltip />
+                <el-table-column prop="CommandType" label="类型" sortable show-overflow-tooltip />
+                <el-table-column prop="Content" label="脚本" sortable show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <el-button link type="primary" icon="Edit" @click="updateModal.open(scope.row)">

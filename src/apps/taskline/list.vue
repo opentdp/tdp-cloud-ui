@@ -62,11 +62,11 @@ export default class TasklineList extends Vue {
                 </div>
             </template>
             <el-table :data="historyList" @expand-change="expandChange">
-                <el-table-column prop="Id" label="任务ID" show-overflow-tooltip fixed />
-                <el-table-column prop="HostName" label="主机名" show-overflow-tooltip />
-                <el-table-column prop="Subject" label="任务名称" show-overflow-tooltip />
-                <el-table-column prop="Status" label="执行状态" show-overflow-tooltip />
-                <el-table-column label="更新时间" show-overflow-tooltip>
+                <el-table-column prop="Id" label="任务ID" fixed sortable show-overflow-tooltip />
+                <el-table-column prop="HostName" label="主机名" sortable show-overflow-tooltip />
+                <el-table-column prop="Subject" label="任务名称" sortable show-overflow-tooltip />
+                <el-table-column prop="Status" label="执行状态" sortable show-overflow-tooltip />
+                <el-table-column prop="UpdatedAt" label="更新时间" sortable show-overflow-tooltip>
                     <template #default="scope">
                         {{ dateFormat(scope.row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
                     </template>

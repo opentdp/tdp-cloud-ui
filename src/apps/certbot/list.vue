@@ -66,19 +66,19 @@ export default class CertbotList extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="certbotList" table-layout="fixed">
-                <el-table-column prop="Domain" label="域名" show-overflow-tooltip fixed />
-                <el-table-column prop="Email" label="邮箱" show-overflow-tooltip />
-                <el-table-column prop="CaType" label="CA" show-overflow-tooltip>
+                <el-table-column prop="Domain" label="域名" fixed sortable show-overflow-tooltip />
+                <el-table-column prop="Email" label="邮箱" sortable show-overflow-tooltip />
+                <el-table-column prop="CaType" label="CA" sortable show-overflow-tooltip>
                     <template #default="scope">
                         {{ CaTypeList[scope.row.CaType].Name }}
                     </template>
                 </el-table-column>
-                <el-table-column label="证书" show-overflow-tooltip>
+                <el-table-column prop="History" label="证书" show-overflow-tooltip>
                     <template #default="scope">
-                        <router-link v-if="scope.row.History?.event != 'cached'" :to="'/certbot/detail/' + scope.row.Id">
+                        <router-link v-if="scope.row.History?.event == 'cached'" :to="'/certbot/detail/' + scope.row.Id">
                             详情
                         </router-link>
-                        <router-link v-else-if="scope.row.History?.event != 'obtained'"
+                        <router-link v-else-if="scope.row.History?.event == 'obtained'"
                             :to="'/certbot/detail/' + scope.row.Id">
                             详情
                         </router-link>

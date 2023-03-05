@@ -75,18 +75,14 @@ export default class CloudflareBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column prop="name" label="域名" show-overflow-tooltip fixed />
-            <el-table-column label="状态" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.status }}
-                </template>
-            </el-table-column>
-            <el-table-column label="接入方式" show-overflow-tooltip>
+            <el-table-column prop="name" label="域名" fixed sortable show-overflow-tooltip />
+            <el-table-column prop="status" label="状态" sortable show-overflow-tooltip />
+            <el-table-column prop="type" label="接入方式" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.type == "full" ? "NS" : scope.row.host?.name }}
                 </template>
             </el-table-column>
-            <el-table-column label="NS 服务器" show-overflow-tooltip>
+            <el-table-column prop="name_servers" label="NS 服务器" show-overflow-tooltip>
                 <template #default="scope">
                     <template v-if="scope.row.name_servers">
                         {{ scope.row.name_servers.join(",") }}
@@ -96,7 +92,7 @@ export default class CloudflareBind extends Vue {
                     </template>
                 </template>
             </el-table-column>
-            <el-table-column label="套餐" show-overflow-tooltip>
+            <el-table-column prop="plan" label="套餐" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.plan.name }}
                 </template>

@@ -78,15 +78,15 @@ export default class DnsBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column prop="DomainName" label="域名" show-overflow-tooltip fixed />
-            <el-table-column prop="RecordCount" label="记录数" />
-            <el-table-column label="NS 服务器" show-overflow-tooltip>
+            <el-table-column prop="DomainName" label="域名" fixed sortable show-overflow-tooltip />
+            <el-table-column prop="RecordCount" label="记录数" sortable />
+            <el-table-column prop="DnsServers" label="NS 服务器" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.DnsServers.DnsServer.join(",") }}
                 </template>
             </el-table-column>
-            <el-table-column prop="VersionCode" label="套餐" show-overflow-tooltip />
-            <el-table-column label="接入时间" show-overflow-tooltip>
+            <el-table-column prop="VersionCode" label="套餐" sortable show-overflow-tooltip />
+            <el-table-column prop="CreateTimestamp" label="接入时间" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ dateFormat(scope.row.CreateTimestamp, "yyyy-MM-dd hh:mm:ss") }}
                 </template>

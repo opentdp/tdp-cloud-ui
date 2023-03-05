@@ -142,14 +142,14 @@ export default class CloudflareCustomHostnames extends Vue {
 
         <el-divider />
         <el-table :data="customHostnames" table-layout="fixed">
-            <el-table-column prop="hostname" label="主机记录" show-overflow-tooltip fixed />
-            <el-table-column prop="status" label="域名状态" />
-            <el-table-column label="证书状态">
+            <el-table-column prop="hostname" label="主机记录" fixed sortable show-overflow-tooltip />
+            <el-table-column prop="status" label="域名状态" sortable show-overflow-tooltip />
+            <el-table-column prop="ssl.status" label="证书状态" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.ssl.status }}
                 </template>
             </el-table-column>
-            <el-table-column label="证书有效期">
+            <el-table-column prop="ssl.certificates" label="证书有效期" show-overflow-tooltip>
                 <template #default="scope">
                     {{
                         scope.row.ssl.certificates &&

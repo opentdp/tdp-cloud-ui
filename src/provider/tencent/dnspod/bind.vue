@@ -80,21 +80,21 @@ export default class DnspodBind extends Vue {
             </div>
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column prop="Name" label="域名" show-overflow-tooltip fixed />
-            <el-table-column label="状态" show-overflow-tooltip>
+            <el-table-column prop="Name" label="域名" fixed sortable show-overflow-tooltip />
+            <el-table-column prop="Status" label="状态" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ DomainStatusMap[scope.row.Status] }}
                 </template>
             </el-table-column>
-            <el-table-column prop="RecordCount" label="记录数" show-overflow-tooltip />
+            <el-table-column prop="RecordCount" label="记录数" sortable show-overflow-tooltip />
             <el-table-column prop="EffectiveDNS" label="NS 服务器" show-overflow-tooltip />
-            <el-table-column label="NS 记录" show-overflow-tooltip>
+            <el-table-column prop="DNSStatus" label="NS 记录" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.DNSStatus ? "错误" : "正常" }}
                 </template>
             </el-table-column>
-            <el-table-column prop="GradeTitle" label="套餐" show-overflow-tooltip />
-            <el-table-column prop="VipEndAt" label="套餐有效期" show-overflow-tooltip />
+            <el-table-column prop="GradeTitle" label="套餐" sortable show-overflow-tooltip />
+            <el-table-column prop="VipEndAt" label="有效期" sortable show-overflow-tooltip />
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
                     <el-button v-if="boundList[scope.row.DomainId]" link icon="View" @click="syncDomian(scope.row)">

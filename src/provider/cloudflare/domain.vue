@@ -74,19 +74,19 @@ export default class CloudflareDomain extends Vue {
             </div>
         </template>
         <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
-            <el-table-column label="主机记录" show-overflow-tooltip fixed>
+            <el-table-column prop="zone_name" label="主机记录" fixed sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.name.replace(scope.row.zone_name, "").replace(/\.$/, "") || "@" }}
                 </template>
             </el-table-column>
-            <el-table-column prop="type" label="记录类型" show-overflow-tooltip />
-            <el-table-column prop="content" label="记录值" show-overflow-tooltip min-width="120" />
-            <el-table-column label="加速" show-overflow-tooltip>
+            <el-table-column prop="type" label="记录类型" sortable show-overflow-tooltip />
+            <el-table-column prop="content" label="记录值" sortable show-overflow-tooltip min-width="120" />
+            <el-table-column prop="proxied" label="加速" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.proxied ? "已启用" : "已禁用" }}
                 </template>
             </el-table-column>
-            <el-table-column prop="ttl" label="TTL" show-overflow-tooltip>
+            <el-table-column prop="ttl" label="TTL" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.ttl > 1 ? scope.row.ttl : "自动" }}
                 </template>

@@ -81,17 +81,18 @@ export default class MachineList extends Vue {
             </template>
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
                 @current-change="tableRowChange">
-                <el-table-column prop="HostName" label="名称" show-overflow-tooltip fixed />
-                <el-table-column prop="IpAddress" label="公网 IP" show-overflow-tooltip />
-                <el-table-column prop="Region" label="地域" show-overflow-tooltip />
-                <el-table-column prop="Model" label="类型" show-overflow-tooltip>
+                <el-table-column prop="HostName" label="名称" fixed sortable show-overflow-tooltip />
+                <el-table-column prop="IpAddress" label="公网 IP" sortable show-overflow-tooltip />
+                <el-table-column prop="Region" label="地域" sortable show-overflow-tooltip />
+                <el-table-column prop="Model" label="类型" sortable show-overflow-tooltip>
                     <template #default="scope">
                         {{ MachineModels[scope.row.Model] }}
                     </template>
                 </el-table-column>
-                <el-table-column label="土豆片" show-overflow-tooltip>
+                <el-table-column prop="WorkerId" label="土豆片" show-overflow-tooltip>
                     <template #default="scope">
-                        <el-button v-if="scope.row.WorkerId.length == 32 && workerList[scope.row.WorkerId]" link type="success">
+                        <el-button v-if="scope.row.WorkerId.length == 32 && workerList[scope.row.WorkerId]" link
+                            type="success">
                             已连接
                         </el-button>
                         <el-button v-else-if="scope.row.WorkerId.length == 32" link type="danger">

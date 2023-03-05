@@ -84,17 +84,17 @@ export default class WorkerBind extends Vue {
             </div>
         </template>
         <el-table ref="tableRef" :data="workerList" highlight-current-row>
-            <el-table-column label="主机名" show-overflow-tooltip fixed>
+            <el-table-column prop="WorkerMeta.HostName" label="主机名" fixed show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.WorkerMeta.HostName }}
                 </template>
             </el-table-column>
-            <el-table-column label="公网 IP" show-overflow-tooltip>
+            <el-table-column prop="WorkerMeta.IpAddress" label="公网 IP" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.WorkerMeta.IpAddress }}
                 </template>
             </el-table-column>
-            <el-table-column label="CPU" show-overflow-tooltip>
+            <el-table-column prop="WorkerMeta.CpuCore" label="CPU" show-overflow-tooltip>
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="+scope.row.WorkerMeta.CpuPercent[0].toFixed(2)" status="success">
@@ -103,7 +103,7 @@ export default class WorkerBind extends Vue {
                     </el-progress>
                 </template>
             </el-table-column>
-            <el-table-column label="内存" show-overflow-tooltip>
+            <el-table-column prop="WorkerMeta.MemoryTotal" label="内存" show-overflow-tooltip>
                 <template #default="scope">
                     <el-progress :text-inside="true" :stroke-width="26"
                         :percentage="scope.row.WorkerMeta.MemoryUsed / scope.row.WorkerMeta.MemoryTotal * 100"
@@ -113,12 +113,12 @@ export default class WorkerBind extends Vue {
                     </el-progress>
                 </template>
             </el-table-column>
-            <el-table-column label="系统" show-overflow-tooltip>
+            <el-table-column prop="WorkerMeta.OS" label="系统" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.WorkerMeta.OS }}
                 </template>
             </el-table-column>
-            <el-table-column label="运行时长" show-overflow-tooltip>
+            <el-table-column prop="WorkerMeta.Uptime" label="运行时长" show-overflow-tooltip>
                 <template #default="scope">
                     {{ (scope.row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
                 </template>

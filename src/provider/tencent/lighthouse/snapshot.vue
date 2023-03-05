@@ -87,23 +87,23 @@ export default class LighthouseSnapshot extends Vue {
             </div>
         </template>
         <el-table :data="snapshotList.SnapshotSet" table-layout="fixed">
-            <el-table-column prop="SnapshotName" label="名称" show-overflow-tooltip fixed />
-            <el-table-column label="容量" show-overflow-tooltip>
+            <el-table-column prop="SnapshotName" label="名称" fixed sortable show-overflow-tooltip />
+            <el-table-column prop="DiskSize" label="容量" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.DiskSize + "GB" }}
                 </template>
             </el-table-column>
-            <el-table-column label="进度" show-overflow-tooltip>
+            <el-table-column prop="Percent" label="进度" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.Percent + "%" }}
                 </template>
             </el-table-column>
-            <el-table-column label="状态" show-overflow-tooltip>
+            <el-table-column prop="LatestOperationState" label="状态" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.LatestOperationState }}
                 </template>
             </el-table-column>
-            <el-table-column label="创建时间" show-overflow-tooltip>
+            <el-table-column prop="CreatedTime" label="创建时间" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ dateFormat(scope.row.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
                 </template>

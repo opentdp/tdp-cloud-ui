@@ -85,12 +85,12 @@ export default class DnspodDomain extends Vue {
             </div>
         </template>
         <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
-            <el-table-column prop="Name" label="主机记录" show-overflow-tooltip fixed />
-            <el-table-column prop="Type" label="记录类型" show-overflow-tooltip />
-            <el-table-column prop="Line" label="线路类型" show-overflow-tooltip />
-            <el-table-column prop="Value" label="记录值" show-overflow-tooltip />
-            <el-table-column prop="TTL" label="TTL" show-overflow-tooltip />
-            <el-table-column label="状态" show-overflow-tooltip>
+            <el-table-column prop="Name" label="主机记录" fixed sortable show-overflow-tooltip />
+            <el-table-column prop="Type" label="记录类型" sortable show-overflow-tooltip />
+            <el-table-column prop="Line" label="线路类型" sortable show-overflow-tooltip />
+            <el-table-column prop="Value" label="记录值" sortable show-overflow-tooltip />
+            <el-table-column prop="TTL" label="TTL" sortable show-overflow-tooltip />
+            <el-table-column prop="Status" label="状态" sortable show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.Status == "ENABLE" ? "启用" : "禁用" }}
                 </template>

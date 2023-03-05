@@ -85,8 +85,8 @@ export default class VendorCloudflare extends Vue {
                 </div>
             </template>
             <el-table v-loading="loading" :data="vendorList">
-                <el-table-column prop="Description" label="别名" show-overflow-tooltip fixed />
-                <el-table-column prop="SecretId" label="邮箱" show-overflow-tooltip />
+                <el-table-column prop="Description" label="别名" fixed sortable show-overflow-tooltip />
+                <el-table-column prop="SecretId" label="邮箱" sortable show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
                         <router-link :to="'/vendor/cloudflare/' + scope.row.Id">
