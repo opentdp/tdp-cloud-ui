@@ -37,7 +37,7 @@ export default class WorkerBind extends Vue {
 
     async getWorkerList() {
         const res = await NaApi.workhub.list()
-        this.workerList = res.Datasets
+        this.workerList = res.Items
     }
 
     // 绑定主机

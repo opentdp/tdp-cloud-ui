@@ -27,7 +27,7 @@ export default class VendorCloudflareBind extends Vue {
 
     async getVendor(id: number) {
         const res = await NaApi.vendor.detail(id)
-        this.vendor = res
+        this.vendor = res.Item || {}
     }
 
     // 已绑定域名
@@ -36,7 +36,7 @@ export default class VendorCloudflareBind extends Vue {
 
     async getDomainList() {
         const res = await NaApi.domain.list()
-        res.Datasets.forEach(item => {
+        res.Items.forEach(item => {
             this.domainList[item.CloudId] = item
         })
     }

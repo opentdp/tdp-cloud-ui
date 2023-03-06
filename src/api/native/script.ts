@@ -7,7 +7,7 @@ export class ScriptModel extends HttpClient {
         return this.post("/script/list", {})
     }
 
-    public detail(name: string): Promise<ScriptItem> {
+    public detail(name: string): Promise<ScriptDetail> {
         return this.post("/script/detail", { Name: name })
     }
 
@@ -42,7 +42,10 @@ export interface ScriptItem extends ScriptPayload {
     UpdatedAt: number
 }
 
+export interface ScriptDetail {
+    Item: ScriptItem
+}
+
 export interface ScriptPaged {
-    Datasets: ScriptItem[]
-    Datainfo?: unknown
+    Items: ScriptItem[]
 }

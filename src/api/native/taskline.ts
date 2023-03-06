@@ -7,7 +7,7 @@ export class TasklineModel extends HttpClient {
         return this.post("/taskline/list", { Order: "id DESC" })
     }
 
-    public detail(id: number): Promise<TasklineItem> {
+    public detail(id: number): Promise<TasklineDetail> {
         return this.post("/taskline/detail", { Id: id })
     }
 
@@ -40,9 +40,12 @@ export interface TasklineItem extends TasklineOrig {
     UpdatedAt: number
 }
 
+export interface TasklineDetail {
+    Item: TasklineItem
+}
+
 export interface TasklinePaged {
-    Datasets: TasklineItem[]
-    Datainfo?: unknown
+    Items: TasklineItem[]
 }
 
 export interface TasklineResult {

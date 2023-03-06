@@ -34,7 +34,7 @@ export default class VendorTencentBind extends Vue {
 
     async getVendor(id: number) {
         const res = await NaApi.vendor.detail(id)
-        this.vendor = res
+        this.vendor = res.Item || {}
     }
 
     // 已绑定主机
@@ -43,7 +43,7 @@ export default class VendorTencentBind extends Vue {
 
     async getMachineList() {
         const res = await NaApi.machine.list()
-        res.Datasets.forEach(item => {
+        res.Items.forEach(item => {
             this.machineList[item.CloudId] = item
         })
     }
@@ -54,7 +54,7 @@ export default class VendorTencentBind extends Vue {
 
     async getDomainList() {
         const res = await NaApi.domain.list()
-        res.Datasets.forEach(item => {
+        res.Items.forEach(item => {
             this.domainList[item.CloudId] = item
         })
     }

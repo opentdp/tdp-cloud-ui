@@ -5,7 +5,7 @@ export class DomainModel extends HttpClient {
         return this.post("/domain/list", {})
     }
 
-    public detail(id: number): Promise<DomainItem> {
+    public detail(id: number): Promise<DomainDetail> {
         return this.post("/domain/detail", { Id: id })
     }
 
@@ -46,7 +46,10 @@ export interface DomainItem extends DomainOrig {
     UpdatedAt: number
 }
 
+export interface DomainDetail {
+    Item: DomainItem
+}
+
 export interface DomainPaged {
-    Datasets: DomainItem[]
-    Datainfo?: unknown
+    Items: DomainItem[]
 }

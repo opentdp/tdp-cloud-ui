@@ -9,7 +9,7 @@ export class PassportModel extends HttpClient {
         return this.post("/passport/register", rq)
     }
 
-    public detail(): Promise<UserItem> {
+    public profile(): Promise<UserItem> {
         return this.post("/passport/profile", {})
     }
 

@@ -22,7 +22,7 @@ export default class CertbotCreate extends Vue {
 
     async getDomainList() {
         const res = await NaApi.domain.list()
-        this.domainList = res.Datasets
+        this.domainList = res.Items
     }
 
     // 创建表单

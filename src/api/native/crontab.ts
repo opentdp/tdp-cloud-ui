@@ -5,7 +5,7 @@ export class CrontabModel extends HttpClient {
         return this.post("/crontab/list", {})
     }
 
-    public detail(id: number): Promise<CrontabItem> {
+    public detail(id: number): Promise<CrontabDetail> {
         return this.post("/crontab/detail", { Id: id })
     }
 
@@ -44,7 +44,10 @@ export interface CrontabItem extends CrontabOrig {
     UpdatedAt: number
 }
 
+export interface CrontabDetail {
+    Item: CrontabItem
+}
+
 export interface CrontabPaged {
-    Datasets: CrontabItem[]
-    Datainfo?: unknown
+    Items: CrontabItem[]
 }

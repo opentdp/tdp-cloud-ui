@@ -5,7 +5,7 @@ export class VendorModel extends HttpClient {
         return this.post("/vendor/list", {})
     }
 
-    public detail(id: number): Promise<VendorItem> {
+    public detail(id: number): Promise<VendorDetail> {
         return this.post("/vendor/detail", { Id: id })
     }
 
@@ -41,7 +41,10 @@ export interface VendorItem extends VendorOrig {
     UpdatedAt: number
 }
 
+export interface VendorDetail {
+    Item: VendorItem
+}
+
 export interface VendorPaged {
-    Datasets: VendorItem[]
-    Datainfo?: unknown
+    Items: VendorItem[]
 }

@@ -14,17 +14,14 @@ export default class PassportInfo extends Vue {
     // 初始化
 
     public created() {
-        this.getUserInfo()
+        this.getProfile()
     }
 
     // 获取用户信息
 
-    async getUserInfo() {
-        const res = await NaApi.passport.detail()
-        // 同步表单
-        this.formModel.Username = res.Username
-        this.formModel.Email = res.Email
-        this.formModel.Description = res.Description
+    async getProfile() {
+        const res = await NaApi.passport.profile()
+        Object.assign(this.formModel, res)
         this.loading = false
     }
 

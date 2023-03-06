@@ -5,7 +5,7 @@ export class KeypairModel extends HttpClient {
         return this.post("/keypair/list", {})
     }
 
-    public detail(name: string): Promise<KeypairItem> {
+    public detail(name: string): Promise<KeypairDetail> {
         return this.post("/keypair/detail", { Name: name })
     }
 
@@ -40,7 +40,10 @@ export interface KeypairItem extends KeypairOrig {
     UpdatedAt: number
 }
 
+export interface KeypairDetail {
+    Item: KeypairItem
+}
+
 export interface KeypairPaged {
-    Datasets: KeypairItem[]
-    Datainfo?: unknown
+    Items: KeypairItem[]
 }

@@ -29,7 +29,7 @@ export default class MachineDetail extends Vue {
 
     async getMachine(id: number) {
         const res = await NaApi.machine.detail(id)
-        this.machine = res || {}
+        this.machine = res.Item || {}
         this.loading = false
     }
 }

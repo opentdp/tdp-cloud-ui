@@ -5,7 +5,7 @@ export class ConfigModel extends HttpClient {
         return this.post("/config/list", {})
     }
 
-    public detail(name: string): Promise<ConfigItem> {
+    public detail(name: string): Promise<ConfigDetail> {
         return this.post("/config/detail", { name: name })
     }
 
@@ -39,9 +39,12 @@ export interface ConfigItem extends ConfigOrig {
     UpdatedAt: number
 }
 
+export interface ConfigDetail {
+    Item: ConfigItem
+}
+
 export interface ConfigPaged {
-    Datasets: ConfigItem[]
-    Datainfo?: unknown
+    Items: ConfigItem[]
 }
 
 export interface UIOption {

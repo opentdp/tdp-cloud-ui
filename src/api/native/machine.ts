@@ -7,7 +7,7 @@ export class MachineModel extends HttpClient {
         return this.post("/machine/list", {})
     }
 
-    public detail(id: number): Promise<MachineItem> {
+    public detail(id: number): Promise<MachineDetail> {
         return this.post("/machine/detail", { Id: id })
     }
 
@@ -54,7 +54,10 @@ export interface MachineItem extends MachineOrig {
     UpdatedAt: number
 }
 
+export interface MachineDetail {
+    Item: MachineItem
+}
+
 export interface MachinePaged {
-    Datasets: MachineItem[]
-    Datainfo?: unknown
+    Items: MachineItem[]
 }

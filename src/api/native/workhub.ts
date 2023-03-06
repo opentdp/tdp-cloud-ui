@@ -43,7 +43,10 @@ export interface WorkerItem extends WorkerOrig {
     UpdatedAt: number
 }
 
+export interface WorkerDetail {
+    Item: WorkerItem
+}
+
 export interface WorkerPaged {
-    Datasets: WorkerItem[]
-    Datainfo?: unknown
+    Items: WorkerItem[]
 }

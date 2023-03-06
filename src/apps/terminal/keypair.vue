@@ -27,7 +27,7 @@ export default class KeypairList extends Vue {
 
     async getKeypairList() {
         const res = await NaApi.keypair.list()
-        this.keylist = res.Datasets
+        this.keylist = res.Items
         this.loading = false
     }
 

@@ -21,16 +21,8 @@ export class HttpClient {
         return this.request({ method: "GET", url, query })
     }
 
-    protected delete(url: string, query?: unknown) {
-        return this.request({ method: "DELETE", url, query })
-    }
-
     protected post(url: string, query: unknown) {
         return this.request({ method: "POST", url, query })
-    }
-
-    protected patch(url: string, query: unknown) {
-        return this.request({ method: "PATCH", url, query })
     }
 
     protected async rcache(req: HttpRequest, expiry: number) {
@@ -46,26 +38,17 @@ export class HttpClient {
         // 构造请求头
         const headers: HeadersInit = {
             Accept: "application/json",
+            Authorization: "Bearer " + this.session.Token,
+            "Content-Type": "application/json",
         }
         if (req.header) {
             Object.assign(headers, req.header)
         }
-        if (this.session.Token) {
-            headers.Authorization = this.session.Token
-        }
         // 构造请求参数
         const request: RequestInit = {
+            body: JSON.stringify(req.query),
             method: req.method,
-            headers
-        }
-        if (req.query) {
-            if (/GET|DELETE/.test(req.method)) {
-                req.url += "?" + this.buildQuery(req.query)
-            }
-            else if (/PATCH|PUT|POST/.test(req.method)) {
-                request.body = JSON.stringify(req.query)
-                headers["Content-Type"] = "application/json"
-            }
+            headers,
         }
         // 发起请求并返回结构数据
         return this.newFetch(req.url, request)
@@ -77,7 +60,7 @@ export class HttpClient {
         // 捕获错误信息
         if (data.Error) {
             const err = errMessage(data.Error)
-            if (/会话已失效|登录后重试/.test(err)) {
+            if (data.Error.Code == 401) {
                 session.$reset(), location.reload()
             }
             throw new Error(err)

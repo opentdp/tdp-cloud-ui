@@ -30,7 +30,7 @@ export default class CertbotList extends Vue {
 
     async getCertbotList() {
         const res = await NaApi.certbot.list()
-        this.certbotList = res.Datasets
+        this.certbotList = res.Items
         this.loading = false
     }
 
