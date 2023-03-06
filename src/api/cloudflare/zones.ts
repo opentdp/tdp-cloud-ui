@@ -6,11 +6,11 @@ import {
 } from "./typings"
 
 export class ZonesModel extends CloudflareClient {
-    public list(filter?: unknown): Promise<Payload & { Datasets: ZoneItem[] }> {
+    public list(filter?: unknown): Promise<Payload & { Items: ZoneItem[] }> {
         return this.bus({ Method: "GET", Path: "/zones", Query: filter })
     }
 
-    public detail(zone: string): Promise<Payload & { Datasets: ZoneItem }> {
+    public detail(zone: string): Promise<Payload & { Items: ZoneItem }> {
         return this.bus({ Method: "GET", Path: "/zones/" + zone })
     }
 
@@ -22,7 +22,7 @@ export class ZonesModel extends CloudflareClient {
 
     // DNS 记录
 
-    public dnsRecords(zone: string): Promise<Payload & { Datasets: ZoneRecordItem[] }> {
+    public dnsRecords(zone: string): Promise<Payload & { Items: ZoneRecordItem[] }> {
         return this.bus({ Method: "GET", Path: "/zones/" + zone + "/dns_records" })
     }
 
@@ -40,7 +40,7 @@ export class ZonesModel extends CloudflareClient {
 
     // Custom Hostnames
 
-    public customHostnames(zone: string): Promise<Payload & { Datasets: CustomHostnameItem[] }> {
+    public customHostnames(zone: string): Promise<Payload & { Items: CustomHostnameItem[] }> {
         return this.bus({ Method: "GET", Path: "/zones/" + zone + "/custom_hostnames" })
     }
 
@@ -64,11 +64,11 @@ export class ZonesModel extends CloudflareClient {
 
     // Custom Hostnames - Fallback Origin
 
-    public fallbackOrigin(zone: string): Promise<Payload & { Datasets: FallbackOrigin }> {
+    public fallbackOrigin(zone: string): Promise<Payload & { Items: FallbackOrigin }> {
         return this.bus({ Method: "GET", Path: "/zones/" + zone + "/custom_hostnames/fallback_origin" })
     }
 
-    public fallbackOriginUpdate(zone: string, origin: string): Promise<Payload & { Datasets: FallbackOrigin }> {
+    public fallbackOriginUpdate(zone: string, origin: string): Promise<Payload & { Items: FallbackOrigin }> {
         return this.bus({ Method: "PUT", Path: "/zones/" + zone + "/custom_hostnames/fallback_origin", Payload: { origin } })
     }
 

@@ -31,7 +31,7 @@ export default class TasklineList extends Vue {
 
     async getHistory() {
         const res = await NaApi.taskline.list()
-        this.historyList = res.Datasets
+        this.historyList = res.Items
     }
 
     // 侧边栏开关

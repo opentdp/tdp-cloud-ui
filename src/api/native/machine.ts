@@ -4,23 +4,23 @@ import { SummaryStat } from "./typings"
 
 export class MachineModel extends HttpClient {
     public list(): Promise<MachinePaged> {
-        return this.get("/machine")
+        return this.post("/machine/list", {})
     }
 
-    public detail(id: number): Promise<MachineItem> {
-        return this.get("/machine/" + id)
+    public detail(id: number): Promise<MachineDetail> {
+        return this.post("/machine/detail", { Id: id })
     }
 
     public create(rq: MachineOrig): Promise<{ Id: number }> {
-        return this.post("/machine", rq)
+        return this.post("/machine/create", rq)
     }
 
     public update(rq: Partial<MachineItem>): Promise<null> {
-        return this.patch("/machine/" + rq.Id, rq)
+        return this.post("/machine/update", rq)
     }
 
     public remove(id: number): Promise<null> {
-        return this.delete("/machine/" + id)
+        return this.post("/machine/delete", { Id: id })
     }
 }
 
@@ -54,7 +54,10 @@ export interface MachineItem extends MachineOrig {
     UpdatedAt: number
 }
 
+export interface MachineDetail {
+    Item: MachineItem
+}
+
 export interface MachinePaged {
-    Datasets: MachineItem[]
-    Datainfo?: unknown
+    Items: MachineItem[]
 }

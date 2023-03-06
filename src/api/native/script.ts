@@ -4,23 +4,23 @@ import { ScriptPayload } from "./typings"
 
 export class ScriptModel extends HttpClient {
     public list(): Promise<ScriptPaged> {
-        return this.get("/script")
+        return this.post("/script/list", {})
     }
 
-    public detail(name: string): Promise<ScriptItem> {
-        return this.get("/script/" + name)
+    public detail(name: string): Promise<ScriptDetail> {
+        return this.post("/script/detail", { Name: name })
     }
 
     public create(rq: ScriptPayload): Promise<{ Id: number }> {
-        return this.post("/script/", rq)
+        return this.post("/script/create", rq)
     }
 
     public update(rq: Partial<ScriptItem>): Promise<null> {
-        return this.patch("/script/" + rq.Id, rq)
+        return this.post("/script/update", rq)
     }
 
     public remove(id: number): Promise<null> {
-        return this.delete("/script/" + id)
+        return this.post("/script/delete", { Id: id })
     }
 
     public osFilter(list: ScriptPayload[], os: string) {
@@ -42,7 +42,10 @@ export interface ScriptItem extends ScriptPayload {
     UpdatedAt: number
 }
 
+export interface ScriptDetail {
+    Item: ScriptItem
+}
+
 export interface ScriptPaged {
-    Datasets: ScriptItem[]
-    Datainfo?: unknown
+    Items: ScriptItem[]
 }

@@ -29,7 +29,7 @@ export default class TerminalSshConnect extends Vue {
 
     async getKeypairList() {
         const res = await NaApi.keypair.list()
-        this.keypairList = res.Datasets
+        this.keypairList = res.Items
     }
 
     // 获取主机列表
@@ -38,7 +38,7 @@ export default class TerminalSshConnect extends Vue {
 
     async getMachineList() {
         const res = await NaApi.machine.list()
-        this.machineList = res.Datasets
+        this.machineList = res.Items
     }
 
     public machineFilter(qr: string, cb: (a: unknown[]) => void) {

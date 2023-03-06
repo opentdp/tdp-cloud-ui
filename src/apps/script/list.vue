@@ -31,7 +31,7 @@ export default class ScriptList extends Vue {
 
     async getScriptList() {
         const res = await NaApi.script.list()
-        this.scriptList = res.Datasets
+        this.scriptList = res.Items
         this.loading = false
     }
 

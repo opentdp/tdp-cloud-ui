@@ -4,15 +4,15 @@ import { SummaryStat, DetailStat, ScriptPayload } from "./typings"
 
 export class WorkhubModel extends HttpClient {
     public host(): Promise<HostDetail> {
-        return this.get("/workhub")
+        return this.post("/workhub/host", {})
     }
 
     public list(): Promise<WorkerPaged> {
-        return this.get("/workhub/list")
+        return this.post("/workhub/list", {})
     }
 
     public stat(id: string): Promise<DetailStat> {
-        return this.get("/workhub/stat/" + id)
+        return this.post("/workhub/stat/" + id, {})
     }
 
     public exec(id: string, rq: ScriptPayload): Promise<{ Id: number }> {
@@ -43,7 +43,10 @@ export interface WorkerItem extends WorkerOrig {
     UpdatedAt: number
 }
 
+export interface WorkerDetail {
+    Item: WorkerItem
+}
+
 export interface WorkerPaged {
-    Datasets: WorkerItem[]
-    Datainfo?: unknown
+    Items: WorkerItem[]
 }

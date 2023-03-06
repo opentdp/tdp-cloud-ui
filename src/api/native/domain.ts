@@ -2,23 +2,23 @@ import { HttpClient } from "@/api/basic/http"
 
 export class DomainModel extends HttpClient {
     public list(): Promise<DomainPaged> {
-        return this.get("/domain")
+        return this.post("/domain/list", {})
     }
 
-    public detail(id: number): Promise<DomainItem> {
-        return this.get("/domain/" + id)
+    public detail(id: number): Promise<DomainDetail> {
+        return this.post("/domain/detail", { Id: id })
     }
 
     public create(rq: DomainOrig): Promise<{ Id: number }> {
-        return this.post("/domain", rq)
+        return this.post("/domain/create", rq)
     }
 
     public update(rq: Partial<DomainItem>): Promise<null> {
-        return this.patch("/domain/" + rq.Id, rq)
+        return this.post("/domain/update", rq)
     }
 
     public remove(id: number): Promise<null> {
-        return this.delete("/domain/" + id)
+        return this.post("/domain/delete", { Id: id })
     }
 }
 
@@ -46,7 +46,10 @@ export interface DomainItem extends DomainOrig {
     UpdatedAt: number
 }
 
+export interface DomainDetail {
+    Item: DomainItem
+}
+
 export interface DomainPaged {
-    Datasets: DomainItem[]
-    Datainfo?: unknown
+    Items: DomainItem[]
 }

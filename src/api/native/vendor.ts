@@ -2,23 +2,23 @@ import { HttpClient } from "@/api/basic/http"
 
 export class VendorModel extends HttpClient {
     public list(): Promise<VendorPaged> {
-        return this.get("/vendor")
+        return this.post("/vendor/list", {})
     }
 
-    public detail(id: number): Promise<VendorItem> {
-        return this.get("/vendor/" + id)
+    public detail(id: number): Promise<VendorDetail> {
+        return this.post("/vendor/detail", { Id: id })
     }
 
     public create(rq: VendorOrig): Promise<{ Id: number }> {
-        return this.post("/vendor", rq)
+        return this.post("/vendor/create", rq)
     }
 
     public update(rq: Partial<VendorItem>): Promise<null> {
-        return this.patch("/vendor/" + rq.Id, rq)
+        return this.post("/vendor/update" + rq.Id, rq)
     }
 
     public remove(id: number): Promise<null> {
-        return this.delete("/vendor/" + id)
+        return this.post("/vendor/delete", { Id: id })
     }
 }
 
@@ -41,7 +41,10 @@ export interface VendorItem extends VendorOrig {
     UpdatedAt: number
 }
 
+export interface VendorDetail {
+    Item: VendorItem
+}
+
 export interface VendorPaged {
-    Datasets: VendorItem[]
-    Datainfo?: unknown
+    Items: VendorItem[]
 }

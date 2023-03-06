@@ -50,7 +50,7 @@ export default class LighthouseVnc extends Vue {
 
     async getScriptList() {
         const res = await NaApi.script.list()
-        const list = [...shellList, ...res.Datasets]
+        const list = [...shellList, ...res.Items]
         // 根据操作系统过滤脚本
         this.scriptList = NaApi.script.osFilter(list, this.machine.OSType)
     }

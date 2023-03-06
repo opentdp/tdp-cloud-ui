@@ -21,11 +21,13 @@ export default class CertbotDetail extends Vue {
     public pubText = ""
     public dateLimit!: [Date, Date]
 
-    public certbot!: CertbotItem & { Cert: Certificate }
+    public cert!: Certificate
+    public certbot!: CertbotItem
 
     async getCertbot(id: number) {
         const res = await NaApi.certbot.detail(id)
-        this.certbot = res || {}
+        this.certbot = res.Item || {}
+        this.cert = res.Cert || {}
         if (res.Cert) {
             this.crtText = this.crtFormat(res.Cert.Certificate)
             this.pubText = atob(res.Cert.PrivateKey)
@@ -68,13 +70,13 @@ export default class CertbotDetail extends Vue {
             </el-breadcrumb-item>
         </el-breadcrumb>
         <div v-loading="loading" />
-        <el-card v-if="certbot">
+        <el-card v-if="cert">
             <h3>颁发给</h3>
-            {{ certbot.Cert.Names.join(", ") }}
+            {{ cert.Names.join(", ") }}
             <h3>颁发者</h3>
-            <pre>CN = {{ certbot.Cert.Issuer.CommonName }}</pre>
-            <pre>O  = {{ certbot.Cert.Issuer.Organization }}</pre>
-            <pre>C  = {{ certbot.Cert.Issuer.Country }}</pre>
+            <pre>CN = {{ cert.Issuer.CommonName }}</pre>
+            <pre>O  = {{ cert.Issuer.Organization }}</pre>
+            <pre>C  = {{ cert.Issuer.Country }}</pre>
             <h3>有效期</h3>
             <el-date-picker v-model="dateLimit" type="datetimerange" range-separator="至" readonly />
             <h3>证书 (<small>Certificate</small>)</h3>

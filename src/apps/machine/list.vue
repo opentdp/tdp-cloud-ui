@@ -28,7 +28,7 @@ export default class MachineList extends Vue {
 
     async getMachineList() {
         const res = await NaApi.machine.list()
-        this.machineList = res.Datasets
+        this.machineList = res.Items
         this.loading = false
     }
 
@@ -46,7 +46,7 @@ export default class MachineList extends Vue {
 
     async getWorkerList() {
         const res = await NaApi.workhub.list()
-        res.Datasets.forEach(item => {
+        res.Items.forEach(item => {
             this.workerList[item.WorkerId] = item
         })
     }

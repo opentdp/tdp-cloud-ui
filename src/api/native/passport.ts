@@ -9,16 +9,16 @@ export class PassportModel extends HttpClient {
         return this.post("/passport/register", rq)
     }
 
-    public detail(): Promise<UserItem> {
-        return this.get("/passport/info")
+    public profile(): Promise<UserItem> {
+        return this.post("/passport/profile", {})
     }
 
     public update(rq: UserUpdate): Promise<null> {
-        return this.patch("/passport/info", rq)
+        return this.post("/passport/profile/update", rq)
     }
 
     public summary(): Promise<UserSummary> {
-        return this.get("/passport/summary")
+        return this.post("/passport/summary", {})
     }
 }
 

@@ -26,7 +26,7 @@ export default class VendoWorkerBind extends Vue {
 
     async getMachineList() {
         const res = await NaApi.machine.list()
-        res.Datasets.forEach(item => {
+        res.Items.forEach(item => {
             this.machineList[item.WorkerId] = item
         })
     }

@@ -2,31 +2,27 @@ import { HttpClient } from "@/api/basic/http"
 
 export class ConfigModel extends HttpClient {
     public list(): Promise<ConfigPaged> {
-        return this.get("/config")
+        return this.post("/config/list", {})
     }
 
-    public detail(id: number): Promise<ConfigItem> {
-        return this.get("/config/" + id)
-    }
-
-    public detailName(name: string): Promise<ConfigItem> {
-        return this.get("/config/name/" + name)
+    public detail(name: string): Promise<ConfigDetail> {
+        return this.post("/config/detail", { name: name })
     }
 
     public create(rq: ConfigOrig): Promise<{ Id: number }> {
-        return this.post("/config", rq)
+        return this.post("/config/create", rq)
     }
 
     public update(rq: Partial<ConfigItem>): Promise<null> {
-        return this.patch("/config/" + rq.Id, rq)
+        return this.post("/config/update", rq)
     }
 
     public remove(id: number): Promise<null> {
-        return this.delete("/config/" + id)
+        return this.post("/config/delete", { Id: id })
     }
 
     public ui(): Promise<UIOption> {
-        return this.get("/config/ui")
+        return this.post("/config/ui", {})
     }
 }
 
@@ -43,9 +39,12 @@ export interface ConfigItem extends ConfigOrig {
     UpdatedAt: number
 }
 
+export interface ConfigDetail {
+    Item: ConfigItem
+}
+
 export interface ConfigPaged {
-    Datasets: ConfigItem[]
-    Datainfo?: unknown
+    Items: ConfigItem[]
 }
 
 export interface UIOption {

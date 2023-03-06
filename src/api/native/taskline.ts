@@ -4,11 +4,11 @@ import { ScriptPayload } from "./typings"
 
 export class TasklineModel extends HttpClient {
     public list(): Promise<TasklinePaged> {
-        return this.get("/taskline")
+        return this.post("/taskline/list", { Order: "id DESC" })
     }
 
-    public detail(id: number): Promise<TasklineItem> {
-        return this.get("/taskline/" + id)
+    public detail(id: number): Promise<TasklineDetail> {
+        return this.post("/taskline/detail", { Id: id })
     }
 
     public create(rq: TasklineOrig): Promise<{ Id: number }> {
@@ -16,11 +16,11 @@ export class TasklineModel extends HttpClient {
     }
 
     public update(rq: Partial<TasklineItem>): Promise<null> {
-        return this.patch("/taskline/" + rq.Id, rq)
+        return this.post("/taskline/update", rq)
     }
 
     public remove(id: number): Promise<null> {
-        return this.delete("/taskline/" + id)
+        return this.post("/taskline/delete", { Id: id })
     }
 }
 
@@ -40,9 +40,12 @@ export interface TasklineItem extends TasklineOrig {
     UpdatedAt: number
 }
 
+export interface TasklineDetail {
+    Item: TasklineItem
+}
+
 export interface TasklinePaged {
-    Datasets: TasklineItem[]
-    Datainfo?: unknown
+    Items: TasklineItem[]
 }
 
 export interface TasklineResult {

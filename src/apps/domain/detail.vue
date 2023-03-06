@@ -28,7 +28,7 @@ export default class DomainDetail extends Vue {
 
     async getDomain(id: number) {
         const res = await NaApi.domain.detail(id)
-        this.domain = res || {}
+        this.domain = res.Item || {}
         this.loading = false
     }
 }
