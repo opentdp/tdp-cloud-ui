@@ -116,8 +116,8 @@ interface TabItem {
             <el-tab-pane label="新会话" name="new">
                 <SshConnect :addr="addr" @submit="createTab" />
             </el-tab-pane>
-            <el-tab-pane v-for="item in tabList" :key="item.id" :name="item.id" :label="item.label" closable>
-                <div :id="item.id" />
+            <el-tab-pane v-for="v in tabList" :key="v.id" :name="v.id" :label="v.label" closable>
+                <div :id="v.id" />
             </el-tab-pane>
         </el-tabs>
         <div class="space-10" />
@@ -128,8 +128,8 @@ interface TabItem {
                 </div>
             </template>
             <div class="button-list">
-                <el-button v-for="item in scriptList" :key="item.Id" @click="sshExec(item.Content)">
-                    {{ item.Name }}
+                <el-button v-for="v, k in scriptList" :key="k" @click="sshExec(v.Content)">
+                    {{ v.Name }}
                 </el-button>
             </div>
         </el-card>

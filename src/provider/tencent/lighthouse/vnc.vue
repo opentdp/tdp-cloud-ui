@@ -86,8 +86,8 @@ export default class LighthouseVnc extends Vue {
             </div>
         </template>
         <div class="button-list">
-            <el-button v-for="item in scriptList" :key="item.Name" @click="vncExec(item.Content)">
-                {{ item.Name }}
+            <el-button v-for="v, k in scriptList" :key="k" @click="vncExec(v.Content)">
+                {{ v.Name }}
             </el-button>
         </div>
     </el-card>
