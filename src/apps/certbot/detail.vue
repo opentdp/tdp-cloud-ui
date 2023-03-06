@@ -26,8 +26,8 @@ export default class CertbotDetail extends Vue {
 
     async getCertbot(id: number) {
         const res = await NaApi.certbot.detail(id)
-        this.certbot = res.Item || {}
-        this.cert = res.Cert || {}
+        this.certbot = res.Item
+        this.cert = res.Cert
         if (res.Cert) {
             this.crtText = this.crtFormat(res.Cert.Certificate)
             this.pubText = atob(res.Cert.PrivateKey)

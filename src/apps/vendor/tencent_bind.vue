@@ -34,7 +34,7 @@ export default class VendorTencentBind extends Vue {
 
     async getVendor(id: number) {
         const res = await NaApi.vendor.detail(id)
-        this.vendor = res.Item || {}
+        this.vendor = res.Item
     }
 
     // 已绑定主机
