@@ -90,13 +90,13 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
-                path: "/passport/info",
-                name: "passport-info",
+                path: "/passport/profile",
+                name: "passport-profile",
                 meta: {
-                    title: "个人中心",
+                    title: "个人资料",
                     login: true,
                 },
-                component: () => import("@/apps/passport/info.vue"),
+                component: () => import("@/apps/passport/profile.vue"),
             },
             //////
             {

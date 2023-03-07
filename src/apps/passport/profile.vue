@@ -7,7 +7,7 @@ import { NaApi } from "@/api"
 import sessionStore from "@/store/session"
 
 @Component
-export default class PassportInfo extends Vue {
+export default class PassportProfile extends Vue {
     public session = sessionStore()
     public loading = true
 
@@ -76,7 +76,7 @@ export default class PassportInfo extends Vue {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                个人中心
+                个人资料
             </el-breadcrumb-item>
         </el-breadcrumb>
         <el-row :gutter="20">

@@ -35,8 +35,8 @@ export default class LayoutNavbar extends Vue {
                 this.session.$reset()
                 this.$router.push({ name: "passport-login" })
                 break
-            case "user":
-                this.$router.push({ name: "passport-info" })
+            case "profile":
+                this.$router.push({ name: "passport-profile" })
                 break
             case "password":
                 this.$router.push({ name: "passport-password" })
@@ -73,8 +73,8 @@ export default class LayoutNavbar extends Vue {
                     </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item command="user">
-                                个人中心
+                            <el-dropdown-item command="profile">
+                                个人资料
                             </el-dropdown-item>
                             <el-dropdown-item command="delcache">
                                 清理缓存

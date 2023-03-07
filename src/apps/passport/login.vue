@@ -14,7 +14,6 @@ export default class PassportLogin extends Vue {
 
     public created() {
         this.layout.getOption()
-        console.log(this.layout)
     }
 
     @Ref
