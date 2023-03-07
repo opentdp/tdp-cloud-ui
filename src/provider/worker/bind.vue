@@ -54,8 +54,8 @@ export default class WorkerBind extends Vue {
             CloudMeta: null,
             WorkerId: item.WorkerId,
             WorkerMeta: item.WorkerMeta,
+            Status: "",
             Description: "",
-            Status: 1,
         })
     }
 

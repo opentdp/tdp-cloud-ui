@@ -43,8 +43,8 @@ export interface MachineOrig {
     CloudMeta: unknown
     WorkerId: string
     WorkerMeta?: SummaryStat
+    Status: string
     Description: string
-    Status: number
 }
 
 export interface MachineItem extends MachineOrig {

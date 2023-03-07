@@ -46,8 +46,8 @@ export default class CloudflareBind extends Vue {
             Model: "cloudflare/zone",
             CloudId: item.id + '',
             CloudMeta: item,
+            Status: "",
             Description: "",
-            Status: 1,
         })
         this.$emit("change")
     }

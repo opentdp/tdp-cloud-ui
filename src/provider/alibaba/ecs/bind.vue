@@ -90,8 +90,8 @@ export default class EcsBind extends Vue {
             CloudId: item.InstanceId,
             CloudMeta: item,
             WorkerId: "",
+            Status: "",
             Description: "",
-            Status: 1,
         })
         this.$emit("change")
     }

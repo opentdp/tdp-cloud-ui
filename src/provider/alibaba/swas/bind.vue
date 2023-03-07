@@ -95,8 +95,8 @@ export default class SwasBind extends Vue {
             CloudId: item.InstanceId,
             CloudMeta: item,
             WorkerId: "",
+            Status: "",
             Description: "",
-            Status: 1,
         })
         this.$emit("change")
     }

@@ -49,8 +49,8 @@ export default class DnsBind extends Vue {
             Model: "alibaba/alidns",
             CloudId: item.DomainId,
             CloudMeta: item,
+            Status: "",
             Description: "",
-            Status: 1,
         })
         this.$emit("change")
     }

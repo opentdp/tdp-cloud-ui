@@ -35,8 +35,8 @@ export interface DomainOrig {
     Model: keyof (typeof DomainModels)
     CloudId: string
     CloudMeta: unknown
+    Status: string
     Description: string
-    Status: number
 }
 
 export interface DomainItem extends DomainOrig {

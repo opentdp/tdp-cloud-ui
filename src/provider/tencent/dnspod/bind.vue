@@ -51,8 +51,8 @@ export default class DnspodBind extends Vue {
             Model: "tencent/dnspod",
             CloudId: item.DomainId + '',
             CloudMeta: item,
+            Status: "",
             Description: "",
-            Status: 1,
         })
         this.$emit("change")
     }

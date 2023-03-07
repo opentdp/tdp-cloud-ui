@@ -116,8 +116,8 @@ export default class CvmBind extends Vue {
             CloudId: item.InstanceId,
             CloudMeta: item,
             WorkerId: "",
+            Status: "",
             Description: "",
-            Status: 1,
         })
         if (res.Id > 0) {
             this.installWorker(item, 44)
