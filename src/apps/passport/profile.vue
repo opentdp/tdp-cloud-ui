@@ -79,8 +79,8 @@ export default class PassportProfile extends Vue {
                 个人资料
             </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-row :gutter="20">
-            <el-col :span="12">
+        <el-row :gutter="16">
+            <el-col :span="10">
                 <el-card shadow="hover">
                     <template #header>
                         <div class="flex-between">
@@ -100,7 +100,7 @@ export default class PassportProfile extends Vue {
                     </div>
                 </el-card>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="14">
                 <el-card shadow="hover">
                     <template #header>
                         <div class="flex-between">
@@ -108,8 +108,13 @@ export default class PassportProfile extends Vue {
                         </div>
                     </template>
                     <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="70px">
-                        <el-form-item label="App Id">
+                        <el-form-item label="AppId">
                             {{ session.AppId }}
+                        </el-form-item>
+                        <el-form-item label="AppKey">
+                            <el-tooltip :content="session.AppKey" placement="bottom">
+                                <i>用于解密私钥及重置密码，建议脱机保管</i>
+                            </el-tooltip>
                         </el-form-item>
                         <el-form-item prop="Username" label="用户名">
                             <el-input v-model="formModel.Username" />
@@ -127,7 +132,8 @@ export default class PassportProfile extends Vue {
                             <el-input v-model="formModel.Email" />
                         </el-form-item>
                         <el-form-item prop="Description" label="简介">
-                            <el-input v-model="formModel.Description" type="textarea" :autosize="{ minRows: 2, maxRows: 15 }" />
+                            <el-input v-model="formModel.Description" type="textarea"
+                                :autosize="{ minRows: 3, maxRows: 15 }" />
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="formSubmit(formRef)">

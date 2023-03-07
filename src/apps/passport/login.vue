@@ -36,7 +36,7 @@ export default class PassportLogin extends Vue {
                 return false
             }
             const res = await NaApi.passport.login(this.formModel)
-            Object.assign(this.session, res)
+            this.session.update(res)
             this.$router.push("/")
         })
     }
