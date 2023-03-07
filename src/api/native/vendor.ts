@@ -1,8 +1,8 @@
 import { HttpClient } from "@/api/basic/http"
 
 export class VendorModel extends HttpClient {
-    public list(): Promise<VendorPaged> {
-        return this.post("/vendor/list", {})
+    public list(rq: { Provider?: string }): Promise<VendorPaged> {
+        return this.post("/vendor/list", rq)
     }
 
     public detail(id: number): Promise<VendorDetail> {

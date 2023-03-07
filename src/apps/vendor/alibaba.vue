@@ -21,10 +21,8 @@ export default class VendorAlibaba extends Vue {
     public vendorList: VendorItem[] = []
 
     async getVendorList() {
-        const res = await NaApi.vendor.list()
-        this.vendorList = res.Items.filter(item => {
-            return item.Provider == "alibaba"
-        })
+        const res = await NaApi.vendor.list({ Provider: "alibaba" })
+        this.vendorList = res.Items
         this.loading = false
     }
 

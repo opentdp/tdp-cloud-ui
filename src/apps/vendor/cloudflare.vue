@@ -21,10 +21,8 @@ export default class VendorCloudflare extends Vue {
     public vendorList: VendorItem[] = []
 
     async getVendorList() {
-        const res = await NaApi.vendor.list()
-        this.vendorList = res.Items.filter(item => {
-            return item.Provider == "cloudflare"
-        })
+        const res = await NaApi.vendor.list({ Provider: "cloudflare" })
+        this.vendorList = res.Items
         this.loading = false
     }
 
