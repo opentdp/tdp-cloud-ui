@@ -71,10 +71,10 @@ export default class KeypairCreate extends Vue {
                 <el-input v-model="formModel.Description" />
             </el-form-item>
             <el-form-item prop="PublicKey" label="公钥">
-                <el-input v-model="formModel.PublicKey" type="textarea" :autosize="{ minRows: 5 }" />
+                <el-input v-model="formModel.PublicKey" type="textarea" :autosize="{ minRows: 5, maxRows: 15 }" />
             </el-form-item>
             <el-form-item prop="PrivateKey" label="私钥">
-                <el-input v-model="formModel.PrivateKey" type="textarea" :autosize="{ minRows: 5 }" />
+                <el-input v-model="formModel.PrivateKey" type="textarea" :autosize="{ minRows: 5, maxRows: 15 }" />
             </el-form-item>
         </el-form>
         <template #footer>

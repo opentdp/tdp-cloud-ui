@@ -103,7 +103,7 @@ export default class ScriptQuickExec extends Vue {
                     :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
             </el-form-item>
             <el-form-item prop="Content" label="脚本内容">
-                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4 }" />
+                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4, maxRows: 15 }" />
             </el-form-item>
         </el-form>
         <div v-if="result">

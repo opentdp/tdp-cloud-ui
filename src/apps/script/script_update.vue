@@ -97,10 +97,10 @@ export default class ScriptUpdate extends Vue {
                 <el-input v-model="formModel.WorkDirectory" />
             </el-form-item>
             <el-form-item prop="Content" label="脚本内容">
-                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4 }" />
+                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4, maxRows: 15 }" />
             </el-form-item>
             <el-form-item prop="Description" label="脚本描述">
-                <el-input v-model="formModel.Description" type="textarea" :autosize="{ minRows: 2 }" />
+                <el-input v-model="formModel.Description" type="textarea" :autosize="{ minRows: 2, maxRows: 15 }" />
             </el-form-item>
             <el-form-item prop="Timeout" label="超时时间">
                 <el-input-number v-model="formModel.Timeout" placeholder="默认为 300s" :min="1" :max="86400" />

@@ -133,7 +133,7 @@ export default class TerminalSshConnect extends Vue {
             </el-select>
         </el-form-item>
         <el-form-item v-if="authType == '4'" prop="PrivateKey" label="私钥">
-            <el-input v-model="formModel.PrivateKey" type="textarea" :autosize="{ minRows: 5 }" />
+            <el-input v-model="formModel.PrivateKey" type="textarea" :autosize="{ minRows: 5, maxRows: 15 }" />
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="formSubmit(formRef)">

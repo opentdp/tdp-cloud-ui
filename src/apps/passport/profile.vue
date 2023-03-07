@@ -127,7 +127,7 @@ export default class PassportProfile extends Vue {
                             <el-input v-model="formModel.Email" />
                         </el-form-item>
                         <el-form-item prop="Description" label="简介">
-                            <el-input v-model="formModel.Description" type="textarea" :autosize="{ minRows: 2 }" />
+                            <el-input v-model="formModel.Description" type="textarea" :autosize="{ minRows: 2, maxRows: 15 }" />
                         </el-form-item>
                         <el-form-item>
                             <el-button type="primary" @click="formSubmit(formRef)">
