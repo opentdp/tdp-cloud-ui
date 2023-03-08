@@ -54,13 +54,13 @@ export default class CloudflareCustomHostnames extends Vue {
 
     async getFallbackOrigin() {
         const res = await CfApi.zones.fallbackOrigin(this.domainInfo.id)
-        this.fallbackOrigin = res.Items
+        this.fallbackOrigin = res.Datasets
     }
 
     async updateFallbackOrigin() {
         const res = await CfApi.zones.fallbackOriginUpdate(this.domainInfo.id, this.fallbackOrigin.origin)
         setTimeout(() => this.getFallbackOrigin(), 3000)
-        this.fallbackOrigin = res.Items
+        this.fallbackOrigin = res.Datasets
     }
 
     public deleteFallbackOrigin() {
@@ -74,7 +74,7 @@ export default class CloudflareCustomHostnames extends Vue {
 
     async getCustomHostnames() {
         const res = await CfApi.zones.customHostnames(this.domainInfo.id)
-        this.customHostnames = res.Items
+        this.customHostnames = res.Datasets
     }
 
     async createCustomHostnames() {

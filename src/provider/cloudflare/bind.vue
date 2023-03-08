@@ -31,7 +31,7 @@ export default class CloudflareBind extends Vue {
 
     async getDomainlist() {
         const res = await CfApi.zones.list()
-        this.domainList = res.Items
+        this.domainList = res.Datasets
         this.loading = false
     }
 

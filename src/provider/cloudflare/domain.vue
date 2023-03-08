@@ -40,7 +40,7 @@ export default class CloudflareDomain extends Vue {
 
     async getDomain() {
         const res = await CfApi.zones.detail(this.domainInfo.id)
-        this.domainInfo = res.Items
+        this.domainInfo = res.Datasets
     }
 
     // 解析记录
@@ -49,7 +49,7 @@ export default class CloudflareDomain extends Vue {
 
     async getRecordList() {
         const res = await CfApi.zones.dnsRecords(this.domainInfo.id)
-        this.recordList = res.Items
+        this.recordList = res.Datasets
     }
 
     // 删除记录
