@@ -193,13 +193,13 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("@/apps/vendor/tencent_bind.vue"),
             },
             {
-                path: "/vendor/worker",
-                name: "vendor-worker-bind",
+                path: "/workhub/worker",
+                name: "workhub-worker-bind",
                 meta: {
                     title: "节点管理",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/worker_bind.vue"),
+                component: () => import("@/apps/workhub/worker_bind.vue"),
             },
             //////
             {

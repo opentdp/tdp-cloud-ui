@@ -88,7 +88,7 @@ export default class LayoutSidebar extends Vue {
         },
         {
             icon: "Cpu",
-            index: "/vendor/worker",
+            index: "/workhub/worker",
             title: "节点管理",
         },
         // {
