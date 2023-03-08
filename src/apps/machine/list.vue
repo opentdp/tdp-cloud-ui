@@ -5,6 +5,7 @@ import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/native/machine"
 import { WorkerItem } from "@/api/native/workhub"
 
+import UseCache from '@/store/cache'
 import QuickExec from "@/apps/script/quick.vue"
 
 @Component({
@@ -12,12 +13,14 @@ import QuickExec from "@/apps/script/quick.vue"
 })
 export default class MachineList extends Vue {
     public MachineModels = MachineModels
+    public cache = UseCache()
 
     public loading = true
 
     // 初始化
 
     public created() {
+        this.cache.initVendorList()
         this.getMachineList()
         this.getWorkerList()
     }
@@ -84,9 +87,11 @@ export default class MachineList extends Vue {
                 <el-table-column prop="HostName" label="名称" fixed sortable show-overflow-tooltip />
                 <el-table-column prop="IpAddress" label="公网 IP" sortable show-overflow-tooltip />
                 <el-table-column prop="Region" label="地域" sortable show-overflow-tooltip />
-                <el-table-column prop="Model" label="类型" sortable show-overflow-tooltip>
+                <el-table-column prop="Model" label="来源" sortable show-overflow-tooltip>
                     <template #default="scope">
-                        {{ MachineModels[scope.row.Model] }}
+                        <el-tooltip :content="MachineModels[scope.row.Model]">
+                            {{ cache.vendorList[scope.row.VendorId]?.Description || "-"}}
+                        </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column prop="WorkerId" label="土豆片" show-overflow-tooltip>

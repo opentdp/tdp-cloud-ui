@@ -13,7 +13,7 @@ export default class PassportLogin extends Vue {
     public session = sessionStore()
 
     public created() {
-        this.layout.getOption()
+        this.layout.initUIConfig()
     }
 
     @Ref

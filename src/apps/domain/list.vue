@@ -4,15 +4,19 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { DomainModels, DomainItem } from "@/api/native/domain"
 
+import UseCache from '@/store/cache'
+
 @Component
 export default class DomainList extends Vue {
     public DomainModels = DomainModels
+    public cache = UseCache()
 
     public loading = true
 
     // 初始化
 
     public created() {
+        this.cache.initVendorList()
         this.getDomainList()
     }
 
@@ -56,9 +60,11 @@ export default class DomainList extends Vue {
             <el-table v-loading="loading" :data="domainList" table-layout="fixed">
                 <el-table-column prop="Name" label="域名" fixed sortable show-overflow-tooltip />
                 <el-table-column prop="NSList" label="NS 服务器" sortable show-overflow-tooltip />
-                <el-table-column prop="Model" label="类型" sortable show-overflow-tooltip>
+                <el-table-column prop="Model" label="来源" sortable show-overflow-tooltip>
                     <template #default="scope">
-                        {{ DomainModels[scope.row.Model] }}
+                        <el-tooltip :content="DomainModels[scope.row.Model]">
+                            {{ cache.vendorList[scope.row.VendorId]?.Description }}
+                        </el-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">

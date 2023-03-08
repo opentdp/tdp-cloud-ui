@@ -3,15 +3,13 @@ import { defineStore } from "pinia"
 import { LoginResult } from "@/api/native/passport"
 
 export default defineStore("session", {
-    state() {
-        return {
-            AppId: "",
-            AppKey: "",
-            Username: "",
-            Email: "",
-            Token: "",
-        }
-    },
+    state: () => ({
+        AppId: "",
+        AppKey: "",
+        Username: "",
+        Email: "",
+        Token: "",
+    }),
     actions: {
         update(res: LoginResult) {
             Object.assign(this, res)
