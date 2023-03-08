@@ -67,13 +67,8 @@ export default class LayoutSidebar extends Vue {
         {
             icon: "Switch",
             index: "/vendor",
-            title: "资产管理",
+            title: "厂商管理",
             subs: [
-                {
-                    icon: "Cpu",
-                    index: "/vendor/worker",
-                    title: "子节点",
-                },
                 {
                     icon: "PartlyCloudy",
                     index: "/vendor/tencent",
@@ -90,7 +85,12 @@ export default class LayoutSidebar extends Vue {
                     title: "Cloudflare",
                 },
             ]
-        }
+        },
+        {
+            icon: "Cpu",
+            index: "/vendor/worker",
+            title: "节点管理",
+        },
         // {
         //     icon: 'Warning',
         //     index: '7',

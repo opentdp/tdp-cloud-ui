@@ -196,7 +196,7 @@ export const routes: RouteRecordRaw[] = [
                 path: "/vendor/worker",
                 name: "vendor-worker-bind",
                 meta: {
-                    title: "子节点",
+                    title: "节点管理",
                     login: true,
                 },
                 component: () => import("@/apps/vendor/worker_bind.vue"),

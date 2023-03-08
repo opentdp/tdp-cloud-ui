@@ -40,7 +40,7 @@ export default class VendoWorkerBind extends Vue {
                 首页
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-                子节点
+                节点管理
             </el-breadcrumb-item>
         </el-breadcrumb>
         <WorkerBind v-bind="{ boundList: machineList }" @change="getMachineList" />
