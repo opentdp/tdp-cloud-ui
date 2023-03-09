@@ -5,24 +5,26 @@ import { createApp } from "vue"
 import App from "@/app.vue"
 import "@/assets/style.scss"
 
-import setupStore from "@/store/index"
+import setupPinia from "@/setup/pinia"
 
-import setupRoute from "@/router/route"
-import setupRouter from "@/router/index"
+import setupRoute from "@/setup/route"
+import setupRouter from "@/setup/router"
 
-import setupEcharts from "@/component/echarts"
-import setupElement from "@/component/element"
-import setupHighlight from "@/component/highlight"
+import setupElement from "@/setup/element"
+
+import setupEcharts from "@/setup/echarts"
+import setupHighlight from "@/setup/highlight"
 
 const app = createApp(App)
 
-setupStore(app)
+setupPinia(app)
 
 setupRoute(app)
 setupRouter(app)
 
-setupEcharts(app)
 setupElement(app)
+
+setupEcharts(app)
 setupHighlight(app)
 
 app.mount("#app")

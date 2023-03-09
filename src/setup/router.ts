@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from "vue-router"
 
 import sessionStore from "@/store/session"
 
-import { routes } from "./routes"
+import { routes } from "@/apps/routes"
 
 const router = createRouter({
     history: createWebHashHistory(),

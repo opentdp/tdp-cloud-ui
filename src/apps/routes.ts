@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from "vue-router"
 
-import layout from "@/apps/layout/index.vue"
+import layout from "./layout/index.vue"
 
 export const routes: RouteRecordRaw[] = [
     {
@@ -20,7 +20,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "系统首页",
                     login: true,
                 },
-                component: () => import("@/apps/dashboard/index.vue"),
+                component: () => import("./dashboard/index.vue"),
             },
             //////
             {
@@ -30,7 +30,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "证书列表",
                     login: true,
                 },
-                component: () => import("@/apps/certbot/list.vue"),
+                component: () => import("./certbot/list.vue"),
             },
             {
                 path: "/certbot/detail/:id",
@@ -39,7 +39,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "证书详情",
                     login: true,
                 },
-                component: () => import("@/apps/certbot/detail.vue"),
+                component: () => import("./certbot/detail.vue"),
             },
             //////
             {
@@ -49,7 +49,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "域名列表",
                     login: true,
                 },
-                component: () => import("@/apps/domain/list.vue"),
+                component: () => import("./domain/list.vue"),
             },
             {
                 path: "/domain/detail/:id",
@@ -58,7 +58,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "域名详情",
                     login: true,
                 },
-                component: () => import("@/apps/domain/detail.vue"),
+                component: () => import("./domain/detail.vue"),
             },
             //////
             {
@@ -68,7 +68,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "主机列表",
                     login: true,
                 },
-                component: () => import("@/apps/machine/list.vue"),
+                component: () => import("./machine/list.vue"),
             },
             {
                 path: "/machine/detail/:id",
@@ -77,7 +77,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "主机详情",
                     login: true,
                 },
-                component: () => import("@/apps/machine/detail.vue"),
+                component: () => import("./machine/detail.vue"),
             },
             {
                 path: "/machine/vnc/:id",
@@ -86,7 +86,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "主机 VNC",
                     login: true,
                 },
-                component: () => import("@/apps/machine/vnc.vue"),
+                component: () => import("./machine/vnc.vue"),
             },
             //////
             {
@@ -96,7 +96,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "个人资料",
                     login: true,
                 },
-                component: () => import("@/apps/passport/profile.vue"),
+                component: () => import("./passport/profile.vue"),
             },
             //////
             {
@@ -106,7 +106,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "脚本管理",
                     login: true,
                 },
-                component: () => import("@/apps/script/list.vue"),
+                component: () => import("./script/list.vue"),
             },
             //////
             {
@@ -116,7 +116,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "任务记录",
                     login: true,
                 },
-                component: () => import("@/apps/taskline/list.vue"),
+                component: () => import("./taskline/list.vue"),
             },
             //////
             {
@@ -126,7 +126,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "SSH 连接",
                     login: true,
                 },
-                component: () => import("@/apps/terminal/ssh.vue"),
+                component: () => import("./terminal/ssh.vue"),
             },
             {
                 path: "/keypair/list",
@@ -135,7 +135,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "密钥管理",
                     login: true,
                 },
-                component: () => import("@/apps/keypair/list.vue"),
+                component: () => import("./keypair/list.vue"),
             },
             //////
             {
@@ -145,7 +145,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "阿里云",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/alibaba.vue"),
+                component: () => import("./vendor/alibaba.vue"),
             },
             {
                 path: "/vendor/alibaba/:id",
@@ -154,7 +154,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "阿里云",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/alibaba_bind.vue"),
+                component: () => import("./vendor/alibaba_bind.vue"),
             },
             {
                 path: "/vendor/cloudflare",
@@ -163,7 +163,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "Cloudflare",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/cloudflare.vue"),
+                component: () => import("./vendor/cloudflare.vue"),
             },
             {
                 path: "/vendor/cloudflare/:id",
@@ -172,7 +172,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "Cloudflare",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/cloudflare_bind.vue"),
+                component: () => import("./vendor/cloudflare_bind.vue"),
             },
             {
                 path: "/vendor/tencent",
@@ -181,7 +181,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "腾讯云",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/tencent.vue"),
+                component: () => import("./vendor/tencent.vue"),
             },
             {
                 path: "/vendor/tencent/:id",
@@ -190,7 +190,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "腾讯云",
                     login: true,
                 },
-                component: () => import("@/apps/vendor/tencent_bind.vue"),
+                component: () => import("./vendor/tencent_bind.vue"),
             },
             {
                 path: "/workhub/worker",
@@ -199,7 +199,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "节点管理",
                     login: true,
                 },
-                component: () => import("@/apps/workhub/worker_bind.vue"),
+                component: () => import("./workhub/worker_bind.vue"),
             },
             //////
             {
@@ -209,7 +209,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "没有权限",
                     login: true,
                 },
-                component: () => import("@/apps/error/403.vue"),
+                component: () => import("./error/403.vue"),
             },
             {
                 path: "/error/404",
@@ -218,7 +218,7 @@ export const routes: RouteRecordRaw[] = [
                     title: "找不到页面",
                     login: true,
                 },
-                component: () => import("@/apps/error/404.vue"),
+                component: () => import("./error/404.vue"),
             },
         ],
     },
@@ -229,7 +229,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: "登录",
         },
-        component: () => import("@/apps/passport/login.vue"),
+        component: () => import("./passport/login.vue"),
     },
     {
         path: "/passport/register",
@@ -237,7 +237,7 @@ export const routes: RouteRecordRaw[] = [
         meta: {
             title: "注册",
         },
-        component: () => import("@/apps/passport/register.vue"),
+        component: () => import("./passport/register.vue"),
     },
     //////
     {
@@ -247,6 +247,6 @@ export const routes: RouteRecordRaw[] = [
             title: "找不到页面",
             login: true,
         },
-        component: () => import("@/apps/error/404.vue"),
+        component: () => import("./error/404.vue"),
     },
 ]
