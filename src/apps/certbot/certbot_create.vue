@@ -57,6 +57,10 @@ export default class CertbotCreate extends Vue {
                 return false
             }
             const domain = this.domainList[this.domainId]
+            if (!domain) {
+                ElMessage.error("请选择主域名")
+                return false
+            }
             const prefix = this.domainSub ? this.domainSub + "." : ""
             this.formModel.Domain = prefix + domain.Name
             this.formModel.VendorId = domain.VendorId
@@ -103,9 +107,10 @@ export default class CertbotCreate extends Vue {
                     <div>.</div>
                 </el-col>
                 <el-col :span="12">
-                    <el-select v-model="domainId">
+                    <el-select v-if="domainList.length > 0" v-model="domainId">
                         <el-option v-for="v, k in domainList" :key="k" :label="v.Name" :value="k" />
                     </el-select>
+                    <el-input v-else value="请先导入域名资源" disabled />
                 </el-col>
             </el-form-item>
             <el-form-item prop="Email" label="邮箱">
