@@ -1,3 +1,5 @@
+// https://cn.vitejs.dev/config/
+
 import createVuePlugin from "@vitejs/plugin-vue"
 
 import { defineConfig } from "vite"
