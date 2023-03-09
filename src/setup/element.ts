@@ -14,8 +14,8 @@ import * as Icons from "@element-plus/icons-vue"
 // export default
 
 export default (app: App) => {
+    app.use(ElementPlus, { locale: zhCn })
     for (const icon of Object.entries(Icons)) {
         app.component(...icon)
     }
-    app.use(ElementPlus, { locale: zhCn })
 }

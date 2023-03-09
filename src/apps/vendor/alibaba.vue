@@ -1,10 +1,10 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormInstance, FormRules } from "element-plus"
+import { MessagePlugin, FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
 import { NaApi } from "@/api"
-import { VendorItem } from "@/api/native/vendor"
+import { VendorItem, VendorOrig } from "@/api/native/vendor"
 
 @Component
 export default class VendorAlibaba extends Vue {
@@ -37,97 +37,91 @@ export default class VendorAlibaba extends Vue {
     // 添加厂商
 
     @Ref
-    public formRef!: FormInstance
+    public formRef!: FormInstanceFunctions
 
-    public formModel = {
+    public formModel: VendorOrig = {
         SecretId: "",
         SecretKey: "",
         Provider: "alibaba",
         Description: "",
     }
 
-    public formRules: FormRules = {
-        SecretId: [{ required: true, message: "不能为空" }],
-        SecretKey: [{ required: true, message: "不能为空" }],
-        Description: [{ required: true, message: "不能为空" }],
+    public formRules: FormRules<VendorOrig> = {
+        SecretId: [{ required: true }],
+        SecretKey: [{ required: true }],
+        Description: [{ required: true }],
     }
 
-    public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            await NaApi.vendor.create(this.formModel)
-            this.formRef.resetFields()
-            this.getVendorList()
-        })
+    async formSubmit(ctx: SubmitContext<FormData>) {
+        if (ctx.validateResult !== true) {
+            MessagePlugin.error("请检查表单")
+            return false
+        }
+        await NaApi.vendor.create(this.formModel)
+        this.formRef.reset()
+        this.getVendorList()
     }
+
+    // 表格定义
+
+    public vendorColumns = [
+        { colKey: 'Description', title: '别名', ellipsis: true, sorter: true },
+        { colKey: 'SecretId', title: '密钥 ID', ellipsis: true, sorter: true },
+        { colKey: 'Operation', title: '操作', width: "140px" },
+    ]
 }
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space direction="vertical">
+        <t-breadcrumb separator="/">
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 阿里云
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>账号列表</b>
-                </div>
-            </template>
-            <el-table v-loading="loading" :data="vendorList">
-                <el-table-column prop="Description" label="别名" fixed sortable show-overflow-tooltip />
-                <el-table-column prop="SecretId" label="密钥 ID" sortable show-overflow-tooltip />
-                <el-table-column label="操作" width="180" align="center">
-                    <template #default="scope">
-                        <el-button v-route="'/vendor/alibaba/' + scope.row.Id" link type="primary" icon="View">
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-card title="账号列表" hover-shadow header-bordered>
+            <t-table :data="vendorList" :columns="vendorColumns" row-key="Id" height="auto">
+                <template #Operation="{ row, rowIndex }">
+                    <t-space>
+                        <t-link v-route="'/vendor/alibaba/' + row.Id" theme="primary" hover="color">
                             管理
-                        </el-button>
-                        <el-popconfirm title="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(scope.$index)">
-                            <template #reference>
-                                <el-button link type="danger" icon="Delete">
-                                    删除
-                                </el-button>
-                            </template>
-                        </el-popconfirm>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-card>
-        <div class="space-10" />
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>添加账号</b>
-                    <el-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" icon="Position"
-                        :underline="false">
-                        &nbsp;操作指南
-                    </el-link>
-                </div>
+                        </t-link>
+                        <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
+                            <t-link theme="danger" hover="color">
+                                删除
+                            </t-link>
+                        </t-popconfirm>
+                    </t-space>
+                </template>
+            </t-table>
+        </t-card>
+
+        <t-card title="添加账号" hover-shadow header-bordered>
+            <template #actions>
+                <t-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" hover="color">
+                    <t-icon name="jump" /> &nbsp;操作指南
+                </t-link>
             </template>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="90px">
-                <el-form-item prop="Description" label="别名">
-                    <el-input v-model="formModel.Description" />
-                </el-form-item>
-                <el-form-item prop="SecretId" label="密钥 ID">
-                    <el-input v-model="formModel.SecretId" />
-                </el-form-item>
-                <el-form-item prop="SecretKey" label="密钥 KEY">
-                    <el-input v-model="formModel.SecretKey" />
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="formSubmit(formRef)">
+            <t-form ref="formRef" :data="formModel" :rules="formRules" @submit="formSubmit">
+                <t-form-item name="Description" label="别名">
+                    <t-input v-model="formModel.Description" />
+                </t-form-item>
+                <t-form-item name="SecretId" label="密钥 ID">
+                    <t-input v-model="formModel.SecretId" />
+                </t-form-item>
+                <t-form-item name="SecretKey" label="密钥 KEY">
+                    <t-input v-model="formModel.SecretKey" />
+                </t-form-item>
+                <t-form-item>
+                    <t-button theme="primary" type="submit">
                         保存
-                    </el-button>
-                </el-form-item>
-            </el-form>
-        </el-card>
-    </div>
+                    </t-button>
+                </t-form-item>
+            </t-form>
+        </t-card>
+    </t-space>
 </template>
