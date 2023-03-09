@@ -39,6 +39,8 @@ use([
     CanvasRenderer,
 ])
 
+// export default
+
 export default (app: App) => {
     app.component("VChart", VChart)
 }

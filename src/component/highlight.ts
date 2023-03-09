@@ -33,6 +33,8 @@ const plugin: Plugin = {
     },
 }
 
+// export default
+
 export default (app: App) => {
     app.use(plugin)
 }
