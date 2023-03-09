@@ -34,6 +34,7 @@
 // 表格
 
 .el-table th {
+    white-space: nowrap;
     background-color: #f5f7fa !important;
 }
 
@@ -49,6 +50,10 @@
 .el-form-item .el-select,
 .el-form-item .el-autocomplete {
     width: 100%;
+}
+
+.el-form-item__label {
+    white-space: nowrap;
 }
 
 // 按钮上下文
