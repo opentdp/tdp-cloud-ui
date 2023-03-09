@@ -130,10 +130,10 @@ export default class WorkerStatChart extends Vue {
 
 <template>
     <div v-loading="!diskUsedChart" class="chart-list">
-        <v-chart class="chart" :option="cpuUsedChart" />
-        <v-chart class="chart" :option="memUsedChart" />
-        <v-chart class="chart" :option="swapUsedChart" />
-        <v-chart class="chart" :option="diskUsedChart" />
+        <v-chart v-if="cpuUsedChart" class="chart" :option="cpuUsedChart" />
+        <v-chart v-if="memUsedChart" class="chart" :option="memUsedChart" />
+        <v-chart v-if="swapUsedChart" class="chart" :option="swapUsedChart" />
+        <v-chart v-if="diskUsedChart" class="chart" :option="diskUsedChart" />
     </div>
 </template>
 
@@ -141,6 +141,7 @@ export default class WorkerStatChart extends Vue {
 .chart-list {
     display: flex;
     flex-wrap: wrap;
+    min-height: 60px;
 
     .chart {
         width: 200px;
