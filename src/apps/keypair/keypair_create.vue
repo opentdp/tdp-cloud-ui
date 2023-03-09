@@ -61,7 +61,7 @@ export default class KeypairCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加密钥" width="600px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="60px">
             <el-form-item prop="KeyType" label="类型">
                 <el-select v-model="formModel.KeyType" placeholder="Select">
                     <el-option v-for="v, k in KeypairTypeList" :key="k" :label="v" :value="k" />

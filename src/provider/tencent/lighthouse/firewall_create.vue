@@ -69,7 +69,7 @@ export default class LighthouseFirewallCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加规则" width="400px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="60px">
             <el-form-item prop="CidrBlock" label="来源">
                 <el-input v-model="formModel.CidrBlock" />
             </el-form-item>

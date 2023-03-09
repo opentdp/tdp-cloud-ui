@@ -70,7 +70,7 @@ export default class LighthouseInstanceRename extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="修改名称" width="400px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="50px">
+        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="60px">
             <el-form-item prop="name" label="名称">
                 <el-input v-model="formModel.name" />
             </el-form-item>
