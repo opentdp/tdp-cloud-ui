@@ -53,23 +53,23 @@ export default class DashboardIndex extends Vue {
                 <div>资源统计</div>
             </template>
             <el-space v-if="summary" wrap>
-                <el-card shadow="hover" class="info-card">
+                <el-card v-route="'/vendor/tencent'" shadow="hover" class="info-card">
                     <div>厂商</div>
                     <b>{{ summary.Vendor }}</b>
                 </el-card>
-                <el-card shadow="hover" class="info-card">
+                <el-card v-route="'/machine/list'" shadow="hover" class="info-card">
                     <div>主机</div>
                     <b>{{ summary.Machine }}</b>
                 </el-card>
-                <el-card shadow="hover" class="info-card">
+                <el-card v-route="'/domain/list'" shadow="hover" class="info-card">
                     <div>域名</div>
                     <b>{{ summary.Domain }}</b>
                 </el-card>
-                <el-card shadow="hover" class="info-card">
+                <el-card v-route="'/keypair/list'" shadow="hover" class="info-card">
                     <div>密钥</div>
                     <b>{{ summary.Keypair }}</b>
                 </el-card>
-                <el-card shadow="hover" class="info-card">
+                <el-card v-route="'/script/list'" shadow="hover" class="info-card">
                     <div>脚本</div>
                     <b>{{ summary.Script }}</b>
                 </el-card>

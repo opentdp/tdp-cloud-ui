@@ -87,11 +87,9 @@ export default class VendorTencent extends Vue {
                 <el-table-column prop="SecretId" label="密钥 ID" sortable show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <router-link :to="'/vendor/tencent/' + scope.row.Id">
-                            <el-button link type="primary" icon="View">
-                                管理
-                            </el-button>
-                        </router-link>
+                        <el-button v-route="'/vendor/tencent/' + scope.row.Id" link type="primary" icon="View">
+                            管理
+                        </el-button>
                         <el-popconfirm title="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">

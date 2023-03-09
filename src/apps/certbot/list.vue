@@ -75,13 +75,13 @@ export default class CertbotList extends Vue {
                 </el-table-column>
                 <el-table-column prop="History" label="证书" show-overflow-tooltip>
                     <template #default="scope">
-                        <router-link v-if="scope.row.History?.event == 'cached'" :to="'/certbot/detail/' + scope.row.Id">
+                        <span v-if="scope.row.History?.event == 'cached'" v-route="'/certbot/detail/' + scope.row.Id">
                             详情
-                        </router-link>
-                        <router-link v-else-if="scope.row.History?.event == 'obtained'"
-                            :to="'/certbot/detail/' + scope.row.Id">
+                        </span>
+                        <span v-else-if="scope.row.History?.event == 'obtained'"
+                            v-route="'/certbot/detail/' + scope.row.Id">
                             详情
-                        </router-link>
+                        </span>
                         <div v-else>
                             {{ scope.row.History?.event ? JobStatus[scope.row.History.event] : "未知" }}
                         </div>

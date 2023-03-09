@@ -75,9 +75,9 @@ export default class PassportLogin extends Vue {
                     </el-button>
                 </div>
                 <div v-if="layout.Register" class="magic-btn">
-                    <router-link to="/passport/register">
-                        <el-button>注册</el-button>
-                    </router-link>
+                    <el-button v-route="'/passport/register'">
+                        注册
+                    </el-button>
                 </div>
             </el-form>
         </div>

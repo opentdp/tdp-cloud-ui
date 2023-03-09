@@ -50,9 +50,7 @@ export default class ScriptQuick extends Vue {
 <template>
     <div v-if="machine.WorkerId.length == 32" v-loading="loading" class="button-list">
         <p v-if="scriptList.length == 0">
-            暂无可用命令，请在 <router-link to="/script/list">
-                <b>脚本管理</b>
-            </router-link> 页面添加命令。
+            暂无可用命令，请在 <b v-route="'/script/list'">脚本管理</b> 页面添加命令。
         </p>
         <template v-for="v in scriptList" :key="v.Id">
             <el-button @click="execModal.open(machine, v)">

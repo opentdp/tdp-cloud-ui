@@ -114,11 +114,10 @@ export default class CvmInstance extends Vue {
                     :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
                     重启
                 </el-button>
-                <router-link v-if="instance.InstanceState == 'RUNNING'" :to="'/machine/vnc/' + machine.Id">
-                    <el-button type="primary" plain size="small">
-                        VNC 终端
-                    </el-button>
-                </router-link>
+                <el-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id" type="primary"
+                    plain size="small">
+                    VNC 终端
+                </el-button>
                 <el-button v-else type="primary" plain size="small" disabled>
                     VNC 终端
                 </el-button>

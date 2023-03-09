@@ -90,7 +90,7 @@ export default class MachineList extends Vue {
                 <el-table-column prop="Model" label="云账号" sortable show-overflow-tooltip>
                     <template #default="scope">
                         <el-tooltip :content="MachineModels[scope.row.Model]">
-                            {{ cache.vendorList[scope.row.VendorId]?.Description || "-"}}
+                            {{ cache.vendorList[scope.row.VendorId]?.Description || "-" }}
                         </el-tooltip>
                     </template>
                 </el-table-column>
@@ -110,11 +110,9 @@ export default class MachineList extends Vue {
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <router-link :to="'/machine/detail/' + scope.row.Id">
-                            <el-button link type="primary" icon="View">
-                                管理
-                            </el-button>
-                        </router-link>
+                        <el-button v-route="'/machine/detail/' + scope.row.Id" link type="primary" icon="View">
+                            管理
+                        </el-button>
                         <el-popconfirm title="确定删除?" @confirm="deleteMachine(scope.$index)">
                             <template #reference>
                                 <el-button link type="danger" icon="Delete">

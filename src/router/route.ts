@@ -10,11 +10,12 @@ export default (app: App) => {
 
         el.style.cursor = 'pointer'
 
-        el.addEventListener('click', () => {
+        el.addEventListener('click', (evt: Event) => {
             const { value } = binding
             if (typeof value === 'string') {
                 app.config.globalProperties.$router.push(value)
             }
+            evt.stopPropagation()
         })
 
     })
