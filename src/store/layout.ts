@@ -4,8 +4,10 @@ import { NaApi } from "@/api"
 
 export default defineStore("layout", {
     state: () => ({
-        Collapse: false,
+        Version: "",
         Register: false,
+        // 侧边栏折叠
+        Collapse: false,
     }),
     actions: {
         // 侧边栏折叠
@@ -15,7 +17,7 @@ export default defineStore("layout", {
         // 获取前端配置
         initUIConfig() {
             NaApi.config.ui().then(res => {
-                this.Register = res.Register
+                Object.assign(this, res)
             })
         }
     },

@@ -82,7 +82,7 @@ export default class PassportLogin extends Vue {
             </el-form>
         </div>
         <div class="copyright">
-            <small>Powered by TDP Cloud</small>
+            <small>Powered by TDP Cloud {{ layout.Version ? "v" + layout.Version : "" }}</small>
         </div>
     </div>
 </template>

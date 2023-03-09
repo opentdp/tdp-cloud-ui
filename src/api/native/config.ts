@@ -48,5 +48,6 @@ export interface ConfigPaged {
 }
 
 export interface UIOption {
+    Version: string
     Register: boolean
 }

@@ -29,6 +29,7 @@ export default class LayoutIndex extends Vue {
             <el-link href="https://apps.rehiy.com/tdp-cloud/" target="_blank" :underline="false">
                 TDP Cloud
             </el-link>
+            {{ layout.Version ? "v" + layout.Version : "" }}
         </div>
     </div>
 </template>
