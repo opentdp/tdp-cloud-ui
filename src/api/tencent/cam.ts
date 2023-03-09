@@ -5,7 +5,7 @@ export class CamModel extends TencentClient {
     protected Service = "cam"
     protected Version = "2019-01-16"
 
-    public getAccountSummary(): Promise<ICam.GetAccountUserSummary> {
+    public getAccountSummary(): Promise<ICam.GetAccountSummaryResponse> {
         return this.bus({ Action: "GetAccountSummary" }, 600)
     }
 }
