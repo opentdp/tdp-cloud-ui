@@ -26,29 +26,36 @@ export default class WorkerInstance extends Vue {
         </t-card>
 
         <t-card title="实例信息" hover-shadow header-bordered>
-            <el-descriptions v-if="machine.WorkerMeta" :column="1" border>
-                <el-descriptions-item label="实例ID" :span="2">
-                    {{ machine.WorkerMeta.HostId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="主机名">
-                    {{ machine.WorkerMeta.HostName }}
-                </el-descriptions-item>
-                <el-descriptions-item label="CPU 核心">
-                    内核：{{ machine.WorkerMeta.CpuCore }}，逻辑处理器：{{ machine.WorkerMeta.CpuCoreLogic }}
-                </el-descriptions-item>
-                <el-descriptions-item label="内存">
-                    {{ bytesToSize(machine.WorkerMeta.MemoryTotal) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="操作系统">
-                    {{ machine.WorkerMeta.Platform }}（{{ machine.WorkerMeta.KernelArch }}）
-                </el-descriptions-item>
-                <el-descriptions-item label="公网 IP">
-                    {{ machine.WorkerMeta.IpAddress }}
-                </el-descriptions-item>
-                <el-descriptions-item label="上次同步">
-                    {{ dateFormat(machine.WorkerMeta.CreateAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
-                </el-descriptions-item>
-            </el-descriptions>
+            <t-list v-if="machine.WorkerMeta" :split="true">
+                <t-list-item>
+                    <b>实例ID</b>
+                    <span>{{ machine.WorkerMeta.HostId }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>主机名</b>
+                    <span> {{ machine.WorkerMeta.HostName }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>CPU 核心</b>
+                    <span>内核：{{ machine.WorkerMeta.CpuCore }}，逻辑处理器：{{ machine.WorkerMeta.CpuCoreLogic }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>内存</b>
+                    <span> {{ bytesToSize(machine.WorkerMeta.MemoryTotal) }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>操作系统</b>
+                    <span> {{ machine.WorkerMeta.Platform }}（{{ machine.WorkerMeta.KernelArch }}）</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>公网 IP</b>
+                    <span> {{ machine.WorkerMeta.IpAddress }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>上次同步</b>
+                    <span> {{ dateFormat(machine.WorkerMeta.CreateAt * 1000, "yyyy-MM-dd hh:mm:ss") }}</span>
+                </t-list-item>
+            </t-list>
         </t-card>
     </t-space>
 </template>

@@ -123,39 +123,51 @@ export default class LighthouseInstance extends Vue {
                     VNC 终端
                 </el-button>
             </template>
-            <el-descriptions :column="2" border>
-                <el-descriptions-item label="实例ID">
-                    {{ instance.InstanceId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="实例名">
-                    {{ instance.InstanceName }}
-                    <el-button link icon="EditPen" @click="renameModal.open(instance)" />
-                </el-descriptions-item>
-                <el-descriptions-item label="规格">
-                    CPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB
-                </el-descriptions-item>
-                <el-descriptions-item label="系统盘">
-                    {{ instance.SystemDisk.DiskSize }} GB
-                </el-descriptions-item>
-                <el-descriptions-item label="私网 IP">
-                    {{ instance.PrivateAddresses.join(", ") }}
-                </el-descriptions-item>
-                <el-descriptions-item label="公网 IP">
-                    {{ instance.PublicAddresses.join(", ") }}
-                </el-descriptions-item>
-                <el-descriptions-item label="镜像名称">
-                    {{ instance.BlueprintId }}
-                </el-descriptions-item>
-                <el-descriptions-item label="操作系统">
-                    {{ instance.OsName }}
-                </el-descriptions-item>
-                <el-descriptions-item label="创建时间">
-                    {{ dateFormat(instance.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
-                </el-descriptions-item>
-                <el-descriptions-item label="到期时间">
-                    {{ dateFormat(instance.ExpiredTime, "yyyy-MM-dd hh:mm:ss") }}
-                </el-descriptions-item>
-            </el-descriptions>
+            <t-list :split="true">
+                <t-list-item>
+                    <b>实例ID</b>
+                    <span>{{ instance.InstanceId }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>实例名</b>
+                    <div>
+                        {{ instance.InstanceName }}
+                        <el-button link icon="EditPen" @click="renameModal.open(instance)" />
+                    </div>
+                </t-list-item>
+                <t-list-item>
+                    <b>规格</b>
+                    <span>CPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>系统盘</b>
+                    <span>{{ instance.SystemDisk.DiskSize }} GB</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>私网 IP</b>
+                    <span>{{ instance.PrivateAddresses.join(", ") }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>公网 IP</b>
+                    <span>{{ instance.PublicAddresses.join(", ") }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>镜像名称</b>
+                    <span>{{ instance.BlueprintId }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>操作系统</b>
+                    <span>{{ instance.OsName }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>创建时间</b>
+                    <span>{{ dateFormat(instance.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>到期时间</b>
+                    <span>{{ dateFormat(instance.ExpiredTime, "yyyy-MM-dd hh:mm:ss") }}</span>
+                </t-list-item>
+            </t-list>
         </t-card>
 
         <Firwwall :instance="instance" />

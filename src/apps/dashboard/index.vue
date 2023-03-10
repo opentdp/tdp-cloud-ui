@@ -48,73 +48,76 @@ export default class DashboardIndex extends Vue {
             <StatChart id="host" />
         </t-card>
 
-        <t-card v-loading="!summary" class="box-card">
-            <template #header>
-                <div>资源统计</div>
-            </template>
-            <el-space v-if="summary" wrap>
-                <t-card v-route="'/vendor/tencent'" hover-shadow class="info-card">
+        <t-card v-loading="!summary" title="资源统计" hover-shadow header-bordered>
+            <t-space v-if="summary" fixed break-line>
+                <t-card v-route="'/vendor/tencent'" class="summary" hover-shadow>
                     <div>厂商</div>
                     <b>{{ summary.Vendor }}</b>
                 </t-card>
-                <t-card v-route="'/machine/list'" hover-shadow class="info-card">
+                <t-card v-route="'/machine/list'" class="summary" hover-shadow>
                     <div>主机</div>
                     <b>{{ summary.Machine }}</b>
                 </t-card>
-                <t-card v-route="'/domain/list'" hover-shadow class="info-card">
+                <t-card v-route="'/domain/list'" class="summary" hover-shadow>
                     <div>域名</div>
                     <b>{{ summary.Domain }}</b>
                 </t-card>
-                <t-card v-route="'/keypair/list'" hover-shadow class="info-card">
+                <t-card v-route="'/keypair/list'" class="summary" hover-shadow>
                     <div>密钥</div>
                     <b>{{ summary.Keypair }}</b>
                 </t-card>
-                <t-card v-route="'/script/list'" hover-shadow class="info-card">
+                <t-card v-route="'/script/list'" class="summary" hover-shadow>
                     <div>脚本</div>
                     <b>{{ summary.Script }}</b>
                 </t-card>
-            </el-space>
+            </t-space>
         </t-card>
 
-        <t-card v-loading="!server" class="box-card">
-            <template #header>
-                <div>系统信息</div>
-            </template>
-            <el-descriptions v-if="server" :column="1" border>
-                <el-descriptions-item label="主机名">
-                    {{ server.Stat.HostName }}
-                </el-descriptions-item>
-                <el-descriptions-item label="CPU 型号">
-                    {{ server.Stat.CpuModel[0] }}
-                </el-descriptions-item>
-                <el-descriptions-item label="CPU 核心">
-                    内核：{{ server.Stat.CpuCore }}，逻辑处理器：{{ server.Stat.CpuCoreLogic }}
-                </el-descriptions-item>
-                <el-descriptions-item label="内存">
-                    {{ bytesToSize(server.Stat.MemoryTotal) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="虚拟内存">
-                    {{ bytesToSize(server.Stat.SwapTotal) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="硬盘容量">
-                    {{ bytesToSize(server.Stat.DiskTotal) }}
-                </el-descriptions-item>
-                <el-descriptions-item label="操作系统">
-                    {{ server.Stat.Platform }}（{{ server.Stat.KernelArch }}）
-                </el-descriptions-item>
-                <el-descriptions-item label="运行时长">
-                    {{ (server.Stat.Uptime / 86400).toFixed(1) }} 天
-                </el-descriptions-item>
-                <el-descriptions-item label="公网 IP">
-                    {{ server.Stat.IpAddress }}
-                </el-descriptions-item>
-            </el-descriptions>
+        <t-card v-loading="!server" title="系统信息" hover-shadow header-bordered>
+            <t-list v-if="server" :split="true">
+                <t-list-item>
+                    <b>主机名</b>
+                    <span>{{ server.Stat.HostName }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>CPU 型号</b>
+                    <span>{{ server.Stat.CpuModel[0] }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>CPU 核心</b>
+                    <span>内核：{{ server.Stat.CpuCore }}，逻辑处理器：{{ server.Stat.CpuCoreLogic }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>内存</b>
+                    <span>{{ bytesToSize(server.Stat.MemoryTotal) }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>虚拟内存</b>
+                    <span>{{ bytesToSize(server.Stat.SwapTotal) }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>硬盘容量</b>
+                    <span>{{ bytesToSize(server.Stat.DiskTotal) }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>操作系统</b>
+                    <span>{{ server.Stat.Platform }}（{{ server.Stat.KernelArch }}）</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>运行时长</b>
+                    <span>{{ (server.Stat.Uptime / 86400).toFixed(1) }} 天</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>公网 IP</b>
+                    <span>{{ server.Stat.IpAddress }}</span>
+                </t-list-item>
+            </t-list>
         </t-card>
     </t-space>
 </template>
 
 <style lang="scss" scoped>
-.info-card {
+.summary {
     min-width: 150px;
     text-align: center;
     background-color: var(--el-color-info-light-9);
