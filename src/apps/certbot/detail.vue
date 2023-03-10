@@ -29,8 +29,8 @@ export default class CertbotDetail extends Vue {
         this.certbot = res.Item
         this.cert = res.Cert
         if (res.Cert) {
-            this.crtText = this.crtFormat(res.Cert.Certificate)
-            this.pubText = atob(res.Cert.PrivateKey)
+            this.crtText = this.crtFormat(res.Cert.Certificate).trim()
+            this.pubText = atob(res.Cert.PrivateKey).trim()
             this.dateLimit = [
                 new Date(res.Cert.NotBefore * 1000),
                 new Date(res.Cert.NotAfter * 1000),
@@ -82,11 +82,11 @@ export default class CertbotDetail extends Vue {
             <pre>O  = {{ cert.Issuer.Organization }}</pre>
             <pre>C  = {{ cert.Issuer.Country }}</pre>
             <h3>有效期</h3>
-            <el-date-picker v-model="dateLimit" type="datetimerange" range-separator="至" readonly />
+            <t-date-range-picker v-model="dateLimit" format="YYYY-MM-DD hh:mm:ss" disabled />
             <h3>证书 (<small>Certificate</small>)</h3>
-            <el-input v-model="crtText" type="textarea" rows="10" readonly />
+            <t-textarea v-model="crtText" :autosize="{maxRows: 10}" readonly />
             <h3>私钥 (<small>PrivateKey</small>)</h3>
-            <el-input v-model="pubText" type="textarea" rows="10" readonly />
+            <t-textarea v-model="pubText" :autosize="{maxRows: 10}" readonly />
         </t-card>
     </t-space>
 </template>
