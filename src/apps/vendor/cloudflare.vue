@@ -100,9 +100,9 @@ export default class VendorCloudflare extends Vue {
 
         <t-card title="添加账号" hover-shadow header-bordered>
             <template #actions>
-                <el-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" icon="Position" :underline="false">
-                    &nbsp;操作指南
-                </el-link>
+                <t-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" hover="color">
+                    <t-icon name="jump" /> &nbsp;操作指南
+                </t-link>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="60px">
                 <el-form-item prop="Description" label="别名">

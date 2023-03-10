@@ -26,9 +26,9 @@ export default class LayoutIndex extends Vue {
         <div class="flex-auto" />
         <div class="copyright">
             Powered by
-            <el-link href="https://apps.rehiy.com/tdp-cloud/" target="_blank" :underline="false">
+            <t-link href="https://apps.rehiy.com/tdp-cloud/" target="_blank" hover="color">
                 TDP Cloud
-            </el-link>
+            </t-link>
             {{ layout.Version ? "v" + layout.Version : "" }}
         </div>
     </div>
