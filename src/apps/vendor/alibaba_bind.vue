@@ -63,18 +63,19 @@ export default class VendorAlibabaBind extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item to="/vendor/alibaba">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item to="/vendor/alibaba">
                 阿里云
-            </el-breadcrumb-item>
-            <el-breadcrumb-item v-if="vendor">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item v-if="vendor">
                 {{ vendor.Description || vendorId }}
-            </el-breadcrumb-item>
-        </el-breadcrumb>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
         <el-tabs v-model="curTab.id" type="border-card">
             <el-tab-pane label="ECS服务器" name="ecs">
                 <EcsBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
@@ -86,5 +87,5 @@ export default class VendorAlibabaBind extends Vue {
                 <DnsBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
             </el-tab-pane>
         </el-tabs>
-    </div>
+    </t-space>
 </template>

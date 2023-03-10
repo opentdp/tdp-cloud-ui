@@ -10,7 +10,7 @@
 .crumbs {
     margin: 5px 0 15px;
 
-    .el-breadcrumb__inner {
+    .t-breadcrumb__inner {
         display: flex;
 
         .el-icon {
@@ -63,18 +63,20 @@ a+.el-button {
     margin-left: 12px;
 }
 
-.button-list {
-    gap: 1rem;
-    grid-gap: 1rem;
-    display: flex;
-    flex-wrap: wrap;
+.el-button+.el-tooltip {
+    margin-left: 12px;
+}
 
-    a+.el-button,
-    .el-button+.el-button {
-        margin-left: 0;
+// tdesign
+
+.t-space[fixed] {
+    display: flex;
+
+    &.t-space-align-center {
+        justify-content: center;
     }
 }
 
-.el-button+.el-tooltip {
-    margin-left: 12px;
+td .t-link+.t-link {
+    margin-left: 10px;
 }

@@ -75,16 +75,14 @@ export default class LighthouseSnapshot extends Vue {
 </script>
 
 <template>
-    <el-card v-if="snapshotList" shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>快照</b> &nbsp; &nbsp;
-                <small>记录总数: {{ snapshotList.TotalCount }}</small>
-                <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createModal.open(instance)">
-                    创建快照
-                </el-button>
-            </div>
+    <t-card v-if="snapshotList" title="快照" hover-shadow header-bordered>
+        <template #subtitle>
+            记录总数: {{ snapshotList.TotalCount }}
+        </template>
+        <template #actions>
+            <el-button type="primary" plain size="small" @click="createModal.open(instance)">
+                创建快照
+            </el-button>
         </template>
         <el-table :data="snapshotList.SnapshotSet" table-layout="fixed">
             <el-table-column prop="SnapshotName" label="名称" fixed sortable show-overflow-tooltip />
@@ -127,6 +125,7 @@ export default class LighthouseSnapshot extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-    </el-card>
+    </t-card>
+
     <SnapshotCreate ref="createModal" @submit="refreshSnapshot" />
 </template>

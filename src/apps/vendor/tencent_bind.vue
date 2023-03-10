@@ -63,18 +63,19 @@ export default class VendorTencentBind extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item to="/vendor/tencent">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item to="/vendor/tencent">
                 腾讯云
-            </el-breadcrumb-item>
-            <el-breadcrumb-item v-if="vendor">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item v-if="vendor">
                 {{ vendor.Description || vendorId }}
-            </el-breadcrumb-item>
-        </el-breadcrumb>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
         <el-tabs v-model="curTab.id" type="border-card">
             <el-tab-pane label="CVM服务器" name="cvm">
                 <CvmBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
@@ -86,5 +87,5 @@ export default class VendorTencentBind extends Vue {
                 <DnspodBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
             </el-tab-pane>
         </el-tabs>
-    </div>
+    </t-space>
 </template>

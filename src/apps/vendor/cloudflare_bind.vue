@@ -44,18 +44,19 @@ export default class VendorCloudflareBind extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item to="/vendor/cloudflare">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item to="/vendor/cloudflare">
                 Cloudflare
-            </el-breadcrumb-item>
-            <el-breadcrumb-item v-if="vendor">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item v-if="vendor">
                 {{ vendor.Description || vendorId }}
-            </el-breadcrumb-item>
-        </el-breadcrumb>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
         <CloudflareBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
-    </div>
+    </t-space>
 </template>

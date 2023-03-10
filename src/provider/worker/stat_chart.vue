@@ -11,6 +11,7 @@ import { bytesToSize } from "@/helper/format"
 export default class WorkerStatChart extends Vue {
     public bytesToSize = bytesToSize
 
+    public loading = true
     public timer = 0
 
     @Prop
@@ -39,6 +40,7 @@ export default class WorkerStatChart extends Vue {
             const res = await NaApi.workhub.stat(this.id)
             this.updateConfig(res)
         }
+        this.loading = false
     }
 
     async updateConfig(stat: DetailStat) {
@@ -129,23 +131,20 @@ export default class WorkerStatChart extends Vue {
 </script>
 
 <template>
-    <div v-loading="!diskUsedChart" class="chart-list">
+    <t-space fixed break-line>
         <v-chart v-if="cpuUsedChart" class="chart" :option="cpuUsedChart" />
         <v-chart v-if="memUsedChart" class="chart" :option="memUsedChart" />
         <v-chart v-if="swapUsedChart" class="chart" :option="swapUsedChart" />
         <v-chart v-if="diskUsedChart" class="chart" :option="diskUsedChart" />
-    </div>
+    </t-space>
+    <t-space v-if="loading" fixed align="center">
+        <t-loading />
+    </t-space>
 </template>
 
 <style lang="scss" scoped>
-.chart-list {
-    display: flex;
-    flex-wrap: wrap;
-    min-height: 60px;
-
-    .chart {
-        width: 200px;
-        height: 200px;
-    }
+.chart {
+    width: 200px;
+    height: 200px;
 }
 </style>

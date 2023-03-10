@@ -126,13 +126,9 @@ export default class EcsBind extends Vue {
 </script>
 
 <template>
-    <el-card shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>实例列表</b>
-                <div class="flex-auto" />
-                <small>记录总数: {{ instanceCount }}</small>
-            </div>
+    <t-card title="实例列表" hover-shadow header-bordered>
+        <template #subtitle>
+            记录总数: {{ instanceCount }}
         </template>
         <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
             <el-table-column prop="InstanceName" label="名称" fixed sortable show-overflow-tooltip />
@@ -169,5 +165,5 @@ export default class EcsBind extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-    </el-card>
+    </t-card>
 </template>

@@ -36,27 +36,33 @@ export default class MachineDetail extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item to="/machine/list">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item to="/machine/list">
                 主机管理
-            </el-breadcrumb-item>
-            <el-breadcrumb-item v-if="machine">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item v-if="machine">
                 {{ MachineModels[machine.Model] }} · {{ machine.HostName || machine.Id }}
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <div v-loading="loading" />
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-space v-if="loading" fixed align="center">
+            <t-loading />
+        </t-space>
+
         <template v-if="machine?.Model == 'tencent/cvm'">
             <CvmInstance :machine="machine" />
         </template>
+
         <template v-if="machine?.Model == 'tencent/lighthouse'">
             <LighthouseInstance :machine="machine" />
         </template>
+
         <template v-if="machine?.Model == 'native/worker'">
             <WorkerInstance :machine="machine" />
         </template>
-    </div>
+    </t-space>
 </template>

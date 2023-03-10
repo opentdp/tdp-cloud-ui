@@ -34,20 +34,21 @@ export default class VendoWorkerBind extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 节点管理
-            </el-breadcrumb-item>
-        </el-breadcrumb>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
         <WorkerBind v-bind="{ boundList: machineList }" @change="getMachineList" />
-        <div class="space-10" />
+
         <pre v-highlight max-height="300" class="lang-bash">
             <h3>注册子节点</h3>
             <code>{{ installWorker.Content }}</code>
         </pre>
-    </div>
+    </t-space>
 </template>

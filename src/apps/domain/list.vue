@@ -41,21 +41,19 @@ export default class DomainList extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 域名管理
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>域名列表</b>
-                    <small>记录总数: {{ domainList.length }}</small>
-                </div>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-card title="域名列表" hover-shadow header-bordered>
+            <template #subtitle>
+                记录总数: {{ domainList.length }}
             </template>
             <el-table v-loading="loading" :data="domainList" table-layout="fixed">
                 <el-table-column prop="Name" label="域名" fixed sortable show-overflow-tooltip />
@@ -82,6 +80,6 @@ export default class DomainList extends Vue {
                     </template>
                 </el-table-column>
             </el-table>
-        </el-card>
-    </div>
+        </t-card>
+    </t-space>
 </template>

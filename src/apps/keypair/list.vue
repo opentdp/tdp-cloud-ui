@@ -42,25 +42,24 @@ export default class KeypairList extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 密钥管理
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>密钥列表</b> &nbsp; &nbsp;
-                    <small>记录总数: {{ keylist?.length || 0 }}</small>
-                    <div class="flex-auto" />
-                    <el-button type="primary" plain size="small" @click="createModal.open()">
-                        添加密钥
-                    </el-button>
-                </div>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-card title="密钥列表" hover-shadow header-bordered>
+            <template #subtitle>
+                记录总数: {{ keylist?.length || 0 }}
+            </template>
+            <template #actions>
+                <el-button type="primary" plain size="small" @click="createModal.open()">
+                    添加密钥
+                </el-button>
             </template>
             <el-table :data="keylist">
                 <el-table-column prop="Description" label="别名" fixed sortable show-overflow-tooltip />
@@ -77,7 +76,8 @@ export default class KeypairList extends Vue {
                     </template>
                 </el-table-column>
             </el-table>
-        </el-card>
+        </t-card>
+
         <KeypairCreate ref="createModal" @submit="getKeypairList" />
-    </div>
+    </t-space>
 </template>

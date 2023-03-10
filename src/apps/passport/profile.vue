@@ -70,23 +70,19 @@ export default class PassportProfile extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 个人资料
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-row :gutter="16">
-            <el-col :span="10">
-                <el-card shadow="hover">
-                    <template #header>
-                        <div class="flex-between">
-                            <span>基础信息</span>
-                        </div>
-                    </template>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-row :gutter="16">
+            <t-col :span="5">
+                <t-card title="基础信息" hover-shadow header-bordered>
                     <div class="info">
                         <div class="info-image">
                             <img src="@/assets/img/avatar.jpg">
@@ -98,15 +94,10 @@ export default class PassportProfile extends Vue {
                             {{ formModel.Description }}
                         </div>
                     </div>
-                </el-card>
-            </el-col>
-            <el-col :span="14">
-                <el-card shadow="hover">
-                    <template #header>
-                        <div class="flex-between">
-                            <span>账户编辑</span>
-                        </div>
-                    </template>
+                </t-card>
+            </t-col>
+            <t-col :span="7">
+                <t-card title="账户编辑" hover-shadow header-bordered>
                     <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="70px">
                         <el-form-item label="AppId">
                             {{ session.AppId }}
@@ -141,10 +132,10 @@ export default class PassportProfile extends Vue {
                             </el-button>
                         </el-form-item>
                     </el-form>
-                </el-card>
-            </el-col>
-        </el-row>
-    </div>
+                </t-card>
+            </t-col>
+        </t-row>
+    </t-space>
 </template>
 
 <style lang="scss" scoped>

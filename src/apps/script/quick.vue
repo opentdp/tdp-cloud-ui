@@ -48,7 +48,7 @@ export default class ScriptQuick extends Vue {
 </script>
 
 <template>
-    <div v-if="machine.WorkerId.length == 32" v-loading="loading" class="button-list">
+    <div v-if="machine.WorkerId.length == 32" v-loading="loading">
         <p v-if="scriptList.length == 0">
             暂无可用命令，请在 <b v-route="'/script/list'">脚本管理</b> 页面添加命令。
         </p>

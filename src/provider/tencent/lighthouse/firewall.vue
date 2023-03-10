@@ -65,16 +65,14 @@ export default class LighthouseFirewall extends Vue {
 </script>
 
 <template>
-    <el-card v-if="firewallRuleList" shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>防火墙</b> &nbsp; &nbsp;
-                <small>记录总数: {{ firewallRuleCount }}</small>
-                <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createModel.open(instance)">
-                    添加规则
-                </el-button>
-            </div>
+    <t-card v-if="firewallRuleList" title="防火墙" hover-shadow header-bordered>
+        <template #subtitle>
+            记录总数: {{ firewallRuleCount }}
+        </template>
+        <template #actions>
+            <el-button type="primary" plain size="small" @click="createModel.open(instance)">
+                添加规则
+            </el-button>
         </template>
         <el-table :data="firewallRuleList" table-layout="fixed">
             <el-table-column prop="CidrBlock" label="来源" fixed sortable show-overflow-tooltip />
@@ -103,7 +101,8 @@ export default class LighthouseFirewall extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-    </el-card>
+    </t-card>
+
     <CreateModel ref="createModel" @submit="getFirewallRuleList" />
     <UpdateModel ref="updateModel" @submit="getFirewallRuleList" />
     <RemarkModel ref="remarkModel" @submit="getFirewallRuleList" />

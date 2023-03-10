@@ -32,18 +32,22 @@ export default class MachineVnc extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 VNC 控制台
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <div v-loading="loading" />
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-space v-if="loading" fixed align="center">
+            <t-loading />
+        </t-space>
+
         <template v-if="machine?.Model == 'tencent/lighthouse'">
             <LighthouseVNC :machine="machine" />
         </template>
-    </div>
+    </t-space>
 </template>

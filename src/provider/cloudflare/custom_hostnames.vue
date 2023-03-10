@@ -98,16 +98,14 @@ export default class CloudflareCustomHostnames extends Vue {
         </el-alert>
     </el-form-item>
 
-    <el-card v-else v-loading="loading" shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>自定义主机名</b> &nbsp; &nbsp;
-                <small>记录总数: {{ customHostnames?.length || 0 }}</small>
-                <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="refresh">
-                    刷新状态
-                </el-button>
-            </div>
+    <t-card v-else v-loading="loading" title="自定义主机名" hover-shadow header-bordered>
+        <template #subtitle>
+            记录总数: {{ customHostnames?.length || 0 }}
+        </template>
+        <template #actions>
+            <el-button type="primary" plain size="small" @click="refresh">
+                刷新状态
+            </el-button>
         </template>
 
         <el-form-item v-if="fallbackOrigin.origin == ''">
@@ -169,5 +167,5 @@ export default class CloudflareCustomHostnames extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-    </el-card>
+    </t-card>
 </template>

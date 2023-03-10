@@ -97,14 +97,12 @@ export default class LighthouseInstance extends Vue {
 </script>
 
 <template>
-    <el-card v-if="instance.InstanceId" shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>实例信息</b> &nbsp; &nbsp;
-                <small style="color: #a0cfff;">
-                    {{ InstanceStateMap[instance.InstanceState] }}
-                </small>
-                <div class="flex-auto" />
+    <t-space fixed direction="vertical">
+        <t-card v-if="instance.InstanceId" title="实例信息" hover-shadow header-bordered>
+            <template #subtitle>
+                {{ InstanceStateMap[instance.InstanceState] }}
+            </template>
+            <template #actions>
                 <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
                     :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
                     开机
@@ -124,47 +122,48 @@ export default class LighthouseInstance extends Vue {
                 <el-button v-else type="primary" plain size="small" disabled>
                     VNC 终端
                 </el-button>
-            </div>
-        </template>
-        <el-descriptions :column="2" border>
-            <el-descriptions-item label="实例ID">
-                {{ instance.InstanceId }}
-            </el-descriptions-item>
-            <el-descriptions-item label="实例名">
-                {{ instance.InstanceName }}
-                <el-button link icon="EditPen" @click="renameModal.open(instance)" />
-            </el-descriptions-item>
-            <el-descriptions-item label="规格">
-                CPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB
-            </el-descriptions-item>
-            <el-descriptions-item label="系统盘">
-                {{ instance.SystemDisk.DiskSize }} GB
-            </el-descriptions-item>
-            <el-descriptions-item label="私网 IP">
-                {{ instance.PrivateAddresses.join(", ") }}
-            </el-descriptions-item>
-            <el-descriptions-item label="公网 IP">
-                {{ instance.PublicAddresses.join(", ") }}
-            </el-descriptions-item>
-            <el-descriptions-item label="镜像名称">
-                {{ instance.BlueprintId }}
-            </el-descriptions-item>
-            <el-descriptions-item label="操作系统">
-                {{ instance.OsName }}
-            </el-descriptions-item>
-            <el-descriptions-item label="创建时间">
-                {{ dateFormat(instance.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
-            </el-descriptions-item>
-            <el-descriptions-item label="到期时间">
-                {{ dateFormat(instance.ExpiredTime, "yyyy-MM-dd hh:mm:ss") }}
-            </el-descriptions-item>
-        </el-descriptions>
-    </el-card>
+            </template>
+            <el-descriptions :column="2" border>
+                <el-descriptions-item label="实例ID">
+                    {{ instance.InstanceId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="实例名">
+                    {{ instance.InstanceName }}
+                    <el-button link icon="EditPen" @click="renameModal.open(instance)" />
+                </el-descriptions-item>
+                <el-descriptions-item label="规格">
+                    CPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB
+                </el-descriptions-item>
+                <el-descriptions-item label="系统盘">
+                    {{ instance.SystemDisk.DiskSize }} GB
+                </el-descriptions-item>
+                <el-descriptions-item label="私网 IP">
+                    {{ instance.PrivateAddresses.join(", ") }}
+                </el-descriptions-item>
+                <el-descriptions-item label="公网 IP">
+                    {{ instance.PublicAddresses.join(", ") }}
+                </el-descriptions-item>
+                <el-descriptions-item label="镜像名称">
+                    {{ instance.BlueprintId }}
+                </el-descriptions-item>
+                <el-descriptions-item label="操作系统">
+                    {{ instance.OsName }}
+                </el-descriptions-item>
+                <el-descriptions-item label="创建时间">
+                    {{ dateFormat(instance.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
+                </el-descriptions-item>
+                <el-descriptions-item label="到期时间">
+                    {{ dateFormat(instance.ExpiredTime, "yyyy-MM-dd hh:mm:ss") }}
+                </el-descriptions-item>
+            </el-descriptions>
+        </t-card>
+
+        <Firwwall :instance="instance" />
+
+        <Snapshot :instance="instance" />
+
+        <Traffic :instance="instance" />
+    </t-space>
+
     <RenameModel ref="renameModal" @submit="getInstance" />
-    <div class="space-10" />
-    <Firwwall :instance="instance" />
-    <div class="space-10" />
-    <Snapshot :instance="instance" />
-    <div class="space-10" />
-    <Traffic :instance="instance" />
 </template>

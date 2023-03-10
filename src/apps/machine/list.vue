@@ -65,22 +65,19 @@ export default class MachineList extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 主机管理
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>主机列表</b>
-                    <div class="flex-auto" />
-                    <small>记录总数: {{ machineList.length }}</small>
-                </div>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-card title="主机列表" hover-shadow header-bordered>
+            <template #subtitle>
+                <small>记录总数: {{ machineList.length }}</small>
             </template>
             <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
                 @current-change="tableRowChange">
@@ -123,15 +120,10 @@ export default class MachineList extends Vue {
                     </template>
                 </el-table-column>
             </el-table>
-        </el-card>
-        <div class="space-10" />
-        <el-card v-if="selectedRow" shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>快捷命令</b>
-                </div>
-            </template>
+        </t-card>
+
+        <t-card v-if="selectedRow" title="快捷命令" hover-shadow header-bordered>
             <QuickExec :machine="selectedRow" />
-        </el-card>
-    </div>
+        </t-card>
+    </t-space>
 </template>

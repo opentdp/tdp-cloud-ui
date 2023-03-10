@@ -72,12 +72,9 @@ export default class DnspodBind extends Vue {
 </script>
 
 <template>
-    <el-card shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>域名列表</b>
-                <small>记录总数: {{ domainCount }}</small>
-            </div>
+    <t-card title="域名列表" hover-shadow header-bordered>
+        <template #subtitle>
+            记录总数: {{ domainCount }}
         </template>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
             <el-table-column prop="Name" label="域名" fixed sortable show-overflow-tooltip />
@@ -106,5 +103,5 @@ export default class DnspodBind extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-    </el-card>
+    </t-card>
 </template>

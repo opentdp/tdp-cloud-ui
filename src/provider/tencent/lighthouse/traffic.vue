@@ -133,17 +133,12 @@ export default class LighthouseTraffic extends Vue {
 </script>
 
 <template>
-    <el-card v-if="trafficPackage" shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>外网出流量</b>
-                <small>
-                    流量包:
-                    {{ bytesToSize(trafficPackage.TrafficUsed) }} /
-                    {{ bytesToSize(trafficPackage.TrafficPackageTotal) }}
-                </small>
-            </div>
+    <t-card v-if="trafficPackage" title="外网出流量" hover-shadow header-bordered>
+        <template #subtitle>
+            流量包:
+            {{ bytesToSize(trafficPackage.TrafficUsed) }} /
+            {{ bytesToSize(trafficPackage.TrafficPackageTotal) }}
         </template>
         <v-chart style="height: 400px" :option="outtrafficChart" autoresize />
-    </el-card>
+    </t-card>
 </template>

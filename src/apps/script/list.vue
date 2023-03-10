@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Ref,Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
 import { ScriptItem } from "@/api/native/script"
@@ -46,25 +46,24 @@ export default class ScriptList extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 脚本管理
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>脚本列表</b> &nbsp; &nbsp;
-                    <small>记录总数: {{ scriptList.length }}</small>
-                    <div class="flex-auto" />
-                    <el-button plain type="primary" size="small" icon="Plus" @click="createModal.open()">
-                        添加
-                    </el-button>
-                </div>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-card title="脚本列表" hover-shadow header-bordered>
+            <template #subtitle>
+                记录总数: {{ scriptList.length }}
+            </template>
+            <template #actions>
+                <el-button plain type="primary" size="small" icon="Plus" @click="createModal.open()">
+                    添加
+                </el-button>
             </template>
             <el-table v-loading="loading" :data="scriptList">
                 <el-table-column prop="Name" label="名称" fixed sortable show-overflow-tooltip />
@@ -85,9 +84,9 @@ export default class ScriptList extends Vue {
                     </template>
                 </el-table-column>
             </el-table>
-        </el-card>
+        </t-card>
 
         <ScriptCreate ref="createModal" @submit="getScriptList" />
         <ScriptUpdate ref="updateModal" @submit="getScriptList" />
-    </div>
+    </t-space>
 </template>

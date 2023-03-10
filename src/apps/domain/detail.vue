@@ -35,24 +35,29 @@ export default class DomainDetail extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item to="/domain/list">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item to="/domain/list">
                 域名管理
-            </el-breadcrumb-item>
-            <el-breadcrumb-item v-if="domain">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item v-if="domain">
                 {{ DomainModels[domain.Model] }} · {{ domain.Name }}
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <div v-loading="loading" />
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-space v-if="loading" fixed align="center">
+            <t-loading />
+        </t-space>
+
         <template v-if="domain?.Model == 'cloudflare/zone'">
             <CloudflareZone :domain="domain" />
         </template>
+
         <template v-if="domain?.Model == 'tencent/dnspod'">
             <DnspodDomain :domain="domain" />
         </template>
-    </div>
+    </t-space>
 </template>

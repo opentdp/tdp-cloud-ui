@@ -77,12 +77,7 @@ export default class WorkerBind extends Vue {
 </script>
 
 <template>
-    <el-card shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>在线节点</b>
-            </div>
-        </template>
+    <t-card title="在线节点" hover-shadow header-bordered>
         <el-table ref="tableRef" :data="workerList" highlight-current-row>
             <el-table-column prop="WorkerMeta.HostName" label="主机名" fixed show-overflow-tooltip>
                 <template #default="scope">
@@ -134,7 +129,7 @@ export default class WorkerBind extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-    </el-card>
+    </t-card>
 </template>
 
 <style lang="scss" scoped>

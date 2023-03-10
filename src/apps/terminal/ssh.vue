@@ -103,15 +103,16 @@ interface TabItem {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 SSH 连接
-            </el-breadcrumb-item>
-        </el-breadcrumb>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
         <el-tabs v-model="curTab.id" type="border-card" @tab-change="changeTab" @tab-remove="removeTab">
             <el-tab-pane label="新会话" name="new">
                 <SshConnect :addr="addr" @submit="createTab" />
@@ -120,18 +121,13 @@ interface TabItem {
                 <div :id="v.id" />
             </el-tab-pane>
         </el-tabs>
-        <div class="space-10" />
-        <el-card v-if="curTab.id != 'new'" shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>快捷命令</b>
-                </div>
-            </template>
-            <div class="button-list">
+
+        <t-card v-if="curTab.id != 'new'" title="快捷命令" hover-shadow header-bordered>
+            <t-space fixed break-line>
                 <el-button v-for="v, k in scriptList" :key="k" @click="sshExec(v.Content)">
                     {{ v.Name }}
                 </el-button>
-            </div>
-        </el-card>
-    </div>
+            </t-space>
+        </t-card>
+    </t-space>
 </template>

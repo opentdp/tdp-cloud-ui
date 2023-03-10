@@ -43,40 +43,40 @@ export default class DashboardIndex extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-card>
+    <t-space fixed direction="vertical">
+        <t-card>
             <StatChart id="host" />
-        </el-card>
-        <div class="space-10" />
-        <el-card v-loading="!summary" class="box-card">
+        </t-card>
+
+        <t-card v-loading="!summary" class="box-card">
             <template #header>
                 <div>资源统计</div>
             </template>
             <el-space v-if="summary" wrap>
-                <el-card v-route="'/vendor/tencent'" shadow="hover" class="info-card">
+                <t-card v-route="'/vendor/tencent'" hover-shadow class="info-card">
                     <div>厂商</div>
                     <b>{{ summary.Vendor }}</b>
-                </el-card>
-                <el-card v-route="'/machine/list'" shadow="hover" class="info-card">
+                </t-card>
+                <t-card v-route="'/machine/list'" hover-shadow class="info-card">
                     <div>主机</div>
                     <b>{{ summary.Machine }}</b>
-                </el-card>
-                <el-card v-route="'/domain/list'" shadow="hover" class="info-card">
+                </t-card>
+                <t-card v-route="'/domain/list'" hover-shadow class="info-card">
                     <div>域名</div>
                     <b>{{ summary.Domain }}</b>
-                </el-card>
-                <el-card v-route="'/keypair/list'" shadow="hover" class="info-card">
+                </t-card>
+                <t-card v-route="'/keypair/list'" hover-shadow class="info-card">
                     <div>密钥</div>
                     <b>{{ summary.Keypair }}</b>
-                </el-card>
-                <el-card v-route="'/script/list'" shadow="hover" class="info-card">
+                </t-card>
+                <t-card v-route="'/script/list'" hover-shadow class="info-card">
                     <div>脚本</div>
                     <b>{{ summary.Script }}</b>
-                </el-card>
+                </t-card>
             </el-space>
-        </el-card>
-        <div class="space-10" />
-        <el-card v-loading="!server" class="box-card">
+        </t-card>
+
+        <t-card v-loading="!server" class="box-card">
             <template #header>
                 <div>系统信息</div>
             </template>
@@ -109,8 +109,8 @@ export default class DashboardIndex extends Vue {
                     {{ server.Stat.IpAddress }}
                 </el-descriptions-item>
             </el-descriptions>
-        </el-card>
-    </div>
+        </t-card>
+    </t-space>
 </template>
 
 <style lang="scss" scoped>

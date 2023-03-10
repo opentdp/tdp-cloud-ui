@@ -94,34 +94,30 @@ export default class CvmInstance extends Vue {
 </script>
 
 <template>
-    <el-card v-if="instance.InstanceId" shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>实例信息</b> &nbsp; &nbsp;
-                <small style="color: #a0cfff;">
-                    {{ InstanceStateMap[instance.InstanceState] }}
-                </small>
-                <div class="flex-auto" />
-                <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
-                    :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
-                    开机
-                </el-button>
-                <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                    :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
-                    关机
-                </el-button>
-                <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                    :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
-                    重启
-                </el-button>
-                <el-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id" type="primary"
-                    plain size="small">
-                    VNC 终端
-                </el-button>
-                <el-button v-else type="primary" plain size="small" disabled>
-                    VNC 终端
-                </el-button>
-            </div>
+    <t-card v-if="instance.InstanceId" title="实例信息" hover-shadow header-bordered>
+        <template #subtitle>
+            {{ InstanceStateMap[instance.InstanceState] }}
+        </template>
+        <template #actions>
+            <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
+                :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
+                开机
+            </el-button>
+            <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
+                :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
+                关机
+            </el-button>
+            <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
+                :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
+                重启
+            </el-button>
+            <el-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id" type="primary"
+                plain size="small">
+                VNC 终端
+            </el-button>
+            <el-button v-else type="primary" plain size="small" disabled>
+                VNC 终端
+            </el-button>
         </template>
         <el-descriptions :column="2" border>
             <el-descriptions-item label="实例ID">
@@ -156,6 +152,7 @@ export default class CvmInstance extends Vue {
                 {{ dateFormat(instance.ExpiredTime, "yyyy-MM-dd hh:mm:ss") }}
             </el-descriptions-item>
         </el-descriptions>
-    </el-card>
+    </t-card>
+
     <RenameModel ref="renameModal" @submit="getInstance" />
 </template>

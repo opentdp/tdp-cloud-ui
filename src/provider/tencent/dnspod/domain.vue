@@ -73,16 +73,14 @@ export default class DnspodDomain extends Vue {
 </script>
 
 <template>
-    <el-card shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>解析列表</b> &nbsp; &nbsp;
-                <small>记录总数: {{ recordCountInfo?.TotalCount || 0 }}</small>
-                <div class="flex-auto" />
-                <el-button type="primary" plain size="small" @click="createModal.open(domainInfo)">
-                    添加记录
-                </el-button>
-            </div>
+    <t-card title="解析列表" hover-shadow header-bordered>
+        <template #subtitle>
+            <small>记录总数: {{ recordCountInfo?.TotalCount || 0 }}</small>
+        </template>
+        <template #actions>
+            <el-button type="primary" plain size="small" @click="createModal.open(domainInfo)">
+                添加记录
+            </el-button>
         </template>
         <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
             <el-table-column prop="Name" label="主机记录" fixed sortable show-overflow-tooltip />
@@ -111,7 +109,8 @@ export default class DnspodDomain extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-    </el-card>
+    </t-card>
+
     <RecordCreate ref="createModal" @submit="getRecordList" />
     <RecordUpdate ref="updateModal" @submit="getRecordList" />
 </template>

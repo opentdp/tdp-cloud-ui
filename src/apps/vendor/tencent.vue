@@ -67,21 +67,17 @@ export default class VendorTencent extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 腾讯云
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>账号列表</b>
-                </div>
-            </template>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-card title="账号列表" hover-shadow header-bordered>
             <el-table v-loading="loading" :data="vendorList">
                 <el-table-column prop="Description" label="别名" fixed sortable show-overflow-tooltip />
                 <el-table-column prop="SecretId" label="密钥 ID" sortable show-overflow-tooltip />
@@ -100,17 +96,13 @@ export default class VendorTencent extends Vue {
                     </template>
                 </el-table-column>
             </el-table>
-        </el-card>
-        <div class="space-10" />
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>添加账号</b>
-                    <el-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" icon="Position"
-                        :underline="false">
-                        &nbsp;操作指南
-                    </el-link>
-                </div>
+        </t-card>
+
+        <t-card title="添加账号" hover-shadow header-bordered>
+            <template #actions>
+                <el-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" icon="Position" :underline="false">
+                    &nbsp;操作指南
+                </el-link>
             </template>
             <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="90px">
                 <el-form-item prop="Description" label="别名">
@@ -128,6 +120,6 @@ export default class VendorTencent extends Vue {
                     </el-button>
                 </el-form-item>
             </el-form>
-        </el-card>
-    </div>
+        </t-card>
+    </t-space>
 </template>

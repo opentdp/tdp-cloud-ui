@@ -57,20 +57,24 @@ export default class CertbotDetail extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item to="/certbot/list">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item to="/certbot/list">
                 域名证书
-            </el-breadcrumb-item>
-            <el-breadcrumb-item v-if="certbot">
+            </t-breadcrumb-item>
+            <t-breadcrumb-item v-if="certbot">
                 {{ certbot.Domain }}
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <div v-loading="loading" />
-        <el-card v-if="cert">
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-space v-if="loading" fixed align="center">
+            <t-loading />
+        </t-space>
+
+        <t-card v-if="cert" hover-shadow header-bordered>
             <h3>颁发给</h3>
             {{ cert.Names.join(", ") }}
             <h3>颁发者</h3>
@@ -83,6 +87,6 @@ export default class CertbotDetail extends Vue {
             <el-input v-model="crtText" type="textarea" rows="10" readonly />
             <h3>私钥 (<small>PrivateKey</small>)</h3>
             <el-input v-model="pubText" type="textarea" rows="10" readonly />
-        </el-card>
-    </div>
+        </t-card>
+    </t-space>
 </template>

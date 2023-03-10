@@ -68,12 +68,7 @@ export default class CloudflareBind extends Vue {
 </script>
 
 <template>
-    <el-card shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>域名列表</b>
-            </div>
-        </template>
+    <t-card title="域名列表" hover-shadow header-bordered>
         <el-table v-loading="loading" :data="domainList" table-layout="fixed">
             <el-table-column prop="name" label="域名" fixed sortable show-overflow-tooltip />
             <el-table-column prop="status" label="状态" sortable show-overflow-tooltip />
@@ -108,5 +103,5 @@ export default class CloudflareBind extends Vue {
                 </template>
             </el-table-column>
         </el-table>
-    </el-card>
+    </t-card>
 </template>

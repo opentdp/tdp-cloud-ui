@@ -45,21 +45,19 @@ export default class TasklineList extends Vue {
 </script>
 
 <template>
-    <div>
-        <el-breadcrumb separator="/" class="crumbs">
-            <el-breadcrumb-item to="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
+            <t-breadcrumb-item to="/">
                 首页
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
+            </t-breadcrumb-item>
+            <t-breadcrumb-item>
                 任务记录
-            </el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-card shadow="hover">
-            <template #header>
-                <div class="flex-between">
-                    <b>任务记录</b> &nbsp; &nbsp;
-                    <small>记录总数: {{ historyList.length }}</small>
-                </div>
+            </t-breadcrumb-item>
+        </t-breadcrumb>
+
+        <t-card title="任务记录" hover-shadow header-bordered>
+            <template #subtitle>
+                记录总数: {{ historyList.length }}
             </template>
             <el-table :data="historyList" @expand-change="expandChange">
                 <el-table-column prop="Id" label="任务ID" fixed sortable show-overflow-tooltip />
@@ -90,8 +88,8 @@ export default class TasklineList extends Vue {
                     </template>
                 </el-table-column>
             </el-table>
-        </el-card>
-    </div>
+        </t-card>
+    </t-space>
 </template>
 
 <style lang="scss" scoped>

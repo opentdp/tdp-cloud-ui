@@ -62,57 +62,56 @@ export default class CloudflareDomain extends Vue {
 </script>
 
 <template>
-    <el-card shadow="hover">
-        <template #header>
-            <div class="flex-between">
-                <b>解析列表</b> &nbsp; &nbsp;
+    <t-space fixed direction="vertical">
+        <t-card title="解析列表" hover-shadow header-bordered>
+            <template #subtitle>
                 <small>记录总数: {{ recordList?.length || 0 }}</small>
-                <div class="flex-auto" />
+            </template>
+            <template #actions>
                 <el-button type="primary" plain size="small" @click="createModal.open(domainInfo)">
                     添加记录
                 </el-button>
-            </div>
-        </template>
-        <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
-            <el-table-column prop="zone_name" label="主机记录" fixed sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.name.replace(scope.row.zone_name, "").replace(/\.$/, "") || "@" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="type" label="记录类型" sortable show-overflow-tooltip />
-            <el-table-column prop="content" label="记录值" sortable show-overflow-tooltip min-width="120" />
-            <el-table-column prop="proxied" label="加速" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.proxied ? "已启用" : "已禁用" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="ttl" label="TTL" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.ttl > 1 ? scope.row.ttl : "自动" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="comment" label="备注" show-overflow-tooltip />
-            <el-table-column label="操作" width="180" align="center">
-                <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="updateModal.open(scope.row)">
-                        编辑
-                    </el-button>
-                    <el-popconfirm title="确定删除?" @confirm="deleteRecord(scope.row.id)">
-                        <template #reference>
-                            <el-button link type="danger" icon="Delete">
-                                删除
-                            </el-button>
-                        </template>
-                    </el-popconfirm>
-                </template>
-            </el-table-column>
-        </el-table>
-    </el-card>
+            </template>
+            <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
+                <el-table-column prop="zone_name" label="主机记录" fixed sortable show-overflow-tooltip>
+                    <template #default="scope">
+                        {{ scope.row.name.replace(scope.row.zone_name, "").replace(/\.$/, "") || "@" }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="type" label="记录类型" sortable show-overflow-tooltip />
+                <el-table-column prop="content" label="记录值" sortable show-overflow-tooltip min-width="120" />
+                <el-table-column prop="proxied" label="加速" sortable show-overflow-tooltip>
+                    <template #default="scope">
+                        {{ scope.row.proxied ? "已启用" : "已禁用" }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="ttl" label="TTL" sortable show-overflow-tooltip>
+                    <template #default="scope">
+                        {{ scope.row.ttl > 1 ? scope.row.ttl : "自动" }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="comment" label="备注" show-overflow-tooltip />
+                <el-table-column label="操作" width="180" align="center">
+                    <template #default="scope">
+                        <el-button link type="primary" icon="Edit" @click="updateModal.open(scope.row)">
+                            编辑
+                        </el-button>
+                        <el-popconfirm title="确定删除?" @confirm="deleteRecord(scope.row.id)">
+                            <template #reference>
+                                <el-button link type="danger" icon="Delete">
+                                    删除
+                                </el-button>
+                            </template>
+                        </el-popconfirm>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </t-card>
 
-    <template v-if="domainInfo?.type == 'full'">
-        <div class="space-10" />
-        <CustomHostnames :domain-info="domainInfo" />
-    </template>
+        <template v-if="domainInfo?.type == 'full'">
+            <CustomHostnames :domain-info="domainInfo" />
+        </template>
+    </t-space>
 
     <RecordCreate ref="createModal" @submit="getRecordList" />
     <RecordUpdate ref="updateModal" @submit="getRecordList" />

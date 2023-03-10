@@ -67,14 +67,14 @@ export default class VendorAlibaba extends Vue {
     public vendorColumns = [
         { colKey: 'Description', title: '别名', ellipsis: true, sorter: true },
         { colKey: 'SecretId', title: '密钥 ID', ellipsis: true, sorter: true },
-        { colKey: 'Operation', title: '操作', width: "140px" },
+        { colKey: 'Operation', title: '操作', width: "110px" },
     ]
 }
 </script>
 
 <template>
-    <t-space direction="vertical">
-        <t-breadcrumb separator="/">
+    <t-space fixed direction="vertical">
+        <t-breadcrumb>
             <t-breadcrumb-item to="/">
                 首页
             </t-breadcrumb-item>
@@ -86,16 +86,14 @@ export default class VendorAlibaba extends Vue {
         <t-card title="账号列表" hover-shadow header-bordered>
             <t-table :data="vendorList" :columns="vendorColumns" row-key="Id" height="auto">
                 <template #Operation="{ row, rowIndex }">
-                    <t-space>
-                        <t-link v-route="'/vendor/alibaba/' + row.Id" theme="primary" hover="color">
-                            管理
+                    <t-link v-route="'/vendor/alibaba/' + row.Id" theme="primary" hover="color">
+                        管理
+                    </t-link>
+                    <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
+                        <t-link theme="danger" hover="color">
+                            删除
                         </t-link>
-                        <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
-                            <t-link theme="danger" hover="color">
-                                删除
-                            </t-link>
-                        </t-popconfirm>
-                    </t-space>
+                    </t-popconfirm>
                 </template>
             </t-table>
         </t-card>
