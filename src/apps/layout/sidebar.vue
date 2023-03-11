@@ -2,6 +2,8 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import layoutStore from "@/store/layout"
+import { computed } from "vue"
+import { useRoute } from "vue-router"
 
 @Component
 export default class LayoutSidebar extends Vue {
@@ -92,6 +94,18 @@ export default class LayoutSidebar extends Vue {
             title: "节点管理",
         },
     ]
+
+    defaultExpanded = computed(() => {
+        const route = useRoute()
+        if (this.items.findIndex(item => item.index === route.path) >= 0) {
+            return [route.path]
+        } else {
+            const idx = this.items.findIndex(item => {
+                return item.subs && item.subs.findIndex(sub_item => sub_item.index === route.path) >= 0
+            })
+            return [this.items[idx].index, route.path]
+        }
+    })
 }
 
 interface MenuItem {
@@ -104,46 +118,36 @@ interface MenuItem {
 
 <template>
     <div class="sidebar">
-        <el-menu class="sidebar-el-menu" :default-active="$route.path" :collapse="layout.Collapse"
-            background-color="#324157" text-color="#bfcbd9" active-text-color="#20a0ff" unique-opened router>
+        <t-menu class="sidebar-t-menu" :default-value="$route.path" :collapsed="layout.Collapse"
+            :default-expanded="defaultExpanded" expand-mutex>
             <template v-for="item in items">
                 <template v-if="item.subs">
-                    <el-sub-menu :key="item.index" :index="item.index">
+                    <t-submenu :key="item.index" :value="item.index">
                         <template #title>
-                            <component :is="item.icon" class="el-icon" />
                             <span>{{ item.title }}</span>
                         </template>
-                        <template v-for="item2 in item.subs">
-                            <template v-if="item2.subs">
-                                <el-sub-menu :key="item2.index" :index="item2.index">
-                                    <template #title>
-                                        <component :is="item2.icon" class="el-icon" />
-                                        {{ item2.title }}
-                                    </template>
-                                    <el-menu-item v-for="item3 in item2.subs" :key="item3.index" :index="item3.index">
-                                        {{ item3.title }}
-                                    </el-menu-item>
-                                </el-sub-menu>
-                            </template>
-                            <template v-else>
-                                <el-menu-item :key="item2.index" :index="item2.index">
-                                    <component :is="item2.icon" class="el-icon" />
-                                    {{ item2.title }}
-                                </el-menu-item>
-                            </template>
+                        <template #icon>
+                            <component :is="item.icon" class="t-icon" />
                         </template>
-                    </el-sub-menu>
+                        <t-menu-item v-for="item2 in item.subs" :key="item2.index" :value="item2.index"
+                            :to="{ path: item2.index }">
+                            {{ item2.title }}
+                            <template #icon>
+                                <component :is="item2.icon" class="t-icon" />
+                            </template>
+                        </t-menu-item>
+                    </t-submenu>
                 </template>
                 <template v-else>
-                    <el-menu-item :key="item.index" :index="item.index">
-                        <component :is="item.icon" class="el-icon" />
-                        <template #title>
-                            {{ item.title }}
+                    <t-menu-item :key="item.index" :value="item.index" :to="{ path: item.index }">
+                        <span>{{ item.title }}</span>
+                        <template #icon>
+                            <component :is="item.icon" class="t-icon" />
                         </template>
-                    </el-menu-item>
+                    </t-menu-item>
                 </template>
             </template>
-        </el-menu>
+        </t-menu>
     </div>
 </template>
 
@@ -165,7 +169,7 @@ interface MenuItem {
     width: 0;
 }
 
-.sidebar-el-menu:not(.el-menu--collapse) {
+.sidebar-t-menu:not(.t-menu--collapse) {
     width: 250px;
 }
 </style>
