@@ -91,21 +91,6 @@ export default class LayoutSidebar extends Vue {
             index: "/workhub/worker",
             title: "节点管理",
         },
-        // {
-        //     icon: 'Warning',
-        //     index: '7',
-        //     title: '错误处理',
-        //     subs: [
-        //         {
-        //             index: '/error/403',
-        //             title: '403页面',
-        //         },
-        //         {
-        //             index: '/error/404',
-        //             title: '404页面',
-        //         },
-        //     ],
-        // },
     ]
 }
 
