@@ -103,24 +103,26 @@ export default class ScriptQuickExec extends Vue {
             <t-form-item name="Content" label="脚本内容">
                 <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4, maxRows: 15 }" />
             </t-form-item>
+            <t-form-item>
+                <t-space size="small">
+                    <t-button theme="primary" type="submit">
+                        提交
+                    </t-button>
+                    <t-button theme="default" type="reset" @click="dailog = false">
+                        取消
+                    </t-button>
+                </t-space>
+            </t-form-item>
         </t-form>
         <div v-if="result">
             <pre v-if="result.Response.Error" v-highlight max-height="300" class="lang-json">
-                    <h3>错误信息</h3>
-                    <code>{{ JSON.stringify(result.Response.Error, null, 4) }}</code>
-                </pre>
+                <h3>错误信息</h3>
+                <code>{{ JSON.stringify(result.Response.Error, null, 4) }}</code>
+            </pre>
             <pre v-highlight max-height="300">
-                    <h3>响应内容</h3>
-                    <code>{{ result.Response.Output }}</code>
-                </pre>
+                <h3>响应内容</h3>
+                <code>{{ result.Response.Output }}</code>
+            </pre>
         </div>
-        <template #footer>
-            <span class="dialog-footer">
-                <t-button @click="dailog = false">取消</t-button>
-                <t-button theme="primary" type="submit" :loading="loading">
-                    执行
-                </t-button>
-            </span>
-        </template>
     </el-dialog>
 </template>

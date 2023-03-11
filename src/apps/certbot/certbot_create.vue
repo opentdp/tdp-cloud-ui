@@ -126,14 +126,16 @@ export default class CertbotCreate extends Vue {
             <t-form-item name="EabMacKey" label="EAB MacKey" :required="caEab == 2">
                 <el-input v-model="formModel.EabMacKey" :disabled="caEab == 0" />
             </t-form-item>
+            <t-form-item>
+                <t-space size="small">
+                    <t-button theme="primary" type="submit">
+                        提交
+                    </t-button>
+                    <t-button theme="default" type="reset" @click="dailog = false">
+                        取消
+                    </t-button>
+                </t-space>
+            </t-form-item>
         </t-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <t-button @click="dailog = false">取消</t-button>
-                <t-button theme="primary" type="submit">
-                    保存
-                </t-button>
-            </span>
-        </template>
     </el-dialog>
 </template>

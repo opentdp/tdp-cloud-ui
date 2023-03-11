@@ -111,14 +111,16 @@ export default class CloudflareRecordCreate extends Vue {
             <t-form-item name="ttl" label="TTL">
                 <el-input-number v-model="formModel.ttl" />
             </t-form-item>
+            <t-form-item>
+                <t-space size="small">
+                    <t-button theme="primary" type="submit">
+                        提交
+                    </t-button>
+                    <t-button theme="default" type="reset" @click="dailog = false">
+                        取消
+                    </t-button>
+                </t-space>
+            </t-form-item>
         </t-form>
-        <template #footer>
-            <span class="dialog-footer">
-                <t-button @click="dailog = false">取消</t-button>
-                <t-button theme="primary" type="submit">
-                    保存
-                </t-button>
-            </span>
-        </template>
     </el-dialog>
 </template>
