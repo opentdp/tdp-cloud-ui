@@ -70,13 +70,11 @@ export default class DomainList extends Vue {
                         <el-button v-route="'/domain/detail/' + scope.row.Id" link type="primary" icon="View">
                             管理
                         </el-button>
-                        <el-popconfirm title="确定删除?" @confirm="deleteDomain(scope.$index)">
-                            <template #reference>
-                                <el-button link type="danger" icon="Delete">
-                                    删除
-                                </el-button>
-                            </template>
-                        </el-popconfirm>
+                        <t-popconfirm content="确定删除?" @confirm="deleteDomain(scope.$index)">
+                            <t-link theme="danger" hover="color">
+                                删除
+                            </t-link>
+                        </t-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>

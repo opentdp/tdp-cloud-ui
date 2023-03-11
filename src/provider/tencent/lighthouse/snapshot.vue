@@ -108,20 +108,16 @@ export default class LighthouseSnapshot extends Vue {
             </el-table-column>
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-popconfirm title="确定回滚?" @confirm="applySnapshot(scope.row)">
-                        <template #reference>
-                            <el-button link type="warning" icon="Clock">
-                                回滚
-                            </el-button>
-                        </template>
-                    </el-popconfirm>
-                    <el-popconfirm title="确定删除?" @confirm="deleteSnapshot(scope.row)">
-                        <template #reference>
-                            <el-button link type="danger" icon="Delete">
-                                删除
-                            </el-button>
-                        </template>
-                    </el-popconfirm>
+                    <t-popconfirm content="确定回滚?" @confirm="applySnapshot(scope.row)">
+                        <t-link theme="warning" hover="color">
+                            回滚
+                        </t-link>
+                    </t-popconfirm>
+                    <t-popconfirm content="确定删除?" @confirm="deleteSnapshot(scope.row)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
                 </template>
             </el-table-column>
         </el-table>

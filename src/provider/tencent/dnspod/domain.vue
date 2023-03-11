@@ -99,13 +99,11 @@ export default class DnspodDomain extends Vue {
                     <el-button link type="primary" icon="Edit" @click="updateModal.open(domainInfo, scope.row)">
                         编辑
                     </el-button>
-                    <el-popconfirm title="确定删除?" @confirm="deleteRecord(scope.row.RecordId)">
-                        <template #reference>
-                            <el-button link type="danger" icon="Delete">
-                                删除
-                            </el-button>
-                        </template>
-                    </el-popconfirm>
+                    <t-popconfirm content="确定删除?" @confirm="deleteRecord(scope.row.RecordId)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
                 </template>
             </el-table-column>
         </el-table>

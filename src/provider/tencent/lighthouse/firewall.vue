@@ -91,13 +91,11 @@ export default class LighthouseFirewall extends Vue {
                         @click="updateModel.open(instance, firewallRuleList, scope.$index)">
                         编辑
                     </el-button>
-                    <el-popconfirm title="确定删除?" @confirm="deleteFirewallRule(scope.row)">
-                        <template #reference>
-                            <el-button link type="danger" icon="Delete">
-                                删除
-                            </el-button>
-                        </template>
-                    </el-popconfirm>
+                    <t-popconfirm content="确定删除?" @confirm="deleteFirewallRule(scope.row)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
                 </template>
             </el-table-column>
         </el-table>

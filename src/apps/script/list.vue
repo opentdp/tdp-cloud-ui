@@ -74,13 +74,11 @@ export default class ScriptList extends Vue {
                         <el-button link type="primary" icon="Edit" @click="updateModal.open(scope.row)">
                             修改
                         </el-button>
-                        <el-popconfirm title="确定删除?" @confirm="removeScript(scope.row.Id)">
-                            <template #reference>
-                                <el-button link type="danger" icon="Delete">
-                                    删除
-                                </el-button>
-                            </template>
-                        </el-popconfirm>
+                        <t-popconfirm content="确定删除?" @confirm="removeScript(scope.row.Id)">
+                            <t-link theme="danger" hover="color">
+                                删除
+                            </t-link>
+                        </t-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>

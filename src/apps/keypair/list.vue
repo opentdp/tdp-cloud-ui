@@ -66,13 +66,11 @@ export default class KeypairList extends Vue {
                 <el-table-column prop="PublicKey" label="公钥" sortable show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-popconfirm title="确定删除?" @confirm="deleteKey(scope.$index)">
-                            <template #reference>
-                                <el-button link type="danger" icon="Delete">
-                                    删除
-                                </el-button>
-                            </template>
-                        </el-popconfirm>
+                        <t-popconfirm content="确定删除?" @confirm="deleteKey(scope.$index)">
+                            <t-link theme="danger" hover="color">
+                                删除
+                            </t-link>
+                        </t-popconfirm>
                     </template>
                 </el-table-column>
             </el-table>

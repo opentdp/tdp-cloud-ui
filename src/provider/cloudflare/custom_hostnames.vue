@@ -157,13 +157,11 @@ export default class CloudflareCustomHostnames extends Vue {
             </el-table-column>
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-popconfirm title="确定删除?" @confirm="deleteCustomHostnames(scope.row.id)">
-                        <template #reference>
-                            <el-button link type="danger" icon="Delete">
-                                删除
-                            </el-button>
-                        </template>
-                    </el-popconfirm>
+                    <t-popconfirm content="确定删除?" @confirm="deleteCustomHostnames(scope.row.id)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
                 </template>
             </el-table-column>
         </el-table>
