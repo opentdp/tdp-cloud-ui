@@ -103,7 +103,11 @@ export default class LayoutSidebar extends Vue {
             const idx = this.items.findIndex(item => {
                 return item.subs && item.subs.findIndex(sub_item => sub_item.index === route.path) >= 0
             })
-            return [this.items[idx].index, route.path]
+            if (idx == -1) {
+                return []
+            } else {
+                return [this.items[idx].index, route.path]
+            }
         }
     })
 }
