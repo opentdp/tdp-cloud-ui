@@ -181,5 +181,5 @@ export default class LighthouseInstance extends Vue {
         <Traffic :instance="instance" />
     </t-space>
 
-    <RenameModel ref="renameModal" @submit="getInstance" />
+    <InstanceRename ref="renameModal" @submit="getInstance" />
 </template>
