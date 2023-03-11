@@ -61,9 +61,12 @@ export default class ScriptList extends Vue {
                 记录总数: {{ scriptList.length }}
             </template>
             <template #actions>
-                <el-button plain type="primary" size="small" icon="Plus" @click="createModal.open()">
-                    添加
-                </el-button>
+                <t-button theme="primary" size="small" @click="createModal.open()">
+                    <template #icon>
+                        <t-icon name="add" />
+                    </template>
+                    新建脚本
+                </t-button>
             </template>
             <el-table v-loading="loading" :data="scriptList">
                 <el-table-column prop="Name" label="名称" fixed sortable show-overflow-tooltip />
@@ -71,9 +74,9 @@ export default class ScriptList extends Vue {
                 <el-table-column prop="Content" label="脚本" sortable show-overflow-tooltip />
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button link type="primary" icon="Edit" @click="updateModal.open(scope.row)">
+                        <t-link theme="primary" hover="color" @click="updateModal.open(scope.row)">
                             修改
-                        </el-button>
+                        </t-link>
                         <t-popconfirm content="确定删除?" @confirm="removeScript(scope.row.Id)">
                             <t-link theme="danger" hover="color">
                                 删除

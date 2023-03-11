@@ -8,17 +8,17 @@ import * as TC from "@/api/tencent/typings"
 
 import { dateFormat } from "@/helper/format"
 
-import RenameModel from "./instance_rename.vue"
+import InstanceRename from "./instance_rename.vue"
 
 @Component({
-    components: { RenameModel }
+    components: { InstanceRename }
 })
 export default class CvmInstance extends Vue {
     public InstanceStateMap = InstanceStateMap
     public dateFormat = dateFormat
 
     @Ref
-    public renameModal!: RenameModel
+    public renameModal!: InstanceRename
 
     @Prop
     public machine!: Omit<MachineItem, "CloudMeta"> & {
@@ -99,25 +99,27 @@ export default class CvmInstance extends Vue {
             {{ InstanceStateMap[instance.InstanceState] }}
         </template>
         <template #actions>
-            <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
-                :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
-                开机
-            </el-button>
-            <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
-                关机
-            </el-button>
-            <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
-                重启
-            </el-button>
-            <el-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id" type="primary"
-                plain size="small">
-                VNC 终端
-            </el-button>
-            <el-button v-else type="primary" plain size="small" disabled>
-                VNC 终端
-            </el-button>
+            <t-space>
+                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'STOPPED'"
+                    :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
+                    开机
+                </t-button>
+                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'RUNNING'"
+                    :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
+                    关机
+                </t-button>
+                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'RUNNING'"
+                    :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
+                    重启
+                </t-button>
+                <t-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id" theme="primary"
+                    size="small">
+                    VNC 终端
+                </t-button>
+                <t-button v-else theme="primary" size="small" disabled>
+                    VNC 终端
+                </t-button>
+            </t-space>
         </template>
         <t-list :split="true">
             <t-list-item>
@@ -128,7 +130,9 @@ export default class CvmInstance extends Vue {
                 <b>实例名</b>
                 <div>
                     {{ instance.InstanceName }}
-                    <el-button link icon="EditPen" @click="renameModal.open(instance)" />
+                    <t-button shape="circle" variant="text" @click="renameModal.open(instance)">
+                        <t-icon name="edit" />
+                    </t-button>
                 </div>
             </t-list-item>
             <t-list-item>
@@ -166,5 +170,5 @@ export default class CvmInstance extends Vue {
         </t-list>
     </t-card>
 
-    <RenameModel ref="renameModal" @submit="getInstance" />
+    <InstanceRename ref="renameModal" @submit="getInstance" />
 </template>

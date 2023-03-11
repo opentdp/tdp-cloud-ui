@@ -4,22 +4,22 @@ import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 import { TcApi } from "@/api"
 import * as TC from "@/api/tencent/typings"
 
-import CreateModel from "./firewall_create.vue"
-import UpdateModel from "./firewall_update.vue"
-import RemarkModel from "./firewall_remark.vue"
+import FirewallCreate from "./firewall_create.vue"
+import FirewallUpdate from "./firewall_update.vue"
+import FirewallRemark from "./firewall_remark.vue"
 
 @Component({
-    components: { CreateModel, UpdateModel, RemarkModel }
+    components: { FirewallCreate, FirewallUpdate, FirewallRemark }
 })
 export default class LighthouseFirewall extends Vue {
     @Ref
-    public createModel!: CreateModel
+    public createModal!: FirewallCreate
 
     @Ref
-    public updateModel!: UpdateModel
+    public updateModal!: FirewallUpdate
 
     @Ref
-    public remarkModel!: RemarkModel
+    public remarkModal!: FirewallRemark
 
     @Prop
     public instance!: TC.Lighthouse.Instance
@@ -70,9 +70,12 @@ export default class LighthouseFirewall extends Vue {
             记录总数: {{ firewallRuleCount }}
         </template>
         <template #actions>
-            <el-button type="primary" plain size="small" @click="createModel.open(instance)">
+            <t-button theme="primary" size="small" @click="createModal.open(instance)">
+                <template #icon>
+                    <t-icon name="add" />
+                </template>
                 添加规则
-            </el-button>
+            </t-button>
         </template>
         <el-table :data="firewallRuleList" table-layout="fixed">
             <el-table-column prop="CidrBlock" label="来源" fixed sortable show-overflow-tooltip />
@@ -82,15 +85,17 @@ export default class LighthouseFirewall extends Vue {
             <el-table-column prop="FirewallRuleDescription" label="备注" show-overflow-tooltip>
                 <template #default="scope">
                     {{ scope.row.FirewallRuleDescription }}
-                    <el-button link icon="EditPen" @click="remarkModel.open(instance, scope.row)" />
+                    <t-button shape="circle" variant="text" @click="remarkModal.open(instance, scope.row)">
+                        <t-icon name="edit" />
+                    </t-button>
                 </template>
             </el-table-column>
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit"
-                        @click="updateModel.open(instance, firewallRuleList, scope.$index)">
+                    <t-link theme="primary" hover="color"
+                        @click="updateModal.open(instance, firewallRuleList, scope.$index)">
                         编辑
-                    </el-button>
+                    </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteFirewallRule(scope.row)">
                         <t-link theme="danger" hover="color">
                             删除
@@ -101,7 +106,7 @@ export default class LighthouseFirewall extends Vue {
         </el-table>
     </t-card>
 
-    <CreateModel ref="createModel" @submit="getFirewallRuleList" />
-    <UpdateModel ref="updateModel" @submit="getFirewallRuleList" />
-    <RemarkModel ref="remarkModel" @submit="getFirewallRuleList" />
+    <FirewallCreate ref="createModal" @submit="getFirewallRuleList" />
+    <FirewallUpdate ref="updateModal" @submit="getFirewallRuleList" />
+    <FirewallRemark ref="remarkModal" @submit="getFirewallRuleList" />
 </template>

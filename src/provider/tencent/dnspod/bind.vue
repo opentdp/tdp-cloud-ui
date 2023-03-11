@@ -94,12 +94,13 @@ export default class DnspodBind extends Vue {
             <el-table-column prop="VipEndAt" label="有效期" sortable show-overflow-tooltip />
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="boundList[scope.row.DomainId]" link icon="View" @click="syncDomian(scope.row)">
+                    <t-link v-if="boundList[scope.row.DomainId]" theme="success" hover="color"
+                        @click="syncDomian(scope.row)">
                         同步
-                    </el-button>
-                    <el-button v-else link type="primary" icon="View" @click="bindDomian(scope.row)">
+                    </t-link>
+                    <t-link v-else theme="primary" hover="color" @click="bindDomian(scope.row)">
                         导入
-                    </el-button>
+                    </t-link>
                 </template>
             </el-table-column>
         </el-table>

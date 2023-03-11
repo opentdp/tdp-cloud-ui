@@ -57,9 +57,12 @@ export default class KeypairList extends Vue {
                 记录总数: {{ keylist?.length || 0 }}
             </template>
             <template #actions>
-                <el-button type="primary" plain size="small" @click="createModal.open()">
+                <t-button theme="primary" size="small" @click="createModal.open()">
+                    <template #icon>
+                        <t-icon name="add" />
+                    </template>
                     添加密钥
-                </el-button>
+                </t-button>
             </template>
             <el-table :data="keylist">
                 <el-table-column prop="Description" label="别名" fixed sortable show-overflow-tooltip />

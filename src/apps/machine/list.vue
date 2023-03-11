@@ -93,23 +93,22 @@ export default class MachineList extends Vue {
                 </el-table-column>
                 <el-table-column prop="WorkerId" label="土豆片" show-overflow-tooltip>
                     <template #default="scope">
-                        <el-button v-if="scope.row.WorkerId.length == 32 && workerList[scope.row.WorkerId]" link
-                            type="success">
+                        <t-link v-if="workerList[scope.row.WorkerId]" theme="success" hover="color">
                             已连接
-                        </el-button>
-                        <el-button v-else-if="scope.row.WorkerId.length == 32" link type="danger">
+                        </t-link>
+                        <t-link v-else-if="scope.row.WorkerMeta" theme="danger" hover="color">
                             未连接
-                        </el-button>
-                        <el-button v-else link type="warning">
+                        </t-link>
+                        <t-link v-else theme="warning" hover="color">
                             未注册
-                        </el-button>
+                        </t-link>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">
                     <template #default="scope">
-                        <el-button v-route="'/machine/detail/' + scope.row.Id" link type="primary" icon="View">
+                        <t-link v-route="'/machine/detail/' + scope.row.Id" theme="primary" hover="color">
                             管理
-                        </el-button>
+                        </t-link>
                         <t-popconfirm content="确定删除?" @confirm="deleteMachine(scope.$index)">
                             <t-link theme="danger" hover="color">
                                 删除

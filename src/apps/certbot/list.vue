@@ -60,9 +60,12 @@ export default class CertbotList extends Vue {
                 记录总数: {{ certbotList.length }}
             </template>
             <template #actions>
-                <el-button plain type="primary" size="small" icon="Plus" @click="createModal.open()">
-                    添加
-                </el-button>
+                <t-button theme="primary" size="small" @click="createModal.open()">
+                    <template #icon>
+                        <t-icon name="add" />
+                    </template>
+                    申请证书
+                </t-button>
             </template>
             <el-table v-loading="loading" :data="certbotList" table-layout="fixed">
                 <el-table-column prop="Domain" label="域名" fixed sortable show-overflow-tooltip />

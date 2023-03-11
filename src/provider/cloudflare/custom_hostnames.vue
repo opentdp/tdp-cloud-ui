@@ -103,9 +103,12 @@ export default class CloudflareCustomHostnames extends Vue {
             记录总数: {{ customHostnames?.length || 0 }}
         </template>
         <template #actions>
-            <el-button type="primary" plain size="small" @click="refresh">
+            <t-button theme="primary" size="small" @click="refresh">
+                <template #icon>
+                    <t-icon name="refresh" />
+                </template>
                 刷新状态
-            </el-button>
+            </t-button>
         </template>
 
         <t-form-item v-if="fallbackOrigin.origin == ''">
@@ -119,24 +122,20 @@ export default class CloudflareCustomHostnames extends Vue {
             </el-alert>
         </t-form-item>
 
-        <t-form-item label="回退源">
-            <t-input v-model="fallbackOrigin.origin">
-                <template #append>
-                    <el-button @click="updateFallbackOrigin">
-                        设置
-                    </el-button>
-                </template>
-            </t-input>
-        </t-form-item>
-        <t-form-item label="主机名">
-            <t-input v-model="newHostname">
-                <template #append>
-                    <el-button @click="createCustomHostnames">
-                        添加
-                    </el-button>
-                </template>
-            </t-input>
-        </t-form-item>
+        <t-form label-align="left" label-width="60px">
+            <t-form-item label="回退源">
+                <t-input v-model="fallbackOrigin.origin" /> &nbsp;
+                <t-button @click="updateFallbackOrigin">
+                    设置
+                </t-button>
+            </t-form-item>
+            <t-form-item label="主机名">
+                <t-input v-model="newHostname" /> &nbsp;
+                <t-button @click="createCustomHostnames">
+                    添加
+                </t-button>
+            </t-form-item>
+        </t-form>
 
         <el-divider />
         <el-table :data="customHostnames" table-layout="fixed">
@@ -151,7 +150,7 @@ export default class CloudflareCustomHostnames extends Vue {
                 <template #default="scope">
                     {{
                         scope.row.ssl.certificates &&
-                            dateFormat(scope.row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
+                        dateFormat(scope.row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
                     }}
                 </template>
             </el-table-column>

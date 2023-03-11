@@ -80,9 +80,12 @@ export default class LighthouseSnapshot extends Vue {
             记录总数: {{ snapshotList.TotalCount }}
         </template>
         <template #actions>
-            <el-button type="primary" plain size="small" @click="createModal.open(instance)">
+            <t-button theme="primary" size="small" @click="createModal.open(instance)">
+                <template #icon>
+                    <t-icon name="add" />
+                </template>
                 创建快照
-            </el-button>
+            </t-button>
         </template>
         <el-table :data="snapshotList.SnapshotSet" table-layout="fixed">
             <el-table-column prop="SnapshotName" label="名称" fixed sortable show-overflow-tooltip />

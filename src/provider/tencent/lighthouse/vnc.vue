@@ -81,9 +81,11 @@ export default class LighthouseVnc extends Vue {
     <iframe ref="frame" frameborder="no" />
     <t-card title="快捷命令" hover-shadow header-bordered>
         <t-space fixed break-line>
-            <el-button v-for="v, k in scriptList" :key="k" @click="vncExec(v.Content)">
-                {{ v.Name }}
-            </el-button>
+            <template v-for="v in scriptList" :key="v.Id">
+                <t-button variant="outline" @click="vncExec(v.Content)">
+                    {{ v.Name }}
+                </t-button>
+            </template>
         </t-space>
     </t-card>
 </template>

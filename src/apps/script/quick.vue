@@ -48,14 +48,14 @@ export default class ScriptQuick extends Vue {
 </script>
 
 <template>
-    <div v-if="machine.WorkerId.length == 32" v-loading="loading">
+    <div v-if="machine.WorkerMeta" v-loading="loading">
         <p v-if="scriptList.length == 0">
             暂无可用命令，请在 <b v-route="'/script/list'">脚本管理</b> 页面添加命令。
         </p>
         <template v-for="v in scriptList" :key="v.Id">
-            <el-button @click="execModal.open(machine, v)">
+            <t-button variant="outline" @click="execModal.open(machine, v)">
                 {{ v.Name }}
-            </el-button>
+            </t-button>
         </template>
     </div>
     <div v-else>

@@ -11,17 +11,17 @@ import { dateFormat } from "@/helper/format"
 import Firwwall from "./firewall.vue"
 import Snapshot from "./snapshot.vue"
 import Traffic from "./traffic.vue"
-import RenameModel from "./instance_rename.vue"
+import InstanceRename from "./instance_rename.vue"
 
 @Component({
-    components: { Firwwall, Snapshot, Traffic, RenameModel }
+    components: { Firwwall, Snapshot, Traffic, InstanceRename }
 })
 export default class LighthouseInstance extends Vue {
     public InstanceStateMap = InstanceStateMap
     public dateFormat = dateFormat
 
     @Ref
-    public renameModal!: RenameModel
+    public renameModal!: InstanceRename
 
     @Prop
     public machine!: Omit<MachineItem, "CloudMeta"> & {
@@ -103,25 +103,27 @@ export default class LighthouseInstance extends Vue {
                 {{ InstanceStateMap[instance.InstanceState] }}
             </template>
             <template #actions>
-                <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'STOPPED'"
-                    :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
-                    开机
-                </el-button>
-                <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                    :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
-                    关机
-                </el-button>
-                <el-button type="primary" plain size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                    :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
-                    重启
-                </el-button>
-                <el-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id" type="primary"
-                    plain size="small">
-                    VNC 终端
-                </el-button>
-                <el-button v-else type="primary" plain size="small" disabled>
-                    VNC 终端
-                </el-button>
+                <t-space>
+                    <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'STOPPED'"
+                        :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
+                        开机
+                    </t-button>
+                    <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'RUNNING'"
+                        :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
+                        关机
+                    </t-button>
+                    <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'RUNNING'"
+                        :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
+                        重启
+                    </t-button>
+                    <t-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id"
+                        theme="primary" size="small">
+                        VNC 终端
+                    </t-button>
+                    <t-button v-else theme="primary" size="small" disabled>
+                        VNC 终端
+                    </t-button>
+                </t-space>
             </template>
             <t-list :split="true">
                 <t-list-item>
@@ -131,8 +133,10 @@ export default class LighthouseInstance extends Vue {
                 <t-list-item>
                     <b>实例名</b>
                     <div>
+                        <t-button shape="circle" variant="text" @click="renameModal.open(instance)">
+                            <t-icon name="edit" />
+                        </t-button>
                         {{ instance.InstanceName }}
-                        <el-button link icon="EditPen" @click="renameModal.open(instance)" />
                     </div>
                 </t-list-item>
                 <t-list-item>

@@ -18,12 +18,12 @@ export default class Error403 extends Vue {
             啊哦~ 你没有权限访问该页面哦
         </div>
         <div class="error-handle">
-            <el-button v-route="'/'" type="primary" size="large">
+            <t-button v-route="'/'" theme="primary" size="large">
                 返回首页
-            </el-button>
-            <el-button class="error-btn" type="primary" size="large" @click="goBack">
+            </t-button>
+            <t-button class="error-btn" theme="primary" size="large" @click="goBack">
                 返回上一页
-            </el-button>
+            </t-button>
         </div>
     </div>
 </template>

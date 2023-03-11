@@ -78,9 +78,12 @@ export default class DnspodDomain extends Vue {
             <small>记录总数: {{ recordCountInfo?.TotalCount || 0 }}</small>
         </template>
         <template #actions>
-            <el-button type="primary" plain size="small" @click="createModal.open(domainInfo)">
+            <t-button theme="primary" size="small" @click="createModal.open(domainInfo)">
+                <template #icon>
+                    <t-icon name="add" />
+                </template>
                 添加记录
-            </el-button>
+            </t-button>
         </template>
         <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
             <el-table-column prop="Name" label="主机记录" fixed sortable show-overflow-tooltip />
@@ -96,9 +99,9 @@ export default class DnspodDomain extends Vue {
             <el-table-column prop="Remark" label="备注" show-overflow-tooltip />
             <el-table-column label="操作" width="180" align="center">
                 <template #default="scope">
-                    <el-button link type="primary" icon="Edit" @click="updateModal.open(domainInfo, scope.row)">
+                    <t-link theme="primary" hover="color" @click="updateModal.open(domainInfo, scope.row)">
                         编辑
-                    </el-button>
+                    </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteRecord(scope.row.RecordId)">
                         <t-link theme="danger" hover="color">
                             删除

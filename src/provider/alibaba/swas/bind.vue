@@ -160,12 +160,13 @@ export default class SwasBind extends Vue {
             </el-table-column>
             <el-table-column label="操作" width="90" align="center">
                 <template #default="scope">
-                    <el-button v-if="boundList[scope.row.InstanceId]" link icon="View" @click="syncMachine(scope.row)">
+                    <t-link v-if="boundList[scope.row.InstanceId]" theme="success" hover="color"
+                        @click="syncMachine(scope.row)">
                         同步
-                    </el-button>
-                    <el-button v-else link type="primary" icon="View" @click="bindMachine(scope.row)">
+                    </t-link>
+                    <t-link v-else theme="primary" hover="color" @click="bindMachine(scope.row)">
                         导入
-                    </el-button>
+                    </t-link>
                 </template>
             </el-table-column>
         </el-table>
