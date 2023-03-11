@@ -98,7 +98,7 @@ export default class TerminalSshConnect extends Vue {
             </el-autocomplete>
         </t-form-item>
         <t-form-item name="User" label="用户名">
-            <el-input v-model="formModel.User" />
+            <t-input v-model="formModel.User" />
         </t-form-item>
         <t-form-item label="验证方式">
             <el-select v-model="authType">
@@ -108,7 +108,7 @@ export default class TerminalSshConnect extends Vue {
             </el-select>
         </t-form-item>
         <t-form-item v-if="authType == '0'" name="Password" label="密码">
-            <el-input v-model="formModel.Password" show-password />
+            <t-input v-model="formModel.Password" type="password" />
         </t-form-item>
         <t-form-item v-if="authType == '2'" name="PrivateKey" label="私玥">
             <el-select v-model="formModel.PrivateKey">
@@ -116,7 +116,7 @@ export default class TerminalSshConnect extends Vue {
             </el-select>
         </t-form-item>
         <t-form-item v-if="authType == '4'" name="PrivateKey" label="私钥">
-            <el-input v-model="formModel.PrivateKey" type="textarea" :autosize="{ minRows: 5, maxRows: 15 }" />
+            <t-textarea v-model="formModel.PrivateKey" :autosize="{ minRows: 5, maxRows: 15 }" />
         </t-form-item>
         <t-form-item>
             <t-button theme="primary" type="submit">

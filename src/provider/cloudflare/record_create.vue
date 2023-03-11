@@ -85,7 +85,7 @@ export default class CloudflareRecordCreate extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="添加记录" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
             <t-form-item name="name" label="主机记录">
-                <el-input v-model="formModel.name" />
+                <t-input v-model="formModel.name" />
             </t-form-item>
             <t-form-item name="type" label="记录类型">
                 <el-select v-model="formModel.type">
@@ -93,7 +93,7 @@ export default class CloudflareRecordCreate extends Vue {
                 </el-select>
             </t-form-item>
             <t-form-item name="content" label="记录值">
-                <el-input v-model="formModel.content" type="textarea" autosize />
+                <t-textarea v-model="formModel.content" autosize />
             </t-form-item>
             <t-form-item name="proxied" label="加速">
                 <el-radio-group v-model="formModel.proxied">
@@ -106,10 +106,10 @@ export default class CloudflareRecordCreate extends Vue {
                 </el-radio-group>
             </t-form-item>
             <t-form-item name="priority" label="权重">
-                <el-input-number v-model="formModel.priority" />
+                <t-input-number v-model="formModel.priority" />
             </t-form-item>
             <t-form-item name="ttl" label="TTL">
-                <el-input-number v-model="formModel.ttl" />
+                <t-input-number v-model="formModel.ttl" />
             </t-form-item>
             <t-form-item>
                 <t-space size="small">

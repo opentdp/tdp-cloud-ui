@@ -100,7 +100,7 @@ export default class CertbotCreate extends Vue {
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="110px" @submit="formSubmit">
             <t-form-item name="Domain" label="域名">
                 <el-col :span="11">
-                    <el-input v-model="domainSub" />
+                    <t-input v-model="domainSub" />
                 </el-col>
                 <el-col class="text-center" :span="1">
                     <div>.</div>
@@ -109,11 +109,11 @@ export default class CertbotCreate extends Vue {
                     <el-select v-if="domainList.length > 0" v-model="domainId">
                         <el-option v-for="v, k in domainList" :key="k" :label="v.Name" :value="k" />
                     </el-select>
-                    <el-input v-else value="请先导入域名资源" disabled />
+                    <t-input v-else value="请先导入域名资源" disabled />
                 </el-col>
             </t-form-item>
             <t-form-item name="Email" label="邮箱">
-                <el-input v-model="formModel.Email" />
+                <t-input v-model="formModel.Email" />
             </t-form-item>
             <t-form-item name="CaType" label="CA">
                 <el-select v-model="formModel.CaType" @change="updateCaEab">
@@ -121,10 +121,10 @@ export default class CertbotCreate extends Vue {
                 </el-select>
             </t-form-item>
             <t-form-item name="EabKeyId" label="EAB KeyId" :required="caEab == 2">
-                <el-input v-model="formModel.EabKeyId" :disabled="caEab == 0" />
+                <t-input v-model="formModel.EabKeyId" :disabled="caEab == 0" />
             </t-form-item>
             <t-form-item name="EabMacKey" label="EAB MacKey" :required="caEab == 2">
-                <el-input v-model="formModel.EabMacKey" :disabled="caEab == 0" />
+                <t-input v-model="formModel.EabMacKey" :disabled="caEab == 0" />
             </t-form-item>
             <t-form-item>
                 <t-space size="small">

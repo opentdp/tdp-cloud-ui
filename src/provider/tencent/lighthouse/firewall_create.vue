@@ -69,7 +69,7 @@ export default class LighthouseFirewallCreate extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="添加规则" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="CidrBlock" label="来源">
-                <el-input v-model="formModel.CidrBlock" />
+                <t-input v-model="formModel.CidrBlock" />
             </t-form-item>
             <t-form-item name="Protocol" label="协议">
                 <el-select v-model="formModel.Protocol">
@@ -79,7 +79,7 @@ export default class LighthouseFirewallCreate extends Vue {
                 </el-select>
             </t-form-item>
             <t-form-item v-if="/TCP|UDP/.test(formModel.Protocol)" label="端口">
-                <el-input v-model="formModel.Port" />
+                <t-input v-model="formModel.Port" />
             </t-form-item>
             <t-form-item name="Action" label="策略">
                 <el-select v-model="formModel.Action">
@@ -88,7 +88,7 @@ export default class LighthouseFirewallCreate extends Vue {
                 </el-select>
             </t-form-item>
             <t-form-item label="备注">
-                <el-input v-model="formModel.FirewallRuleDescription" />
+                <t-input v-model="formModel.FirewallRuleDescription" />
             </t-form-item>
             <t-form-item>
                 <t-space size="small">

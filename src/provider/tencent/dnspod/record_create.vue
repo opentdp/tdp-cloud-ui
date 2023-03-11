@@ -110,7 +110,7 @@ export default class DnspodRecordCreate extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="添加记录" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
             <t-form-item name="Name" label="主机记录">
-                <el-input v-model="formModel.Name" />
+                <t-input v-model="formModel.Name" />
             </t-form-item>
             <t-form-item name="Type" label="记录类型">
                 <el-select v-model="formModel.Type">
@@ -123,16 +123,16 @@ export default class DnspodRecordCreate extends Vue {
                 </el-select>
             </t-form-item>
             <t-form-item name="Value" label="记录值">
-                <el-input v-model="formModel.Value" type="textarea" autosize />
+                <t-textarea v-model="formModel.Value" autosize />
             </t-form-item>
             <t-form-item name="Weight" label="权重">
-                <el-input-number v-model="formModel.Weight" />
+                <t-input-number v-model="formModel.Weight" />
             </t-form-item>
             <t-form-item name="MX" label="MX">
-                <el-input-number v-model="formModel.MX" />
+                <t-input-number v-model="formModel.MX" />
             </t-form-item>
             <t-form-item name="TTL" label="TTL">
-                <el-input-number v-model="formModel.TTL" />
+                <t-input-number v-model="formModel.TTL" />
             </t-form-item>
             <t-form-item>
                 <t-space size="small">

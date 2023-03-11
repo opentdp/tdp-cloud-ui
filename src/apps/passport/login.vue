@@ -51,23 +51,19 @@ export default class PassportLogin extends Vue {
             </div>
             <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="0px" class="magic-body"
                 @submit="formSubmit">
-                <t-form-item name="Username">
-                    <el-input v-model="formModel.Username" placeholder="用户名">
-                        <template #prepend>
-                            <el-icon>
-                                <User />
-                            </el-icon>
+                <t-form-item name="Username" :required-mark="false">
+                    <t-input v-model="formModel.Username" placeholder="用户名">
+                        <template #prefix-icon>
+                            <t-icon name="user" />
                         </template>
-                    </el-input>
+                    </t-input>
                 </t-form-item>
-                <t-form-item name="Password">
-                    <el-input v-model="formModel.Password" placeholder="密码" show-password>
-                        <template #prepend>
-                            <el-icon>
-                                <Lock />
-                            </el-icon>
+                <t-form-item name="Password" :required-mark="false">
+                    <t-input v-model="formModel.Password" type="password" placeholder="密码">
+                        <template #prefix-icon>
+                            <t-icon name="lock-on" />
                         </template>
-                    </el-input>
+                    </t-input>
                 </t-form-item>
                 <div class="magic-btn">
                     <t-button theme="primary" type="submit">
@@ -75,7 +71,7 @@ export default class PassportLogin extends Vue {
                     </t-button>
                 </div>
                 <div v-if="layout.Register" class="magic-btn">
-                    <t-button v-route="'/passport/register'">
+                    <t-button v-route="'/passport/register'" theme="default">
                         注册
                     </t-button>
                 </div>

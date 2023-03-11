@@ -68,7 +68,7 @@ export default class LighthouseFirewallRemark extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="修改描述" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="FirewallRuleDescription" label="备注">
-                <el-input v-model="formModel.FirewallRuleDescription" />
+                <t-input v-model="formModel.FirewallRuleDescription" />
             </t-form-item>
             <t-form-item>
                 <t-space size="small">

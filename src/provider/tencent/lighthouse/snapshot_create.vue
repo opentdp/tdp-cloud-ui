@@ -64,7 +64,7 @@ export default class LighthouseSnapshotCreate extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="创建快照" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="name" label="名称">
-                <el-input v-model="formModel.name" />
+                <t-input v-model="formModel.name" />
             </t-form-item>
             <t-form-item>
                 <t-space size="small">

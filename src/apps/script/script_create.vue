@@ -94,23 +94,23 @@ export default class ScriptCreate extends Vue {
                 </el-radio-group>
             </t-form-item>
             <t-form-item name="Name" label="名称">
-                <el-input v-model="formModel.Name" :maxlength="60" />
+                <t-input v-model="formModel.Name" :maxlength="60" />
             </t-form-item>
             <t-form-item name="Username" label="执行用户">
-                <el-input v-model="formModel.Username" readonly />
+                <t-input v-model="formModel.Username" readonly />
             </t-form-item>
             <t-form-item name="WorkDirectory" label="执行路径">
-                <el-input v-model="formModel.WorkDirectory" />
+                <t-input v-model="formModel.WorkDirectory" />
             </t-form-item>
             <t-form-item name="Content" label="脚本内容">
-                <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4, maxRows: 15 }"
+                <t-textarea v-model="formModel.Content" :autosize="{ minRows: 4, maxRows: 15 }"
                     :placeholder="formModel.CommandType == 'SHELL' ? '请在首行声明解释器，如 #!/bin/sh' : ''" />
             </t-form-item>
             <t-form-item name="Description" label="脚本描述">
-                <el-input v-model="formModel.Description" type="textarea" :autosize="{ minRows: 2, maxRows: 15 }" />
+                <t-textarea v-model="formModel.Description" :autosize="{ minRows: 2, maxRows: 15 }" />
             </t-form-item>
             <t-form-item name="Timeout" label="超时时间">
-                <el-input-number v-model="formModel.Timeout" placeholder="默认为 300s" :min="1" :max="86400" />
+                <t-input-number v-model="formModel.Timeout" placeholder="默认为 300s" :min="1" :max="86400" />
             </t-form-item>
             <t-form-item>
                 <t-space size="small">

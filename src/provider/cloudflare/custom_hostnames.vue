@@ -120,22 +120,22 @@ export default class CloudflareCustomHostnames extends Vue {
         </t-form-item>
 
         <t-form-item label="回退源">
-            <el-input v-model="fallbackOrigin.origin">
+            <t-input v-model="fallbackOrigin.origin">
                 <template #append>
                     <el-button @click="updateFallbackOrigin">
                         设置
                     </el-button>
                 </template>
-            </el-input>
+            </t-input>
         </t-form-item>
         <t-form-item label="主机名">
-            <el-input v-model="newHostname">
+            <t-input v-model="newHostname">
                 <template #append>
                     <el-button @click="createCustomHostnames">
                         添加
                     </el-button>
                 </template>
-            </el-input>
+            </t-input>
         </t-form-item>
 
         <el-divider />

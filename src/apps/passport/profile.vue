@@ -98,22 +98,22 @@ export default class PassportProfile extends Vue {
                             </el-tooltip>
                         </t-form-item>
                         <t-form-item name="Username" label="用户名">
-                            <el-input v-model="formModel.Username" />
+                            <t-input v-model="formModel.Username" />
                         </t-form-item>
                         <t-form-item name="OldPassword" label="原密码">
-                            <el-input v-model="formModel.OldPassword" show-password />
+                            <t-input v-model="formModel.OldPassword" type="password" />
                         </t-form-item>
                         <t-form-item name="Password" label="新密码">
-                            <el-input v-model="formModel.Password" show-password />
+                            <t-input v-model="formModel.Password" type="password" />
                         </t-form-item>
                         <t-form-item name="Password2" label="确认密码">
-                            <el-input v-model="formModel.Password2" show-password />
+                            <t-input v-model="formModel.Password2" type="password" />
                         </t-form-item>
                         <t-form-item name="Email" label="邮箱">
-                            <el-input v-model="formModel.Email" />
+                            <t-input v-model="formModel.Email" />
                         </t-form-item>
                         <t-form-item name="Description" label="简介">
-                            <el-input v-model="formModel.Description" type="textarea"
+                            <t-textarea v-model="formModel.Description"
                                 :autosize="{ minRows: 3, maxRows: 15 }" />
                         </t-form-item>
                         <t-form-item>

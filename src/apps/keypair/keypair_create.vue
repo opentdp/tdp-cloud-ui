@@ -66,13 +66,13 @@ export default class KeypairCreate extends Vue {
                 </el-select>
             </t-form-item>
             <t-form-item name="Description" label="别名">
-                <el-input v-model="formModel.Description" />
+                <t-input v-model="formModel.Description" />
             </t-form-item>
             <t-form-item name="PublicKey" label="公钥">
-                <el-input v-model="formModel.PublicKey" type="textarea" :autosize="{ minRows: 5, maxRows: 15 }" />
+                <t-textarea v-model="formModel.PublicKey" :autosize="{ minRows: 5, maxRows: 15 }" />
             </t-form-item>
             <t-form-item name="PrivateKey" label="私钥">
-                <el-input v-model="formModel.PrivateKey" type="textarea" :autosize="{ minRows: 5, maxRows: 15 }" />
+                <t-textarea v-model="formModel.PrivateKey" :autosize="{ minRows: 5, maxRows: 15 }" />
             </t-form-item>
             <t-form-item>
                 <t-space size="small">

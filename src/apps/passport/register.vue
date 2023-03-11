@@ -21,7 +21,10 @@ export default class PassportRegister extends Vue {
     public formRules: FormRules<UserRegister> = {
         Username: [{ required: true }],
         Password: [{ required: true }],
-        Password2: [{ validator: val => val == this.formModel.Password, message: '两次密码不一致' }],
+        Password2: [
+            { required: true },
+            { validator: val => val == this.formModel.Password, message: '两次密码不一致' }
+        ],
         Email: [{ required: true }],
     }
 
@@ -45,41 +48,33 @@ export default class PassportRegister extends Vue {
             </div>
             <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="0px" class="magic-body"
                 @submit="formSubmit">
-                <t-form-item name="Username">
-                    <el-input v-model="formModel.Username" placeholder="用户名">
-                        <template #prepend>
-                            <el-icon>
-                                <User />
-                            </el-icon>
+                <t-form-item name="Username" :required-mark="false">
+                    <t-input v-model="formModel.Username" placeholder="用户名">
+                        <template #prefix-icon>
+                            <t-icon name="user" />
                         </template>
-                    </el-input>
+                    </t-input>
                 </t-form-item>
-                <t-form-item name="Email">
-                    <el-input v-model="formModel.Email" placeholder="邮箱">
-                        <template #prepend>
-                            <el-icon>
-                                <Message />
-                            </el-icon>
+                <t-form-item name="Email" :required-mark="false">
+                    <t-input v-model="formModel.Email" placeholder="邮箱">
+                        <template #prefix-icon>
+                            <t-icon name="mail" />
                         </template>
-                    </el-input>
+                    </t-input>
                 </t-form-item>
-                <t-form-item name="Password">
-                    <el-input v-model="formModel.Password" placeholder="密码" show-password>
-                        <template #prepend>
-                            <el-icon>
-                                <Lock />
-                            </el-icon>
+                <t-form-item name="Password" :required-mark="false">
+                    <t-input v-model="formModel.Password" type="password" placeholder="密码">
+                        <template #prefix-icon>
+                            <t-icon name="lock-on" />
                         </template>
-                    </el-input>
+                    </t-input>
                 </t-form-item>
-                <t-form-item name="Password2">
-                    <el-input v-model="formModel.Password2" placeholder="确认密码" show-password>
-                        <template #prepend>
-                            <el-icon>
-                                <Lock />
-                            </el-icon>
+                <t-form-item name="Password2" :required-mark="false">
+                    <t-input v-model="formModel.Password2" type="password" placeholder="确认密码">
+                        <template #prefix-icon>
+                            <t-icon name="lock-on" />
                         </template>
-                    </el-input>
+                    </t-input>
                 </t-form-item>
                 <div class="magic-btn">
                     <t-button theme="primary" type="submit">
@@ -87,7 +82,7 @@ export default class PassportRegister extends Vue {
                     </t-button>
                 </div>
                 <div class="magic-btn">
-                    <t-button v-route="'/passport/login'">
+                    <t-button v-route="'/passport/login'" theme="default">
                         登录
                     </t-button>
                 </div>
