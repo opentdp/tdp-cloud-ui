@@ -145,7 +145,7 @@ export default class SwasBind extends Vue {
             <el-table-column prop="Core" label="CPU" sortable show-overflow-tooltip />
             <el-table-column prop="Memory" label="内存" sortable show-overflow-tooltip>
                 <template #default="scope">
-                    {{ scope.row.Memory}}
+                    {{ scope.row.Memory }}
                 </template>
             </el-table-column>
             <el-table-column prop="PublicIpAddress" label="外网 IP" show-overflow-tooltip>

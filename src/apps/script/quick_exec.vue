@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormRules, FormInstance } from "element-plus"
+import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
-import { NaApi } from "@/api"
+import Api, { NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
 import { ScriptItem } from "@/api/native/script"
 import { TasklineItem } from "@/api/native/taskline"
@@ -21,32 +21,30 @@ export default class ScriptQuickExec extends Vue {
     // 创建表单
 
     @Ref
-    public formRef!: FormInstance
+    public formRef!: FormInstanceFunctions
 
     public formModel!: ScriptItem
 
-    public formRules: FormRules = {
-        Content: [{ required: true, message: "不能为空" }],
+    public formRules: FormRules<ScriptItem> = {
+        Content: [{ required: true }],
     }
 
     // 提交表单
 
-    public formSubmit(form: FormInstance | undefined) {
+    async formSubmit(ctx: SubmitContext<FormData>) {
         this.result = null
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            this.loading = true
-            const res = await NaApi.workhub.exec(
-                this.machine.WorkerId, this.formModel
-            )
-            // 循环获取状态
-            this.timer = setInterval(() => {
-                this.getOutput(res.Id)
-            }, 1500)
-        })
+        if (ctx.validateResult !== true) {
+            Api.msg.err("请检查表单")
+            return false
+        }
+        this.loading = true
+        const res = await NaApi.workhub.exec(
+            this.machine.WorkerId, this.formModel
+        )
+        // 循环获取状态
+        this.timer = setInterval(() => {
+            this.getOutput(res.Id)
+        }, 1500)
     }
 
     // 获取结果
@@ -84,44 +82,44 @@ export default class ScriptQuickExec extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close :title="'执行脚本：' + formModel?.Name" width="600px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
-            <el-form-item prop="CommandType" label="类型">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
+            <t-form-item name="CommandType" label="类型">
                 {{ formModel.CommandType }}
-            </el-form-item>
-            <el-form-item prop="Description" label="脚本描述">
+            </t-form-item>
+            <t-form-item name="Description" label="脚本描述">
                 {{ formModel.Description }}
-            </el-form-item>
-            <el-form-item prop="Timeout" label="超时时间">
+            </t-form-item>
+            <t-form-item name="Timeout" label="超时时间">
                 <el-input-number v-model="formModel.Timeout" placeholder="默认为 300s" :min="1" :max="86400" />
-            </el-form-item>
-            <el-form-item prop="Username" label="执行用户">
+            </t-form-item>
+            <t-form-item name="Username" label="执行用户">
                 <el-input v-model="formModel.Username"
                     :placeholder="formModel.CommandType == 'SHELL' ? '默认为 root' : '默认为 System'" />
-            </el-form-item>
-            <el-form-item prop="WorkDirectory" label="执行路径">
+            </t-form-item>
+            <t-form-item name="WorkDirectory" label="执行路径">
                 <el-input v-model="formModel.WorkDirectory"
                     :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
-            </el-form-item>
-            <el-form-item prop="Content" label="脚本内容">
+            </t-form-item>
+            <t-form-item name="Content" label="脚本内容">
                 <el-input v-model="formModel.Content" type="textarea" :autosize="{ minRows: 4, maxRows: 15 }" />
-            </el-form-item>
-        </el-form>
+            </t-form-item>
+        </t-form>
         <div v-if="result">
             <pre v-if="result.Response.Error" v-highlight max-height="300" class="lang-json">
-                <h3>错误信息</h3>
-                <code>{{ JSON.stringify(result.Response.Error, null, 4) }}</code>
-            </pre>
+                    <h3>错误信息</h3>
+                    <code>{{ JSON.stringify(result.Response.Error, null, 4) }}</code>
+                </pre>
             <pre v-highlight max-height="300">
-                <h3>响应内容</h3>
-                <code>{{ result.Response.Output }}</code>
-            </pre>
+                    <h3>响应内容</h3>
+                    <code>{{ result.Response.Output }}</code>
+                </pre>
         </div>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" :loading="loading" @click="formSubmit(formRef)">
+                <t-button @click="dailog = false">取消</t-button>
+                <t-button theme="primary" type="submit" :loading="loading">
                     执行
-                </el-button>
+                </t-button>
             </span>
         </template>
     </el-dialog>

@@ -1,9 +1,11 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormInstance, FormRules } from "element-plus"
+import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
-import { NaApi } from "@/api"
+import Api, { NaApi } from "@/api"
+import { UserLogin } from "@/api/native/passport"
+
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
@@ -17,28 +19,26 @@ export default class PassportLogin extends Vue {
     }
 
     @Ref
-    public formRef!: FormInstance
+    public formRef!: FormInstanceFunctions
 
-    public formModel = {
+    public formModel: UserLogin = {
         Username: import.meta.env.VITE_USERNAME || "",
         Password: import.meta.env.VITE_PASSWORD || "",
     }
 
-    public formRules: FormRules = {
-        Username: [{ required: true, message: "不能为空" }],
-        Password: [{ required: true, message: "不能为空" }],
+    public formRules: FormRules<UserLogin> = {
+        Username: [{ required: true }],
+        Password: [{ required: true }],
     }
 
-    public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            const res = await NaApi.passport.login(this.formModel)
-            this.session.update(res)
-            this.$router.push("/")
-        })
+    async formSubmit(ctx: SubmitContext<FormData>) {
+        if (ctx.validateResult !== true) {
+            Api.msg.err("请检查表单")
+            return false
+        }
+        const res = await NaApi.passport.login(this.formModel)
+        this.session.update(res)
+        this.$router.push("/")
     }
 }
 </script>
@@ -49,8 +49,9 @@ export default class PassportLogin extends Vue {
             <div class="magic-title">
                 管理后台
             </div>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="0px" class="magic-body">
-                <el-form-item prop="Username">
+            <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="0px" class="magic-body"
+                @submit="formSubmit">
+                <t-form-item name="Username">
                     <el-input v-model="formModel.Username" placeholder="用户名">
                         <template #prepend>
                             <el-icon>
@@ -58,28 +59,27 @@ export default class PassportLogin extends Vue {
                             </el-icon>
                         </template>
                     </el-input>
-                </el-form-item>
-                <el-form-item prop="Password">
-                    <el-input v-model="formModel.Password" placeholder="密码" show-password
-                        @keyup.enter="formSubmit(formRef)">
+                </t-form-item>
+                <t-form-item name="Password">
+                    <el-input v-model="formModel.Password" placeholder="密码" show-password>
                         <template #prepend>
                             <el-icon>
                                 <Lock />
                             </el-icon>
                         </template>
                     </el-input>
-                </el-form-item>
+                </t-form-item>
                 <div class="magic-btn">
-                    <el-button type="primary" @click="formSubmit(formRef)">
+                    <t-button theme="primary" type="submit">
                         登录
-                    </el-button>
+                    </t-button>
                 </div>
                 <div v-if="layout.Register" class="magic-btn">
-                    <el-button v-route="'/passport/register'">
+                    <t-button v-route="'/passport/register'">
                         注册
-                    </el-button>
+                    </t-button>
                 </div>
-            </el-form>
+            </t-form>
         </div>
         <div class="copyright">
             <small>Powered by TDP Cloud {{ layout.Version ? "v" + layout.Version : "" }}</small>

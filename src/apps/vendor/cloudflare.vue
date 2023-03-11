@@ -1,10 +1,10 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormInstance, FormRules } from "element-plus"
+import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
-import { NaApi } from "@/api"
-import { VendorItem } from "@/api/native/vendor"
+import Api, { NaApi } from "@/api"
+import { VendorItem, VendorOrig } from "@/api/native/vendor"
 
 @Component
 export default class VendorCloudflare extends Vue {
@@ -37,32 +37,38 @@ export default class VendorCloudflare extends Vue {
     // 添加厂商
 
     @Ref
-    public formRef!: FormInstance
+    public formRef!: FormInstanceFunctions
 
-    public formModel = {
+    public formModel: VendorOrig = {
         SecretId: "",
         SecretKey: "",
         Provider: "cloudflare",
         Description: "",
     }
 
-    public formRules: FormRules = {
-        SecretId: [{ required: true, message: "不能为空" }],
-        SecretKey: [{ required: true, message: "不能为空" }],
-        Description: [{ required: true, message: "不能为空" }],
+    public formRules: FormRules<VendorOrig> = {
+        SecretId: [{ required: true }],
+        SecretKey: [{ required: true }],
+        Description: [{ required: true }],
     }
 
-    public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            await NaApi.vendor.create(this.formModel)
-            this.formRef.resetFields()
-            this.getVendorList()
-        })
+    async formSubmit(ctx: SubmitContext<FormData>) {
+        if (ctx.validateResult !== true) {
+            Api.msg.err("请检查表单")
+            return false
+        }
+        await NaApi.vendor.create(this.formModel)
+        this.formRef.reset()
+        this.getVendorList()
     }
+
+    // 表格定义
+
+    public vendorColumns = [
+        { colKey: 'Description', title: '别名', ellipsis: true, sorter: true },
+        { colKey: 'SecretId', title: '邮箱', ellipsis: true, sorter: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -78,24 +84,18 @@ export default class VendorCloudflare extends Vue {
         </t-breadcrumb>
 
         <t-card title="账号列表" hover-shadow header-bordered>
-            <el-table v-loading="loading" :data="vendorList">
-                <el-table-column prop="Description" label="别名" fixed sortable show-overflow-tooltip />
-                <el-table-column prop="SecretId" label="邮箱" sortable show-overflow-tooltip />
-                <el-table-column label="操作" width="180" align="center">
-                    <template #default="scope">
-                        <el-button v-route="'/vendor/cloudflare/' + scope.row.Id" link type="primary" icon="View">
-                            管理
-                        </el-button>
-                        <el-popconfirm title="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(scope.$index)">
-                            <template #reference>
-                                <el-button link type="danger" icon="Delete">
-                                    删除
-                                </el-button>
-                            </template>
-                        </el-popconfirm>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <t-table :data="vendorList" :columns="vendorColumns" row-key="Id" height="auto">
+                <template #Operation="{ row, rowIndex }">
+                    <t-link v-route="'/vendor/alibaba/' + row.Id" theme="primary" hover="color">
+                        管理
+                    </t-link>
+                    <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
+                </template>
+            </t-table>
         </t-card>
 
         <t-card title="添加账号" hover-shadow header-bordered>
@@ -104,22 +104,22 @@ export default class VendorCloudflare extends Vue {
                     <t-icon name="jump" /> &nbsp;操作指南
                 </t-link>
             </template>
-            <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="60px">
-                <el-form-item prop="Description" label="别名">
-                    <el-input v-model="formModel.Description" />
-                </el-form-item>
-                <el-form-item prop="SecretId" label="邮箱">
-                    <el-input v-model="formModel.SecretId" />
-                </el-form-item>
-                <el-form-item prop="SecretKey" label="令牌">
-                    <el-input v-model="formModel.SecretKey" />
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="formSubmit(formRef)">
+            <t-form ref="formRef" :data="formModel" :rules="formRules" @submit="formSubmit">
+                <t-form-item name="Description" label="别名">
+                    <t-input v-model="formModel.Description" />
+                </t-form-item>
+                <t-form-item name="SecretId" label="邮箱">
+                    <t-input v-model="formModel.SecretId" />
+                </t-form-item>
+                <t-form-item name="SecretKey" label="令牌">
+                    <t-input v-model="formModel.SecretKey" />
+                </t-form-item>
+                <t-form-item>
+                    <t-button theme="primary" type="submit">
                         保存
-                    </el-button>
-                </el-form-item>
-            </el-form>
+                    </t-button>
+                </t-form-item>
+            </t-form>
         </t-card>
     </t-space>
 </template>

@@ -1,11 +1,12 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormRules, FormInstance } from "element-plus"
+import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
-import { NaApi } from "@/api"
-import { CaTypeList } from "@/api/native/certbot"
+import Api, { NaApi } from "@/api"
+import { CaTypeList, CertbotOrig } from "@/api/native/certbot"
 import { DomainItem } from "@/api/native/domain"
+
 import sessionStore from "@/store/session"
 
 @Component({
@@ -31,9 +32,9 @@ export default class CertbotCreate extends Vue {
     public domainSub = ""
 
     @Ref
-    public formRef!: FormInstance
+    public formRef!: FormInstanceFunctions
 
-    public formModel = {
+    public formModel: CertbotOrig = {
         VendorId: 0,
         Email: "",
         Domain: "",
@@ -43,30 +44,28 @@ export default class CertbotCreate extends Vue {
         History: `{"event":"queued"}`,
     }
 
-    public formRules: FormRules = {
-        Email: [{ required: true, message: "不能为空" }],
-        CaType: [{ required: true, message: "不能为空" }],
+    public formRules: FormRules<CertbotOrig> = {
+        Email: [{ required: true }],
+        CaType: [{ required: true }],
     }
 
     // 提交表单
 
-    public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            const domain = this.domainList[this.domainId]
-            if (!domain) {
-                ElMessage.error("请选择主域名")
-                return false
-            }
-            const prefix = this.domainSub ? this.domainSub + "." : ""
-            this.formModel.Domain = prefix + domain.Name
-            this.formModel.VendorId = domain.VendorId
-            await NaApi.certbot.create(this.formModel)
-            this.close()
-        })
+    async formSubmit(ctx: SubmitContext<FormData>) {
+        if (ctx.validateResult !== true) {
+            Api.msg.err("请检查表单")
+            return false
+        }
+        const domain = this.domainList[this.domainId]
+        if (!domain) {
+            Api.msg.err("请选择主域名")
+            return false
+        }
+        const prefix = this.domainSub ? this.domainSub + "." : ""
+        this.formModel.Domain = prefix + domain.Name
+        this.formModel.VendorId = domain.VendorId
+        await NaApi.certbot.create(this.formModel)
+        this.close()
     }
 
     // 表单事件
@@ -98,8 +97,8 @@ export default class CertbotCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加计划" width="600px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="110px">
-            <el-form-item prop="Domain" label="域名">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="110px" @submit="formSubmit">
+            <t-form-item name="Domain" label="域名">
                 <el-col :span="11">
                     <el-input v-model="domainSub" />
                 </el-col>
@@ -112,28 +111,28 @@ export default class CertbotCreate extends Vue {
                     </el-select>
                     <el-input v-else value="请先导入域名资源" disabled />
                 </el-col>
-            </el-form-item>
-            <el-form-item prop="Email" label="邮箱">
+            </t-form-item>
+            <t-form-item name="Email" label="邮箱">
                 <el-input v-model="formModel.Email" />
-            </el-form-item>
-            <el-form-item prop="CaType" label="CA">
+            </t-form-item>
+            <t-form-item name="CaType" label="CA">
                 <el-select v-model="formModel.CaType" @change="updateCaEab">
                     <el-option v-for="v, k in CaTypeList" :key="k" :label="v.Name" :value="k" />
                 </el-select>
-            </el-form-item>
-            <el-form-item prop="EabKeyId" label="EAB KeyId" :required="caEab == 2">
+            </t-form-item>
+            <t-form-item name="EabKeyId" label="EAB KeyId" :required="caEab == 2">
                 <el-input v-model="formModel.EabKeyId" :disabled="caEab == 0" />
-            </el-form-item>
-            <el-form-item prop="EabMacKey" label="EAB MacKey" :required="caEab == 2">
+            </t-form-item>
+            <t-form-item name="EabMacKey" label="EAB MacKey" :required="caEab == 2">
                 <el-input v-model="formModel.EabMacKey" :disabled="caEab == 0" />
-            </el-form-item>
-        </el-form>
+            </t-form-item>
+        </t-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" @click="formSubmit(formRef)">
+                <t-button @click="dailog = false">取消</t-button>
+                <t-button theme="primary" type="submit">
                     保存
-                </el-button>
+                </t-button>
             </span>
         </template>
     </el-dialog>

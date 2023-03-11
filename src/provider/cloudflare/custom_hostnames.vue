@@ -91,12 +91,12 @@ export default class CloudflareCustomHostnames extends Vue {
 </script>
 
 <template>
-    <el-form-item v-if="saasError == 4">
+    <t-form-item v-if="saasError == 4">
         <el-alert type="error">
             <h3>错误：如需使用自定义主机名功能，请登录Cloudflare官网，添加一个支付方式。</h3>
             <p>此错误不影响解析及加速功能，非必要可忽略。</p>
         </el-alert>
-    </el-form-item>
+    </t-form-item>
 
     <t-card v-else v-loading="loading" title="自定义主机名" hover-shadow header-bordered>
         <template #subtitle>
@@ -108,18 +108,18 @@ export default class CloudflareCustomHostnames extends Vue {
             </el-button>
         </template>
 
-        <el-form-item v-if="fallbackOrigin.origin == ''">
+        <t-form-item v-if="fallbackOrigin.origin == ''">
             <el-alert :closable="false" type="error">
                 错误，请设置回退域名，且必须已添加对应的A/AAAA/CNAME解析记录
             </el-alert>
-        </el-form-item>
-        <el-form-item v-if="fallbackOrigin.status != 'active'">
+        </t-form-item>
+        <t-form-item v-if="fallbackOrigin.status != 'active'">
             <el-alert :closable="false" type="warning">
                 {{ fallbackOrigin.errors ? fallbackOrigin.errors[0] : fallbackOrigin.status }}
             </el-alert>
-        </el-form-item>
+        </t-form-item>
 
-        <el-form-item label="回退源">
+        <t-form-item label="回退源">
             <el-input v-model="fallbackOrigin.origin">
                 <template #append>
                     <el-button @click="updateFallbackOrigin">
@@ -127,8 +127,8 @@ export default class CloudflareCustomHostnames extends Vue {
                     </el-button>
                 </template>
             </el-input>
-        </el-form-item>
-        <el-form-item label="主机名">
+        </t-form-item>
+        <t-form-item label="主机名">
             <el-input v-model="newHostname">
                 <template #append>
                     <el-button @click="createCustomHostnames">
@@ -136,7 +136,7 @@ export default class CloudflareCustomHostnames extends Vue {
                     </el-button>
                 </template>
             </el-input>
-        </el-form-item>
+        </t-form-item>
 
         <el-divider />
         <el-table :data="customHostnames" table-layout="fixed">

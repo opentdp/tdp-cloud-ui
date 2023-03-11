@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormRules, FormInstance } from "element-plus"
+import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
-import { TcApi } from "@/api"
+import Api, { TcApi } from "@/api"
 import * as TC from "@/api/tencent/typings"
 
 @Component({
@@ -16,42 +16,40 @@ export default class DnspodRecordCreate extends Vue {
     // 创建表单
 
     @Ref
-    public formRef!: FormInstance
+    public formRef!: FormInstanceFunctions
 
     public formModel!: TC.Dnspod.RecordListItem
 
-    public formRules: FormRules = {
-        Name: [{ required: true, message: "不能为空" }],
-        Type: [{ required: true, message: "不能为空" }],
-        Line: [{ required: true, message: "不能为空" }],
-        Value: [{ required: true, message: "不能为空" }],
-        MX: [{ required: true, message: "不能为空" }],
-        TTL: [{ required: true, message: "不能为空" }],
-        Weight: [{ required: true, message: "不能为空" }],
-        Status: [{ required: true, message: "不能为空" }],
+    public formRules: FormRules<TC.Dnspod.RecordListItem> = {
+        Name: [{ required: true }],
+        Type: [{ required: true }],
+        Line: [{ required: true }],
+        Value: [{ required: true }],
+        MX: [{ required: true }],
+        TTL: [{ required: true }],
+        Weight: [{ required: true }],
+        Status: [{ required: true }],
     }
 
     // 提交表单
 
-    public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            const query: TC.Dnspod.CreateRecordRequest = {
-                Domain: this.domainInfo.Domain,
-                SubDomain: this.formModel.Name,
-                RecordType: this.formModel.Type,
-                RecordLine: this.formModel.Line,
-                Value: this.formModel.Value,
-                MX: +this.formModel.MX || 0,
-                TTL: +this.formModel.TTL || 600,
-                Weight: +this.formModel.Weight || 0
-            }
-            await TcApi.dnspod.createRecord(query)
-            this.close()
-        })
+    async formSubmit(ctx: SubmitContext<FormData>) {
+        if (ctx.validateResult !== true) {
+            Api.msg.err("请检查表单")
+            return false
+        }
+        const query: TC.Dnspod.CreateRecordRequest = {
+            Domain: this.domainInfo.Domain,
+            SubDomain: this.formModel.Name,
+            RecordType: this.formModel.Type,
+            RecordLine: this.formModel.Line,
+            Value: this.formModel.Value,
+            MX: +this.formModel.MX || 0,
+            TTL: +this.formModel.TTL || 600,
+            Weight: +this.formModel.Weight || 0
+        }
+        await TcApi.dnspod.createRecord(query)
+        this.close()
     }
 
     // 记录类型及线路
@@ -110,39 +108,39 @@ export default class DnspodRecordCreate extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="添加记录" width="400px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="80px">
-            <el-form-item prop="Name" label="主机记录">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
+            <t-form-item name="Name" label="主机记录">
                 <el-input v-model="formModel.Name" />
-            </el-form-item>
-            <el-form-item prop="Type" label="记录类型">
+            </t-form-item>
+            <t-form-item name="Type" label="记录类型">
                 <el-select v-model="formModel.Type">
                     <el-option v-for="v in recordType" :key="v" :label="v" :value="v" />
                 </el-select>
-            </el-form-item>
-            <el-form-item prop="Line" label="线路类型">
+            </t-form-item>
+            <t-form-item name="Line" label="线路类型">
                 <el-select v-model="formModel.Line">
                     <el-option v-for="v in recordLineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
                 </el-select>
-            </el-form-item>
-            <el-form-item prop="Value" label="记录值">
+            </t-form-item>
+            <t-form-item name="Value" label="记录值">
                 <el-input v-model="formModel.Value" type="textarea" autosize />
-            </el-form-item>
-            <el-form-item prop="Weight" label="权重">
+            </t-form-item>
+            <t-form-item name="Weight" label="权重">
                 <el-input-number v-model="formModel.Weight" />
-            </el-form-item>
-            <el-form-item prop="MX" label="MX">
+            </t-form-item>
+            <t-form-item name="MX" label="MX">
                 <el-input-number v-model="formModel.MX" />
-            </el-form-item>
-            <el-form-item prop="TTL" label="TTL">
+            </t-form-item>
+            <t-form-item name="TTL" label="TTL">
                 <el-input-number v-model="formModel.TTL" />
-            </el-form-item>
-        </el-form>
+            </t-form-item>
+        </t-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" @click="formSubmit(formRef)">
+                <t-button @click="dailog = false">取消</t-button>
+                <t-button theme="primary" type="submit">
                     保存
-                </el-button>
+                </t-button>
             </span>
         </template>
     </el-dialog>

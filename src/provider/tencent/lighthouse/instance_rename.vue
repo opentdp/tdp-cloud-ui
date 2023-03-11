@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormRules, FormInstance } from "element-plus"
+import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
-import { TcApi } from "@/api"
+import Api, { TcApi } from "@/api"
 import * as TC from "@/api/tencent/typings"
 
 @Component({
@@ -20,35 +20,33 @@ export default class LighthouseInstanceRename extends Vue {
     // 创建表单
 
     @Ref
-    public formRef!: FormInstance
+    public formRef!: FormInstanceFunctions
 
     public formModel = {
         name: "",
     }
 
-    public formRules: FormRules = {
-        name: [{ required: true, message: "不能为空" }],
+    public formRules: FormRules<{ name: string }> = {
+        name: [{ required: true }],
     }
 
     // 提交表单
 
-    public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            if (this.instance.InstanceName == this.formModel.name) {
-                ElMessage.error("名称未修改")
-                return false
-            }
-            await TcApi.lighthouse.modifyInstancesAttribute(this.region, {
-                InstanceIds: [this.instance.InstanceId],
-                InstanceName: this.formModel.name
-            })
-            this.instance.InstanceName = this.formModel.name
-            this.close()
+    async formSubmit(ctx: SubmitContext<FormData>) {
+        if (ctx.validateResult !== true) {
+            Api.msg.err("请检查表单")
+            return false
+        }
+        if (this.instance.InstanceName == this.formModel.name) {
+            Api.msg.err("名称未修改")
+            return false
+        }
+        await TcApi.lighthouse.modifyInstancesAttribute(this.region, {
+            InstanceIds: [this.instance.InstanceId],
+            InstanceName: this.formModel.name
         })
+        this.instance.InstanceName = this.formModel.name
+        this.close()
     }
 
     // 对话框管理
@@ -70,17 +68,17 @@ export default class LighthouseInstanceRename extends Vue {
 
 <template>
     <el-dialog v-model="dailog" destroy-on-close title="修改名称" width="400px">
-        <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="60px">
-            <el-form-item prop="name" label="名称">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
+            <t-form-item name="name" label="名称">
                 <el-input v-model="formModel.name" />
-            </el-form-item>
-        </el-form>
+            </t-form-item>
+        </t-form>
         <template #footer>
             <span class="dialog-footer">
-                <el-button @click="dailog = false">取消</el-button>
-                <el-button type="primary" @click="formSubmit(formRef)">
+                <t-button @click="dailog = false">取消</t-button>
+                <t-button theme="primary" type="submit">
                     保存
-                </el-button>
+                </t-button>
             </span>
         </template>
     </el-dialog>

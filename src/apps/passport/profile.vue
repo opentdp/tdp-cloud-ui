@@ -1,9 +1,11 @@
 <script lang="ts">
 import { Component, Ref, Vue } from "vue-facing-decorator"
 
-import { ElMessage, FormRules, FormInstance } from "element-plus"
+import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
-import { NaApi } from "@/api"
+import Api, { NaApi } from "@/api"
+import { UserUpdate } from "@/api/native/passport"
+
 import sessionStore from "@/store/session"
 
 @Component
@@ -28,9 +30,9 @@ export default class PassportProfile extends Vue {
     // 创建表单
 
     @Ref
-    public formRef!: FormInstance
+    public formRef!: FormInstanceFunctions
 
-    public formModel = {
+    public formModel: UserUpdate = {
         Username: "",
         Password: "",
         Password2: "",
@@ -39,32 +41,20 @@ export default class PassportProfile extends Vue {
         OldPassword: "",
     }
 
-    public formRules: FormRules = {
-        Username: [{ required: true, message: "不能为空" },],
-        Password2: [
-            {
-                validator: (rule, value, callback) => {
-                    if (this.formModel.Password != this.formModel.Password2) {
-                        callback(new Error("两次密码不一致"))
-                    } else {
-                        callback()
-                    }
-                }
-            },
-        ],
-        Email: [{ required: true, message: "不能为空" },],
-        Description: [{ required: true, message: "不能为空" },],
-        OldPassword: [{ required: true, message: "不能为空" }],
+    public formRules: FormRules<UserUpdate> = {
+        Username: [{ required: true }],
+        Password2: [{ validator: val => val == this.formModel.Password, message: '两次密码不一致' }],
+        Email: [{ required: true }],
+        Description: [{ required: true }],
+        OldPassword: [{ required: true }],
     }
 
-    public formSubmit(form: FormInstance | undefined) {
-        form && form.validate(async valid => {
-            if (!valid) {
-                ElMessage.error("请检查表单")
-                return false
-            }
-            NaApi.passport.update(this.formModel)
-        })
+    public formSubmit(ctx: SubmitContext<FormData>) {
+        if (ctx.validateResult !== true) {
+            Api.msg.err("请检查表单")
+            return false
+        }
+        NaApi.passport.update(this.formModel)
     }
 }
 </script>
@@ -98,40 +88,40 @@ export default class PassportProfile extends Vue {
             </t-col>
             <t-col :span="7">
                 <t-card title="账户编辑" hover-shadow header-bordered>
-                    <el-form ref="formRef" :model="formModel" :rules="formRules" label-width="70px">
-                        <el-form-item label="AppId">
+                    <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="70px" @submit="formSubmit">
+                        <t-form-item label="AppId">
                             {{ session.AppId }}
-                        </el-form-item>
-                        <el-form-item label="AppKey">
+                        </t-form-item>
+                        <t-form-item label="AppKey">
                             <el-tooltip :content="session.AppKey" placement="bottom">
                                 <i>用于解密私钥及重置密码，建议脱机保管</i>
                             </el-tooltip>
-                        </el-form-item>
-                        <el-form-item prop="Username" label="用户名">
+                        </t-form-item>
+                        <t-form-item name="Username" label="用户名">
                             <el-input v-model="formModel.Username" />
-                        </el-form-item>
-                        <el-form-item prop="OldPassword" label="原密码">
+                        </t-form-item>
+                        <t-form-item name="OldPassword" label="原密码">
                             <el-input v-model="formModel.OldPassword" show-password />
-                        </el-form-item>
-                        <el-form-item prop="Password" label="新密码">
+                        </t-form-item>
+                        <t-form-item name="Password" label="新密码">
                             <el-input v-model="formModel.Password" show-password />
-                        </el-form-item>
-                        <el-form-item prop="Password2" label="确认密码">
+                        </t-form-item>
+                        <t-form-item name="Password2" label="确认密码">
                             <el-input v-model="formModel.Password2" show-password />
-                        </el-form-item>
-                        <el-form-item prop="Email" label="邮箱">
+                        </t-form-item>
+                        <t-form-item name="Email" label="邮箱">
                             <el-input v-model="formModel.Email" />
-                        </el-form-item>
-                        <el-form-item prop="Description" label="简介">
+                        </t-form-item>
+                        <t-form-item name="Description" label="简介">
                             <el-input v-model="formModel.Description" type="textarea"
                                 :autosize="{ minRows: 3, maxRows: 15 }" />
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="formSubmit(formRef)">
+                        </t-form-item>
+                        <t-form-item>
+                            <t-button theme="primary" type="submit">
                                 保存
-                            </el-button>
-                        </el-form-item>
-                    </el-form>
+                            </t-button>
+                        </t-form-item>
+                    </t-form>
                 </t-card>
             </t-col>
         </t-row>

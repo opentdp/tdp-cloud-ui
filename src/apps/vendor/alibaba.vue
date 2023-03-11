@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { MessagePlugin, FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
 
-import { NaApi } from "@/api"
+import Api, { NaApi } from "@/api"
 import { VendorItem, VendorOrig } from "@/api/native/vendor"
 
 @Component
@@ -54,7 +54,7 @@ export default class VendorAlibaba extends Vue {
 
     async formSubmit(ctx: SubmitContext<FormData>) {
         if (ctx.validateResult !== true) {
-            MessagePlugin.error("请检查表单")
+            Api.msg.err("请检查表单")
             return false
         }
         await NaApi.vendor.create(this.formModel)

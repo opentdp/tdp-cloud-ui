@@ -6,6 +6,7 @@ export class PassportModel extends HttpClient {
     }
 
     public register(rq: UserRegister): Promise<{ Id: number }> {
+        delete rq.Password2
         return this.post("/passport/register", rq)
     }
 
@@ -37,6 +38,7 @@ export interface LoginResult {
 export interface UserRegister {
     Username: string
     Password: string
+    Password2?: string
     Email: string
 }
 

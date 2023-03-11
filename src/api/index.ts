@@ -12,6 +12,8 @@ export default {
     na: NaApi,
     ac: AcApi,
     cf: CfApi,
-    ok: okMessage,
-    err: errMessage,
+    msg: {
+        ok: okMessage,
+        err: errMessage,
+    }
 }
