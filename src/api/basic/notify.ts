@@ -1,4 +1,4 @@
-import { ElMessage } from "element-plus"
+import { MessagePlugin } from "tdesign-vue-next"
 
 const Message: Record<string, string> = {
     UKN: "未知错误",
@@ -8,21 +8,13 @@ const Message: Record<string, string> = {
 export function okMessage(data: string | { Message: string }) {
     let msg = (typeof data != "string" ? data.Message : data) || "UKN"
     msg = Message[msg] || msg
-    ElMessage({
-        type: 'success',
-        grouping: true,
-        message: msg,
-    })
+    MessagePlugin.success(msg)
     return msg
 }
 
 export function errMessage(data: string | { Message: string }) {
     let msg = (typeof data != "string" ? data.Message : data) || "UKN"
     msg = Message[msg] || msg
-    ElMessage({
-        type: 'error',
-        grouping: true,
-        message: msg,
-    })
+    MessagePlugin.error(msg)
     return msg
 }
