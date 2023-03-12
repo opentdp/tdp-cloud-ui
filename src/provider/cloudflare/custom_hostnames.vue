@@ -91,12 +91,15 @@ export default class CloudflareCustomHostnames extends Vue {
 </script>
 
 <template>
-    <t-form-item v-if="saasError == 4">
-        <el-alert type="error">
-            <h3>错误：如需使用自定义主机名功能，请登录Cloudflare官网，添加一个支付方式。</h3>
-            <p>此错误不影响解析及加速功能，非必要可忽略。</p>
-        </el-alert>
-    </t-form-item>
+    <template v-if="saasError == 4">
+        <t-alert theme="error">
+            <template #title>
+                错误：如需使用自定义主机名功能，请登录Cloudflare官网，添加一个支付方式。
+            </template>
+            此错误不影响解析及加速功能，非必要可忽略。
+        </t-alert>
+        <t-space />
+    </template>
 
     <t-card v-else v-loading="loading" title="自定义主机名" hover-shadow header-bordered>
         <template #subtitle>
@@ -111,16 +114,19 @@ export default class CloudflareCustomHostnames extends Vue {
             </t-button>
         </template>
 
-        <t-form-item v-if="fallbackOrigin.origin == ''">
-            <el-alert :closable="false" type="error">
+        <template v-if="fallbackOrigin.origin == ''">
+            <t-alert theme="error">
                 错误，请设置回退域名，且必须已添加对应的A/AAAA/CNAME解析记录
-            </el-alert>
-        </t-form-item>
-        <t-form-item v-if="fallbackOrigin.status != 'active'">
-            <el-alert :closable="false" type="warning">
+            </t-alert>
+            <t-space />
+        </template>
+
+        <template v-if="fallbackOrigin.status != 'active'">
+            <t-alert theme="warning">
                 {{ fallbackOrigin.errors ? fallbackOrigin.errors[0] : fallbackOrigin.status }}
-            </el-alert>
-        </t-form-item>
+            </t-alert>
+            <t-space />
+        </template>
 
         <t-form label-align="left" label-width="60px">
             <t-form-item label="回退源">
@@ -137,7 +143,8 @@ export default class CloudflareCustomHostnames extends Vue {
             </t-form-item>
         </t-form>
 
-        <el-divider />
+        <t-divider />
+
         <el-table :data="customHostnames" table-layout="fixed">
             <el-table-column prop="hostname" label="主机记录" fixed sortable show-overflow-tooltip />
             <el-table-column prop="status" label="域名状态" sortable show-overflow-tooltip />

@@ -91,21 +91,12 @@ export default class WorkerBind extends Vue {
             </el-table-column>
             <el-table-column prop="WorkerMeta.CpuCore" label="CPU" show-overflow-tooltip>
                 <template #default="scope">
-                    <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="+scope.row.WorkerMeta.CpuPercent[0].toFixed(2)" status="success">
-                        {{ scope.row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，
-                        {{ scope.row.WorkerMeta.CpuCore }} Cores
-                    </el-progress>
+                    {{ scope.row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，{{ scope.row.WorkerMeta.CpuCore }} Cores
                 </template>
             </el-table-column>
             <el-table-column prop="WorkerMeta.MemoryTotal" label="内存" show-overflow-tooltip>
                 <template #default="scope">
-                    <el-progress :text-inside="true" :stroke-width="26"
-                        :percentage="scope.row.WorkerMeta.MemoryUsed / scope.row.WorkerMeta.MemoryTotal * 100"
-                        status="success">
-                        {{ bytesToSize(scope.row.WorkerMeta.MemoryUsed) }} /
-                        {{ bytesToSize(scope.row.WorkerMeta.MemoryTotal) }}
-                    </el-progress>
+                    {{ bytesToSize(scope.row.WorkerMeta.MemoryUsed) }} / {{ bytesToSize(scope.row.WorkerMeta.MemoryTotal) }}
                 </template>
             </el-table-column>
             <el-table-column prop="WorkerMeta.OS" label="系统" show-overflow-tooltip>
