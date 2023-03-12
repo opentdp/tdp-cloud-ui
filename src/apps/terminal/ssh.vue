@@ -59,13 +59,13 @@ export default class TerminalSsh extends Vue {
         this.curTab.label = target?.tab.label || ""
     }
 
-    public removeTab(id: string) {
-        const target = this.indexTab(id)
+    public removeTab(item: { value: string }) {
+        const target = this.indexTab(item.value)
         if (!target) {
             return
         }
         const { index, tab } = target
-        if (this.curTab.id == id) {
+        if (this.curTab.id == item.value) {
             const next = this.tabList[index + 1] || this.tabList[index - 1]
             this.changeTab(next ? next.id : "new")
         }
@@ -113,14 +113,16 @@ interface TabItem {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <el-tabs v-model="curTab.id" type="border-card" @tab-change="changeTab" @tab-remove="removeTab">
-            <el-tab-pane label="新会话" name="new">
+        <t-tabs v-model="curTab.id" theme="card" @change="changeTab" @remove="removeTab">
+            <t-tab-panel label="新会话" value="new">
                 <SshConnect :addr="addr" @submit="createTab" />
-            </el-tab-pane>
-            <el-tab-pane v-for="v in tabList" :key="v.id" :name="v.id" :label="v.label" closable>
-                <div :id="v.id" />
-            </el-tab-pane>
-        </el-tabs>
+            </t-tab-panel>
+            <template v-for="v in tabList" :key="v.id">
+                <t-tab-panel :value="v.id" :label="v.label" :destroy-on-hide="false" removable>
+                    <div :id="v.id" />
+                </t-tab-panel>
+            </template>
+        </t-tabs>
 
         <t-card v-if="curTab.id != 'new'" title="快捷命令" hover-shadow header-bordered>
             <t-space fixed break-line>

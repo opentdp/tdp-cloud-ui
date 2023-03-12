@@ -15,7 +15,7 @@ import DnsBind from "@/provider/alibaba/dns/bind.vue"
 })
 export default class VendorAlibabaBind extends Vue {
     public curTab = {
-        id: "ecs", label: ""
+        id: "swas", label: ""
     }
 
     // 初始化
@@ -76,16 +76,16 @@ export default class VendorAlibabaBind extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <el-tabs v-model="curTab.id" type="border-card">
-            <el-tab-pane label="ECS服务器" name="ecs">
+        <t-tabs v-model="curTab.id" theme="card">
+            <t-tab-panel value="ecs" label="ECS 服务器" :destroy-on-hide="false">
                 <EcsBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
-            </el-tab-pane>
-            <el-tab-pane label="轻量服务器" name="swas">
+            </t-tab-panel>
+            <t-tab-panel value="swas" label="轻量服务器" :destroy-on-hide="false">
                 <SwasBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
-            </el-tab-pane>
-            <el-tab-pane label="域名解析" name="dns">
+            </t-tab-panel>
+            <t-tab-panel value="dns" label="域名解析" :destroy-on-hide="false">
                 <DnsBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
-            </el-tab-pane>
-        </el-tabs>
+            </t-tab-panel>
+        </t-tabs>
     </t-space>
 </template>

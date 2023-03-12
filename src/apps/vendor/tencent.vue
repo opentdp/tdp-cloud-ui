@@ -86,7 +86,7 @@ export default class VendorTencent extends Vue {
         <t-card title="账号列表" hover-shadow header-bordered>
             <t-table :data="vendorList" :columns="vendorColumns" row-key="Id">
                 <template #Operation="{ row, rowIndex }">
-                    <t-link v-route="'/vendor/alibaba/' + row.Id" theme="primary" hover="color">
+                    <t-link v-route="'/vendor/tencent/' + row.Id" theme="primary" hover="color">
                         管理
                     </t-link>
                     <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
