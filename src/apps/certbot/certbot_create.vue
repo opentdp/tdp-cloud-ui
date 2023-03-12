@@ -99,18 +99,13 @@ export default class CertbotCreate extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="添加计划" width="600px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="110px" @submit="formSubmit">
             <t-form-item name="Domain" label="域名">
-                <el-col :span="11">
-                    <t-input v-model="domainSub" />
-                </el-col>
-                <el-col class="text-center" :span="1">
-                    <div>.</div>
-                </el-col>
-                <el-col :span="12">
-                    <t-select v-if="domainList.length > 0" v-model="domainId">
-                        <t-option v-for="v, k in domainList" :key="k" :value="k" :label="v.Name" />
-                    </t-select>
-                    <t-input v-else value="请先导入域名资源" disabled />
-                </el-col>
+                <t-input-adornment>
+                    <t-input v-model="domainSub" suffix="." placeholder="子域名" />
+                </t-input-adornment>
+                <t-select v-if="domainList.length > 0" v-model="domainId">
+                    <t-option v-for="v, k in domainList" :key="k" :value="k" :label="v.Name" />
+                </t-select>
+                <t-input v-else value="请先导入域名资源" disabled />
             </t-form-item>
             <t-form-item name="Email" label="邮箱">
                 <t-input v-model="formModel.Email" />

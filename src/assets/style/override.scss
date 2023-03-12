@@ -5,70 +5,6 @@
     border-radius: 5px;
 }
 
-// 导航
-
-.crumbs {
-    margin: 5px 0 15px;
-
-    .t-breadcrumb__inner {
-        display: flex;
-
-        .el-icon {
-            padding-right: 5px;
-        }
-    }
-}
-
-// 提示
-
-.plugins-tips {
-    padding: 20px 10px;
-    margin-bottom: 20px;
-    background: #eef1f6;
-
-    a {
-        color: #20a0ff;
-    }
-}
-
-// 表格
-
-.el-table th {
-    white-space: nowrap;
-    background-color: #f5f7fa !important;
-}
-
-// 对话框
-
-.el-dialog__body {
-    padding-top: 10px;
-    padding-bottom: 10px;
-}
-
-// 表单项目
-
-.el-form-item .el-select,
-.el-form-item .el-autocomplete {
-    width: 100%;
-}
-
-.el-form-item__label {
-    white-space: nowrap;
-}
-
-// 按钮上下文
-
-.el-button+a,
-a+.el-button {
-    margin-left: 12px;
-}
-
-.el-button+.el-tooltip {
-    margin-left: 12px;
-}
-
-// tdesign
-
 .t-space[fixed] {
     display: flex;
 
@@ -77,6 +13,15 @@ a+.el-button {
     }
 }
 
+.t-table th {
+    white-space: nowrap;
+    background-color: #f5f7fa !important;
+}
+
 td .t-link+.t-link {
     margin-left: 10px;
+}
+
+.t-form__item .t-auto-complete {
+    width: 100%;
 }

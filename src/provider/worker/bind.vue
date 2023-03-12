@@ -123,9 +123,3 @@ export default class WorkerBind extends Vue {
         </el-table>
     </t-card>
 </template>
-
-<style lang="scss" scoped>
-.el-progress {
-    --el-border-color-lighter: #ccc
-}
-</style>

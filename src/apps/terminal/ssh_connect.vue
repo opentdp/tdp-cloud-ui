@@ -41,14 +41,17 @@ export default class TerminalSshConnect extends Vue {
         this.machineList = res.Items
     }
 
-    public machineFilter(qr: string, cb: (a: unknown[]) => void) {
+    public machineFilter() {
         const rs: unknown[] = []
         this.machineList.forEach(item => {
-            if (item.OSType == "linux" && (item.IpAddress + item.Region).includes(qr)) {
-                rs.push({ value: item.IpAddress, region: item.Region })
+            if (item.OSType == "linux") {
+                rs.push({
+                    label: item.IpAddress + " - " + item.Region,
+                    text: item.IpAddress
+                })
             }
         })
-        cb(rs)
+        return rs
     }
 
     // 创建表单
@@ -91,11 +94,7 @@ export default class TerminalSshConnect extends Vue {
 <template>
     <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
         <t-form-item name="Addr" label="主机">
-            <el-autocomplete v-model="formModel.Addr" :fetch-suggestions="machineFilter" clearable>
-                <template #default="{ item }">
-                    {{ item.value }} - {{ item.region }}
-                </template>
-            </el-autocomplete>
+            <t-auto-complete v-model="formModel.Addr" :options="machineFilter()" clearable />
         </t-form-item>
         <t-form-item name="User" label="用户名">
             <t-input v-model="formModel.User" />

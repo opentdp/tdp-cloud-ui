@@ -84,7 +84,7 @@ export default class VendorAlibaba extends Vue {
         </t-breadcrumb>
 
         <t-card title="账号列表" hover-shadow header-bordered>
-            <t-table :data="vendorList" :columns="vendorColumns" row-key="Id" height="auto">
+            <t-table :data="vendorList" :columns="vendorColumns" row-key="Id">
                 <template #Operation="{ row, rowIndex }">
                     <t-link v-route="'/vendor/alibaba/' + row.Id" theme="primary" hover="color">
                         管理
