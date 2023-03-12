@@ -79,11 +79,11 @@ export default class ScriptUpdate extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="修改脚本" width="600px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
             <t-form-item name="CommandType" label="类型">
-                <el-radio-group v-model="formModel.CommandType" @change="updateCommandType">
-                    <el-radio-button label="SHELL" />
-                    <el-radio-button label="POWERSHELL" />
-                    <el-radio-button label="BAT" />
-                </el-radio-group>
+                <t-radio-group v-model="formModel.CommandType" @change="updateCommandType">
+                    <t-radio-button value="SHELL" label="SHELL" />
+                    <t-radio-button value="POWERSHELL" label="POWERSHELL" />
+                    <t-radio-button value="BAT" label="BAT" />
+                </t-radio-group>
             </t-form-item>
             <t-form-item name="Name" label="名称">
                 <t-input v-model="formModel.Name" :maxlength="60" />

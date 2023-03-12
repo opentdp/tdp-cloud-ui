@@ -96,14 +96,10 @@ export default class CloudflareRecordCreate extends Vue {
                 <t-textarea v-model="formModel.content" autosize />
             </t-form-item>
             <t-form-item name="proxied" label="加速">
-                <el-radio-group v-model="formModel.proxied">
-                    <el-radio-button :label="true">
-                        启用
-                    </el-radio-button>
-                    <el-radio-button :label="false">
-                        禁用
-                    </el-radio-button>
-                </el-radio-group>
+                <t-radio-group v-model="formModel.proxied">
+                    <t-radio-button :value="true" label="启用" />
+                    <t-radio-button :value="false" label="禁用" />
+                </t-radio-group>
             </t-form-item>
             <t-form-item name="priority" label="权重">
                 <t-input-number v-model="formModel.priority" />
