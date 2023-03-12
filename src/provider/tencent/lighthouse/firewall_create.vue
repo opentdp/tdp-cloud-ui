@@ -72,20 +72,20 @@ export default class LighthouseFirewallCreate extends Vue {
                 <t-input v-model="formModel.CidrBlock" />
             </t-form-item>
             <t-form-item name="Protocol" label="协议">
-                <el-select v-model="formModel.Protocol">
-                    <el-option label="TCP" value="TCP" />
-                    <el-option label="UDP" value="UDP" />
-                    <el-option label="ICMP" value="ICMP" />
-                </el-select>
+                <t-select v-model="formModel.Protocol">
+                    <t-option value="TCP" label="TCP" />
+                    <t-option value="UDP" label="UDP" />
+                    <t-option value="ICMP" label="ICMP" />
+                </t-select>
             </t-form-item>
             <t-form-item v-if="/TCP|UDP/.test(formModel.Protocol)" label="端口">
                 <t-input v-model="formModel.Port" />
             </t-form-item>
             <t-form-item name="Action" label="策略">
-                <el-select v-model="formModel.Action">
-                    <el-option label="允许" value="ACCEPT" />
-                    <el-option label="拒绝" value="DROP" />
-                </el-select>
+                <t-select v-model="formModel.Action">
+                    <t-option value="ACCEPT" label="允许" />
+                    <t-option value="DROP" label="拒绝" />
+                </t-select>
             </t-form-item>
             <t-form-item label="备注">
                 <t-input v-model="formModel.FirewallRuleDescription" />

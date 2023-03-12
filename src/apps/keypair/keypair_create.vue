@@ -21,7 +21,7 @@ export default class KeypairCreate extends Vue {
     public formModel: KeypairOrig = {
         PublicKey: "",
         PrivateKey: "",
-        KeyType: "ssh",
+        KeyType: "",
         Description: "",
     }
 
@@ -61,9 +61,9 @@ export default class KeypairCreate extends Vue {
     <el-dialog v-model="dailog" destroy-on-close title="添加密钥" width="600px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="KeyType" label="类型">
-                <el-select v-model="formModel.KeyType" placeholder="Select">
-                    <el-option v-for="v, k in KeypairTypeList" :key="k" :label="v" :value="k" />
-                </el-select>
+                <t-select v-model="formModel.KeyType">
+                    <t-option v-for="v, k in KeypairTypeList" :key="k" :value="k" :label="v" />
+                </t-select>
             </t-form-item>
             <t-form-item name="Description" label="别名">
                 <t-input v-model="formModel.Description" />

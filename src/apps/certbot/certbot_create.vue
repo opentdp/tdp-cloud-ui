@@ -106,9 +106,9 @@ export default class CertbotCreate extends Vue {
                     <div>.</div>
                 </el-col>
                 <el-col :span="12">
-                    <el-select v-if="domainList.length > 0" v-model="domainId">
-                        <el-option v-for="v, k in domainList" :key="k" :label="v.Name" :value="k" />
-                    </el-select>
+                    <t-select v-if="domainList.length > 0" v-model="domainId">
+                        <t-option v-for="v, k in domainList" :key="k" :value="k" :label="v.Name" />
+                    </t-select>
                     <t-input v-else value="请先导入域名资源" disabled />
                 </el-col>
             </t-form-item>
@@ -116,9 +116,9 @@ export default class CertbotCreate extends Vue {
                 <t-input v-model="formModel.Email" />
             </t-form-item>
             <t-form-item name="CaType" label="CA">
-                <el-select v-model="formModel.CaType" @change="updateCaEab">
-                    <el-option v-for="v, k in CaTypeList" :key="k" :label="v.Name" :value="k" />
-                </el-select>
+                <t-select v-model="formModel.CaType" @change="updateCaEab">
+                    <t-option v-for="v, k in CaTypeList" :key="k" :value="k" :label="v.Name" />
+                </t-select>
             </t-form-item>
             <t-form-item name="EabKeyId" label="EAB KeyId" :required="caEab == 2">
                 <t-input v-model="formModel.EabKeyId" :disabled="caEab == 0" />

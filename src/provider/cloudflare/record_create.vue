@@ -88,9 +88,9 @@ export default class CloudflareRecordCreate extends Vue {
                 <t-input v-model="formModel.name" />
             </t-form-item>
             <t-form-item name="type" label="记录类型">
-                <el-select v-model="formModel.type">
-                    <el-option v-for="v, k in ZoneRecordTypes" :key="k" :label="k" :value="k" />
-                </el-select>
+                <t-select v-model="formModel.type">
+                    <t-option v-for="v, k in ZoneRecordTypes" :key="k" :value="k" :label="k" />
+                </t-select>
             </t-form-item>
             <t-form-item name="content" label="记录值">
                 <t-textarea v-model="formModel.content" autosize />

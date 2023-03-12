@@ -101,22 +101,22 @@ export default class TerminalSshConnect extends Vue {
             <t-input v-model="formModel.User" />
         </t-form-item>
         <t-form-item label="验证方式">
-            <el-select v-model="authType">
-                <el-option label="用户密码" value="0" />
-                <el-option v-if="keypairList.length > 0" label="选择私玥" value="2" />
-                <el-option label="输入私玥" value="4" />
-            </el-select>
+            <t-select v-model="authType">
+                <t-option value="0" label="输入密码" />
+                <t-option value="2" label="输入私玥" />
+                <t-option v-if="keypairList.length > 0" value="4" label="选择私玥" />
+            </t-select>
         </t-form-item>
         <t-form-item v-if="authType == '0'" name="Password" label="密码">
             <t-input v-model="formModel.Password" type="password" />
         </t-form-item>
-        <t-form-item v-if="authType == '2'" name="PrivateKey" label="私玥">
-            <el-select v-model="formModel.PrivateKey">
-                <el-option v-for="v in keypairList" :key="v.Id" :label="v.Description" :value="v.Id" />
-            </el-select>
-        </t-form-item>
-        <t-form-item v-if="authType == '4'" name="PrivateKey" label="私钥">
+        <t-form-item v-if="authType == '2'" name="PrivateKey" label="私钥">
             <t-textarea v-model="formModel.PrivateKey" :autosize="{ minRows: 5, maxRows: 15 }" />
+        </t-form-item>
+        <t-form-item v-if="authType == '4'" name="PrivateKey" label="私玥">
+            <t-select v-model="formModel.PrivateKey">
+                <t-option v-for="v in keypairList" :key="v.Id" :value="v.Id" :label="v.Description" />
+            </t-select>
         </t-form-item>
         <t-form-item>
             <t-button theme="primary" type="submit">

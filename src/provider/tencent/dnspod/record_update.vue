@@ -101,14 +101,14 @@ export default class DnspodRecordUpdate extends Vue {
                 <t-input v-model="formModel.Name" />
             </t-form-item>
             <t-form-item name="Type" label="记录类型">
-                <el-select v-model="formModel.Type">
-                    <el-option v-for="v in recordType" :key="v" :label="v" :value="v" />
-                </el-select>
+                <t-select v-model="formModel.Type">
+                    <t-option v-for="v in recordType" :key="v" :value="v" :label="v" />
+                </t-select>
             </t-form-item>
             <t-form-item name="Line" label="线路类型">
-                <el-select v-model="formModel.Line">
-                    <el-option v-for="v in recordLineList" :key="v.LineId" :label="v.Name" :value="v.Name" />
-                </el-select>
+                <t-select v-model="formModel.Line">
+                    <t-option v-for="v in recordLineList" :key="v.LineId" :value="v.Name" :label="v.Name" />
+                </t-select>
             </t-form-item>
             <t-form-item name="Value" label="记录值">
                 <t-textarea v-model="formModel.Value" autosize />
