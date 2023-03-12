@@ -93,9 +93,9 @@ export default class PassportProfile extends Vue {
                             {{ session.AppId }}
                         </t-form-item>
                         <t-form-item label="AppKey">
-                            <el-tooltip :content="session.AppKey" placement="bottom">
+                            <t-tooltip :content="session.AppKey" placement="bottom">
                                 <i>用于解密私钥及重置密码，建议脱机保管</i>
-                            </el-tooltip>
+                            </t-tooltip>
                         </t-form-item>
                         <t-form-item name="Username" label="用户名">
                             <t-input v-model="formModel.Username" />

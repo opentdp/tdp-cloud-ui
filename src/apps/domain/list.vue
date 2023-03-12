@@ -60,9 +60,9 @@ export default class DomainList extends Vue {
                 <el-table-column prop="NSList" label="NS 服务器" sortable show-overflow-tooltip />
                 <el-table-column prop="Model" label="云账号" sortable show-overflow-tooltip>
                     <template #default="scope">
-                        <el-tooltip :content="DomainModels[scope.row.Model]">
-                            {{ cache.vendorList[scope.row.VendorId]?.Description }}
-                        </el-tooltip>
+                        <t-tooltip :content="DomainModels[scope.row.Model]">
+                            {{ cache.vendorList[scope.row.VendorId]?.Description || "-" }}
+                        </t-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="180" align="center">

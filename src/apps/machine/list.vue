@@ -86,9 +86,9 @@ export default class MachineList extends Vue {
                 <el-table-column prop="Region" label="地域" sortable show-overflow-tooltip />
                 <el-table-column prop="Model" label="云账号" sortable show-overflow-tooltip>
                     <template #default="scope">
-                        <el-tooltip :content="MachineModels[scope.row.Model]">
+                        <t-tooltip :content="MachineModels[scope.row.Model]">
                             {{ cache.vendorList[scope.row.VendorId]?.Description || "-" }}
-                        </el-tooltip>
+                        </t-tooltip>
                     </template>
                 </el-table-column>
                 <el-table-column prop="WorkerId" label="土豆片" show-overflow-tooltip>
