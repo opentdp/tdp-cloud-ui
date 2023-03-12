@@ -3,11 +3,13 @@ import { Component, Vue } from "vue-facing-decorator"
 
 import layoutStore from "@/store/layout"
 
-import Navbar from "./navbar.vue"
+import Header from "./header.vue"
+import Content from "./content.vue"
+import Footer from "./footer.vue"
 import Sidebar from "./sidebar.vue"
 
 @Component({
-    components: { Navbar, Sidebar }
+    components: { Header, Content, Footer, Sidebar }
 })
 export default class LayoutIndex extends Vue {
     public layout = layoutStore()
@@ -15,63 +17,34 @@ export default class LayoutIndex extends Vue {
 </script>
 
 <template>
-    <Navbar />
-    <Sidebar />
-    <div class="body" :class="{ collapse: layout.Collapse }">
-        <router-view v-slot="{ Component }">
-            <transition name="move" mode="out-in">
-                <component :is="Component" />
-            </transition>
-        </router-view>
-        <div class="flex-auto" />
-        <div class="copyright">
-            Powered by
-            <t-link href="https://apps.rehiy.com/tdp-cloud/" target="_blank" hover="color">
-                TDP Cloud
-            </t-link>
-            {{ layout.Version ? "v" + layout.Version : "" }}
-        </div>
-    </div>
+    <t-layout>
+        <t-aside :width="layout.Collapse ? '64px' : '232px'">
+            <Sidebar />
+        </t-aside>
+        <t-layout>
+            <t-header>
+                <Header />
+            </t-header>
+            <t-layout class="main">
+                <t-content>
+                    <Content />
+                </t-content>
+                <t-footer class="footer">
+                    <Footer />
+                </t-footer>
+            </t-layout>
+        </t-layout>
+    </t-layout>
 </template>
 
 <style lang="scss" scoped>
-.body {
-    position: absolute;
-    top: 70px;
-    right: 0;
-    bottom: 0;
-    left: 250px;
-    padding: 10px;
+.main {
+    padding: 16px 16px 0 16px;
+    height: calc(100vh - 56px);
+    overflow-y: auto;
 
-    display: flex;
-    flex-direction: column;
-
-    overflow-y: scroll;
-    background: #f0f0f0;
-    transition: left 0.3s ease-in-out;
-
-    &.collapse {
-        left: 64px;
+    .footer {
+        padding: 16px 0
     }
-
-    .copyright {
-        --el-font-size-base: 75%;
-        user-select: none;
-        padding: 20px 0 10px;
-        color: var(--el-color-info);
-        font-size: var(--el-font-size-base);
-        text-align: center;
-        line-height: 1;
-    }
-}
-
-.move-enter-from,
-.move-leave-to {
-    opacity: 0;
-}
-
-.move-enter-active,
-.move-leave-active {
-    transition: opacity 0.1s ease;
 }
 </style>

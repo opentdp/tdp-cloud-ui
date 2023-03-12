@@ -118,59 +118,48 @@ interface MenuItem {
 </script>
 
 <template>
-    <div class="sidebar">
-        <t-menu class="sidebar-t-menu" :value="$route.path" :collapsed="layout.Collapse" :default-expanded="defaultExpanded"
-            expand-mutex>
-            <template v-for="item in items">
-                <template v-if="item.subs">
-                    <t-submenu :key="item.index" :value="item.index">
-                        <template #title>
-                            <span>{{ item.title }}</span>
-                        </template>
-                        <template #icon>
-                            <component :is="item.icon" class="t-icon" />
-                        </template>
-                        <t-menu-item v-for="item2 in item.subs" :key="item2.index" :value="item2.index"
-                            :to="{ path: item2.index }">
-                            {{ item2.title }}
-                            <template #icon>
-                                <component :is="item2.icon" class="t-icon" />
-                            </template>
-                        </t-menu-item>
-                    </t-submenu>
-                </template>
-                <template v-else>
-                    <t-menu-item :key="item.index" :value="item.index" :to="{ path: item.index }">
+    <t-menu :value="$route.path" :collapsed="layout.Collapse" :default-expanded="defaultExpanded" expand-mutex>
+        <template #logo>
+            <div v-if="layout.Collapse" class="logo">
+                TDP
+            </div>
+            <div v-else class="logo">
+                TDP Cloud
+            </div>
+        </template>
+        <template v-for="item in items">
+            <template v-if="item.subs">
+                <t-submenu :key="item.index" :value="item.index">
+                    <template #title>
                         <span>{{ item.title }}</span>
+                    </template>
+                    <template #icon>
+                        <component :is="item.icon" class="t-icon" />
+                    </template>
+                    <t-menu-item v-for="item2 in item.subs" :key="item2.index" :value="item2.index"
+                        :to="{ path: item2.index }">
+                        {{ item2.title }}
                         <template #icon>
-                            <component :is="item.icon" class="t-icon" />
+                            <component :is="item2.icon" class="t-icon" />
                         </template>
                     </t-menu-item>
-                </template>
+                </t-submenu>
             </template>
-        </t-menu>
-    </div>
+            <template v-else>
+                <t-menu-item :key="item.index" :value="item.index" :to="{ path: item.index }">
+                    <span>{{ item.title }}</span>
+                    <template #icon>
+                        <component :is="item.icon" class="t-icon" />
+                    </template>
+                </t-menu-item>
+            </template>
+        </template>
+    </t-menu>
 </template>
 
 <style lang="scss" scoped>
-.sidebar {
-    display: block;
-    position: absolute;
-    left: 0;
-    top: 70px;
-    bottom: 0;
-    overflow-y: scroll;
-
-    &>ul {
-        height: 100%;
-    }
-}
-
-.sidebar::-webkit-scrollbar {
-    width: 0;
-}
-
-.sidebar-t-menu:not(.t-menu--collapse) {
-    width: 250px;
+.logo {
+    text-align: center;
+    width: 100%;
 }
 </style>
