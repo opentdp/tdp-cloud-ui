@@ -51,23 +51,23 @@ export default class CvmInstanceRename extends Vue {
 
     // 对话框管理
 
-    public dailog = false
+    public visible = false
 
     public close() {
-        this.dailog = false
+        this.visible = false
         this.$emit("submit")
     }
 
     public open(instance: Required<TC.Cvm.Instance>) {
         this.formModel.name = instance.InstanceName
         this.instance = instance
-        this.dailog = true
+        this.visible = true
     }
 }
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close title="修改名称" width="400px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="修改名称" :footer="false" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="name" label="名称">
                 <t-input v-model="formModel.name" />
@@ -77,11 +77,11 @@ export default class CvmInstanceRename extends Vue {
                     <t-button theme="primary" type="submit">
                         提交
                     </t-button>
-                    <t-button theme="default" type="reset" @click="dailog = false">
+                    <t-button theme="default" @click="visible = false">
                         取消
                     </t-button>
                 </t-space>
             </t-form-item>
         </t-form>
-    </el-dialog>
+    </t-dialog>
 </template>

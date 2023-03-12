@@ -49,23 +49,23 @@ export default class LighthouseFirewallRemark extends Vue {
 
     // 对话框管理
 
-    public dailog = false
+    public visible = false
 
     public close() {
-        this.dailog = false
+        this.visible = false
         this.$emit("submit")
     }
 
     public open(instance: TC.Lighthouse.Instance, rule: TC.Lighthouse.FirewallRule) {
         this.instance = instance
         this.formModel = rule
-        this.dailog = true
+        this.visible = true
     }
 }
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close title="修改描述" width="400px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="修改描述" :footer="false" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="FirewallRuleDescription" label="备注">
                 <t-input v-model="formModel.FirewallRuleDescription" />
@@ -75,11 +75,11 @@ export default class LighthouseFirewallRemark extends Vue {
                     <t-button theme="primary" type="submit">
                         提交
                     </t-button>
-                    <t-button theme="default" type="reset" @click="dailog = false">
+                    <t-button theme="default" @click="visible = false">
                         取消
                     </t-button>
                 </t-space>
             </t-form-item>
         </t-form>
-    </el-dialog>
+    </t-dialog>
 </template>

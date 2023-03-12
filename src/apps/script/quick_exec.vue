@@ -62,17 +62,17 @@ export default class ScriptQuickExec extends Vue {
 
     // 对话框管理
 
-    public dailog = false
+    public visible = false
 
     public close() {
-        this.dailog = false
+        this.visible = false
         this.$emit("submit")
         clearInterval(this.timer)
     }
 
     public open(machine: MachineItem, script: ScriptItem) {
         this.result = null
-        this.dailog = true
+        this.visible = true
         this.loading = false
         this.machine = machine
         this.formModel = { ...script }
@@ -81,7 +81,7 @@ export default class ScriptQuickExec extends Vue {
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close :title="'执行脚本：' + formModel?.Name" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close :header="'执行脚本：' + formModel?.Name" :footer="false" width="600px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
             <t-form-item name="CommandType" label="类型">
                 {{ formModel.CommandType }}
@@ -108,7 +108,7 @@ export default class ScriptQuickExec extends Vue {
                     <t-button theme="primary" type="submit">
                         提交
                     </t-button>
-                    <t-button theme="default" type="reset" @click="dailog = false">
+                    <t-button theme="default" @click="visible = false">
                         取消
                     </t-button>
                 </t-space>
@@ -124,5 +124,5 @@ export default class ScriptQuickExec extends Vue {
                 <code>{{ result.Response.Output }}</code>
             </pre>
         </div>
-    </el-dialog>
+    </t-dialog>
 </template>

@@ -44,21 +44,21 @@ export default class KeypairCreate extends Vue {
 
     // 对话框管理
 
-    public dailog = false
+    public visible = false
 
     public close() {
-        this.dailog = false
+        this.visible = false
         this.$emit("submit")
     }
 
     public open() {
-        this.dailog = true
+        this.visible = true
     }
 }
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close title="添加密钥" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="添加密钥" :footer="false" width="600px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="KeyType" label="类型">
                 <t-select v-model="formModel.KeyType">
@@ -79,11 +79,11 @@ export default class KeypairCreate extends Vue {
                     <t-button theme="primary" type="submit">
                         提交
                     </t-button>
-                    <t-button theme="default" type="reset" @click="dailog = false">
+                    <t-button theme="default" type="reset" @click="visible = false">
                         取消
                     </t-button>
                 </t-space>
             </t-form-item>
         </t-form>
-    </el-dialog>
+    </t-dialog>
 </template>

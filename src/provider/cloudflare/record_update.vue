@@ -58,15 +58,15 @@ export default class CloudflareRecordUpdate extends Vue {
 
     // 对话框管理
 
-    public dailog = false
+    public visible = false
 
     public close() {
-        this.dailog = false
+        this.visible = false
         this.$emit("submit")
     }
 
     public open(record: CF.ZoneRecordItem) {
-        this.dailog = true
+        this.visible = true
         this.recordInfo = record
         this.formModel = {
             name: record.name.replace(record.zone_name, "").replace(/\.$/, "") || "@",
@@ -83,7 +83,7 @@ export default class CloudflareRecordUpdate extends Vue {
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close title="更新记录" width="400px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="更新记录" :footer="false" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
             <t-form-item name="name" label="主机记录">
                 <t-input v-model="formModel.name" />
@@ -113,11 +113,11 @@ export default class CloudflareRecordUpdate extends Vue {
                     <t-button theme="primary" type="submit">
                         提交
                     </t-button>
-                    <t-button theme="default" type="reset" @click="dailog = false">
+                    <t-button theme="default" @click="visible = false">
                         取消
                     </t-button>
                 </t-space>
             </t-form-item>
         </t-form>
-    </el-dialog>
+    </t-dialog>
 </template>

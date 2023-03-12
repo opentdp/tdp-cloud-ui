@@ -75,15 +75,15 @@ export default class DnspodRecordUpdate extends Vue {
 
     // 对话框管理
 
-    public dailog = false
+    public visible = false
 
     public close() {
-        this.dailog = false
+        this.visible = false
         this.$emit("submit")
     }
 
     public open(info: TC.Dnspod.DomainInfo, record: TC.Dnspod.RecordListItem) {
-        this.dailog = true
+        this.visible = true
         this.domainInfo = info
         this.formModel = record
         this.formModel.Weight = record.Weight || 0
@@ -95,7 +95,7 @@ export default class DnspodRecordUpdate extends Vue {
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close title="更新记录" width="400px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="更新记录" :footer="false" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
             <t-form-item name="Name" label="主机记录">
                 <t-input v-model="formModel.Name" />
@@ -127,11 +127,11 @@ export default class DnspodRecordUpdate extends Vue {
                     <t-button theme="primary" type="submit">
                         提交
                     </t-button>
-                    <t-button theme="default" type="reset" @click="dailog = false">
+                    <t-button theme="default" @click="visible = false">
                         取消
                     </t-button>
                 </t-space>
             </t-form-item>
         </t-form>
-    </el-dialog>
+    </t-dialog>
 </template>

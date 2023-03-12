@@ -46,22 +46,22 @@ export default class LighthouseSnapshotCreate extends Vue {
 
     // 对话框管理
 
-    public dailog = false
+    public visible = false
 
     public close() {
-        this.dailog = false
+        this.visible = false
         this.$emit("submit")
     }
 
     public open(instance: TC.Lighthouse.Instance) {
         this.instance = instance
-        this.dailog = true
+        this.visible = true
     }
 }
 </script>
 
 <template>
-    <el-dialog v-model="dailog" destroy-on-close title="创建快照" width="400px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="创建快照" :footer="false" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="name" label="名称">
                 <t-input v-model="formModel.name" />
@@ -71,11 +71,11 @@ export default class LighthouseSnapshotCreate extends Vue {
                     <t-button theme="primary" type="submit">
                         提交
                     </t-button>
-                    <t-button theme="default" type="reset" @click="dailog = false">
+                    <t-button theme="default" type="reset" @click="visible = false">
                         取消
                     </t-button>
                 </t-space>
             </t-form-item>
         </t-form>
-    </el-dialog>
+    </t-dialog>
 </template>
