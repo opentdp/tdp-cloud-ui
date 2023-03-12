@@ -7,9 +7,9 @@ export default class LayoutIndex extends Vue {
 </script>
 
 <template>
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="vNode">
         <transition name="move" mode="out-in">
-            <component :is="Component" />
+            <component :is="vNode.Component" />
         </transition>
     </router-view>
 </template>
