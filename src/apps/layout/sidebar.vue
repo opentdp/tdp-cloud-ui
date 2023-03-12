@@ -2,8 +2,6 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import layoutStore from "@/store/layout"
-import { computed } from "vue"
-import { useRoute } from "vue-router"
 
 @Component
 export default class LayoutSidebar extends Vue {
@@ -95,21 +93,20 @@ export default class LayoutSidebar extends Vue {
         },
     ]
 
-    defaultExpanded = computed(() => {
-        const route = useRoute()
-        if (this.items.findIndex(item => item.index === route.path) >= 0) {
-            return [route.path]
+    get defaultExpanded() {
+        if (this.items.findIndex(item => item.index === this.$route.path) >= 0) {
+            return []
         } else {
             const idx = this.items.findIndex(item => {
-                return item.subs && item.subs.findIndex(sub_item => sub_item.index === route.path) >= 0
+                return item.subs && item.subs.findIndex(sub_item => sub_item.index === this.$route.path) >= 0
             })
             if (idx == -1) {
                 return []
             } else {
-                return [this.items[idx].index, route.path]
+                return [this.items[idx].index]
             }
         }
-    })
+    }
 }
 
 interface MenuItem {
@@ -122,8 +119,8 @@ interface MenuItem {
 
 <template>
     <div class="sidebar">
-        <t-menu class="sidebar-t-menu" :default-value="$route.path" :collapsed="layout.Collapse"
-            :default-expanded="defaultExpanded" expand-mutex>
+        <t-menu class="sidebar-t-menu" :value="$route.path" :collapsed="layout.Collapse" :default-expanded="defaultExpanded"
+            expand-mutex>
             <template v-for="item in items">
                 <template v-if="item.subs">
                     <t-submenu :key="item.index" :value="item.index">
