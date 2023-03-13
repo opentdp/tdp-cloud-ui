@@ -91,7 +91,7 @@ export default class MachineList extends Vue {
 
         <t-card title="主机列表" hover-shadow header-bordered>
             <template #subtitle>
-                <small>记录总数: {{ machineList.length }}</small>
+                记录总数: {{ machineList.length }}
             </template>
             <t-table v-loading="loading" :data="machineList" :columns="tableColumns" row-key="Id" select-on-row-click
                 @select-change="tableRowChange">

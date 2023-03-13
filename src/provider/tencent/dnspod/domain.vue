@@ -88,7 +88,7 @@ export default class DnspodDomain extends Vue {
 <template>
     <t-card title="解析列表" hover-shadow header-bordered>
         <template #subtitle>
-            <small>记录总数: {{ recordCountInfo?.TotalCount || 0 }}</small>
+            记录总数: {{ recordCountInfo?.TotalCount || 0 }}
         </template>
         <template #actions>
             <t-button theme="primary" size="small" @click="createModal.open(domainInfo)">
@@ -99,14 +99,14 @@ export default class DnspodDomain extends Vue {
             </t-button>
         </template>
         <t-table v-loading="!recordList" :data="recordList" :columns="tableColumns" row-key="recordId">
-            <template #Status="scope">
-                {{ scope.row.Status == "ENABLE" ? "启用" : "禁用" }}
+            <template #Status="{ row }">
+                {{ row.Status == "ENABLE" ? "启用" : "禁用" }}
             </template>
-            <template #Operation="scope">
-                <t-link theme="primary" hover="color" @click="updateModal.open(domainInfo, scope.row)">
+            <template #Operation="{ row }">
+                <t-link theme="primary" hover="color" @click="updateModal.open(domainInfo, row)">
                     编辑
                 </t-link>
-                <t-popconfirm content="确定删除?" @confirm="deleteRecord(scope.row.RecordId)">
+                <t-popconfirm content="确定删除?" @confirm="deleteRecord(row.RecordId)">
                     <t-link theme="danger" hover="color">
                         删除
                     </t-link>

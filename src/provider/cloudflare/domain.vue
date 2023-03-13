@@ -77,7 +77,7 @@ export default class CloudflareDomain extends Vue {
     <t-space fixed direction="vertical">
         <t-card title="解析列表" hover-shadow header-bordered>
             <template #subtitle>
-                <small>记录总数: {{ recordList?.length || 0 }}</small>
+                记录总数: {{ recordList?.length || 0 }}
             </template>
             <template #actions>
                 <t-button theme="primary" size="small" @click="createModal.open(domainInfo)">

@@ -91,20 +91,20 @@ export default class WorkerBind extends Vue {
 <template>
     <t-card title="在线节点" hover-shadow header-bordered>
         <t-table :data="workerList" :columns="tableColumns" row-key="Id">
-            <template #WorkerMeta_CpuCore="scope">
-                {{ scope.row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，{{ scope.row.WorkerMeta.CpuCore }} Cores
+            <template #WorkerMeta_CpuCore="{ row }">
+                {{ row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，{{ row.WorkerMeta.CpuCore }} Cores
             </template>
-            <template #WorkerMeta_MemoryTotal="scope">
-                {{ bytesToSize(scope.row.WorkerMeta.MemoryUsed) }} / {{ bytesToSize(scope.row.WorkerMeta.MemoryTotal) }}
+            <template #WorkerMeta_MemoryTotal="{ row }">
+                {{ bytesToSize(row.WorkerMeta.MemoryUsed) }} / {{ bytesToSize(row.WorkerMeta.MemoryTotal) }}
             </template>
-            <template #WorkerMeta_Uptime="scope">
-                {{ (scope.row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
+            <template #WorkerMeta_Uptime="{ row }">
+                {{ (row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
             </template>
-            <template #Operation="scope">
-                <t-link v-if="boundList[scope.row.WorkerId]" theme="success" hover="color" @click="syncMachine(scope.row)">
+            <template #Operation="{ row }">
+                <t-link v-if="boundList[row.WorkerId]" theme="success" hover="color" @click="syncMachine(row)">
                     同步
                 </t-link>
-                <t-link v-else theme="primary" hover="color" @click="bindMachine(scope.row)">
+                <t-link v-else theme="primary" hover="color" @click="bindMachine(row)">
                     导入
                 </t-link>
             </template>

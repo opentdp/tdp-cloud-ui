@@ -8,10 +8,16 @@ import { UserRegister } from "@/api/native/passport"
 
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
+
 @Component
 export default class PassportRegister extends Vue {
     public layout = layoutStore()
     public session = sessionStore()
+
+    public created() {
+        this.layout.initUIConfig()
+    }
+
     @Ref
     public formRef!: FormInstanceFunctions
 

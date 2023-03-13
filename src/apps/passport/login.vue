@@ -38,6 +38,7 @@ export default class PassportLogin extends Vue {
         }
         const res = await NaApi.passport.login(this.formModel)
         this.session.update(res)
+        // 切换到后台首页
         this.$router.push("/")
     }
 }

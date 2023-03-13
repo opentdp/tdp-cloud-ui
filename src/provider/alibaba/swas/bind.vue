@@ -149,24 +149,23 @@ export default class SwasBind extends Vue {
         </template>
         <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
             row-key="InstanceId">
-            <template #RegionName="scope">
-                {{ scope.row.RegionName }}
+            <template #RegionName="{ row }">
+                {{ row.RegionName }}
             </template>
-            <template #Memory="scope">
-                {{ scope.row.Memory }}
+            <template #Memory="{ row }">
+                {{ row.Memory }}
             </template>
-            <template #PublicIpAddress="scope">
-                {{ scope.row?.PublicIpAddress || "--" }}
+            <template #PublicIpAddress="{ row }">
+                {{ row?.PublicIpAddress || "--" }}
             </template>
-            <template #ExpiredTime="scope">
-                {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
+            <template #ExpiredTime="{ row }">
+                {{ dateFormat(row.ExpiredTime, "yyyy-MM-dd") }}
             </template>
-            <template #Operation="scope">
-                <t-link v-if="boundList[scope.row.InstanceId]" theme="success" hover="color"
-                    @click="syncMachine(scope.row)">
+            <template #Operation="{ row }">
+                <t-link v-if="boundList[row.InstanceId]" theme="success" hover="color" @click="syncMachine(row)">
                     同步
                 </t-link>
-                <t-link v-else theme="primary" hover="color" @click="bindMachine(scope.row)">
+                <t-link v-else theme="primary" hover="color" @click="bindMachine(row)">
                     导入
                 </t-link>
             </template>
