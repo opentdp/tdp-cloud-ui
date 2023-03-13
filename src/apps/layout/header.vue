@@ -13,6 +13,7 @@ export default class LayoutHeader extends Vue {
     // 初始化
 
     public created() {
+        this.layout.syncThemeMode()
         if (document.body.clientWidth < 1000) {
             this.layout.setCollapse(true)
         }
@@ -21,6 +22,12 @@ export default class LayoutHeader extends Vue {
     // 侧边栏折叠
     public collapseChange() {
         this.layout.setCollapse(!this.layout.Collapse)
+    }
+
+    // 切换主题模式
+    public themeModeChange() {
+        const mode = this.layout.ThemeMode == "dark" ? "light" : "dark"
+        this.layout.setThemeMode(mode)
     }
 
     // 用户名下拉菜单选择事件
@@ -63,17 +70,21 @@ export default class LayoutHeader extends Vue {
             </div>
         </template>
         <template #operations>
-            <t-space>
-                <t-avatar size="large" image="/assets/img/avatar.jpg" />
-                <t-dropdown :options="userDropdown">
-                    <t-link theme="default">
-                        {{ session.Username }}
-                        <template #suffix-icon>
-                            <t-icon name="chevron-down" size="16" />
-                        </template>
-                    </t-link>
-                </t-dropdown>
-            </t-space>
+            <t-button theme="default" variant="text" href="https://github.com/open-tdp/tdp-cloud" target="_blank">
+                <t-icon name="logo-github" size="20" />
+            </t-button>
+            <t-button theme="default" variant="text" @click="themeModeChange">
+                <t-icon name="chart-bubble" size="20" />
+            </t-button>
+            <t-dropdown :options="userDropdown">
+                <t-button theme="default" variant="text">
+                    <t-avatar size="20px" image="/assets/img/avatar.jpg" />
+                    &nbsp; {{ session.Username }}
+                    <template #suffix>
+                        <t-icon name="chevron-down" size="16" />
+                    </template>
+                </t-button>
+            </t-dropdown>
         </template>
     </t-head-menu>
 </template>
