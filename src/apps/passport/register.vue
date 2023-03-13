@@ -6,8 +6,12 @@ import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-nex
 import Api, { NaApi } from "@/api"
 import { UserRegister } from "@/api/native/passport"
 
+import layoutStore from "@/store/layout"
+import sessionStore from "@/store/session"
 @Component
 export default class PassportRegister extends Vue {
+    public layout = layoutStore()
+    public session = sessionStore()
     @Ref
     public formRef!: FormInstanceFunctions
 
@@ -41,106 +45,100 @@ export default class PassportRegister extends Vue {
 </script>
 
 <template>
-    <div class="magic-bg">
-        <div class="magic-box">
-            <div class="magic-title">
-                管理后台
-            </div>
-            <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="0px" class="magic-body"
-                @submit="formSubmit">
-                <t-form-item name="Username" :required-mark="false">
-                    <t-input v-model="formModel.Username" placeholder="用户名">
-                        <template #prefix-icon>
-                            <t-icon name="user" />
-                        </template>
-                    </t-input>
-                </t-form-item>
-                <t-form-item name="Email" :required-mark="false">
-                    <t-input v-model="formModel.Email" placeholder="邮箱">
-                        <template #prefix-icon>
-                            <t-icon name="mail" />
-                        </template>
-                    </t-input>
-                </t-form-item>
-                <t-form-item name="Password" :required-mark="false">
-                    <t-input v-model="formModel.Password" type="password" placeholder="密码">
-                        <template #prefix-icon>
-                            <t-icon name="lock-on" />
-                        </template>
-                    </t-input>
-                </t-form-item>
-                <t-form-item name="Password2" :required-mark="false">
-                    <t-input v-model="formModel.Password2" type="password" placeholder="确认密码">
-                        <template #prefix-icon>
-                            <t-icon name="lock-on" />
-                        </template>
-                    </t-input>
-                </t-form-item>
-                <div class="magic-btn">
-                    <t-button theme="primary" type="submit">
-                        注册
-                    </t-button>
+    <t-layout class="layout">
+        <t-content class="content">
+            <t-space fixed direction="vertical" class="magic-box">
+                <div class="magic-title">
+                    登录到<br>TDP Cloud Console
                 </div>
-                <div class="magic-btn">
-                    <t-button v-route="'/passport/login'" theme="default">
+                <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="0px" class="magic-body"
+                    @submit="formSubmit">
+                    <t-form-item name="Username" :required-mark="false">
+                        <t-input v-model="formModel.Username" size="large" placeholder="用户名">
+                            <template #prefix-icon>
+                                <t-icon name="user" />
+                            </template>
+                        </t-input>
+                    </t-form-item>
+                    <t-form-item name="Email" :required-mark="false">
+                        <t-input v-model="formModel.Email" size="large" placeholder="邮箱">
+                            <template #prefix-icon>
+                                <t-icon name="mail" />
+                            </template>
+                        </t-input>
+                    </t-form-item>
+                    <t-form-item name="Password" :required-mark="false">
+                        <t-input v-model="formModel.Password" type="password" size="large" placeholder="密码">
+                            <template #prefix-icon>
+                                <t-icon name="lock-on" />
+                            </template>
+                        </t-input>
+                    </t-form-item>
+                    <t-form-item name="Password2" :required-mark="false">
+                        <t-input v-model="formModel.Password2" type="password" size="large" placeholder="确认密码">
+                            <template #prefix-icon>
+                                <t-icon name="lock-on" />
+                            </template>
+                        </t-input>
+                    </t-form-item>
+                    <t-form-item>
+                        <t-button theme="primary" size="large" type="submit" block>
+                            注册
+                        </t-button>
+                    </t-form-item>
+                </t-form>
+                <div class="magic-guide">
+                    已有账号？
+                    <t-link v-route="'/passport/login'" theme="default">
                         登录
-                    </t-button>
+                    </t-link>
                 </div>
-            </t-form>
-        </div>
-        <div class="copyright">
-            <small>Powered by TDP Cloud</small>
-        </div>
-    </div>
+            </t-space>
+        </t-content>
+        <t-footer class="copyright">
+            <a href="https://apps.rehiy.com/tdp-cloud/" target="_blank" hover="color">
+                Powered by TDP Cloud
+            </a>
+            {{ layout.Version ? "v" + layout.Version : "" }}
+        </t-footer>
+    </t-layout>
 </template>
 
 <style lang="scss" scoped>
-.magic-bg {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.layout {
     width: 100%;
     height: 100%;
     background-image: url(/assets/img/bg01.jpg);
     background-position: center center;
     background-size: cover;
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
 }
 
 .magic-box {
-    width: 350px;
-    border-radius: 5px;
-    background: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 4px 12px 12px rgb(0 0 0 / 10%);
+    width: 360px;
     overflow: hidden;
-}
 
-.magic-title {
-    width: 100%;
-    line-height: 60px;
-    text-align: center;
-    font-size: 20px;
-    color: #333;
-    border-bottom: 1px solid #ddd;
-}
+    .magic-title {
+        font-size: 200%;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
 
-.magic-body {
-    padding: 30px 30px;
-}
-
-.magic-btn {
-    text-align: center;
-
-    button {
-        width: 100%;
-        height: 36px;
-        margin-bottom: 10px;
+    .magic-guide {
+        text-align: right;
     }
 }
 
 .copyright {
     user-select: none;
-    position: absolute;
-    bottom: 10px;
-    color: #ddd;
+    text-align: center;
+    font-size: 75%;
+    color: var(--td-gray-color-1);
 }
 </style>
