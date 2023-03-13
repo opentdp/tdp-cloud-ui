@@ -41,6 +41,16 @@ export default class TasklineList extends Vue {
     async expandChange(row: TasklineItem[], rs: TasklineItem[]) {
         this.expanded = rs.length > 0
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'Id', title: '任务ID', ellipsis: true },
+        { colKey: 'HostName', title: '主机名', ellipsis: true },
+        { colKey: 'Subject', title: '任务名称', ellipsis: true },
+        { colKey: 'Status', title: '执行状态', ellipsis: true },
+        { colKey: 'UpdatedAt', title: '更新时间', ellipsis: true },
+    ]
 }
 </script>
 
@@ -59,42 +69,26 @@ export default class TasklineList extends Vue {
             <template #subtitle>
                 记录总数: {{ historyList.length }}
             </template>
-            <el-table :data="historyList" @expand-change="expandChange">
-                <el-table-column prop="Id" label="任务ID" fixed sortable show-overflow-tooltip />
-                <el-table-column prop="HostName" label="主机名" sortable show-overflow-tooltip />
-                <el-table-column prop="Subject" label="任务名称" sortable show-overflow-tooltip />
-                <el-table-column prop="Status" label="执行状态" sortable show-overflow-tooltip />
-                <el-table-column prop="UpdatedAt" label="更新时间" sortable show-overflow-tooltip>
-                    <template #default="scope">
-                        {{ dateFormat(scope.row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
-                    </template>
-                </el-table-column>
-                <el-table-column label="详情" type="expand" width="90">
-                    <template #default="scope">
-                        <div class="expand-output">
-                            <pre v-highlight max-height="500" class="lang-json">
-                                <h3>请求信息</h3>
-                                <code>{{ JSON.stringify(scope.row.Request, null, 4) }}</code>
-                            </pre>
-                            <pre v-if="scope.row.Response.Error" v-highlight max-height="500" class="lang-json">
-                                <h3>错误信息</h3>
-                                <code>{{ JSON.stringify(scope.row.Response.Error) }}</code>
-                            </pre>
-                            <pre v-highlight max-height="500">
-                                <h3>响应内容</h3>
-                                <code>{{ scope.row.Response.Output }}</code>
-                            </pre>
-                        </div>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <t-table :data="historyList" :columns="tableColumns" row-key="Id" expand-on-row-click
+                @expand-change="expandChange">
+                <template #UpdatedAt="{ row }">
+                    {{ dateFormat(row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
+                </template>
+                <template #expandedRow="{ row }">
+                    <pre v-highlight max-height="500" class="lang-json">
+                        <h3>请求信息</h3>
+                        <code>{{ JSON.stringify(row.Request, null, 4) }}</code>
+                    </pre>
+                    <pre v-if="row.Response.Error" v-highlight max-height="500" class="lang-json">
+                        <h3>错误信息</h3>
+                        <code>{{ JSON.stringify(row.Response.Error) }}</code>
+                    </pre>
+                    <pre v-highlight max-height="500">
+                        <h3>响应内容</h3>
+                        <code>{{ row.Response.Output }}</code>
+                    </pre>
+                </template>
+            </t-table>
         </t-card>
     </t-space>
 </template>
-
-<style lang="scss" scoped>
-.expand-output {
-    margin: -8px 0;
-    padding: 0 8px;
-}
-</style>

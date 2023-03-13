@@ -66,6 +66,17 @@ export default class DnsBind extends Vue {
             CloudMeta: item,
         })
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'DomainName', title: '域名', ellipsis: true },
+        { colKey: 'RecordCount', title: '记录数', ellipsis: true },
+        { colKey: 'DnsServers', title: 'NS 服务器', ellipsis: true },
+        { colKey: 'VersionCode', title: '套餐', ellipsis: true },
+        { colKey: 'CreateTimestamp', title: '接入时间', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -74,31 +85,21 @@ export default class DnsBind extends Vue {
         <template #subtitle>
             记录总数: {{ domainCount }}
         </template>
-        <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column prop="DomainName" label="域名" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="RecordCount" label="记录数" sortable />
-            <el-table-column prop="DnsServers" label="NS 服务器" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.DnsServers.DnsServer.join(",") }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="VersionCode" label="套餐" sortable show-overflow-tooltip />
-            <el-table-column prop="CreateTimestamp" label="接入时间" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ dateFormat(scope.row.CreateTimestamp, "yyyy-MM-dd hh:mm:ss") }}
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="90" align="center">
-                <template #default="scope">
-                    <t-link v-if="boundList[scope.row.DomainId]" theme="success" hover="color"
-                        @click="syncDomian(scope.row)">
-                        同步
-                    </t-link>
-                    <t-link v-else theme="primary" hover="color" @click="bindDomian(scope.row)">
-                        导入
-                    </t-link>
-                </template>
-            </el-table-column>
-        </el-table>
+        <t-table v-loading="loading" :data="domainList" :columns="tableColumns" row-key="DomainId">
+            <template #DnsServers="{ row }">
+                {{ row.DnsServers.DnsServer.join(",") }}
+            </template>
+            <template #CreateTimestamp="{ row }">
+                {{ dateFormat(row.CreateTimestamp, "yyyy-MM-dd hh:mm:ss") }}
+            </template>
+            <template #Operation="{ row }">
+                <t-link v-if="boundList[row.DomainId]" theme="success" hover="color" @click="syncDomian(row)">
+                    同步
+                </t-link>
+                <t-link v-else theme="primary" hover="color" @click="bindDomian(row)">
+                    导入
+                </t-link>
+            </template>
+        </t-table>
     </t-card>
 </template>

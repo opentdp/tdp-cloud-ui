@@ -122,6 +122,18 @@ export default class EcsBind extends Vue {
     public parseToGB(s: string) {
         return s ? (parseInt(s) / 1024).toFixed(2) + " GB" : "--"
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'InstanceName', title: '名称', ellipsis: true },
+        { colKey: 'RegionName', title: '地域', ellipsis: true },
+        { colKey: 'Cpu', title: 'CPU', ellipsis: true },
+        { colKey: 'Memory', title: '内存', ellipsis: true },
+        { colKey: 'PublicIpAddress', title: '外网 IP', ellipsis: true },
+        { colKey: 'ExpiredTime', title: '到期时间', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -130,41 +142,28 @@ export default class EcsBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
-            <el-table-column prop="InstanceName" label="名称" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="RegionName" label="地域" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.RegionName }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="Cpu" label="CPU" sortable show-overflow-tooltip />
-            <el-table-column prop="Memory" label="内存" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ parseToGB(scope.row.Memory) }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="PublicIpAddress" label="外网 IP" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row?.PublicIpAddress?.IpAddress[0] || "--" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="ExpiredTime" label="到期时间" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
-                </template>
-            </el-table-column>
-
-            <el-table-column label="操作" width="90" align="center">
-                <template #default="scope">
-                    <t-link v-if="boundList[scope.row.InstanceId]" theme="success" hover="color"
-                        @click="syncMachine(scope.row)">
-                        同步
-                    </t-link>
-                    <t-link v-else theme="primary" hover="color" @click="bindMachine(scope.row)">
-                        导入
-                    </t-link>
-                </template>
-            </el-table-column>
-        </el-table>
+        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
+            row-key="InstanceId">
+            <template #RegionName="{ row }">
+                {{ row.RegionName }}
+            </template>
+            <template #Memory="{ row }">
+                {{ parseToGB(row.Memory) }}
+            </template>
+            <template #PublicIpAddress="{ row }">
+                {{ row?.PublicIpAddress?.IpAddress[0] || "--" }}
+            </template>
+            <template #ExpiredTime="{ row }">
+                {{ dateFormat(row.ExpiredTime, "yyyy-MM-dd") }}
+            </template>
+            <template #Operation="{ row }">
+                <t-link v-if="boundList[row.InstanceId]" theme="success" hover="color" @click="syncMachine(row)">
+                    同步
+                </t-link>
+                <t-link v-else theme="primary" hover="color" @click="bindMachine(row)">
+                    导入
+                </t-link>
+            </template>
+        </t-table>
     </t-card>
 </template>

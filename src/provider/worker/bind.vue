@@ -73,53 +73,41 @@ export default class WorkerBind extends Vue {
         })
         this.$emit("change")
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'WorkerMeta.HostName', title: '主机名', ellipsis: true },
+        { colKey: 'WorkerMeta.IpAddress', title: '公网 IP', ellipsis: true },
+        { colKey: 'WorkerMeta_CpuCore', title: 'CPU', ellipsis: true },
+        { colKey: 'WorkerMeta_MemoryTotal', title: '内存', ellipsis: true },
+        { colKey: 'WorkerMeta.OS', title: '系统', ellipsis: true },
+        { colKey: 'WorkerMeta_Uptime', title: '运行时长', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
 <template>
     <t-card title="在线节点" hover-shadow header-bordered>
-        <el-table ref="tableRef" :data="workerList" highlight-current-row>
-            <el-table-column prop="WorkerMeta.HostName" label="主机名" fixed show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.WorkerMeta.HostName }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="WorkerMeta.IpAddress" label="公网 IP" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.WorkerMeta.IpAddress }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="WorkerMeta.CpuCore" label="CPU" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，{{ scope.row.WorkerMeta.CpuCore }} Cores
-                </template>
-            </el-table-column>
-            <el-table-column prop="WorkerMeta.MemoryTotal" label="内存" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ bytesToSize(scope.row.WorkerMeta.MemoryUsed) }} / {{ bytesToSize(scope.row.WorkerMeta.MemoryTotal) }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="WorkerMeta.OS" label="系统" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.WorkerMeta.OS }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="WorkerMeta.Uptime" label="运行时长" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ (scope.row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="90" align="center">
-                <template #default="scope">
-                    <t-link v-if="boundList[scope.row.WorkerId]" theme="success" hover="color"
-                        @click="syncMachine(scope.row)">
-                        同步
-                    </t-link>
-                    <t-link v-else theme="primary" hover="color" @click="bindMachine(scope.row)">
-                        导入
-                    </t-link>
-                </template>
-            </el-table-column>
-        </el-table>
+        <t-table :data="workerList" :columns="tableColumns" row-key="Id">
+            <template #WorkerMeta_CpuCore="scope">
+                {{ scope.row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，{{ scope.row.WorkerMeta.CpuCore }} Cores
+            </template>
+            <template #WorkerMeta_MemoryTotal="scope">
+                {{ bytesToSize(scope.row.WorkerMeta.MemoryUsed) }} / {{ bytesToSize(scope.row.WorkerMeta.MemoryTotal) }}
+            </template>
+            <template #WorkerMeta_Uptime="scope">
+                {{ (scope.row.WorkerMeta.Uptime / 86400).toFixed(1) }} 天
+            </template>
+            <template #Operation="scope">
+                <t-link v-if="boundList[scope.row.WorkerId]" theme="success" hover="color" @click="syncMachine(scope.row)">
+                    同步
+                </t-link>
+                <t-link v-else theme="primary" hover="color" @click="bindMachine(scope.row)">
+                    导入
+                </t-link>
+            </template>
+        </t-table>
     </t-card>
 </template>

@@ -42,6 +42,15 @@ export default class ScriptList extends Vue {
         await NaApi.script.remove(id)
         await this.getScriptList()
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'Name', title: '名称', ellipsis: true },
+        { colKey: 'CommandType', title: '类型', ellipsis: true },
+        { colKey: 'Content', title: '脚本', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -68,23 +77,18 @@ export default class ScriptList extends Vue {
                     新建脚本
                 </t-button>
             </template>
-            <el-table v-loading="loading" :data="scriptList">
-                <el-table-column prop="Name" label="名称" fixed sortable show-overflow-tooltip />
-                <el-table-column prop="CommandType" label="类型" sortable show-overflow-tooltip />
-                <el-table-column prop="Content" label="脚本" sortable show-overflow-tooltip />
-                <el-table-column label="操作" width="180" align="center">
-                    <template #default="scope">
-                        <t-link theme="primary" hover="color" @click="updateModal.open(scope.row)">
-                            修改
+            <t-table v-loading="loading" :data="scriptList" :columns="tableColumns" row-key="Id">
+                <template #Operation="{ row }">
+                    <t-link theme="primary" hover="color" @click="updateModal.open(row)">
+                        修改
+                    </t-link>
+                    <t-popconfirm content="确定删除?" @confirm="removeScript(row.Id)">
+                        <t-link theme="danger" hover="color">
+                            删除
                         </t-link>
-                        <t-popconfirm content="确定删除?" @confirm="removeScript(scope.row.Id)">
-                            <t-link theme="danger" hover="color">
-                                删除
-                            </t-link>
-                        </t-popconfirm>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    </t-popconfirm>
+                </template>
+            </t-table>
         </t-card>
 
         <ScriptCreate ref="createModal" @submit="getScriptList" />

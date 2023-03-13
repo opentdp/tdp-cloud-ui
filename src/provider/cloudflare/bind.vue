@@ -64,44 +64,42 @@ export default class CloudflareBind extends Vue {
             CloudMeta: item,
         })
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'name', title: '域名', ellipsis: true },
+        { colKey: 'status', title: '状态', ellipsis: true },
+        { colKey: 'type', title: '接入方式', ellipsis: true },
+        { colKey: 'name_servers', title: 'NS 服务器', ellipsis: true },
+        { colKey: 'plan.name', title: '套餐', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
 <template>
     <t-card title="域名列表" hover-shadow header-bordered>
-        <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column prop="name" label="域名" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="status" label="状态" sortable show-overflow-tooltip />
-            <el-table-column prop="type" label="接入方式" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.type == "full" ? "NS" : scope.row.host?.name }}
+        <t-table v-loading="loading" :data="domainList" :columns="tableColumns" row-key="Id">
+            <template #type="{ row }">
+                {{ row.type == "full" ? "NS" : row.host?.name }}
+            </template>
+            <template #name_servers="{ row }">
+                <template v-if="row.name_servers">
+                    {{ row.name_servers.join(",") }}
                 </template>
-            </el-table-column>
-            <el-table-column prop="name_servers" label="NS 服务器" show-overflow-tooltip>
-                <template #default="scope">
-                    <template v-if="scope.row.name_servers">
-                        {{ scope.row.name_servers.join(",") }}
-                    </template>
-                    <template v-else>
-                        Unknown
-                    </template>
+                <template v-else>
+                    Unknown
                 </template>
-            </el-table-column>
-            <el-table-column prop="plan" label="套餐" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.plan.name }}
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="90" align="center">
-                <template #default="scope">
-                    <t-link v-if="boundList[scope.row.id]" theme="success" hover="color" @click="syncDomian(scope.row)">
-                        同步
-                    </t-link>
-                    <t-link v-else theme="primary" hover="color" @click="bindDomian(scope.row)">
-                        导入
-                    </t-link>
-                </template>
-            </el-table-column>
-        </el-table>
+            </template>
+            <template #Operation="{ row }">
+                <t-link v-if="boundList[row.id]" theme="success" hover="color" @click="syncDomian(row)">
+                    同步
+                </t-link>
+                <t-link v-else theme="primary" hover="color" @click="bindDomian(row)">
+                    导入
+                </t-link>
+            </template>
+        </t-table>
     </t-card>
 </template>

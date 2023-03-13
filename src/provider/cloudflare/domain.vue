@@ -58,6 +58,18 @@ export default class CloudflareDomain extends Vue {
         await CfApi.zones.dnsRecordDelete(this.domainInfo.id, id)
         this.getRecordList()
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'zone_name', title: '主机记录', ellipsis: true },
+        { colKey: 'type', title: '记录类型', ellipsis: true },
+        { colKey: 'content', title: '记录值', ellipsis: true },
+        { colKey: 'proxied', title: '加速', ellipsis: true },
+        { colKey: 'ttl', title: 'TTL', ellipsis: true },
+        { colKey: 'comment', title: '备注', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -75,38 +87,27 @@ export default class CloudflareDomain extends Vue {
                     添加记录
                 </t-button>
             </template>
-            <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
-                <el-table-column prop="zone_name" label="主机记录" fixed sortable show-overflow-tooltip>
-                    <template #default="scope">
-                        {{ scope.row.name.replace(scope.row.zone_name, "").replace(/\.$/, "") || "@" }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="type" label="记录类型" sortable show-overflow-tooltip />
-                <el-table-column prop="content" label="记录值" sortable show-overflow-tooltip min-width="120" />
-                <el-table-column prop="proxied" label="加速" sortable show-overflow-tooltip>
-                    <template #default="scope">
-                        {{ scope.row.proxied ? "已启用" : "已禁用" }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="ttl" label="TTL" sortable show-overflow-tooltip>
-                    <template #default="scope">
-                        {{ scope.row.ttl > 1 ? scope.row.ttl : "自动" }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="comment" label="备注" show-overflow-tooltip />
-                <el-table-column label="操作" width="180" align="center">
-                    <template #default="scope">
-                        <t-link theme="primary" hover="color" @click="updateModal.open(scope.row)">
-                            编辑
+            <t-table v-loading="!recordList" :data="recordList" :columns="tableColumns" row-key="id">
+                <template #zone_name="{ row }">
+                    {{ row.name.replace(row.zone_name, "").replace(/\.$/, "") || "@" }}
+                </template>
+                <template #proxied="{ row }">
+                    {{ row.proxied ? "已启用" : "已禁用" }}
+                </template>
+                <template #ttl="{ row }">
+                    {{ row.ttl > 1 ? row.ttl : "自动" }}
+                </template>
+                <template #Operation="{ row }">
+                    <t-link theme="primary" hover="color" @click="updateModal.open(row)">
+                        编辑
+                    </t-link>
+                    <t-popconfirm content="确定删除?" @confirm="deleteRecord(row.id)">
+                        <t-link theme="danger" hover="color">
+                            删除
                         </t-link>
-                        <t-popconfirm content="确定删除?" @confirm="deleteRecord(scope.row.id)">
-                            <t-link theme="danger" hover="color">
-                                删除
-                            </t-link>
-                        </t-popconfirm>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    </t-popconfirm>
+                </template>
+            </t-table>
         </t-card>
 
         <template v-if="domainInfo?.type == 'full'">

@@ -37,6 +37,15 @@ export default class DomainList extends Vue {
         await NaApi.domain.remove(item.Id)
         this.domainList.splice(idx, 1)
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'Name', title: '域名', ellipsis: true },
+        { colKey: 'NSList', title: 'NS 服务器', ellipsis: true },
+        { colKey: 'Model', title: '云账号', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -55,29 +64,23 @@ export default class DomainList extends Vue {
             <template #subtitle>
                 记录总数: {{ domainList.length }}
             </template>
-            <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-                <el-table-column prop="Name" label="域名" fixed sortable show-overflow-tooltip />
-                <el-table-column prop="NSList" label="NS 服务器" sortable show-overflow-tooltip />
-                <el-table-column prop="Model" label="云账号" sortable show-overflow-tooltip>
-                    <template #default="scope">
-                        <t-tooltip :content="DomainModels[scope.row.Model]">
-                            {{ cache.vendorList[scope.row.VendorId]?.Description || "-" }}
-                        </t-tooltip>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
-                    <template #default="scope">
-                        <t-link v-route="'/domain/detail/' + scope.row.Id" theme="primary" hover="color">
-                            管理
+            <t-table v-loading="loading" :data="domainList" :columns="tableColumns" row-key="Id">
+                <template #Model="{ row }">
+                    <t-tooltip :content="DomainModels[row.Model]">
+                        {{ cache.vendorList[row.VendorId]?.Description || "-" }}
+                    </t-tooltip>
+                </template>
+                <template #Operation="{ row, rowIndex }">
+                    <t-link v-route="'/domain/detail/' + row.Id" theme="primary" hover="color">
+                        管理
+                    </t-link>
+                    <t-popconfirm content="确定删除?" @confirm="deleteDomain(rowIndex)">
+                        <t-link theme="danger" hover="color">
+                            删除
                         </t-link>
-                        <t-popconfirm content="确定删除?" @confirm="deleteDomain(scope.$index)">
-                            <t-link theme="danger" hover="color">
-                                删除
-                            </t-link>
-                        </t-popconfirm>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    </t-popconfirm>
+                </template>
+            </t-table>
         </t-card>
     </t-space>
 </template>

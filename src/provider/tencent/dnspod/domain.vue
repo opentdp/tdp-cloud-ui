@@ -69,6 +69,19 @@ export default class DnspodDomain extends Vue {
         await TcApi.dnspod.deleteRecord(query)
         this.getRecordList()
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'Name', title: '主机记录', ellipsis: true },
+        { colKey: 'Type', title: '记录类型', ellipsis: true },
+        { colKey: 'Line', title: '线路类型', ellipsis: true },
+        { colKey: 'Value', title: '记录值', ellipsis: true },
+        { colKey: 'TTL', title: 'TTL', ellipsis: true },
+        { colKey: 'Status', title: '状态', ellipsis: true },
+        { colKey: 'Remark', title: '备注', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -85,31 +98,21 @@ export default class DnspodDomain extends Vue {
                 添加记录
             </t-button>
         </template>
-        <el-table v-loading="!recordList" :data="recordList" table-layout="fixed">
-            <el-table-column prop="Name" label="主机记录" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="Type" label="记录类型" sortable show-overflow-tooltip />
-            <el-table-column prop="Line" label="线路类型" sortable show-overflow-tooltip />
-            <el-table-column prop="Value" label="记录值" sortable show-overflow-tooltip />
-            <el-table-column prop="TTL" label="TTL" sortable show-overflow-tooltip />
-            <el-table-column prop="Status" label="状态" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.Status == "ENABLE" ? "启用" : "禁用" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="Remark" label="备注" show-overflow-tooltip />
-            <el-table-column label="操作" width="180" align="center">
-                <template #default="scope">
-                    <t-link theme="primary" hover="color" @click="updateModal.open(domainInfo, scope.row)">
-                        编辑
+        <t-table v-loading="!recordList" :data="recordList" :columns="tableColumns" row-key="recordId">
+            <template #Status="scope">
+                {{ scope.row.Status == "ENABLE" ? "启用" : "禁用" }}
+            </template>
+            <template #Operation="scope">
+                <t-link theme="primary" hover="color" @click="updateModal.open(domainInfo, scope.row)">
+                    编辑
+                </t-link>
+                <t-popconfirm content="确定删除?" @confirm="deleteRecord(scope.row.RecordId)">
+                    <t-link theme="danger" hover="color">
+                        删除
                     </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="deleteRecord(scope.row.RecordId)">
-                        <t-link theme="danger" hover="color">
-                            删除
-                        </t-link>
-                    </t-popconfirm>
-                </template>
-            </el-table-column>
-        </el-table>
+                </t-popconfirm>
+            </template>
+        </t-table>
     </t-card>
 
     <RecordCreate ref="createModal" @submit="getRecordList" />

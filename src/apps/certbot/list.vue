@@ -41,6 +41,16 @@ export default class CertbotList extends Vue {
         await NaApi.certbot.remove(item.Id)
         this.certbotList.splice(idx, 1)
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'Domain', title: '域名', ellipsis: true },
+        { colKey: 'Email', title: '邮箱', ellipsis: true },
+        { colKey: 'CaType', title: 'CA', ellipsis: true },
+        { colKey: 'History', title: '证书', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "60px" },
+    ]
 }
 </script>
 
@@ -67,38 +77,29 @@ export default class CertbotList extends Vue {
                     申请证书
                 </t-button>
             </template>
-            <el-table v-loading="loading" :data="certbotList" table-layout="fixed">
-                <el-table-column prop="Domain" label="域名" fixed sortable show-overflow-tooltip />
-                <el-table-column prop="Email" label="邮箱" sortable show-overflow-tooltip />
-                <el-table-column prop="CaType" label="CA" sortable show-overflow-tooltip>
-                    <template #default="scope">
-                        {{ CaTypeList[scope.row.CaType].Name }}
-                    </template>
-                </el-table-column>
-                <el-table-column prop="History" label="证书" show-overflow-tooltip>
-                    <template #default="scope">
-                        <span v-if="scope.row.History?.event == 'cached'" v-route="'/certbot/detail/' + scope.row.Id">
-                            详情
-                        </span>
-                        <span v-else-if="scope.row.History?.event == 'obtained'"
-                            v-route="'/certbot/detail/' + scope.row.Id">
-                            详情
-                        </span>
-                        <div v-else>
-                            {{ scope.row.History?.event ? JobStatus[scope.row.History.event] : "未知" }}
-                        </div>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="90" align="center">
-                    <template #default="scope">
-                        <t-popconfirm content="确定删除?" @confirm="deleteCertbot(scope.$index)">
-                            <t-link theme="danger" hover="color">
-                                删除
-                            </t-link>
-                        </t-popconfirm>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <t-table v-loading="loading" :data="certbotList" :columns="tableColumns" row-key="Id">
+                <template #CaType="{ row }">
+                    {{ CaTypeList[row.CaType].Name }}
+                </template>
+                <template #History="{ row }">
+                    <span v-if="row.History?.event == 'cached'" v-route="'/certbot/detail/' + row.Id">
+                        详情
+                    </span>
+                    <span v-else-if="row.History?.event == 'obtained'" v-route="'/certbot/detail/' + row.Id">
+                        详情
+                    </span>
+                    <div v-else>
+                        {{ row.History?.event ? JobStatus[row.History.event] : "未知" }}
+                    </div>
+                </template>
+                <template #Operation="{ rowIndex }">
+                    <t-popconfirm content="确定删除?" @confirm="deleteCertbot(rowIndex)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
+                </template>
+            </t-table>
         </t-card>
 
         <CertbotCreate ref="createModal" @submit="getCertbotList" />

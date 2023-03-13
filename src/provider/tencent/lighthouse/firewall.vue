@@ -61,6 +61,17 @@ export default class LighthouseFirewall extends Vue {
         })
         this.getFirewallRuleList()
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'CidrBlock', title: '来源', ellipsis: true },
+        { colKey: 'Protocol', title: '协议', ellipsis: true },
+        { colKey: 'Port', title: '端口', ellipsis: true },
+        { colKey: 'Action', title: '策略', ellipsis: true },
+        { colKey: 'FirewallRuleDescription', title: '备注', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -77,33 +88,24 @@ export default class LighthouseFirewall extends Vue {
                 添加规则
             </t-button>
         </template>
-        <el-table :data="firewallRuleList" table-layout="fixed">
-            <el-table-column prop="CidrBlock" label="来源" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="Protocol" label="协议" sortable show-overflow-tooltip />
-            <el-table-column prop="Port" label="端口" sortable show-overflow-tooltip />
-            <el-table-column prop="Action" label="策略" sortable show-overflow-tooltip />
-            <el-table-column prop="FirewallRuleDescription" label="备注" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.FirewallRuleDescription }}
-                    <t-button shape="circle" variant="text" @click="remarkModal.open(instance, scope.row)">
-                        <t-icon name="edit" />
-                    </t-button>
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="180" align="center">
-                <template #default="scope">
-                    <t-link theme="primary" hover="color"
-                        @click="updateModal.open(instance, firewallRuleList, scope.$index)">
-                        编辑
+        <t-table :data="firewallRuleList" :columns="tableColumns" row-key="Id">
+            <template #FirewallRuleDescription="{ row }">
+                {{ row.FirewallRuleDescription }}
+                <t-button shape="circle" variant="text" @click="remarkModal.open(instance, row)">
+                    <t-icon name="edit" />
+                </t-button>
+            </template>
+            <template #Operation="{ row, rowIndex }">
+                <t-link theme="primary" hover="color" @click="updateModal.open(instance, firewallRuleList, rowIndex)">
+                    编辑
+                </t-link>
+                <t-popconfirm content="确定删除?" @confirm="deleteFirewallRule(row)">
+                    <t-link theme="danger" hover="color">
+                        删除
                     </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="deleteFirewallRule(scope.row)">
-                        <t-link theme="danger" hover="color">
-                            删除
-                        </t-link>
-                    </t-popconfirm>
-                </template>
-            </el-table-column>
-        </el-table>
+                </t-popconfirm>
+            </template>
+        </t-table>
     </t-card>
 
     <FirewallCreate ref="createModal" @submit="getFirewallRuleList" />

@@ -152,6 +152,20 @@ export default class CvmBind extends Vue {
     public parseOSType(s: string) {
         return /windows/i.test(s) ? "windows" : "linux"
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'InstanceName', title: '名称', ellipsis: true },
+        { colKey: 'Placement', title: '地域', ellipsis: true },
+        { colKey: 'CPU', title: 'CPU', ellipsis: true },
+        { colKey: 'Memory', title: '内存', ellipsis: true },
+        { colKey: 'SystemDisk', title: '系统盘', ellipsis: true },
+        { colKey: 'PublicIpAddresses', title: '外网 IP', ellipsis: true },
+        { colKey: 'ExpiredTime', title: '到期时间', ellipsis: true },
+        { colKey: 'Worker', title: '土豆片', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -160,46 +174,31 @@ export default class CvmBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <el-table v-loading="loading && instanceList.length == 0" :data="instanceList" table-layout="fixed">
-            <el-table-column prop="InstanceName" label="名称" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="Placement" label="地域" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ parseRegion(scope.row.Placement.Zone) }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="CPU" label="CPU" sortable show-overflow-tooltip />
-            <el-table-column prop="Memory" label="内存" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.Memory + " GB" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="SystemDisk" label="系统盘" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.SystemDisk.DiskSize + " GB" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="PublicIpAddresses" label="外网 IP" sortable show-overflow-tooltip />
-            <el-table-column prop="ExpiredTime" label="到期时间" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ dateFormat(scope.row.ExpiredTime, "yyyy-MM-dd") }}
-                </template>
-            </el-table-column>
-            <el-table-column label="土豆片" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ workerStatus[scope.row.InstanceId] || "Unkown" }}
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="90" align="center">
-                <template #default="scope">
-                    <t-link v-if="boundList[scope.row.InstanceId]" theme="success" hover="color"
-                        @click="syncMachine(scope.row)">
-                        同步
-                    </t-link>
-                    <t-link v-else theme="primary" hover="color" @click="bindMachine(scope.row)">
-                        导入
-                    </t-link>
-                </template>
-            </el-table-column>
-        </el-table>
+        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
+            row-key="InstanceId">
+            <template #Placement="{ row }">
+                {{ parseRegion(row.Placement.Zone) }}
+            </template>
+            <template #Memory="{ row }">
+                {{ row.Memory + " GB" }}
+            </template>
+            <template #SystemDisk="{ row }">
+                {{ row.SystemDisk.DiskSize + " GB" }}
+            </template>
+            <template #ExpiredTime="{ row }">
+                {{ dateFormat(row.ExpiredTime, "yyyy-MM-dd") }}
+            </template>
+            <template #Worker="{ row }">
+                {{ workerStatus[row.InstanceId] || "Unkown" }}
+            </template>
+            <template #Operation="{ row }">
+                <t-link v-if="boundList[row.InstanceId]" theme="success" hover="color" @click="syncMachine(row)">
+                    同步
+                </t-link>
+                <t-link v-else theme="primary" hover="color" @click="bindMachine(row)">
+                    导入
+                </t-link>
+            </template>
+        </t-table>
     </t-card>
 </template>

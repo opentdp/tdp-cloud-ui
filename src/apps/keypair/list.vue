@@ -38,6 +38,14 @@ export default class KeypairList extends Vue {
         await NaApi.keypair.remove(item.Id)
         this.keylist.splice(idx, 1)
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'Description', title: '别名', ellipsis: true },
+        { colKey: 'PublicKey', title: '公钥', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -64,19 +72,15 @@ export default class KeypairList extends Vue {
                     添加密钥
                 </t-button>
             </template>
-            <el-table :data="keylist">
-                <el-table-column prop="Description" label="别名" fixed sortable show-overflow-tooltip />
-                <el-table-column prop="PublicKey" label="公钥" sortable show-overflow-tooltip />
-                <el-table-column label="操作" width="180" align="center">
-                    <template #default="scope">
-                        <t-popconfirm content="确定删除?" @confirm="deleteKey(scope.$index)">
-                            <t-link theme="danger" hover="color">
-                                删除
-                            </t-link>
-                        </t-popconfirm>
-                    </template>
-                </el-table-column>
-            </el-table>
+            <t-table v-loading="loading" :data="keylist" :columns="tableColumns" row-key="Id">
+                <template #Operation="{ rowIndex }">
+                    <t-popconfirm content="确定删除?" @confirm="deleteKey(rowIndex)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
+                </template>
+            </t-table>
         </t-card>
 
         <KeypairCreate ref="createModal" @submit="getKeypairList" />

@@ -71,6 +71,17 @@ export default class LighthouseSnapshot extends Vue {
         })
         this.refreshSnapshot()
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'SnapshotName', title: '名称', ellipsis: true },
+        { colKey: 'DiskSize', title: '容量', ellipsis: true },
+        { colKey: 'Percent', title: '进度', ellipsis: true },
+        { colKey: 'LatestOperationState', title: '状态',  ellipsis: true },
+        { colKey: 'CreatedTime', title: '创建时间',  ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -87,43 +98,29 @@ export default class LighthouseSnapshot extends Vue {
                 创建快照
             </t-button>
         </template>
-        <el-table :data="snapshotList.SnapshotSet" table-layout="fixed">
-            <el-table-column prop="SnapshotName" label="名称" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="DiskSize" label="容量" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.DiskSize + "GB" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="Percent" label="进度" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.Percent + "%" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="LatestOperationState" label="状态" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.LatestOperationState }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="CreatedTime" label="创建时间" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ dateFormat(scope.row.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="180" align="center">
-                <template #default="scope">
-                    <t-popconfirm content="确定回滚?" @confirm="applySnapshot(scope.row)">
-                        <t-link theme="warning" hover="color">
-                            回滚
-                        </t-link>
-                    </t-popconfirm>
-                    <t-popconfirm content="确定删除?" @confirm="deleteSnapshot(scope.row)">
-                        <t-link theme="danger" hover="color">
-                            删除
-                        </t-link>
-                    </t-popconfirm>
-                </template>
-            </el-table-column>
-        </el-table>
+        <t-table :data="snapshotList.SnapshotSet" :columns="tableColumns" row-key="SnapshotId">
+            <template #DiskSize="{ row }">
+                {{ row.DiskSize + "GB" }}
+            </template>
+            <template #Percent="{ row }">
+                {{ row.Percent + "%" }}
+            </template>
+            <template #CreatedTime="{ row }">
+                {{ dateFormat(row.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
+            </template>
+            <template #Operation="{ row }">
+                <t-popconfirm content="确定回滚?" @confirm="applySnapshot(row)">
+                    <t-link theme="warning" hover="color">
+                        回滚
+                    </t-link>
+                </t-popconfirm>
+                <t-popconfirm content="确定删除?" @confirm="deleteSnapshot(row)">
+                    <t-link theme="danger" hover="color">
+                        删除
+                    </t-link>
+                </t-popconfirm>
+            </template>
+        </t-table>
     </t-card>
 
     <SnapshotCreate ref="createModal" @submit="refreshSnapshot" />

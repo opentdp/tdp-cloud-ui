@@ -87,6 +87,16 @@ export default class CloudflareCustomHostnames extends Vue {
         await CfApi.zones.customHostnamesDelete(this.domainInfo.id, rid)
         this.getCustomHostnames()
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'hostname', title: '主机记录', ellipsis: true },
+        { colKey: 'status', title: '域名状态', ellipsis: true },
+        { colKey: 'ssl.status', title: '证书状态', ellipsis: true },
+        { colKey: 'expires_on', title: '证书有效期', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -145,31 +155,20 @@ export default class CloudflareCustomHostnames extends Vue {
 
         <t-divider />
 
-        <el-table :data="customHostnames" table-layout="fixed">
-            <el-table-column prop="hostname" label="主机记录" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="status" label="域名状态" sortable show-overflow-tooltip />
-            <el-table-column prop="ssl.status" label="证书状态" show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.ssl.status }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="ssl.certificates" label="证书有效期" show-overflow-tooltip>
-                <template #default="scope">
-                    {{
-                        scope.row.ssl.certificates &&
-                        dateFormat(scope.row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
-                    }}
-                </template>
-            </el-table-column>
-            <el-table-column label="操作" width="90" align="center">
-                <template #default="scope">
-                    <t-popconfirm content="确定删除?" @confirm="deleteCustomHostnames(scope.row.id)">
-                        <t-link theme="danger" hover="color">
-                            删除
-                        </t-link>
-                    </t-popconfirm>
-                </template>
-            </el-table-column>
-        </el-table>
+        <t-table :data="customHostnames" :columns="tableColumns" row-key="id">
+            <template #expires_on="{ row }">
+                {{
+                    row.ssl.certificates &&
+                        dateFormat(row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
+                }}
+            </template>
+            <template #Operation="{ row }">
+                <t-popconfirm content="确定删除?" @confirm="deleteCustomHostnames(row.id)">
+                    <t-link theme="danger" hover="color">
+                        删除
+                    </t-link>
+                </t-popconfirm>
+            </template>
+        </t-table>
     </t-card>
 </template>

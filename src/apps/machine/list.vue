@@ -58,9 +58,23 @@ export default class MachineList extends Vue {
 
     public selectedRow!: MachineItem
 
-    public tableRowChange(row: MachineItem) {
-        this.selectedRow = row
+    public tableRowChange(ids: number[]) {
+        const ret = this.machineList.find(item => item.Id === ids[0])
+        this.selectedRow = ret as MachineItem
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'row-select', type: 'single', width: "30px" },
+        { colKey: 'HostName', title: '名称', ellipsis: true },
+        { colKey: 'IpAddress', title: '公网 IP', ellipsis: true },
+        { colKey: 'Region', title: '地域', ellipsis: true },
+        { colKey: 'Model', title: '云账号', ellipsis: true },
+        { colKey: 'WorkerId', title: '土豆片', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" }
+    ]
+
 }
 </script>
 
@@ -79,44 +93,35 @@ export default class MachineList extends Vue {
             <template #subtitle>
                 <small>记录总数: {{ machineList.length }}</small>
             </template>
-            <el-table v-loading="loading" :data="machineList" table-layout="fixed" highlight-current-row
-                @current-change="tableRowChange">
-                <el-table-column prop="HostName" label="名称" fixed sortable show-overflow-tooltip />
-                <el-table-column prop="IpAddress" label="公网 IP" sortable show-overflow-tooltip />
-                <el-table-column prop="Region" label="地域" sortable show-overflow-tooltip />
-                <el-table-column prop="Model" label="云账号" sortable show-overflow-tooltip>
-                    <template #default="scope">
-                        <t-tooltip :content="MachineModels[scope.row.Model]">
-                            {{ cache.vendorList[scope.row.VendorId]?.Description || "-" }}
-                        </t-tooltip>
-                    </template>
-                </el-table-column>
-                <el-table-column prop="WorkerId" label="土豆片" show-overflow-tooltip>
-                    <template #default="scope">
-                        <t-link v-if="workerList[scope.row.WorkerId]" theme="success" hover="color">
-                            已连接
+            <t-table v-loading="loading" :data="machineList" :columns="tableColumns" row-key="Id" select-on-row-click
+                @select-change="tableRowChange">
+                <template #Model="{ row }">
+                    <t-tooltip :content="MachineModels[row.Model]">
+                        {{ cache.vendorList[row.VendorId]?.Description || "-" }}
+                    </t-tooltip>
+                </template>
+                <template #WorkerId="{ row }">
+                    <t-link v-if="workerList[row.WorkerId]" theme="success" hover="color">
+                        已连接
+                    </t-link>
+                    <t-link v-else-if="row.WorkerMeta" theme="danger" hover="color">
+                        未连接
+                    </t-link>
+                    <t-link v-else theme="warning" hover="color">
+                        未注册
+                    </t-link>
+                </template>
+                <template #Operation="{ row, rowIndex }">
+                    <t-link v-route="'/machine/detail/' + row.Id" theme="primary" hover="color">
+                        管理
+                    </t-link>
+                    <t-popconfirm content="确定删除?" @confirm="deleteMachine(rowIndex)">
+                        <t-link theme="danger" hover="color">
+                            删除
                         </t-link>
-                        <t-link v-else-if="scope.row.WorkerMeta" theme="danger" hover="color">
-                            未连接
-                        </t-link>
-                        <t-link v-else theme="warning" hover="color">
-                            未注册
-                        </t-link>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" width="180" align="center">
-                    <template #default="scope">
-                        <t-link v-route="'/machine/detail/' + scope.row.Id" theme="primary" hover="color">
-                            管理
-                        </t-link>
-                        <t-popconfirm content="确定删除?" @confirm="deleteMachine(scope.$index)">
-                            <t-link theme="danger" hover="color">
-                                删除
-                            </t-link>
-                        </t-popconfirm>
-                    </template>
-                </el-table-column>
-            </el-table>
+                    </t-popconfirm>
+                </template>
+            </t-table>
         </t-card>
 
         <t-card v-if="selectedRow" title="快捷命令" hover-shadow header-bordered>

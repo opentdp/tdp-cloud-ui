@@ -68,6 +68,19 @@ export default class DnspodBind extends Vue {
             CloudMeta: item,
         })
     }
+
+    // 表格定义
+
+    public tableColumns = [
+        { colKey: 'Name', title: '名称', ellipsis: true },
+        { colKey: 'Status', title: '状态', ellipsis: true },
+        { colKey: 'RecordCount', title: '记录数', ellipsis: true },
+        { colKey: 'EffectiveDNS', title: 'NS 服务器', ellipsis: true },
+        { colKey: 'DNSStatus', title: 'NS 记录', ellipsis: true },
+        { colKey: 'GradeTitle', title: '套餐', ellipsis: true },
+        { colKey: 'VipEndAt', title: '有效期', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
+    ]
 }
 </script>
 
@@ -76,33 +89,21 @@ export default class DnspodBind extends Vue {
         <template #subtitle>
             记录总数: {{ domainCount }}
         </template>
-        <el-table v-loading="loading" :data="domainList" table-layout="fixed">
-            <el-table-column prop="Name" label="域名" fixed sortable show-overflow-tooltip />
-            <el-table-column prop="Status" label="状态" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ DomainStatusMap[scope.row.Status] }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="RecordCount" label="记录数" sortable show-overflow-tooltip />
-            <el-table-column prop="EffectiveDNS" label="NS 服务器" show-overflow-tooltip />
-            <el-table-column prop="DNSStatus" label="NS 记录" sortable show-overflow-tooltip>
-                <template #default="scope">
-                    {{ scope.row.DNSStatus ? "错误" : "正常" }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="GradeTitle" label="套餐" sortable show-overflow-tooltip />
-            <el-table-column prop="VipEndAt" label="有效期" sortable show-overflow-tooltip />
-            <el-table-column label="操作" width="90" align="center">
-                <template #default="scope">
-                    <t-link v-if="boundList[scope.row.DomainId]" theme="success" hover="color"
-                        @click="syncDomian(scope.row)">
-                        同步
-                    </t-link>
-                    <t-link v-else theme="primary" hover="color" @click="bindDomian(scope.row)">
-                        导入
-                    </t-link>
-                </template>
-            </el-table-column>
-        </el-table>
+        <t-table v-loading="loading" :data="domainList" :columns="tableColumns" row-key="DomainId">
+            <template #Status="{ row }">
+                {{ DomainStatusMap[row.Status] }}
+            </template>
+            <template #DNSStatus="{ row }">
+                {{ row.DNSStatus ? "错误" : "正常" }}
+            </template>
+            <template #Operation="{ row }">
+                <t-link v-if="boundList[row.DomainId]" theme="success" hover="color" @click="syncDomian(row)">
+                    同步
+                </t-link>
+                <t-link v-else theme="primary" hover="color" @click="bindDomian(row)">
+                    导入
+                </t-link>
+            </template>
+        </t-table>
     </t-card>
 </template>
