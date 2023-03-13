@@ -12,7 +12,9 @@ export default class Error404 extends Vue {
 <template>
     <div class="error-page">
         <div class="error-code">
-            4<span>0</span>4
+            <span>4</span>
+            <span>0</span>
+            <span>4</span>
         </div>
         <div class="error-desc">
             啊哦~ 你所访问的页面不存在
@@ -36,23 +38,30 @@ export default class Error404 extends Vue {
     flex-direction: column;
     width: 100%;
     height: 100%;
-    background: #f3f3f3;
+    background: var(--td-bg-color-component);
 }
 
 .error-code {
     line-height: 1;
     font-size: 250px;
     font-weight: bolder;
-    color: #2d8cf0;
 
-    span {
-        color: #00a854;
+    span:nth-child(1) {
+        color: var(--td-brand-color-6);
+    }
+
+    span:nth-child(2) {
+        color: var(--td-success-color-5);
+    }
+
+    span:nth-child(3) {
+        color: var(--td-warning-color-6);
     }
 }
 
 .error-desc {
     font-size: 30px;
-    color: #777;
+    color: var(--td-text-color-placeholder);
 }
 
 .error-handle {

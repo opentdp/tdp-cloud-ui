@@ -63,19 +63,19 @@ export default class LayoutHeader extends Vue {
             </div>
         </template>
         <template #operations>
-            <!-- 用户头像 -->
-            <div class="user-avator">
-                <img src="@/assets/img/avatar.jpg">
-            </div>
-            <!-- 用户名下拉菜单 -->
-            <t-dropdown :options="userDropdown">
-                <t-link theme="default">
-                    {{ session.Username }}
-                    <template #suffix-icon>
-                        <t-icon name="chevron-down" size="16" />
-                    </template>
-                </t-link>
-            </t-dropdown>
+            <t-space>
+                <t-avatar size="large">
+                    <img src="@/assets/img/avatar.jpg">
+                </t-avatar>
+                <t-dropdown :options="userDropdown">
+                    <t-link theme="default">
+                        {{ session.Username }}
+                        <template #suffix-icon>
+                            <t-icon name="chevron-down" size="16" />
+                        </template>
+                    </t-link>
+                </t-dropdown>
+            </t-space>
         </template>
     </t-head-menu>
 </template>
@@ -83,16 +83,5 @@ export default class LayoutHeader extends Vue {
 <style lang="scss" scoped>
 .collapse-btn {
     cursor: pointer;
-}
-
-.user-avator {
-    margin-right: 16px;
-}
-
-.user-avator img {
-    display: block;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
 }
 </style>

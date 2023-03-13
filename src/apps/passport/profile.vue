@@ -74,9 +74,9 @@ export default class PassportProfile extends Vue {
             <t-col :span="5">
                 <t-card title="基础信息" hover-shadow header-bordered>
                     <div class="info">
-                        <div class="info-image">
+                        <t-avatar size="96px">
                             <img src="@/assets/img/avatar.jpg">
-                        </div>
+                        </t-avatar>
                         <div class="info-name">
                             {{ session.Username }}
                         </div>
@@ -113,8 +113,7 @@ export default class PassportProfile extends Vue {
                             <t-input v-model="formModel.Email" />
                         </t-form-item>
                         <t-form-item name="Description" label="简介">
-                            <t-textarea v-model="formModel.Description"
-                                :autosize="{ minRows: 3, maxRows: 15 }" />
+                            <t-textarea v-model="formModel.Description" :autosize="{ minRows: 3, maxRows: 15 }" />
                         </t-form-item>
                         <t-form-item>
                             <t-button theme="primary" type="submit">
@@ -133,26 +132,10 @@ export default class PassportProfile extends Vue {
     text-align: center;
     padding: 35px 0;
 
-    .info-image {
-        margin: auto;
-        width: 100px;
-        height: 100px;
-        background: #f8f8f8;
-        border: 1px solid #eee;
-        border-radius: 50px;
-        overflow: hidden;
-
-        img {
-            width: 100%;
-            height: 100%;
-        }
-    }
-
     .info-name {
         margin: 15px 0 10px;
-        font-size: 24px;
-        font-weight: 500;
-        color: #262626;
+        font-size: 150%;
+        font-weight: 600;
     }
 }
 </style>
