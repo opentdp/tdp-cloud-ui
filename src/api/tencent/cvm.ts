@@ -1,9 +1,13 @@
 import { TencentClient } from "./base"
-import { Cvm as ICvm } from "./typings"
+import { Cvm as ICvm, CvmDescribeRegionsResponse } from "./typings"
 
 export class CvmModel extends TencentClient {
     protected Service = "cvm"
     protected Version = "2017-03-12"
+
+    public describeInstanceStatistics(): Promise<CvmDescribeRegionsResponse> {
+        return this.bus({ Action: "DescribeInstanceStatistics", Region: "ap-guangzhou" })
+    }
 
     public describeRegions(): Promise<ICvm.DescribeRegionsResponse> {
         return this.bus({ Action: "DescribeRegions" }, 600)

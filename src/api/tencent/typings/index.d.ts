@@ -4,3 +4,12 @@ export type * as Cvm from "tencentcloud-sdk-nodejs/tencentcloud/services/cvm/v20
 export type * as Lighthouse from "tencentcloud-sdk-nodejs/tencentcloud/services/lighthouse/v20200324/lighthouse_models"
 export type * as Monitor from "tencentcloud-sdk-nodejs/tencentcloud/services/monitor/v20180724/monitor_models"
 export type * as Tat from "tencentcloud-sdk-nodejs/tencentcloud/services/tat/v20201028/tat_models"
+
+export interface CvmDescribeRegionsResponse {
+    InstanceStatisticsSet: {
+        ExpiredInstanceCount: number
+        NewInstanceCount: number
+        Region: string
+        TotalCount: number
+    }[]
+}

@@ -26,28 +26,40 @@ export default class CvmBind extends Vue {
 
     public created() {
         TcApi.vendor(this.vendorId)
-        this.getRegionInstanceList()
+        this.getRegionList()
+        this.getInstanceList()
     }
 
-    // 获取列表
+    // 区域列表
 
     public regionList: Record<string, TC.Cvm.RegionInfo> = {}
+
+    async getRegionList() {
+        const res = await TcApi.cvm.describeRegions()
+        this.loading--
+        res.RegionSet.forEach(async item => {
+            this.regionList[item.Region] = item
+        })
+    }
+
+    // 实例列表
 
     public instanceList: TC.Cvm.Instance[] = []
     public instanceCount = 0
 
-    async getRegionInstanceList() {
-        const res = await TcApi.cvm.describeRegions()
-        this.loading = res.TotalCount
-        res.RegionSet.forEach(async item => {
-            this.regionList[item.Region] = item
-            // 获取当前大区实例
+    async getInstanceList() {
+        const res = await TcApi.cvm.describeInstanceStatistics()
+        res.InstanceStatisticsSet.forEach(async item => {
+            if (item.TotalCount == 0) {
+                return
+            }
+            this.loading++
             const rs2 = await TcApi.cvm.describeInstances(item.Region)
+            this.loading--
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet)
                 this.instanceCount += rs2.TotalCount
             }
-            this.loading--
         })
     }
 
