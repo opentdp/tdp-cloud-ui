@@ -101,7 +101,7 @@ export default class PassportRegister extends Vue {
     justify-content: center;
     width: 100%;
     height: 100%;
-    background-image: url(@/assets/img/bg01.jpg);
+    background-image: url(/assets/img/bg01.jpg);
     background-position: center center;
     background-size: cover;
 }

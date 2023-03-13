@@ -64,9 +64,7 @@ export default class LayoutHeader extends Vue {
         </template>
         <template #operations>
             <t-space>
-                <t-avatar size="large">
-                    <img src="@/assets/img/avatar.jpg">
-                </t-avatar>
+                <t-avatar size="large" image="/assets/img/avatar.jpg" />
                 <t-dropdown :options="userDropdown">
                     <t-link theme="default">
                         {{ session.Username }}

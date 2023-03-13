@@ -2,20 +2,7 @@
 
 import { UserConfig } from "vite"
 
-import vue from "@vitejs/plugin-vue"
-import replace from "./vite-plugin-replace"
-
 export const config: UserConfig = {
-    plugins: [
-        vue(),
-        replace([
-            {
-                file: /tdesign-.+\.js/,
-                source: /https:\/\/[^"']+\/fonts\/index\.js/g,
-                target: 'src/assets/icon.js',
-            },
-        ])
-    ],
     server: {
         port: 7900,
         open: false,
