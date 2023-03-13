@@ -10,7 +10,6 @@ import setupPinia from "@/setup/pinia"
 import setupRoute from "@/setup/route"
 import setupRouter from "@/setup/router"
 
-import setupElement from "@/setup/element"
 import setupTDesign from "@/setup/tdesign"
 
 import setupEcharts from "@/setup/echarts"
@@ -23,7 +22,6 @@ setupPinia(app)
 setupRoute(app)
 setupRouter(app)
 
-setupElement(app)
 setupTDesign(app)
 
 setupEcharts(app)

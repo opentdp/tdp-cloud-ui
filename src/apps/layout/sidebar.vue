@@ -11,83 +11,83 @@ export default class LayoutSidebar extends Vue {
 
     public items: MenuItem[] = [
         {
-            icon: "HomeFilled",
+            icon: "home",
             index: "/dashboard",
             title: "首页",
         },
         {
-            icon: "Monitor",
+            icon: "laptop",
             index: "/machine/list",
             title: "主机管理",
         },
         {
-            icon: "Lightning",
+            icon: "internet",
             index: "/domain/list",
             title: "域名解析",
         },
         {
-            icon: "Crop",
+            icon: "lock-off",
             index: "/certbot/list",
             title: "SSL 证书",
         },
         {
-            icon: "Coin",
+            icon: "control-platform",
             index: "/task",
             title: "快捷命令",
             subs: [
                 {
-                    icon: "Filter",
+                    icon: "code",
                     index: "/script/list",
                     title: "脚本管理",
                 },
                 {
-                    icon: "Finished",
+                    icon: "folder-open",
                     index: "/taskline/list",
                     title: "任务记录",
                 },
             ]
         },
         {
-            icon: "Connection",
+            icon: "fork",
             index: "/terminal",
             title: "SSH 终端",
             subs: [
                 {
-                    icon: "Link",
+                    icon: "fullscreen-exit",
                     index: "/terminal/ssh",
                     title: "SSH 连接",
                 },
                 {
-                    icon: "Lock",
+                    icon: "gift",
                     index: "/keypair/list",
                     title: "密钥管理",
                 },
             ]
         },
         {
-            icon: "Switch",
+            icon: "wallet",
             index: "/vendor",
             title: "厂商管理",
             subs: [
                 {
-                    icon: "PartlyCloudy",
+                    icon: "cloud",
                     index: "/vendor/tencent",
                     title: "腾讯云",
                 },
                 {
-                    icon: "PartlyCloudy",
+                    icon: "cloud",
                     index: "/vendor/alibaba",
                     title: "阿里云",
                 },
                 {
-                    icon: "PartlyCloudy",
+                    icon: "cloud",
                     index: "/vendor/cloudflare",
                     title: "Cloudflare",
                 },
             ]
         },
         {
-            icon: "Cpu",
+            icon: "share",
             index: "/workhub/worker",
             title: "节点管理",
         },
@@ -134,13 +134,13 @@ interface MenuItem {
                         <span>{{ item.title }}</span>
                     </template>
                     <template #icon>
-                        <component :is="item.icon" class="t-icon" />
+                        <t-icon :name="item.icon" />
                     </template>
                     <t-menu-item v-for="item2 in item.subs" :key="item2.index" :value="item2.index"
                         :to="{ path: item2.index }">
                         {{ item2.title }}
                         <template #icon>
-                            <component :is="item2.icon" class="t-icon" />
+                            <t-icon :name="item2.icon" />
                         </template>
                     </t-menu-item>
                 </t-submenu>
@@ -149,7 +149,7 @@ interface MenuItem {
                 <t-menu-item :key="item.index" :value="item.index" :to="{ path: item.index }">
                     <span>{{ item.title }}</span>
                     <template #icon>
-                        <component :is="item.icon" class="t-icon" />
+                        <t-icon :name="item.icon" />
                     </template>
                 </t-menu-item>
             </template>
