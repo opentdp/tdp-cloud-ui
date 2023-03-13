@@ -58,8 +58,8 @@ export default class LayoutHeader extends Vue {
     <t-head-menu>
         <template #logo>
             <div class="collapse-btn" @click="collapseChange">
-                <t-icon v-if="layout.Collapse" name="menu-fold" :size="30" />
-                <t-icon v-else name="menu-unfold" :size="30" />
+                <t-icon v-if="layout.Collapse" name="menu-fold" size="30" />
+                <t-icon v-else name="menu-unfold" size="30" />
             </div>
         </template>
         <template #operations>
