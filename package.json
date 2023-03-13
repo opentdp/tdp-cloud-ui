@@ -5,6 +5,7 @@
     "scripts": {
         "dev": "vite --mode development",
         "build": "vue-tsc --noEmit && vite build --mode release",
+        "postbuild": "node scripts/copy-files.mjs",
         "preview": "vite preview",
         "lint": "eslint src/**/*.{js,ts,vue}",
         "lint:fix": "eslint --fix src/**/*.{js,ts,vue}"
