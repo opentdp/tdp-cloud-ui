@@ -2,6 +2,7 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import layoutStore from "@/store/layout"
+import { onBeforeRouteUpdate, RouteLocationNormalized } from "vue-router"
 
 @Component
 export default class LayoutSidebar extends Vue {
@@ -93,12 +94,14 @@ export default class LayoutSidebar extends Vue {
         },
     ]
 
-    get defaultExpanded() {
-        if (this.items.findIndex(item => item.index === this.$route.path) >= 0) {
+    expanded = [] as string[]
+
+    getExpanded(to: RouteLocationNormalized): string[] {
+        if (this.items.findIndex(item => item.index === to.path) >= 0) {
             return []
         } else {
             const idx = this.items.findIndex(item => {
-                return item.subs && item.subs.findIndex(sub_item => sub_item.index === this.$route.path) >= 0
+                return item.subs && item.subs.findIndex(sub_item => sub_item.index === to.path) >= 0
             })
             if (idx == -1) {
                 return []
@@ -106,6 +109,16 @@ export default class LayoutSidebar extends Vue {
                 return [this.items[idx].index]
             }
         }
+    }
+
+    mounted() {
+        this.expanded = this.getExpanded(this.$route)
+        onBeforeRouteUpdate((to) => {
+            const exp = new Set<string>(this.expanded)
+            this.getExpanded(to).forEach(item => exp.add(item))
+            this.expanded = Array.from(exp)
+        })
+
     }
 }
 
@@ -118,7 +131,7 @@ interface MenuItem {
 </script>
 
 <template>
-    <t-menu :value="$route.path" :collapsed="layout.Collapse" :default-expanded="defaultExpanded" expand-mutex>
+    <t-menu :value="$route.path" :collapsed="layout.Collapse" :expanded="expanded" expand-mutex>
         <template #logo>
             <div v-if="layout.Collapse" class="logo">
                 TDP
