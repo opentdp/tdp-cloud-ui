@@ -16,7 +16,7 @@ import {
     ToolboxComponent,
     TooltipComponent,
 } from "echarts/components"
-import { BarChart, LineChart, GaugeChart, PieChart } from "echarts/charts"
+import { BarChart, LineChart, PieChart } from "echarts/charts"
 import { LabelLayout } from "echarts/features"
 import { CanvasRenderer } from "echarts/renderers"
 
@@ -31,7 +31,6 @@ use([
     // Chart
     BarChart,
     LineChart,
-    GaugeChart,
     PieChart,
     // Feature
     LabelLayout,
