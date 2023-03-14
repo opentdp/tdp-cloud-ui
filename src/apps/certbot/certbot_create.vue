@@ -101,11 +101,13 @@ export default class CertbotCreate extends Vue {
             <t-form-item name="Domain" label="域名">
                 <t-input-adornment>
                     <t-input v-model="domainSub" suffix="." placeholder="子域名" />
+                    <template #append>
+                        <t-select v-if="domainList.length > 0" v-model="domainId">
+                            <t-option v-for="v, k in domainList" :key="k" :value="k" :label="v.Name" />
+                        </t-select>
+                        <t-input v-else value="请先导入域名资源" disabled />
+                    </template>
                 </t-input-adornment>
-                <t-select v-if="domainList.length > 0" v-model="domainId">
-                    <t-option v-for="v, k in domainList" :key="k" :value="k" :label="v.Name" />
-                </t-select>
-                <t-input v-else value="请先导入域名资源" disabled />
             </t-form-item>
             <t-form-item name="Email" label="邮箱">
                 <t-input v-model="formModel.Email" />
