@@ -74,7 +74,7 @@ export default class PassportProfile extends Vue {
             <t-col :span="5">
                 <t-card title="基础信息" hover-shadow header-bordered>
                     <div class="info">
-                        <t-avatar size="96px" image="/assets/img/avatar.jpg" />
+                        <t-avatar size="96px" image="assets/img/avatar.jpg" />
                         <div class="info-name">
                             {{ session.Username }}
                         </div>
