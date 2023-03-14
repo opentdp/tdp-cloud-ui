@@ -25,7 +25,23 @@ export default class WorkerStatChart extends Vue {
         clearInterval(this.timer)
     }
 
-    // 系统信息
+    // 获取系统信息
+
+    public statDetail!: DetailStat
+
+    async getDetailStat() {
+        if (this.id === "host") {
+            const res = await NaApi.workhub.host()
+            this.statDetail = res.Stat
+        } else if (this.id) {
+            const res = await NaApi.workhub.stat(this.id)
+            this.statDetail = res
+        }
+        this.updateConfig()
+        this.loading = false
+    }
+
+    // 计算统计信息
 
     public stat = {
         cpuPercent: 0,
@@ -38,28 +54,16 @@ export default class WorkerStatChart extends Vue {
         swapColor: "#2ba471",
     }
 
-    async getDetailStat() {
-        if (this.id === "host") {
-            const res = await NaApi.workhub.host()
-            this.updateConfig(res.Stat)
-        } else if (this.id) {
-            const res = await NaApi.workhub.stat(this.id)
-            this.updateConfig(res)
-        }
-        this.loading = false
-    }
-
-    async updateConfig(stat: DetailStat) {
+    public updateConfig() {
+        const stat = this.statDetail
         if (stat.CpuPercent) {
             this.stat.cpuPercent = Math.round(
                 stat.CpuPercent.reduce((a, b) => a + b, 0) / stat.CpuPercent.length
             )
             if (this.stat.cpuPercent > 80) {
-                this.stat.cpuColor = "#f00"
+                this.stat.memoryColor = "#d54941"
             } else if (this.stat.cpuPercent > 50) {
-                this.stat.cpuColor = "#ff0"
-            } else {
-                this.stat.cpuColor = "#2ba471"
+                this.stat.memoryColor = "#e37318"
             }
         }
         if (stat.MemoryTotal > 0) {
@@ -114,10 +118,3 @@ export default class WorkerStatChart extends Vue {
         </t-progress>
     </t-space>
 </template>
-
-<style lang="scss" scoped>
-.chart {
-    width: 200px;
-    height: 200px;
-}
-</style>
