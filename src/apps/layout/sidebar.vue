@@ -94,9 +94,11 @@ export default class LayoutSidebar extends Vue {
         },
     ]
 
-    expanded = [] as string[]
+    // 侧栏控制
 
-    getExpanded(to: RouteLocationNormalized): string[] {
+    public expanded = [] as string[]
+
+    public getExpanded(to: RouteLocationNormalized): string[] {
         if (this.items.findIndex(item => item.index === to.path) >= 0) {
             return []
         } else {
@@ -111,7 +113,7 @@ export default class LayoutSidebar extends Vue {
         }
     }
 
-    mounted() {
+    public mounted() {
         this.expanded = this.getExpanded(this.$route)
         onBeforeRouteUpdate((to) => {
             const exp = new Set<string>(this.expanded)
@@ -134,10 +136,10 @@ interface MenuItem {
     <t-menu v-model:expanded="expanded" :value="$route.path" :collapsed="layout.Collapse">
         <template #logo>
             <div v-if="layout.Collapse" class="logo">
-                TDP
+                <img src="assets/img/icon.svg">
             </div>
             <div v-else class="logo">
-                TDP Cloud
+                <img src="assets/img/logo.svg">
             </div>
         </template>
         <template v-for="item in items">
@@ -172,7 +174,10 @@ interface MenuItem {
 
 <style lang="scss" scoped>
 .logo {
-    text-align: center;
-    width: 100%;
+    img {
+        height: 40px;
+        margin-top: 8px;
+        margin-left: 12px;
+    }
 }
 </style>
