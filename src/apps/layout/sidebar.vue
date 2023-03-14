@@ -131,7 +131,7 @@ interface MenuItem {
 </script>
 
 <template>
-    <t-menu :value="$route.path" :collapsed="layout.Collapse" :expanded="expanded" expand-mutex>
+    <t-menu v-model:expanded="expanded" :value="$route.path" :collapsed="layout.Collapse">
         <template #logo>
             <div v-if="layout.Collapse" class="logo">
                 TDP
