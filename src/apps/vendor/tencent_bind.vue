@@ -15,7 +15,7 @@ import DnspodBind from "@/provider/tencent/dnspod/bind.vue"
 })
 export default class VendorTencentBind extends Vue {
     public curTab = {
-        id: "lighthouse", label: ""
+        id: "dnspod", label: ""
     }
 
     // 初始化
@@ -77,14 +77,14 @@ export default class VendorTencentBind extends Vue {
         </t-breadcrumb>
 
         <t-tabs v-model="curTab.id" theme="card">
-            <t-tab-panel value="cvm" label="CVM 服务器" :destroy-on-hide="false">
-                <CvmBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
+            <t-tab-panel value="dnspod" label="域名解析" :destroy-on-hide="false">
+                <DnspodBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
             </t-tab-panel>
             <t-tab-panel value="lighthouse" label="轻量服务器" :destroy-on-hide="false">
                 <LighthouseBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </t-tab-panel>
-            <t-tab-panel value="dnspod" label="域名解析" :destroy-on-hide="false">
-                <DnspodBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
+            <t-tab-panel value="cvm" label="CVM 服务器" :destroy-on-hide="false">
+                <CvmBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </t-tab-panel>
         </t-tabs>
     </t-space>

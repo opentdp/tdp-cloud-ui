@@ -87,7 +87,7 @@ export default class CloudflareDomain extends Vue {
                     添加记录
                 </t-button>
             </template>
-            <t-table v-loading="!recordList" :data="recordList" :columns="tableColumns" row-key="id">
+            <t-table :loading="!recordList" :data="recordList" :columns="tableColumns" row-key="id">
                 <template #zone_name="{ row }">
                     {{ row.name.replace(row.zone_name, "").replace(/\.$/, "") || "@" }}
                 </template>

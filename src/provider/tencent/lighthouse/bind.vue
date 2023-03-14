@@ -37,17 +37,16 @@ export default class LighthouseBind extends Vue {
     public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await TcApi.lighthouse.describeRegions()
+        const res = await TcApi.lighthouse.describeRegions().finally(() => this.loading--)
         this.loading = res.TotalCount
         res.RegionSet.forEach(async item => {
             this.regionList[item.Region] = item
             // 获取当前大区实例
-            const rs2 = await TcApi.lighthouse.describeInstances(item.Region)
+            const rs2 = await TcApi.lighthouse.describeInstances(item.Region).finally(() => this.loading--)
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet)
                 this.instanceCount += rs2.TotalCount
             }
-            this.loading--
         })
     }
 
@@ -174,7 +173,7 @@ export default class LighthouseBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
+        <t-table :async-loading="loading ? 'loading' : ''" :data="instanceList" :columns="tableColumns"
             row-key="InstanceId">
             <template #Zone="{ row }">
                 {{ parseRegion(row.Zone) }}

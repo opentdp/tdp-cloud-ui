@@ -35,7 +35,7 @@ export default class EcsBind extends Vue {
     public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await AcApi.ecs.describeRegions()
+        const res = await AcApi.ecs.describeRegions().finally(() => this.loading--)
         this.loading = res.TotalCount
         res.Regions.Region.forEach(async (item: any) => {
             const regionId = item?.RegionId || ""
@@ -46,7 +46,7 @@ export default class EcsBind extends Vue {
                 [regionId]: regionId,
             }
             // 获取当前大区实例
-            const rs2 = await AcApi.ecs.describeInstances(regionId)
+            const rs2 = await AcApi.ecs.describeInstances(regionId).finally(() => this.loading--)
             const {
                 TotalCount,
                 Instances: { Instance },
@@ -59,7 +59,6 @@ export default class EcsBind extends Vue {
                 this.instanceList = this.instanceList.concat(temp)
                 this.instanceCount += rs2.TotalCount
             }
-            this.loading--
         })
     }
 
@@ -142,7 +141,7 @@ export default class EcsBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
+        <t-table :async-loading="loading ? 'loading' : ''" :data="instanceList" :columns="tableColumns"
             row-key="InstanceId">
             <template #RegionName="{ row }">
                 {{ row.RegionName }}

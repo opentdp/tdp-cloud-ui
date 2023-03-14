@@ -35,36 +35,30 @@ export default class SwasBind extends Vue {
     public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await AcApi.swas.describeRegions()
+        const res = await AcApi.swas.describeRegions().finally(() => this.loading--)
         this.loading = res.TotalCount
         res.Regions.forEach(async (item: any) => {
             const regionId = item?.RegionId || ""
-            const { LocalName } = item
-
             this.regionList = {
                 ...this.regionList,
                 [regionId]: regionId,
             }
             // 获取当前大区实例
-            const rs2 = await AcApi.swas.describeInstances(regionId)
+            const rs2 = await AcApi.swas.describeInstances(regionId).finally(() => this.loading--)
             const rsPlan = await AcApi.swas.describeListPlans(regionId)
-
-            const { TotalCount, Instances } = rs2
-            if (TotalCount && Instances) {
-                const temp = Instances.map((i: any) => {
+            if (rs2.TotalCount && rs2.Instances) {
+                const temp = rs2.Instances.map((i: any) => {
                     const { PlanId } = i
                     const instancePlan = rsPlan.Plans.find((x: any) => x.PlanId === PlanId)
                     return ({
                         ...i,
                         ...instancePlan,
-                        RegionName: LocalName,
+                        RegionName: item.LocalName,
                     })
                 })
-
                 this.instanceList = this.instanceList.concat(temp)
                 this.instanceCount += rs2.TotalCount
             }
-            this.loading--
         })
     }
 
@@ -147,7 +141,7 @@ export default class SwasBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
+        <t-table :async-loading="loading ? 'loading' : ''" :data="instanceList" :columns="tableColumns"
             row-key="InstanceId">
             <template #RegionName="{ row }">
                 {{ row.RegionName }}

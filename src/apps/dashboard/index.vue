@@ -48,7 +48,7 @@ export default class DashboardIndex extends Vue {
             <StatChart id="host" />
         </t-card>
 
-        <t-card v-loading="!summary" title="资源统计" hover-shadow header-bordered>
+        <t-card :loading="!summary" title="资源统计" hover-shadow header-bordered>
             <t-space v-if="summary" fixed break-line>
                 <t-card v-route="'/vendor/tencent'" class="summary" hover-shadow>
                     <div>厂商</div>
@@ -73,7 +73,7 @@ export default class DashboardIndex extends Vue {
             </t-space>
         </t-card>
 
-        <t-card v-loading="!server" title="系统信息" hover-shadow header-bordered>
+        <t-card :loading="!server" title="系统信息" hover-shadow header-bordered>
             <t-list v-if="server" :split="true">
                 <t-list-item>
                     <b>主机名</b>

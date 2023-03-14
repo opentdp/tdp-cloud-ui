@@ -72,7 +72,7 @@ export default class KeypairList extends Vue {
                     添加密钥
                 </t-button>
             </template>
-            <t-table v-loading="loading" :data="keylist" :columns="tableColumns" row-key="Id">
+            <t-table :loading="loading" :data="keylist" :columns="tableColumns" row-key="Id">
                 <template #Operation="{ rowIndex }">
                     <t-popconfirm content="确定删除?" @confirm="deleteKey(rowIndex)">
                         <t-link theme="danger" hover="color">

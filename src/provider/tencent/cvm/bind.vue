@@ -35,8 +35,7 @@ export default class CvmBind extends Vue {
     public regionList: Record<string, TC.Cvm.RegionInfo> = {}
 
     async getRegionList() {
-        const res = await TcApi.cvm.describeRegions()
-        this.loading--
+        const res = await TcApi.cvm.describeRegions().finally(() => this.loading--)
         res.RegionSet.forEach(async item => {
             this.regionList[item.Region] = item
         })
@@ -54,8 +53,7 @@ export default class CvmBind extends Vue {
                 return
             }
             this.loading++
-            const rs2 = await TcApi.cvm.describeInstances(item.Region)
-            this.loading--
+            const rs2 = await TcApi.cvm.describeInstances(item.Region).finally(() => this.loading--)
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet)
                 this.instanceCount += rs2.TotalCount
@@ -186,8 +184,7 @@ export default class CvmBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
-            row-key="InstanceId">
+        <t-table :async-loading="loading ? 'loading' : ''" :data="instanceList" :columns="tableColumns" row-key="InstanceId">
             <template #Placement="{ row }">
                 {{ parseRegion(row.Placement.Zone) }}
             </template>
