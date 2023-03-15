@@ -3,32 +3,22 @@ import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
 import { UserSummary } from "@/api/native/passport"
-import { HostDetail } from "@/api/native/workhub"
 
-import { bytesToSize } from "@/helper/format"
+import sessionStore from "@/store/session"
 
-import StatChart from "@/provider/worker/stat_chart.vue"
+import SysLoad from "@/provider/worker/sys_load.vue"
+import SysInfo from "@/provider/worker/sys_info.vue"
 
 @Component({
-    components: { StatChart }
+    components: { SysLoad, SysInfo }
 })
 export default class DashboardIndex extends Vue {
-    public bytesToSize = bytesToSize
+    public session = sessionStore()
 
     // 初始化
 
     public created() {
-        this.getHostDetail()
         this.getUserSummary()
-    }
-
-    // 系统信息
-
-    public server!: HostDetail
-
-    async getHostDetail() {
-        const res = await NaApi.workhub.host()
-        this.server = res
     }
 
     // 资源统计
@@ -44,10 +34,6 @@ export default class DashboardIndex extends Vue {
 
 <template>
     <t-space fixed direction="vertical">
-        <t-card>
-            <StatChart id="host" />
-        </t-card>
-
         <t-card :loading="!summary" title="资源统计" hover-shadow header-bordered>
             <t-space v-if="summary" fixed break-line>
                 <t-card v-route="'/vendor/tencent'" class="summary" hover-shadow>
@@ -62,6 +48,10 @@ export default class DashboardIndex extends Vue {
                     <div>域名</div>
                     <b>{{ summary.Domain }}</b>
                 </t-card>
+                <t-card v-route="'/certbot/list'" class="summary" hover-shadow>
+                    <div>证书</div>
+                    <b>{{ summary.Certjob }}</b>
+                </t-card>
                 <t-card v-route="'/keypair/list'" class="summary" hover-shadow>
                     <div>密钥</div>
                     <b>{{ summary.Keypair }}</b>
@@ -73,45 +63,12 @@ export default class DashboardIndex extends Vue {
             </t-space>
         </t-card>
 
-        <t-card :loading="!server" title="系统信息" hover-shadow header-bordered>
-            <t-list v-if="server" :split="true">
-                <t-list-item>
-                    <b>主机名</b>
-                    <span>{{ server.Stat.HostName }}</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>CPU 型号</b>
-                    <span>{{ server.Stat.CpuModel[0] }}</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>CPU 核心</b>
-                    <span>内核：{{ server.Stat.CpuCore }}，逻辑处理器：{{ server.Stat.CpuCoreLogic }}</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>内存</b>
-                    <span>{{ bytesToSize(server.Stat.MemoryTotal) }}</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>虚拟内存</b>
-                    <span>{{ bytesToSize(server.Stat.SwapTotal) }}</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>硬盘容量</b>
-                    <span>{{ bytesToSize(server.Stat.DiskTotal) }}</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>操作系统</b>
-                    <span>{{ server.Stat.Platform }}（{{ server.Stat.KernelArch }}）</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>运行时长</b>
-                    <span>{{ (server.Stat.Uptime / 86400).toFixed(1) }} 天</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>公网 IP</b>
-                    <span>{{ server.Stat.IpAddress }}</span>
-                </t-list-item>
-            </t-list>
+        <t-card v-if="session.UserLevel == 1" title="系统负载" hover-shadow header-bordered>
+            <SysLoad id="host" />
+        </t-card>
+
+        <t-card v-if="session.UserLevel == 1" title="系统信息" hover-shadow header-bordered>
+            <SysInfo id="host" />
         </t-card>
     </t-space>
 </template>

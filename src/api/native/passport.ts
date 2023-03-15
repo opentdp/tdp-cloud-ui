@@ -60,6 +60,7 @@ export interface UserUpdate {
 }
 
 export interface UserSummary {
+    Certjob: number
     Domain: number
     Keypair: number
     Machine: number
