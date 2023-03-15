@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData, AutoCompleteOption } from "tdesign-vue-next"
 
 import Api, { NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
@@ -42,7 +42,7 @@ export default class TerminalSshConnect extends Vue {
     }
 
     public machineFilter() {
-        const rs: unknown[] = []
+        const rs: AutoCompleteOption[] = []
         this.machineList.forEach(item => {
             if (item.OSType == "linux") {
                 rs.push({
@@ -75,7 +75,7 @@ export default class TerminalSshConnect extends Vue {
         PrivateKey: [{ required: true }],
     }
 
-    public formSubmit(ctx: SubmitContext<FormData>) {
+    public formSubmit(ctx: SubmitContext<TData>) {
         if (this.authType == "0") {
             this.formModel.PrivateKey = ""
         } else {

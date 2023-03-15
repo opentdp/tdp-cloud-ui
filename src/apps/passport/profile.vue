@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Ref, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
 import Api, { NaApi } from "@/api"
 import { UserUpdate } from "@/api/native/passport"
@@ -49,7 +49,7 @@ export default class PassportProfile extends Vue {
         OldPassword: [{ required: true }],
     }
 
-    public formSubmit(ctx: SubmitContext<FormData>) {
+    public formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
             Api.msg.err("请检查表单")
             return false

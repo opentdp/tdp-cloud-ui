@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
 import Api, { NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
@@ -31,7 +31,7 @@ export default class ScriptQuickExec extends Vue {
 
     // 提交表单
 
-    async formSubmit(ctx: SubmitContext<FormData>) {
+    async formSubmit(ctx: SubmitContext<TData>) {
         this.result = null
         if (ctx.validateResult !== true) {
             Api.msg.err("请检查表单")

@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
 import Api, { NaApi } from "@/api"
 import { VendorItem, VendorOrig } from "@/api/native/vendor"
@@ -52,7 +52,7 @@ export default class VendorCloudflare extends Vue {
         Description: [{ required: true }],
     }
 
-    async formSubmit(ctx: SubmitContext<FormData>) {
+    async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
             Api.msg.err("请检查表单")
             return false
