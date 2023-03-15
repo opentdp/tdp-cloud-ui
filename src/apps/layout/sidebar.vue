@@ -136,10 +136,10 @@ interface MenuItem {
     <t-menu v-model:expanded="expanded" :value="$route.path" :collapsed="layout.Collapse">
         <template #logo>
             <div v-if="layout.Collapse" class="logo">
-                <img src="assets/img/icon.svg">
+                <img src="/assets/img/icon.svg">
             </div>
             <div v-else class="logo">
-                <img src="assets/img/logo.svg">
+                <img src="/assets/img/logo.svg">
             </div>
         </template>
         <template v-for="item in items">
