@@ -28,7 +28,7 @@ export default class CertbotCreate extends Vue {
 
     // 创建表单
 
-    public domainId = -1
+    public domainId!: number
     public domainSub = ""
 
     @Ref
