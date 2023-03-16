@@ -4,13 +4,13 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
 import Api, { NaApi } from "@/api"
-import { KeypairTypeList, KeypairOrig } from "@/api/native/keypair"
+import { KeypairTypeList, KeypairOrig, KeypairItem } from "@/api/native/keypair"
 
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
-export default class KeypairCreate extends Vue {
+export default class KeypairUpdate extends Vue {
     public KeypairTypeList = KeypairTypeList
 
     // 创建表单
@@ -18,16 +18,10 @@ export default class KeypairCreate extends Vue {
     @Ref
     public formRef!: FormInstanceFunctions
 
-    public formModel: KeypairOrig = {
-        PublicKey: "",
-        PrivateKey: "",
-        KeyType: "",
-        Description: "",
-    }
+    public formModel!: KeypairOrig
 
     public formRules: FormRules<KeypairOrig> = {
         PublicKey: [{ required: true }],
-        PrivateKey: [{ required: true }],
         Description: [{ required: true }],
     }
 
@@ -38,7 +32,7 @@ export default class KeypairCreate extends Vue {
             Api.msg.err("请检查表单")
             return false
         }
-        await NaApi.keypair.create(this.formModel)
+        await NaApi.keypair.update(this.formModel)
         this.close()
     }
 
@@ -51,14 +45,15 @@ export default class KeypairCreate extends Vue {
         this.$emit("submit")
     }
 
-    public open() {
+    public open(data: KeypairItem) {
         this.visible = true
+        this.formModel = data
     }
 }
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="添加密钥" :footer="false" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="修改密钥" :footer="false" width="600px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="KeyType" label="类型">
                 <t-select v-model="formModel.KeyType">
