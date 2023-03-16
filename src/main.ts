@@ -3,7 +3,7 @@ import "@/helper/globals"
 import { createApp } from "vue"
 
 import App from "@/app.vue"
-import "@/theme/style.scss"
+import "@/theme/index.scss"
 
 import setupPinia from "@/setup/pinia"
 

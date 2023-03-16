@@ -26,12 +26,5 @@ export const config: UserConfig = {
             "@": "/src",
             "~": "/node_modules",
         },
-    },
-    css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: '@import "@/theme/style/variable.scss";',
-            },
-        },
-    },
+    }
 }
