@@ -86,7 +86,7 @@ export default class DnspodDomain extends Vue {
 </script>
 
 <template>
-    <t-card title="解析列表" hover-shadow header-bordered>
+    <t-card :loading="!recordList" title="解析列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ recordCountInfo?.TotalCount || 0 }}
         </template>
@@ -98,7 +98,7 @@ export default class DnspodDomain extends Vue {
                 添加记录
             </t-button>
         </template>
-        <t-table :loading="!recordList" :data="recordList" :columns="tableColumns" row-key="recordId">
+        <t-table :data="recordList" :columns="tableColumns" row-key="recordId">
             <template #Status="{ row }">
                 {{ row.Status == "ENABLE" ? "启用" : "禁用" }}
             </template>

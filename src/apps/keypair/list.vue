@@ -60,7 +60,7 @@ export default class KeypairList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="密钥列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="密钥列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ keylist?.length || 0 }}
             </template>
@@ -72,7 +72,7 @@ export default class KeypairList extends Vue {
                     添加密钥
                 </t-button>
             </template>
-            <t-table :loading="loading" :data="keylist" :columns="tableColumns" row-key="Id">
+            <t-table :data="keylist" :columns="tableColumns" row-key="Id">
                 <template #Operation="{ rowIndex }">
                     <t-popconfirm content="确定删除?" @confirm="deleteKey(rowIndex)">
                         <t-link theme="danger" hover="color">

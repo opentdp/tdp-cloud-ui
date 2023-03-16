@@ -89,11 +89,11 @@ export default class MachineList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="主机列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="主机列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ machineList.length }}
             </template>
-            <t-table :loading="loading" :data="machineList" :columns="tableColumns" row-key="Id" select-on-row-click
+            <t-table :data="machineList" :columns="tableColumns" row-key="Id" select-on-row-click
                 @select-change="tableRowChange">
                 <template #Model="{ row }">
                     <t-tooltip :content="MachineModels[row.Model]">

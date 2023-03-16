@@ -6,9 +6,16 @@ import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "
 import Api, { NaApi } from "@/api"
 import { VendorItem, VendorOrig } from "@/api/native/vendor"
 
-@Component
+import VendorUpdate from "./alibaba_update.vue"
+
+@Component({
+    components: { VendorUpdate }
+})
 export default class VendorAlibaba extends Vue {
     public loading = true
+
+    @Ref
+    public updateModal!: VendorUpdate
 
     // 初始化
 
@@ -67,7 +74,7 @@ export default class VendorAlibaba extends Vue {
     public tableColumns = [
         { colKey: 'Description', title: '别名', ellipsis: true },
         { colKey: 'SecretId', title: '密钥 ID', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
+        { colKey: 'Operation', title: '操作', width: "160px" },
     ]
 }
 </script>
@@ -83,11 +90,14 @@ export default class VendorAlibaba extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="账号列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="账号列表" hover-shadow header-bordered>
             <t-table :data="vendorList" :columns="tableColumns" row-key="Id">
                 <template #Operation="{ row, rowIndex }">
                     <t-link v-route="'/vendor/alibaba/' + row.Id" theme="primary" hover="color">
                         管理
+                    </t-link>
+                    <t-link theme="warning" hover="color" @click="updateModal.open(row)">
+                        修改
                     </t-link>
                     <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
                         <t-link theme="danger" hover="color">
@@ -121,5 +131,7 @@ export default class VendorAlibaba extends Vue {
                 </t-form-item>
             </t-form>
         </t-card>
+
+        <VendorUpdate ref="updateModal" @submit="getVendorList" />
     </t-space>
 </template>

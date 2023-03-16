@@ -75,7 +75,7 @@ export default class CloudflareDomain extends Vue {
 
 <template>
     <t-space fixed direction="vertical">
-        <t-card title="解析列表" hover-shadow header-bordered>
+        <t-card :loading="!recordList" title="解析列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ recordList?.length || 0 }}
             </template>
@@ -87,7 +87,7 @@ export default class CloudflareDomain extends Vue {
                     添加记录
                 </t-button>
             </template>
-            <t-table :loading="!recordList" :data="recordList" :columns="tableColumns" row-key="id">
+            <t-table :data="recordList" :columns="tableColumns" row-key="id">
                 <template #zone_name="{ row }">
                     {{ row.name.replace(row.zone_name, "").replace(/\.$/, "") || "@" }}
                 </template>

@@ -65,7 +65,7 @@ export default class CertbotList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="证书列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="证书列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ certbotList.length }}
             </template>
@@ -77,7 +77,7 @@ export default class CertbotList extends Vue {
                     申请证书
                 </t-button>
             </template>
-            <t-table :loading="loading" :data="certbotList" :columns="tableColumns" row-key="Id">
+            <t-table :data="certbotList" :columns="tableColumns" row-key="Id">
                 <template #CaType="{ row }">
                     {{ CaTypeList[row.CaType].Name }}
                 </template>

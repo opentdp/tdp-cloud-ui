@@ -83,7 +83,7 @@ export default class VendorTencent extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="账号列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="账号列表" hover-shadow header-bordered>
             <t-table :data="vendorList" :columns="tableColumns" row-key="Id">
                 <template #Operation="{ row, rowIndex }">
                     <t-link v-route="'/vendor/tencent/' + row.Id" theme="primary" hover="color">
