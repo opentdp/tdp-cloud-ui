@@ -20,6 +20,10 @@ export class KeypairModel extends HttpClient {
     public remove(id: number): Promise<null> {
         return this.post("/keypair/delete", { Id: id })
     }
+
+    public keygen(type: string): Promise<KeypairOrig> {
+        return this.post("/keypair/keygen", { KeyType: type })
+    }
 }
 
 export const KeypairTypeList: Record<string, string> = {

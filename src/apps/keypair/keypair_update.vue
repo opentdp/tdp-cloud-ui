@@ -53,7 +53,7 @@ export default class KeypairUpdate extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="修改密钥" :footer="false" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="修改密钥" :footer="false" width="750px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="KeyType" label="类型">
                 <t-select v-model="formModel.KeyType">
