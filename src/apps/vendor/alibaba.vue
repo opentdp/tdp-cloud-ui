@@ -1,18 +1,20 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { NaApi } from "@/api"
+import { VendorItem } from "@/api/native/vendor"
 
-import Api, { NaApi } from "@/api"
-import { VendorItem, VendorOrig } from "@/api/native/vendor"
-
+import VendorCreate from "./alibaba_create.vue"
 import VendorUpdate from "./alibaba_update.vue"
 
 @Component({
-    components: { VendorUpdate }
+    components: { VendorCreate, VendorUpdate }
 })
 export default class VendorAlibaba extends Vue {
     public loading = true
+
+    @Ref
+    public createModal!: VendorCreate
 
     @Ref
     public updateModal!: VendorUpdate
@@ -41,34 +43,6 @@ export default class VendorAlibaba extends Vue {
         this.vendorList.splice(idx, 1)
     }
 
-    // 添加厂商
-
-    @Ref
-    public formRef!: FormInstanceFunctions
-
-    public formModel: VendorOrig = {
-        SecretId: "",
-        SecretKey: "",
-        Provider: "alibaba",
-        Description: "",
-    }
-
-    public formRules: FormRules<VendorOrig> = {
-        SecretId: [{ required: true }],
-        SecretKey: [{ required: true }],
-        Description: [{ required: true }],
-    }
-
-    async formSubmit(ctx: SubmitContext<TData>) {
-        if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
-        }
-        await NaApi.vendor.create(this.formModel)
-        this.formRef.reset()
-        this.getVendorList()
-    }
-
     // 表格定义
 
     public tableColumns = [
@@ -91,6 +65,17 @@ export default class VendorAlibaba extends Vue {
         </t-breadcrumb>
 
         <t-card :loading="loading" title="账号列表" hover-shadow header-bordered>
+            <template #subtitle>
+                记录总数: {{ vendorList.length }}
+            </template>
+            <template #actions>
+                <t-button theme="primary" size="small" @click="createModal.open()">
+                    <template #icon>
+                        <t-icon name="add" />
+                    </template>
+                    绑定账号
+                </t-button>
+            </template>
             <t-table :data="vendorList" :columns="tableColumns" row-key="Id">
                 <template #Operation="{ row, rowIndex }">
                     <t-link v-route="'/vendor/alibaba/' + row.Id" theme="primary" hover="color">
@@ -108,30 +93,7 @@ export default class VendorAlibaba extends Vue {
             </t-table>
         </t-card>
 
-        <t-card title="添加账号" hover-shadow header-bordered>
-            <template #actions>
-                <t-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" hover="color">
-                    <t-icon name="jump" /> &nbsp;操作指南
-                </t-link>
-            </template>
-            <t-form ref="formRef" :data="formModel" :rules="formRules" @submit="formSubmit">
-                <t-form-item name="Description" label="别名">
-                    <t-input v-model="formModel.Description" />
-                </t-form-item>
-                <t-form-item name="SecretId" label="密钥 ID">
-                    <t-input v-model="formModel.SecretId" />
-                </t-form-item>
-                <t-form-item name="SecretKey" label="密钥 KEY">
-                    <t-input v-model="formModel.SecretKey" />
-                </t-form-item>
-                <t-form-item>
-                    <t-button theme="primary" type="submit">
-                        保存
-                    </t-button>
-                </t-form-item>
-            </t-form>
-        </t-card>
-
+        <VendorCreate ref="createModal" @submit="getVendorList" />
         <VendorUpdate ref="updateModal" @submit="getVendorList" />
     </t-space>
 </template>

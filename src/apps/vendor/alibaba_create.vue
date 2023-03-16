@@ -4,23 +4,29 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
 import Api, { NaApi } from "@/api"
-import { VendorOrig, VendorItem } from "@/api/native/vendor"
+import { VendorOrig } from "@/api/native/vendor"
 
 @Component({
     emits: ['submit'],
     expose: ['open']
 })
-export default class VendorAlibabaUpdate extends Vue {
+export default class VendorAlibabaCreate extends Vue {
 
     // 创建表单
 
     @Ref
     public formRef!: FormInstanceFunctions
 
-    public formModel!: VendorOrig
+    public formModel: VendorOrig = {
+        SecretId: "",
+        SecretKey: "",
+        Provider: "alibaba",
+        Description: "",
+    }
 
     public formRules: FormRules<VendorOrig> = {
         SecretId: [{ required: true }],
+        SecretKey: [{ required: true }],
         Description: [{ required: true }],
     }
 
@@ -29,7 +35,7 @@ export default class VendorAlibabaUpdate extends Vue {
             Api.msg.err("请检查表单")
             return false
         }
-        await NaApi.vendor.update(this.formModel)
+        await NaApi.vendor.create(this.formModel)
         this.formRef.reset()
         this.close()
     }
@@ -43,9 +49,8 @@ export default class VendorAlibabaUpdate extends Vue {
         this.$emit("submit")
     }
 
-    public open(data: VendorItem) {
+    public open() {
         this.visible = true
-        this.formModel = data
     }
 }
 </script>
@@ -67,7 +72,7 @@ export default class VendorAlibabaUpdate extends Vue {
                     <t-button theme="primary" type="submit">
                         提交
                     </t-button>
-                    <t-button theme="default" @click="visible = false">
+                    <t-button theme="default" type="reset" @click="visible = false">
                         取消
                     </t-button>
                 </t-space>

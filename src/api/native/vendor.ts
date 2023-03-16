@@ -14,7 +14,7 @@ export class VendorModel extends HttpClient {
     }
 
     public update(rq: Partial<VendorItem>): Promise<null> {
-        return this.post("/vendor/update" + rq.Id, rq)
+        return this.post("/vendor/update", rq)
     }
 
     public remove(id: number): Promise<null> {

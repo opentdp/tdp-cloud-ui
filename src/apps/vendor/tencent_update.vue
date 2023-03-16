@@ -10,7 +10,7 @@ import { VendorOrig, VendorItem } from "@/api/native/vendor"
     emits: ['submit'],
     expose: ['open']
 })
-export default class VendorAlibabaUpdate extends Vue {
+export default class VendorTencentCUpdate extends Vue {
 
     // 创建表单
 

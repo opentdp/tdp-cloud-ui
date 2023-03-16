@@ -10,7 +10,7 @@ import { VendorOrig, VendorItem } from "@/api/native/vendor"
     emits: ['submit'],
     expose: ['open']
 })
-export default class VendorAlibabaUpdate extends Vue {
+export default class VendorCloudflareUpdate extends Vue {
 
     // 创建表单
 
@@ -56,10 +56,10 @@ export default class VendorAlibabaUpdate extends Vue {
             <t-form-item name="Description" label="别名">
                 <t-input v-model="formModel.Description" />
             </t-form-item>
-            <t-form-item name="SecretId" label="密钥 ID">
+            <t-form-item name="SecretId" label="邮箱">
                 <t-input v-model="formModel.SecretId" />
             </t-form-item>
-            <t-form-item name="SecretKey" label="密钥 KEY">
+            <t-form-item name="SecretKey" label="令牌">
                 <t-input v-model="formModel.SecretKey" />
             </t-form-item>
             <t-form-item>
