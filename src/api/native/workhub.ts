@@ -1,13 +1,13 @@
 import { HttpClient } from "@/api/basic/http"
 
-import { SummaryStat, DetailStat, ScriptPayload } from "./typings"
+import { SummaryStat, DetailStat, IpSets, ScriptPayload } from "./typings"
 
 export class WorkhubModel extends HttpClient {
     public host(): Promise<NodeDetail> {
         return this.post("/workhub/host", {})
     }
 
-    public hostIp(): Promise<{ Ip: string }> {
+    public hostIp(): Promise<IpSets> {
         return this.post("/workhub/host/ip", {})
     }
 

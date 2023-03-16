@@ -11,7 +11,8 @@ export interface SummaryStat {
     CpuPercent: number[]
     MemoryTotal: number
     MemoryUsed: number
-    IpAddress: string
+    Ipv4List: string[]
+    Ipv6List: string[]
 }
 
 export interface DetailStat extends SummaryStat {
@@ -32,6 +33,11 @@ export interface NetInterface {
     BytesSent: number
     Dropin: number
     Dropout: number
+}
+
+export interface IpSets {
+    Ipv4List: string[]
+    Ipv6List: string[]
 }
 
 export interface DiskPartition {

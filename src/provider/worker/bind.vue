@@ -43,11 +43,12 @@ export default class WorkerBind extends Vue {
     // 绑定主机
 
     public bindMachine(item: WorkerItem) {
+        const meta = item.WorkerMeta
         NaApi.machine.create({
             VendorId: 0,
-            HostName: item.WorkerMeta.HostName,
-            IpAddress: item.WorkerMeta.IpAddress,
-            OSType: item.WorkerMeta.OS,
+            HostName: meta.HostName,
+            IpAddress: meta.Ipv4List[0] || meta.Ipv6List[0],
+            OSType: meta.OS,
             Region: "",
             Model: "native/worker",
             CloudId: "",
@@ -63,11 +64,12 @@ export default class WorkerBind extends Vue {
 
     async syncMachine(item: WorkerItem) {
         const bd = this.boundList[item.WorkerId]
+        const meta = item.WorkerMeta
         await NaApi.machine.update({
             Id: bd ? bd.Id : 0,
-            HostName: item.WorkerMeta.HostName,
-            IpAddress: item.WorkerMeta.IpAddress,
-            OSType: item.WorkerMeta.OS,
+            HostName: meta.HostName,
+            IpAddress: meta.Ipv4List[0] || meta.Ipv6List[0],
+            OSType: meta.OS,
             WorkerId: item.WorkerId,
             WorkerMeta: item.WorkerMeta,
         })
@@ -78,7 +80,7 @@ export default class WorkerBind extends Vue {
 
     public tableColumns = [
         { colKey: 'WorkerMeta.HostName', title: '主机名', ellipsis: true },
-        { colKey: 'WorkerMeta.IpAddress', title: '公网 IP', ellipsis: true },
+        { colKey: 'WorkerMeta_IpAddress', title: '公网 IP', ellipsis: true },
         { colKey: 'WorkerMeta_CpuCore', title: 'CPU', ellipsis: true },
         { colKey: 'WorkerMeta_MemoryTotal', title: '内存', ellipsis: true },
         { colKey: 'WorkerMeta.OS', title: '系统', ellipsis: true },
@@ -91,6 +93,9 @@ export default class WorkerBind extends Vue {
 <template>
     <t-card title="在线节点" hover-shadow header-bordered>
         <t-table :data="workerList" :columns="tableColumns" row-key="Id">
+            <template #WorkerMeta_IpAddress="{ row }">
+                {{ row.WorkerMeta.Ipv4List[0] || row.WorkerMeta.Ipv6List[0] }}
+            </template>
             <template #WorkerMeta_CpuCore="{ row }">
                 {{ row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，{{ row.WorkerMeta.CpuCore }} Cores
             </template>

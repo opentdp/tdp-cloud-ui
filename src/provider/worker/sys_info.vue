@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
-import { DetailStat } from "@/api/native/typings"
+import { DetailStat, IpSets } from "@/api/native/typings"
 
 import { bytesToSize } from "@/helper/format"
 
@@ -23,14 +23,15 @@ export default class WorkerSysInfo extends Vue {
 
     // 获取系统信息
 
-    public stat!: DetailStat & { PublicIp?: string }
+    public stat!: DetailStat
+    public ipsets!: IpSets
 
     async getDetailStat() {
         if (this.id === "host") {
             const res = await NaApi.workhub.host()
             this.stat = res.Stat
             const rs2 = await NaApi.workhub.hostIp()
-            this.stat.PublicIp = rs2.Ip
+            this.ipsets = rs2
         } else if (this.id) {
             const res = await NaApi.workhub.detail(this.id)
             this.stat = res.Stat
@@ -41,9 +42,6 @@ export default class WorkerSysInfo extends Vue {
 </script>
 
 <template>
-    <t-space v-if="loading" fixed align="center">
-        <t-loading />
-    </t-space>
     <t-list v-if="stat" :split="true">
         <t-list-item>
             <b>主机名</b>
@@ -78,12 +76,29 @@ export default class WorkerSysInfo extends Vue {
             <span>{{ (stat.Uptime / 86400).toFixed(1) }} 天</span>
         </t-list-item>
         <t-list-item>
-            <b>IP 地址</b>
-            <span>{{ stat.IpAddress }}</span>
+            <b>接口 IP </b>
+            <span class="text-right">
+                <template v-for="v in stat.Ipv4List" :key="v">
+                    {{ v }} <br>
+                </template>
+                <template v-for="v in stat.Ipv6List" :key="v">
+                    {{ v }} <br>
+                </template>
+            </span>
         </t-list-item>
-        <t-list-item v-if="stat.PublicIp">
-            <b>IP 地址（出口）</b>
-            <span>{{ stat.PublicIp }}</span>
+        <t-list-item v-if="ipsets">
+            <b>出口 IP</b>
+            <span class="text-right">
+                <template v-for="v in ipsets.Ipv4List" :key="v">
+                    {{ v }} <br>
+                </template>
+                <template v-for="v in ipsets.Ipv6List" :key="v">
+                    {{ v }} <br>
+                </template>
+            </span>
         </t-list-item>
     </t-list>
+    <t-space v-if="loading" fixed align="center">
+        <t-loading />
+    </t-space>
 </template>
