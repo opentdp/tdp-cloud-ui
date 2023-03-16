@@ -7,6 +7,10 @@ export class WorkhubModel extends HttpClient {
         return this.post("/workhub/host", {})
     }
 
+    public hostIp(): Promise<{ Ip: string }> {
+        return this.post("/workhub/host/ip", {})
+    }
+
     public list(): Promise<WorkerPaged> {
         return this.post("/workhub/list", {})
     }

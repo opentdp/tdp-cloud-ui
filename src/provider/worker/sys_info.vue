@@ -23,12 +23,14 @@ export default class WorkerSysInfo extends Vue {
 
     // 获取系统信息
 
-    public stat!: DetailStat
+    public stat!: DetailStat & { PublicIp?: string }
 
     async getDetailStat() {
         if (this.id === "host") {
             const res = await NaApi.workhub.host()
             this.stat = res.Stat
+            const rs2 = await NaApi.workhub.hostIp()
+            this.stat.PublicIp = rs2.Ip
         } else if (this.id) {
             const res = await NaApi.workhub.detail(this.id)
             this.stat = res.Stat
@@ -78,6 +80,10 @@ export default class WorkerSysInfo extends Vue {
         <t-list-item>
             <b>IP 地址</b>
             <span>{{ stat.IpAddress }}</span>
+        </t-list-item>
+        <t-list-item v-if="stat.PublicIp">
+            <b>IP 地址（出口）</b>
+            <span>{{ stat.PublicIp }}</span>
         </t-list-item>
     </t-list>
 </template>
