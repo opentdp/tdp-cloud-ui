@@ -8,6 +8,7 @@ export class DnspodModel extends TencentClient {
     public describeDomainList(query?: IDnspod.DescribeDomainListRequest): Promise<IDnspod.DescribeDomainListResponse> {
         return this.bus({ Action: "DescribeDomainList", Payload: query })
     }
+
     public describeRecordList(query: IDnspod.DescribeRecordListRequest): Promise<IDnspod.DescribeRecordListResponse> {
         return this.bus({ Action: "DescribeRecordList", Payload: query })
     }
@@ -19,6 +20,7 @@ export class DnspodModel extends TencentClient {
     public describeRecordType(query: IDnspod.DescribeRecordTypeRequest): Promise<IDnspod.DescribeRecordTypeResponse> {
         return this.bus({ Action: "DescribeRecordType", Payload: query }, 600)
     }
+
     public describeRecordLineList(query: IDnspod.DescribeRecordLineListRequest): Promise<IDnspod.DescribeRecordLineListResponse> {
         return this.bus({ Action: "DescribeRecordLineList", Payload: query }, 600)
     }
@@ -26,9 +28,11 @@ export class DnspodModel extends TencentClient {
     public createRecord(query: IDnspod.CreateRecordRequest): Promise<IDnspod.CreateRecordResponse> {
         return this.bus({ Action: "CreateRecord", Payload: query })
     }
+
     public modifyRecord(query: IDnspod.ModifyRecordRequest): Promise<IDnspod.ModifyRecordResponse> {
         return this.bus({ Action: "ModifyRecord", Payload: query })
     }
+
     public deleteRecord(query: IDnspod.DeleteRecordRequest): Promise<IDnspod.DeleteRecordResponse> {
         return this.bus({ Action: "DeleteRecord", Payload: query })
     }
