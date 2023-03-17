@@ -38,8 +38,8 @@ export default class TasklineList extends Vue {
 
     public expanded = false
 
-    async expandChange(row: TasklineItem[], rs: TasklineItem[]) {
-        this.expanded = rs.length > 0
+    async expandChange(keys: (string | number)[]) {
+        this.expanded = keys.length > 0
     }
 
     // 表格定义

@@ -137,12 +137,11 @@ export default class SwasBind extends Vue {
 </script>
 
 <template>
-    <t-card title="实例列表" hover-shadow header-bordered>
+    <t-card :loading="loading > 0" title="实例列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table :async-loading="loading ? 'loading' : ''" :data="instanceList" :columns="tableColumns"
-            row-key="InstanceId">
+        <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId">
             <template #RegionName="{ row }">
                 {{ row.RegionName }}
             </template>

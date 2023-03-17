@@ -58,7 +58,7 @@ export default class MachineList extends Vue {
 
     public selectedRow!: MachineItem
 
-    public tableRowChange(ids: number[]) {
+    public tableRowChange(ids: (string | number)[]) {
         const ret = this.machineList.find(item => item.Id === ids[0])
         this.selectedRow = ret as MachineItem
     }
@@ -66,7 +66,7 @@ export default class MachineList extends Vue {
     // 表格定义
 
     public tableColumns = [
-        { colKey: 'row-select', type: 'single', width: "30px" },
+        { colKey: 'row-select', width: "30px" },
         { colKey: 'HostName', title: '名称', ellipsis: true },
         { colKey: 'IpAddress', title: '公网 IP', ellipsis: true },
         { colKey: 'Region', title: '地域', ellipsis: true },

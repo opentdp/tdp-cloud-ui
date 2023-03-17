@@ -45,7 +45,7 @@ export default class TerminalSsh extends Vue {
         }, 100)
     }
 
-    public indexTab(id: string) {
+    public indexTab(id: string | number) {
         for (let i = 0; i < this.tabList.length; i++) {
             if (this.tabList[i].id == id) {
                 return { index: i, tab: this.tabList[i] }
@@ -53,13 +53,13 @@ export default class TerminalSsh extends Vue {
         }
     }
 
-    public changeTab(id: string) {
+    public changeTab(id: string | number) {
         const target = this.indexTab(id)
         this.curTab.id = target?.tab.id || "new"
         this.curTab.label = target?.tab.label || ""
     }
 
-    public removeTab(item: { value: string }) {
+    public removeTab(item: { value: string | number; index: number; e: MouseEvent; }) {
         const target = this.indexTab(item.value)
         if (!target) {
             return
