@@ -3,6 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, AcApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
+import * as Ac from "@/api/alibaba/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -29,45 +30,37 @@ export default class SwasBind extends Vue {
 
     // 获取列表
 
-    public regionList = {}
+    public regionList: Record<string, Ac.Swas.ListRegionsResponseBodyRegions> = {}
 
-    public instanceList = []
+    public instanceList: SwasInstance[] = []
     public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await AcApi.swas.describeRegions().finally(() => this.loading--)
-        this.loading = res.TotalCount
-        res.Regions.forEach(async (item: any) => {
-            const regionId = item?.RegionId || ""
-            this.regionList = {
-                ...this.regionList,
-                [regionId]: regionId,
-            }
+        const res = await AcApi.swas.listRegions().finally(() => this.loading--)
+        this.loading = res.Regions.length
+        res.Regions.forEach(async region => {
+            this.regionList[region.RegionId] = region
             // 获取当前大区实例
-            const rs2 = await AcApi.swas.describeInstances(regionId).finally(() => this.loading--)
-            const rsPlan = await AcApi.swas.describeListPlans(regionId)
-            if (rs2.TotalCount && rs2.Instances) {
-                const temp = rs2.Instances.map((i: any) => {
-                    const { PlanId } = i
-                    const instancePlan = rsPlan.Plans.find((x: any) => x.PlanId === PlanId)
-                    return ({
-                        ...i,
-                        ...instancePlan,
-                        RegionName: item.LocalName,
+            AcApi.swas.listInstances(region.RegionId).then(async rs2 => {
+                if (rs2.TotalCount && rs2.Instances) {
+                    const plan = await AcApi.swas.listPlans(region.RegionId)
+                    const instances = rs2.Instances.map(item => {
+                        const instancePlan = plan.Plans.find(x => x.PlanId === item.PlanId)
+                        return { ...item, ...instancePlan } as SwasInstance
                     })
-                })
-                this.instanceList = this.instanceList.concat(temp)
-                this.instanceCount += rs2.TotalCount
-            }
+                    this.instanceList.push(...instances)
+                    this.instanceCount += rs2.TotalCount
+                }
+            }).finally(() => this.loading--)
         })
     }
 
     // 执行脚本
 
-    async runCommand(instance: any, code: string) {
-        const region = instance.RegionId.replace(/-(\d+)$/, "")
+    async runCommand(item: Ac.Swas.ListInstancesResponseBodyInstances, code: string) {
+        const region = item.RegionId
         const res = await AcApi.tat.runCommand(region, {
-            InstanceIds: [instance.InstanceId],
+            InstanceIds: [item.InstanceId],
             Content: code,
         })
         const rs2 = AcApi.tat.describeInvocations(region, {
@@ -78,13 +71,13 @@ export default class SwasBind extends Vue {
 
     // 绑定主机
 
-    async bindMachine(item: any) {
+    async bindMachine(item: Ac.Swas.ListInstancesResponseBodyInstances) {
         await NaApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName || "",
             IpAddress: item.PublicIpAddress,
-            OSType: this.parseOSType(item.OsName),
-            Region: item.RegionName,
+            OSType: "",//this.parseOSType(item.OSType),
+            Region: this.regionList[item.RegionId].LocalName,
             Model: "alibaba/swas",
             CloudId: item.InstanceId,
             CloudMeta: item,
@@ -97,14 +90,15 @@ export default class SwasBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: any) {
+    public syncMachine(item: Ac.Swas.ListInstancesResponseBodyInstances) {
         const bd = this.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
             IpAddress: item.PublicIpAddress,
-            OSType: this.parseOSType(item.OsName),
-            Region: item.RegionId,
+            OSType: "",//this.parseOSType(item.OSType),
+            Region: this.regionList[item.RegionId].LocalName,
+            Model: "alibaba/ecs",
             CloudId: item.InstanceId,
             CloudMeta: item,
         })
@@ -134,6 +128,8 @@ export default class SwasBind extends Vue {
         { colKey: 'Operation', title: '操作', width: "110px" },
     ]
 }
+
+type SwasInstance = Ac.Swas.ListInstancesResponseBodyInstances & Ac.Swas.ListPlansResponseBodyPlans
 </script>
 
 <template>

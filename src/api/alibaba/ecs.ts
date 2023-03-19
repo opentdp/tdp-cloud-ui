@@ -1,15 +1,15 @@
-// import {  } from "./typings"
 import { AlibabaClient } from "./base"
+import { Ecs } from "./typings"
 
 export class EcsModel extends AlibabaClient {
     protected Service = 'ecs'
     protected Version = '2014-05-26'
 
-    public describeRegions(): Promise<any> {
+    public describeRegions(): Promise<Ecs.DescribeRegionsResponseBody> {
         return this.bus({ Action: 'DescribeRegions' }, 600)
     }
 
-    public describeInstances(region: string, query?: any): Promise<any> {
+    public describeInstances(region: string, query?: Ecs.DescribeInstancesRequest): Promise<Ecs.DescribeInstancesResponseBody> {
         query = Object.assign({ Limit: 100 }, query)
         return this.bus({
             Action: 'DescribeInstances',

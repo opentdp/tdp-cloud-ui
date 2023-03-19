@@ -1,5 +1,4 @@
 import { AlibabaClient } from "./base"
-
 import { Dns } from "./typings"
 
 export class AliDnsModel extends AlibabaClient {

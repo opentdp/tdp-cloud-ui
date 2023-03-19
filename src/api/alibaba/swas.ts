@@ -1,29 +1,18 @@
-// import {  } from "./typings"
 import { AlibabaClient } from './base'
+import { Swas } from "./typings"
 
 export class SwasModel extends AlibabaClient {
     protected Service = 'swas'
     protected Version = '2020-06-01'
 
-    public describeRegions(): Promise<any> {
+    public listRegions(): Promise<Swas.ListRegionsResponseBody> {
         return this.bus(
             { Action: 'ListRegions', RegionId: 'cn-hangzhou' },
             600
         )
     }
 
-    public describeInstances(region: string, query?: any): Promise<any> {
-        query = Object.assign({ Limit: 100 }, query)
-        return this.bus({
-            Action: 'ListInstances',
-            RegionId: region,
-            Payload: {
-                ...query,
-                RegionId: region,
-            },
-        })
-    }
-    public describeListPlans(region: string): Promise<any> {
+    public listPlans(region: string): Promise<Swas.ListPlansResponseBody> {
         return this.bus({
             Action: 'ListPlans',
             RegionId: region,
@@ -32,7 +21,18 @@ export class SwasModel extends AlibabaClient {
             },
         })
     }
-    
+
+    public listInstances(region: string, query?: Swas.ListInstancesRequest): Promise<Swas.ListInstancesResponseBody> {
+        query = Object.assign({ Limit: 100 }, query)
+        return this.bus({
+            Action: 'ListInstances',
+            RegionId: region,
+            Payload: {
+                ...query, RegionId: region,
+            },
+        })
+    }
+
 }
 
 export const InstanceStateMap: Record<string, string> = {

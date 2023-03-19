@@ -3,6 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { AcApi, NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
+import * as Ac from "@/api/alibaba/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -29,29 +30,20 @@ export default class EcsBind extends Vue {
 
     // 获取列表
 
-    public regionList: Record<string, any> = {}
+    public regionList: Record<string, Ac.Ecs.DescribeRegionsResponseBodyRegionsRegion> = {}
 
-    public instanceList = []
+    public instanceList: Ac.Ecs.DescribeInstancesResponseBodyInstancesInstance[] = []
     public instanceCount = 0
 
     async getRegionInstanceList() {
         const res = await AcApi.ecs.describeRegions().finally(() => this.loading--)
-        this.loading = res.TotalCount
-        res.Regions.Region.forEach(async (item: any) => {
-            const regionId = item?.RegionId || ""
-            this.regionList = { ...this.regionList, [regionId]: regionId }
+        this.loading = res.Regions.Region.length
+        res.Regions.Region.forEach(async item => {
+            this.regionList[item.RegionId] = item
             // 获取当前大区实例
-            const rs2 = await AcApi.ecs.describeInstances(regionId).finally(() => this.loading--)
-            const {
-                TotalCount,
-                Instances: { Instance },
-            } = rs2
-            if (TotalCount && Instance) {
-                const temp = Instance.map((i: any) => ({
-                    ...i,
-                    RegionName: item.LocalName,
-                }))
-                this.instanceList = this.instanceList.concat(temp)
+            const rs2 = await AcApi.ecs.describeInstances(item.RegionId).finally(() => this.loading--)
+            if (rs2.TotalCount && rs2.Instances.Instance) {
+                this.instanceList.push(...rs2.Instances.Instance)
                 this.instanceCount += rs2.TotalCount
             }
         })
@@ -59,10 +51,10 @@ export default class EcsBind extends Vue {
 
     // 执行脚本
 
-    async runCommand(instance: Required<any>, code: string) {
-        const region = instance.Placement.Zone.replace(/-(\d+)$/, "")
+    async runCommand(item: Required<Ac.Ecs.DescribeInstancesResponseBodyInstancesInstance>, code: string) {
+        const region = item.RegionId
         const res = await AcApi.tat.runCommand(region, {
-            InstanceIds: [instance.InstanceId],
+            InstanceIds: [item.InstanceId],
             Content: code,
         })
         const rs2 = AcApi.tat.describeInvocations(region, {
@@ -73,13 +65,13 @@ export default class EcsBind extends Vue {
 
     // 绑定主机
 
-    async bindMachine(item: Required<any>) {
+    async bindMachine(item: Required<Ac.Ecs.DescribeInstancesResponseBodyInstancesInstance>) {
         await NaApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName || "",
             IpAddress: item.PublicIpAddress.IpAddress[0],
-            OSType: this.parseOSType(item.OsName),
-            Region: item.RegionName,
+            OSType: this.parseOSType(item.OSType),
+            Region: this.regionList[item.RegionId].LocalName,
             Model: "alibaba/ecs",
             CloudId: item.InstanceId,
             CloudMeta: item,
@@ -92,14 +84,14 @@ export default class EcsBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: Required<any>) {
+    public syncMachine(item: Required<Ac.Ecs.DescribeInstancesResponseBodyInstancesInstance>) {
         const bd = this.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
             IpAddress: item.PublicIpAddress.IpAddress[0],
-            OSType: this.parseOSType(item.OsName),
-            Region: item.RegionName,
+            OSType: this.parseOSType(item.OSType),
+            Region: this.regionList[item.RegionId].LocalName,
             CloudId: item.InstanceId,
             CloudMeta: item,
         })
