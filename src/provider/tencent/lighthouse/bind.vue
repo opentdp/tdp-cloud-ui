@@ -52,26 +52,26 @@ export default class LighthouseBind extends Vue {
 
     // 执行脚本
 
-    async runCommand(instance: TC.Lighthouse.Instance, code: string) {
-        const region = instance.Zone.replace(/-(\d+)$/, '')
+    async runCommand(item: TC.Lighthouse.Instance, code: string) {
+        const region = item.Zone.replace(/-(\d+)$/, '')
         const res = await TcApi.tat.runCommand(region, {
-            InstanceIds: [instance.InstanceId],
+            InstanceIds: [item.InstanceId],
             Content: code,
         })
         return res.InvocationId
     }
 
-    // PENDING 等待下发
-    // RUNNING 命令运行中
-    // SUCCESS 命令成功
-    // FAILED 命令失败
-    // TIMEOUT 命令超时
-    // PARTIAL_FAILED 命令部分失败
-    async getInvocationStatus(instance: TC.Lighthouse.Instance, id: string) {
-        const region = instance.Zone.replace(/-(\d+)$/, '')
+    async getInvocationStatus(item: TC.Lighthouse.Instance, id: string) {
+        const region = item.Zone.replace(/-(\d+)$/, '')
         const res = await TcApi.tat.describeInvocations(region, {
             InvocationIds: [id]
         })
+        // PENDING 等待下发
+        // RUNNING 命令运行中
+        // SUCCESS 命令成功
+        // FAILED 命令失败
+        // TIMEOUT 命令超时
+        // PARTIAL_FAILED 命令部分失败
         return res.InvocationSet[0].InvocationStatus
     }
 
@@ -173,8 +173,7 @@ export default class LighthouseBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table :data="instanceList" :columns="tableColumns"
-            row-key="InstanceId">
+        <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId">
             <template #Zone="{ row }">
                 {{ parseRegion(row.Zone) }}
             </template>
