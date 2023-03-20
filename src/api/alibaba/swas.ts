@@ -6,10 +6,10 @@ export class SwasModel extends AlibabaClient {
     protected Version = '2020-06-01'
 
     public listRegions(): Promise<Swas.ListRegionsResponseBody> {
-        return this.bus(
-            { Action: 'ListRegions', RegionId: 'cn-hangzhou' },
-            600
-        )
+        return this.bus({
+            Action: 'ListRegions',
+            RegionId: 'cn-hangzhou'
+        }, 600)
     }
 
     public listPlans(region: string): Promise<Swas.ListPlansResponseBody> {
@@ -76,19 +76,6 @@ export class SwasModel extends AlibabaClient {
             Action: 'RebootInstance',
             RegionId: region,
             Query: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
-        })
-    }
-
-    // 登录
-
-    public loginInstance(region: string, instanceId: string): Promise<Swas.LoginInstanceResponseBody> {
-        return this.bus({
-            Action: 'LoginInstance',
-            RegionId: region,
-            Payload: {
                 RegionId: region,
                 InstanceId: instanceId,
             },
@@ -193,7 +180,6 @@ export class SwasModel extends AlibabaClient {
             },
         })
     }
-
 }
 
 export const InstanceStateMap: Record<string, string> = {
