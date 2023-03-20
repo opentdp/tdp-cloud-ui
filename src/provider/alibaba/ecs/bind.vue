@@ -3,7 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { AcApi, NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
-import * as Ac from "@/api/alibaba/typings"
+import * as AC from "@/api/alibaba/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -30,9 +30,9 @@ export default class EcsBind extends Vue {
 
     // 获取列表
 
-    public regionList: Record<string, Ac.Ecs.DescribeRegionsResponseBodyRegionsRegion> = {}
+    public regionList: Record<string, AC.Ecs.DescribeRegionsResponseBodyRegionsRegion> = {}
 
-    public instanceList: Ac.Ecs.DescribeInstancesResponseBodyInstancesInstance[] = []
+    public instanceList: AC.Ecs.DescribeInstancesResponseBodyInstancesInstance[] = []
     public instanceCount = 0
 
     async getRegionInstanceList() {
@@ -51,7 +51,7 @@ export default class EcsBind extends Vue {
 
     // 执行脚本
 
-    async runCommand(item: Required<Ac.Ecs.DescribeInstancesResponseBodyInstancesInstance>, code: string) {
+    async runCommand(item: Required<AC.Ecs.DescribeInstancesResponseBodyInstancesInstance>, code: string) {
         const region = item.RegionId
         const res = await AcApi.tat.runCommand(region, {
             InstanceIds: [item.InstanceId],
@@ -65,7 +65,7 @@ export default class EcsBind extends Vue {
 
     // 绑定主机
 
-    async bindMachine(item: Required<Ac.Ecs.DescribeInstancesResponseBodyInstancesInstance>) {
+    async bindMachine(item: Required<AC.Ecs.DescribeInstancesResponseBodyInstancesInstance>) {
         await NaApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName || "",
@@ -84,7 +84,7 @@ export default class EcsBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: Required<Ac.Ecs.DescribeInstancesResponseBodyInstancesInstance>) {
+    public syncMachine(item: Required<AC.Ecs.DescribeInstancesResponseBodyInstancesInstance>) {
         const bd = this.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,

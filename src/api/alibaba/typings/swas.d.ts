@@ -467,11 +467,11 @@ export interface ListInstancePlansModificationResponse {
 }
 
 export interface ListInstancesRequest {
-    ChargeType: string
-    InstanceIds: string
-    PageNumber: number
-    PageSize: number
-    PublicIpAddresses: string
+    ChargeType?: string
+    InstanceIds?: string
+    PageNumber?: number
+    PageSize?: number
+    PublicIpAddresses?: string
     RegionId: string
 }
 

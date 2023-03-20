@@ -3,7 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, AcApi } from "@/api"
 import { DomainItem } from "@/api/native/domain"
-import * as Ac from "@/api/alibaba/typings"
+import * as AC from "@/api/alibaba/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -29,7 +29,7 @@ export default class DnsBind extends Vue {
 
     // 获取列表
 
-    public domainList: Ac.Dns.DescribeDomainsResponseBodyDomainsDomain[] = []
+    public domainList: AC.Dns.DescribeDomainsResponseBodyDomainsDomain[] = []
     public domainCount = 0
 
     async getDomainList() {
@@ -43,7 +43,7 @@ export default class DnsBind extends Vue {
 
     // 绑定域名
 
-    async bindDomian(item: Ac.Dns.DescribeDomainsResponseBodyDomainsDomain) {
+    async bindDomian(item: AC.Dns.DescribeDomainsResponseBodyDomainsDomain) {
         await NaApi.domain.create({
             VendorId: this.vendorId,
             Name: item.DomainName,
@@ -59,7 +59,7 @@ export default class DnsBind extends Vue {
 
     // 同步域名
 
-    public syncDomian(item: Ac.Dns.DescribeDomainsResponseBodyDomainsDomain) {
+    public syncDomian(item: AC.Dns.DescribeDomainsResponseBodyDomainsDomain) {
         const bd = this.boundList[item.DomainId]
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,

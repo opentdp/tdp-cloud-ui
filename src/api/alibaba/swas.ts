@@ -22,7 +22,7 @@ export class SwasModel extends AlibabaClient {
         })
     }
 
-    public listInstances(region: string, query?: Swas.ListInstancesRequest): Promise<Swas.ListInstancesResponseBody> {
+    public listInstances(region: string, query?: Omit<Swas.ListInstancesRequest, "RegionId">): Promise<Swas.ListInstancesResponseBody> {
         query = Object.assign({ Limit: 100 }, query)
         return this.bus({
             Action: 'ListInstances',
@@ -33,18 +33,176 @@ export class SwasModel extends AlibabaClient {
         })
     }
 
+    // 修改属性
+
+    public updateInstanceAttribute(region: string, instanceId: string, name: string): Promise<Swas.UpdateInstanceAttributeResponseBody> {
+        return this.bus({
+            Action: 'UpdateInstanceAttribute',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+                InstanceName: name,
+            },
+        })
+    }
+
+    // 电源
+
+    public startInstance(region: string, instanceId: string): Promise<Swas.StartInstanceResponseBody> {
+        return this.bus({
+            Action: 'StartInstance',
+            RegionId: region,
+            Query: {
+                RegionId: region,
+                InstanceId: instanceId,
+            },
+        })
+    }
+
+    public stopInstance(region: string, instanceId: string): Promise<Swas.StopInstanceResponseBody> {
+        return this.bus({
+            Action: 'StopInstance',
+            RegionId: region,
+            Query: {
+                RegionId: region,
+                InstanceId: instanceId,
+            },
+        })
+    }
+
+    public rebootInstance(region: string, instanceId: string): Promise<Swas.RebootInstanceResponseBody> {
+        return this.bus({
+            Action: 'RebootInstance',
+            RegionId: region,
+            Query: {
+                RegionId: region,
+                InstanceId: instanceId,
+            },
+        })
+    }
+
+    // 登录
+
+    public loginInstance(region: string, instanceId: string): Promise<Swas.LoginInstanceResponseBody> {
+        return this.bus({
+            Action: 'LoginInstance',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+            },
+        })
+    }
+
+    // 快照
+
+    public listSnapshots(region: string, instanceId: string): Promise<Swas.ListSnapshotsResponseBody> {
+        return this.bus({
+            Action: 'ListSnapshots',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+            },
+        })
+    }
+
+    public createSnapshots(region: string, instanceId: string, name: string): Promise<Swas.CreateSnapshotResponseBody> {
+        return this.bus({
+            Action: 'CreateSnapshot',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+                SnapshotName: name,
+            },
+        })
+    }
+
+    public deleteSnapshot(region: string, instanceId: string, snapshotId: string): Promise<Swas.DeleteSnapshotResponseBody> {
+        return this.bus({
+            Action: 'DeleteSnapshot',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+                SnapshotId: snapshotId,
+            },
+        })
+    }
+
+    public resetDisk(region: string, instanceId: string, snapshotId: string): Promise<Swas.ResetDiskResponseBody> {
+        return this.bus({
+            Action: 'ResetDisk',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+                SnapshotId: snapshotId,
+            },
+        })
+    }
+
+    // 防火墙
+
+    public listFirewallRules(region: string, instanceId: string): Promise<Swas.ListFirewallRulesResponseBody> {
+        return this.bus({
+            Action: 'ListFirewallRules',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+            },
+        })
+    }
+
+    public createFirewallRule(region: string, instanceId: string, rule: Swas.CreateFirewallRuleRequest): Promise<Swas.CreateFirewallRuleResponseBody> {
+        return this.bus({
+            Action: 'CreateFirewallRule',
+            RegionId: region,
+            Payload: {
+                ...rule,
+                RegionId: region,
+                InstanceId: instanceId,
+            },
+        })
+    }
+
+    public deleteFirewallRule(region: string, instanceId: string, ruleId: string): Promise<Swas.DeleteFirewallRuleResponseBody> {
+        return this.bus({
+            Action: 'DeleteFirewallRule',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+                FirewallRuleId: ruleId,
+            },
+        })
+    }
+
+    // 流量包
+
+    public listInstancesTrafficPackages(region: string, instanceId: string): Promise<Swas.ListInstancesTrafficPackagesResponseBody> {
+        return this.bus({
+            Action: 'ListInstancesTrafficPackages',
+            RegionId: region,
+            Payload: {
+                RegionId: region,
+                InstanceId: instanceId,
+            },
+        })
+    }
+
 }
 
 export const InstanceStateMap: Record<string, string> = {
-    PENDING: '创建中',
-    LAUNCH_FAILED: '创建失败',
-    RUNNING: '运行中',
-    STOPPED: '关机',
-    STARTING: '开机中',
-    STOPPING: '关机中',
-    REBOOTING: '重启中',
-    SHUTDOWN: '停止待销毁',
-    TERMINATING: '销毁中',
-    DELETING: '删除中',
-    FREEZING: '冻结中',
+    Pending: '准备中',
+    Starting: '启动中',
+    Running: '运行中',
+    Stopping: '停止中',
+    Stopped: '停止',
+    Resetting: '重置中',
+    Upgrading: '升级中',
+    Disabled: '不可用',
 }
