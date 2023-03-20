@@ -18,11 +18,11 @@ export class DnspodModel extends TencentClient {
     }
 
     public describeRecordType(query: IDnspod.DescribeRecordTypeRequest): Promise<IDnspod.DescribeRecordTypeResponse> {
-        return this.bus({ Action: "DescribeRecordType", Payload: query }, 600)
+        return this.bus({ Action: "DescribeRecordType", Payload: query })
     }
 
     public describeRecordLineList(query: IDnspod.DescribeRecordLineListRequest): Promise<IDnspod.DescribeRecordLineListResponse> {
-        return this.bus({ Action: "DescribeRecordLineList", Payload: query }, 600)
+        return this.bus({ Action: "DescribeRecordLineList", Payload: query })
     }
 
     public createRecord(query: IDnspod.CreateRecordRequest): Promise<IDnspod.CreateRecordResponse> {

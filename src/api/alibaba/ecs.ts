@@ -12,12 +12,8 @@ export class EcsModel extends AlibabaClient {
     public describeInstances(region: string, query?: Partial<Ecs.DescribeInstancesRequest>): Promise<Ecs.DescribeInstancesResponseBody> {
         query = Object.assign({ Limit: 100 }, query)
         return this.bus({
-            Action: 'DescribeInstances',
-            RegionId: region,
-            Payload: {
-                ...query,
-                RegionId: region,
-            },
+            Action: 'DescribeInstances', RegionId: region,
+            Payload: { ...query, RegionId: region, },
         })
     }
 
@@ -25,12 +21,8 @@ export class EcsModel extends AlibabaClient {
 
     public describeInstanceStatus(region: string, instanceId: string): Promise<Ecs.DescribeInstanceStatusResponseBody> {
         return this.bus({
-            Action: 'DescribeInstanceStatus',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: [instanceId],
-            },
+            Action: 'DescribeInstanceStatus', RegionId: region,
+            Payload: { RegionId: region, InstanceId: [instanceId] },
         })
     }
 
@@ -38,13 +30,8 @@ export class EcsModel extends AlibabaClient {
 
     public modifyInstanceAttribute(region: string, instanceId: string, name: string): Promise<Ecs.ModifyInstanceAttributeResponseBody> {
         return this.bus({
-            Action: 'ModifyInstanceAttribute',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-                InstanceName: name,
-            },
+            Action: 'ModifyInstanceAttribute', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId, InstanceName: name },
         })
     }
 
@@ -52,34 +39,22 @@ export class EcsModel extends AlibabaClient {
 
     public startInstance(region: string, instanceId: string): Promise<Ecs.StartInstanceResponseBody> {
         return this.bus({
-            Action: 'StartInstance',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'StartInstance', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId },
         })
     }
 
     public stopInstance(region: string, instanceId: string): Promise<Ecs.StopInstanceResponseBody> {
         return this.bus({
-            Action: 'StopInstance',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'StopInstance', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId },
         })
     }
 
     public rebootInstance(region: string, instanceId: string): Promise<Ecs.RebootInstanceResponseBody> {
         return this.bus({
-            Action: 'RebootInstance',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'RebootInstance', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId },
         })
     }
 

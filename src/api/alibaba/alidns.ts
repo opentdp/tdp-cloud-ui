@@ -6,7 +6,7 @@ export class AliDnsModel extends AlibabaClient {
     protected Version = '2015-01-09'
 
     public describeDomains(query?: Partial<Dns.DescribeDomainsRequest>): Promise<Dns.DescribeDomainsResponseBody> {
-        return this.bus({ Action: 'DescribeDomains', Payload: query })
+        return this.bus({ Action: 'DescribeDomains', Query: query })
     }
 
     public describeDomainRecords(query: Partial<Dns.DescribeDomainRecordsRequest>): Promise<Dns.DescribeDomainRecordsResponseBody> {
@@ -18,11 +18,11 @@ export class AliDnsModel extends AlibabaClient {
     }
 
     public describeDomainRecordInfo(query: Partial<Dns.DescribeDomainRecordInfoRequest>): Promise<Dns.DescribeDomainRecordInfoResponseBody> {
-        return this.bus({ Action: 'DescribeDomainRecordInfo', Payload: query }, 600)
+        return this.bus({ Action: 'DescribeDomainRecordInfo', Query: query })
     }
 
     public describeSupportLines(query: Partial<Dns.DescribeSupportLinesRequest>): Promise<Dns.DescribeSupportLinesResponseBody> {
-        return this.bus({ Action: 'DescribeSupportLines', Payload: query }, 600)
+        return this.bus({ Action: 'DescribeSupportLines', Query: query })
     }
 
     public addDomainRecord(query: Partial<Dns.AddDomainRecordRequest>): Promise<Dns.AddDomainRecordResponseBody> {
@@ -34,7 +34,7 @@ export class AliDnsModel extends AlibabaClient {
     }
 
     public deleteDomainRecord(query: Partial<Dns.DeleteDomainRecordRequest>): Promise<Dns.DeleteDomainGroupResponseBody> {
-        return this.bus({ Action: 'DeleteDomainRecord', Payload: query })
+        return this.bus({ Action: 'DeleteDomainRecord', Query: query })
     }
 }
 

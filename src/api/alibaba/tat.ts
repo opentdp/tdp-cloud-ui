@@ -6,16 +6,14 @@ export class TatModel extends AlibabaClient {
 
     public runCommand(region: string, query: any): Promise<any> {
         return this.bus({
-            Action: 'RunCommand',
-            RegionId: region,
+            Action: 'RunCommand', RegionId: region,
             Payload: { ...query, RegionId: region },
         })
     }
 
     public describeCommands(region: string, query: any): Promise<any> {
         return this.bus({
-            Action: 'DescribeCommands',
-            RegionId: region,
+            Action: 'DescribeCommands', RegionId: region,
             Payload: { ...query, RegionId: region },
         })
     }

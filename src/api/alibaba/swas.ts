@@ -6,30 +6,21 @@ export class SwasModel extends AlibabaClient {
     protected Version = '2020-06-01'
 
     public listRegions(): Promise<Swas.ListRegionsResponseBody> {
-        return this.bus({
-            Action: 'ListRegions',
-            RegionId: 'cn-hangzhou'
-        }, 600)
+        return this.bus({ Action: 'ListRegions', RegionId: 'cn-hangzhou' }, 600)
     }
 
     public listPlans(region: string): Promise<Swas.ListPlansResponseBody> {
         return this.bus({
-            Action: 'ListPlans',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-            },
+            Action: 'ListPlans', RegionId: region,
+            Payload: { RegionId: region },
         })
     }
 
     public listInstances(region: string, query?: Partial<Swas.ListInstancesRequest>): Promise<Swas.ListInstancesResponseBody> {
         query = Object.assign({ Limit: 100 }, query)
         return this.bus({
-            Action: 'ListInstances',
-            RegionId: region,
-            Payload: {
-                ...query, RegionId: region,
-            },
+            Action: 'ListInstances', RegionId: region,
+            Payload: { ...query, RegionId: region },
         })
     }
 
@@ -37,13 +28,8 @@ export class SwasModel extends AlibabaClient {
 
     public updateInstanceAttribute(region: string, instanceId: string, name: string): Promise<Swas.UpdateInstanceAttributeResponseBody> {
         return this.bus({
-            Action: 'UpdateInstanceAttribute',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-                InstanceName: name,
-            },
+            Action: 'UpdateInstanceAttribute', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId, InstanceName: name },
         })
     }
 
@@ -51,34 +37,22 @@ export class SwasModel extends AlibabaClient {
 
     public startInstance(region: string, instanceId: string): Promise<Swas.StartInstanceResponseBody> {
         return this.bus({
-            Action: 'StartInstance',
-            RegionId: region,
-            Query: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'StartInstance', RegionId: region,
+            Query: { RegionId: region, InstanceId: instanceId },
         })
     }
 
     public stopInstance(region: string, instanceId: string): Promise<Swas.StopInstanceResponseBody> {
         return this.bus({
-            Action: 'StopInstance',
-            RegionId: region,
-            Query: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'StopInstance', RegionId: region,
+            Query: { RegionId: region, InstanceId: instanceId },
         })
     }
 
     public rebootInstance(region: string, instanceId: string): Promise<Swas.RebootInstanceResponseBody> {
         return this.bus({
-            Action: 'RebootInstance',
-            RegionId: region,
-            Query: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'RebootInstance', RegionId: region,
+            Query: { RegionId: region, InstanceId: instanceId },
         })
     }
 
@@ -86,48 +60,29 @@ export class SwasModel extends AlibabaClient {
 
     public listSnapshots(region: string, instanceId: string): Promise<Swas.ListSnapshotsResponseBody> {
         return this.bus({
-            Action: 'ListSnapshots',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'ListSnapshots', RegionId: region,
+            Payload: { egionId: region, InstanceId: instanceId },
         })
     }
 
     public createSnapshots(region: string, instanceId: string, name: string): Promise<Swas.CreateSnapshotResponseBody> {
         return this.bus({
-            Action: 'CreateSnapshot',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-                SnapshotName: name,
-            },
+            Action: 'CreateSnapshot', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId, SnapshotName: name, },
         })
     }
 
     public deleteSnapshot(region: string, instanceId: string, snapshotId: string): Promise<Swas.DeleteSnapshotResponseBody> {
         return this.bus({
-            Action: 'DeleteSnapshot',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-                SnapshotId: snapshotId,
-            },
+            Action: 'DeleteSnapshot', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId, SnapshotId: snapshotId },
         })
     }
 
     public resetDisk(region: string, instanceId: string, snapshotId: string): Promise<Swas.ResetDiskResponseBody> {
         return this.bus({
-            Action: 'ResetDisk',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-                SnapshotId: snapshotId,
-            },
+            Action: 'ResetDisk', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId, SnapshotId: snapshotId },
         })
     }
 
@@ -135,36 +90,22 @@ export class SwasModel extends AlibabaClient {
 
     public listFirewallRules(region: string, instanceId: string): Promise<Swas.ListFirewallRulesResponseBody> {
         return this.bus({
-            Action: 'ListFirewallRules',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'ListFirewallRules', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId },
         })
     }
 
     public createFirewallRule(region: string, instanceId: string, rule: Swas.CreateFirewallRuleRequest): Promise<Swas.CreateFirewallRuleResponseBody> {
         return this.bus({
-            Action: 'CreateFirewallRule',
-            RegionId: region,
-            Payload: {
-                ...rule,
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'CreateFirewallRule', RegionId: region,
+            Payload: { ...rule, RegionId: region, InstanceId: instanceId },
         })
     }
 
     public deleteFirewallRule(region: string, instanceId: string, ruleId: string): Promise<Swas.DeleteFirewallRuleResponseBody> {
         return this.bus({
-            Action: 'DeleteFirewallRule',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-                FirewallRuleId: ruleId,
-            },
+            Action: 'DeleteFirewallRule', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId, FirewallRuleId: ruleId },
         })
     }
 
@@ -172,12 +113,8 @@ export class SwasModel extends AlibabaClient {
 
     public listInstancesTrafficPackages(region: string, instanceId: string): Promise<Swas.ListInstancesTrafficPackagesResponseBody> {
         return this.bus({
-            Action: 'ListInstancesTrafficPackages',
-            RegionId: region,
-            Payload: {
-                RegionId: region,
-                InstanceId: instanceId,
-            },
+            Action: 'ListInstancesTrafficPackages', RegionId: region,
+            Payload: { RegionId: region, InstanceId: instanceId },
         })
     }
 }
