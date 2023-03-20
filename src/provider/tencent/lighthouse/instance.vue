@@ -89,7 +89,8 @@ export default class LighthouseInstance extends Vue {
 
     async refreshInstance() {
         await this.getInstance()
-        if (this.instance.InstanceState.match(/ING$/)) {
+        const s = this.instance.InstanceState
+        if (s != "RUNNING" && s.match(/ING$/)) {
             setTimeout(this.refreshInstance, 1500)
         }
     }
