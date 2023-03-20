@@ -4,6 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/native/machine"
 
+import AlibabaEcs from "@/provider/alibaba/ecs/instance.vue"
 import AlibabaSwas from "@/provider/alibaba/swas/instance.vue"
 
 import TencentCvm from "@/provider/tencent/cvm/instance.vue"
@@ -12,7 +13,7 @@ import TencentLighthouse from "@/provider/tencent/lighthouse/instance.vue"
 import NativeWorker from "@/provider/worker/instance.vue"
 
 @Component({
-    components: { AlibabaSwas, TencentCvm, TencentLighthouse, NativeWorker }
+    components: { AlibabaEcs, AlibabaSwas, TencentCvm, TencentLighthouse, NativeWorker }
 })
 export default class MachineDetail extends Vue {
     public MachineModels = MachineModels
@@ -55,6 +56,10 @@ export default class MachineDetail extends Vue {
         <t-space v-if="loading" fixed align="center">
             <t-loading />
         </t-space>
+
+        <template v-if="machine?.Model == 'alibaba/ecs'">
+            <AlibabaEcs :machine="machine" />
+        </template>
 
         <template v-if="machine?.Model == 'alibaba/swas'">
             <AlibabaSwas :machine="machine" />

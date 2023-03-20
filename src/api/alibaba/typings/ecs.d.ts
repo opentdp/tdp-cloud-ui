@@ -4545,7 +4545,7 @@ export interface DescribeInstancesRequest {
     ImageId: string
     InnerIpAddresses: string
     InstanceChargeType: string
-    InstanceIds: string
+    InstanceIds: string[]
     InstanceName: string
     InstanceNetworkType: string
     InstanceType: string

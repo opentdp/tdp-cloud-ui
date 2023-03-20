@@ -70,7 +70,7 @@ export default class EcsBind extends Vue {
             VendorId: this.vendorId,
             HostName: item.InstanceName || "",
             IpAddress: item.PublicIpAddress.IpAddress[0],
-            OSType: this.parseOSType(item.OSType),
+            OSType: item.OSType,
             Region: this.regionList[item.RegionId].LocalName,
             Model: "alibaba/ecs",
             CloudId: item.InstanceId,
@@ -90,30 +90,24 @@ export default class EcsBind extends Vue {
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
             IpAddress: item.PublicIpAddress.IpAddress[0],
-            OSType: this.parseOSType(item.OSType),
+            OSType: item.OSType,
             Region: this.regionList[item.RegionId].LocalName,
             CloudId: item.InstanceId,
             CloudMeta: item,
         })
     }
 
-    // 系统类型
-
-    public parseOSType(s: string) {
-        return /windows/i.test(s) ? "windows" : "linux"
-    }
-
     // 转换为GB显示
 
-    public parseToGB(s: string) {
-        return s ? (parseInt(s) / 1024).toFixed(2) + " GB" : "--"
+    public parseToGB(s: number) {
+        return s ? (s / 1024).toFixed(1) + " GB" : "--"
     }
 
     // 表格定义
 
     public tableColumns = [
         { colKey: 'InstanceName', title: '名称', ellipsis: true },
-        { colKey: 'RegionName', title: '地域', ellipsis: true },
+        { colKey: 'RegionId', title: '地域', ellipsis: true },
         { colKey: 'Cpu', title: 'CPU', ellipsis: true },
         { colKey: 'Memory', title: '内存', ellipsis: true },
         { colKey: 'PublicIpAddress', title: '外网 IP', ellipsis: true },
@@ -129,8 +123,8 @@ export default class EcsBind extends Vue {
             记录总数: {{ instanceCount }}
         </template>
         <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId">
-            <template #RegionName="{ row }">
-                {{ row.RegionName }}
+            <template #RegionId="{ row }">
+                {{ regionList[row.RegionId].LocalName }}
             </template>
             <template #Memory="{ row }">
                 {{ parseToGB(row.Memory) }}

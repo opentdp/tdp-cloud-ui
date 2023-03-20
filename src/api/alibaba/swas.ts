@@ -22,7 +22,7 @@ export class SwasModel extends AlibabaClient {
         })
     }
 
-    public listInstances(region: string, query?: Omit<Swas.ListInstancesRequest, "RegionId">): Promise<Swas.ListInstancesResponseBody> {
+    public listInstances(region: string, query?: Partial<Swas.ListInstancesRequest>): Promise<Swas.ListInstancesResponseBody> {
         query = Object.assign({ Limit: 100 }, query)
         return this.bus({
             Action: 'ListInstances',

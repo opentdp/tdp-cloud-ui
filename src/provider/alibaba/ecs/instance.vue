@@ -3,19 +3,19 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { AcApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
-import { InstanceStateMap } from "@/api/alibaba/swas"
+import { InstanceStateMap } from "@/api/alibaba/ecs"
 import * as AC from "@/api/alibaba/typings"
 
 import { dateFormat } from "@/helper/format"
 
 @Component
-export default class SwasInstance extends Vue {
+export default class EcsInstance extends Vue {
     public InstanceStateMap = InstanceStateMap
     public dateFormat = dateFormat
 
     @Prop
     public machine!: Omit<MachineItem, "CloudMeta"> & {
-        CloudMeta: AC.SwasInstance
+        CloudMeta: AC.Ecs.DescribeInstancesResponseBodyInstancesInstance
     }
 
     // 初始化
@@ -34,21 +34,22 @@ export default class SwasInstance extends Vue {
 
     // 实例信息
 
-    public instance!: AC.SwasInstance
+    public instance!: AC.Ecs.DescribeInstancesResponseBodyInstancesInstance
 
     async getInstance() {
-        const res = await AcApi.swas.listInstances(this.region, {
-            InstanceIds: this.instance.InstanceId,
+        const res = await AcApi.ecs.describeInstances(this.region, {
+            InstanceIds: [this.instance.InstanceId],
         })
         if (res.Instances) {
-            Object.assign(this.instance, res.Instances[0])
+            Object.assign(this.instance, res.Instances.Instance[0])
         }
     }
+
     // 关闭实例
 
     async stopInstance() {
         this.instance.Status = "Stopping"
-        await AcApi.swas.stopInstance(this.region, this.instance.InstanceId)
+        await AcApi.ecs.stopInstance(this.region, this.instance.InstanceId)
         setTimeout(this.refreshInstance, 1500)
     }
 
@@ -56,7 +57,7 @@ export default class SwasInstance extends Vue {
 
     async startInstance() {
         this.instance.Status = "Starting"
-        await AcApi.swas.startInstance(this.region, this.instance.InstanceId)
+        await AcApi.ecs.startInstance(this.region, this.instance.InstanceId)
         setTimeout(this.refreshInstance, 1500)
     }
 
@@ -64,7 +65,7 @@ export default class SwasInstance extends Vue {
 
     async rebootInstance() {
         this.instance.Status = "Resetting"
-        await AcApi.swas.rebootInstance(this.region, this.instance.InstanceId)
+        await AcApi.ecs.rebootInstance(this.region, this.instance.InstanceId)
         setTimeout(this.refreshInstance, 1500)
     }
 
@@ -76,6 +77,12 @@ export default class SwasInstance extends Vue {
         if (s != "Running" && s.match(/ing$/)) {
             setTimeout(this.refreshInstance, 1500)
         }
+    }
+
+    // 转换为GB显示
+
+    public parseToGB(s: number) {
+        return s ? (s / 1024).toFixed(1) + " GB" : "--"
     }
 }
 </script>
@@ -115,19 +122,15 @@ export default class SwasInstance extends Vue {
                 </t-list-item>
                 <t-list-item>
                     <b>规格</b>
-                    <span>CPU: {{ instance.Core }} 核 / 内存: {{ instance.Memory }} GB</span>
-                </t-list-item>
-                <t-list-item>
-                    <b>系统盘</b>
-                    <span>{{ instance.DiskSize }} GB</span>
+                    <span>CPU: {{ instance.Cpu }} 核 / 内存: {{ parseToGB(instance.Memory) }} GB</span>
                 </t-list-item>
                 <t-list-item>
                     <b>公网 IP</b>
-                    <span>{{ instance.PublicIpAddress }}</span>
+                    <span>{{ instance.PublicIpAddress?.IpAddress.join(",") }}</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>镜像 Id</b>
-                    <span>{{ instance.ImageId }}</span>
+                    <b>操作系统</b>
+                    <span>{{ instance.OSName }}</span>
                 </t-list-item>
                 <t-list-item>
                     <b>创建时间</b>
