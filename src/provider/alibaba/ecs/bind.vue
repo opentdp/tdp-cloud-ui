@@ -3,6 +3,7 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { AcApi, NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
+import * as AC from "@/api/alibaba/typings"
 
 import { dateFormat } from "@/helper/format"
 
@@ -29,46 +30,31 @@ export default class EcsBind extends Vue {
 
     // 获取列表
 
-    public regionList: Record<string, any> = {}
+    public regionList: Record<string, AC.Ecs.DescribeRegionsResponseBodyRegionsRegion> = {}
 
-    public instanceList = []
+    public instanceList: AC.Ecs.DescribeInstancesResponseBodyInstancesInstance[] = []
     public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await AcApi.ecs.describeRegions()
-        this.loading = res.TotalCount
-        res.Regions.Region.forEach(async (item: any) => {
-            const regionId = item?.RegionId || ""
-            const { LocalName } = item
-
-            this.regionList = {
-                ...this.regionList,
-                [regionId]: regionId,
-            }
+        const res = await AcApi.ecs.describeRegions().finally(() => this.loading--)
+        this.loading = res.Regions.Region.length
+        res.Regions.Region.forEach(async item => {
+            this.regionList[item.RegionId] = item
             // 获取当前大区实例
-            const rs2 = await AcApi.ecs.describeInstances(regionId)
-            const {
-                TotalCount,
-                Instances: { Instance },
-            } = rs2
-            if (TotalCount && Instance) {
-                const temp = Instance.map((i: any) => ({
-                    ...i,
-                    RegionName: LocalName,
-                }))
-                this.instanceList = this.instanceList.concat(temp)
+            const rs2 = await AcApi.ecs.describeInstances(item.RegionId).finally(() => this.loading--)
+            if (rs2.TotalCount && rs2.Instances.Instance) {
+                this.instanceList.push(...rs2.Instances.Instance)
                 this.instanceCount += rs2.TotalCount
             }
-            this.loading--
         })
     }
 
     // 执行脚本
 
-    async runCommand(instance: Required<any>, code: string) {
-        const region = instance.Placement.Zone.replace(/-(\d+)$/, "")
+    async runCommand(item: Required<AC.Ecs.DescribeInstancesResponseBodyInstancesInstance>, code: string) {
+        const region = item.RegionId
         const res = await AcApi.tat.runCommand(region, {
-            InstanceIds: [instance.InstanceId],
+            InstanceIds: [item.InstanceId],
             Content: code,
         })
         const rs2 = AcApi.tat.describeInvocations(region, {
@@ -79,13 +65,13 @@ export default class EcsBind extends Vue {
 
     // 绑定主机
 
-    async bindMachine(item: Required<any>) {
+    async bindMachine(item: Required<AC.Ecs.DescribeInstancesResponseBodyInstancesInstance>) {
         await NaApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName || "",
             IpAddress: item.PublicIpAddress.IpAddress[0],
-            OSType: this.parseOSType(item.OsName),
-            Region: item.RegionName,
+            OSType: item.OSType,
+            Region: this.regionList[item.RegionId].LocalName,
             Model: "alibaba/ecs",
             CloudId: item.InstanceId,
             CloudMeta: item,
@@ -98,36 +84,30 @@ export default class EcsBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: Required<any>) {
+    public syncMachine(item: Required<AC.Ecs.DescribeInstancesResponseBodyInstancesInstance>) {
         const bd = this.boundList[item.InstanceId]
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: item.InstanceName,
             IpAddress: item.PublicIpAddress.IpAddress[0],
-            OSType: this.parseOSType(item.OsName),
-            Region: item.RegionName,
+            OSType: item.OSType,
+            Region: this.regionList[item.RegionId].LocalName,
             CloudId: item.InstanceId,
             CloudMeta: item,
         })
     }
 
-    // 系统类型
-
-    public parseOSType(s: string) {
-        return /windows/i.test(s) ? "windows" : "linux"
-    }
-
     // 转换为GB显示
 
-    public parseToGB(s: string) {
-        return s ? (parseInt(s) / 1024).toFixed(2) + " GB" : "--"
+    public parseToGB(s: number) {
+        return s ? (s / 1024).toFixed(1) + " GB" : "--"
     }
 
     // 表格定义
 
     public tableColumns = [
         { colKey: 'InstanceName', title: '名称', ellipsis: true },
-        { colKey: 'RegionName', title: '地域', ellipsis: true },
+        { colKey: 'RegionId', title: '地域', ellipsis: true },
         { colKey: 'Cpu', title: 'CPU', ellipsis: true },
         { colKey: 'Memory', title: '内存', ellipsis: true },
         { colKey: 'PublicIpAddress', title: '外网 IP', ellipsis: true },
@@ -138,14 +118,13 @@ export default class EcsBind extends Vue {
 </script>
 
 <template>
-    <t-card title="实例列表" hover-shadow header-bordered>
+    <t-card :loading="loading > 0" title="实例列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
-            row-key="InstanceId">
-            <template #RegionName="{ row }">
-                {{ row.RegionName }}
+        <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId">
+            <template #RegionId="{ row }">
+                {{ regionList[row.RegionId].LocalName }}
             </template>
             <template #Memory="{ row }">
                 {{ parseToGB(row.Memory) }}

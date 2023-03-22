@@ -58,7 +58,7 @@ export default class MachineList extends Vue {
 
     public selectedRow!: MachineItem
 
-    public tableRowChange(ids: number[]) {
+    public tableRowChange(ids: (string | number)[]) {
         const ret = this.machineList.find(item => item.Id === ids[0])
         this.selectedRow = ret as MachineItem
     }
@@ -66,7 +66,7 @@ export default class MachineList extends Vue {
     // 表格定义
 
     public tableColumns = [
-        { colKey: 'row-select', type: 'single', width: "30px" },
+        { colKey: 'row-select', width: "30px" },
         { colKey: 'HostName', title: '名称', ellipsis: true },
         { colKey: 'IpAddress', title: '公网 IP', ellipsis: true },
         { colKey: 'Region', title: '地域', ellipsis: true },
@@ -89,11 +89,11 @@ export default class MachineList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="主机列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="主机列表" hover-shadow header-bordered>
             <template #subtitle>
-                <small>记录总数: {{ machineList.length }}</small>
+                记录总数: {{ machineList.length }}
             </template>
-            <t-table v-loading="loading" :data="machineList" :columns="tableColumns" row-key="Id" select-on-row-click
+            <t-table :data="machineList" :columns="tableColumns" row-key="Id" select-on-row-click
                 @select-change="tableRowChange">
                 <template #Model="{ row }">
                     <t-tooltip :content="MachineModels[row.Model]">

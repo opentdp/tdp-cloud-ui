@@ -9,7 +9,6 @@ export const config: UserConfig = {
     base: "./",
     build: {
         outDir: "build",
-        assetsDir: "assets",
         manifest: false,
     },
     plugins: [
@@ -18,7 +17,7 @@ export const config: UserConfig = {
             {
                 file: /tdesign-.+\.js/,
                 source: /https:\/\/[^"']+\/fonts\/index\.js/g,
-                target: './assets/icon.js',
+                target: 'assets/icon.js',
             },
         ])
     ],
@@ -27,12 +26,5 @@ export const config: UserConfig = {
             "@": "/src",
             "~": "/node_modules",
         },
-    },
-    css: {
-        preprocessorOptions: {
-            scss: {
-                additionalData: '@import "@/assets/style/variable.scss";',
-            },
-        },
-    },
+    }
 }

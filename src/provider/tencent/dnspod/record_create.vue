@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
 import Api, { TcApi } from "@/api"
 import * as TC from "@/api/tencent/typings"
@@ -33,7 +33,7 @@ export default class DnspodRecordCreate extends Vue {
 
     // 提交表单
 
-    async formSubmit(ctx: SubmitContext<FormData>) {
+    async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
             Api.msg.err("请检查表单")
             return false
@@ -46,7 +46,8 @@ export default class DnspodRecordCreate extends Vue {
             Value: this.formModel.Value,
             MX: +this.formModel.MX || 0,
             TTL: +this.formModel.TTL || 600,
-            Weight: +this.formModel.Weight || 0
+            Weight: +this.formModel.Weight || 0,
+            Status: this.formModel.Status || "ENABLE",
         }
         await TcApi.dnspod.createRecord(query)
         this.close()
@@ -128,7 +129,7 @@ export default class DnspodRecordCreate extends Vue {
             <t-form-item name="Weight" label="权重">
                 <t-input-number v-model="formModel.Weight" />
             </t-form-item>
-            <t-form-item name="MX" label="MX">
+            <t-form-item v-if="formModel.Type == 'MX'" name="MX" label="MX">
                 <t-input-number v-model="formModel.MX" />
             </t-form-item>
             <t-form-item name="TTL" label="TTL">

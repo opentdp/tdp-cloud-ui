@@ -5,15 +5,19 @@ import { NaApi } from "@/api"
 import { KeypairItem } from "@/api/native/keypair"
 
 import KeypairCreate from "./keypair_create.vue"
+import KeypairUpdate from "./keypair_update.vue"
 
 @Component({
-    components: { KeypairCreate }
+    components: { KeypairCreate, KeypairUpdate }
 })
 export default class KeypairList extends Vue {
     public loading = true
 
     @Ref
     public createModal!: KeypairCreate
+
+    @Ref
+    public updateModal!: KeypairUpdate
 
     // 初始化
 
@@ -60,7 +64,7 @@ export default class KeypairList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="密钥列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="密钥列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ keylist?.length || 0 }}
             </template>
@@ -72,8 +76,11 @@ export default class KeypairList extends Vue {
                     添加密钥
                 </t-button>
             </template>
-            <t-table v-loading="loading" :data="keylist" :columns="tableColumns" row-key="Id">
-                <template #Operation="{ rowIndex }">
+            <t-table :data="keylist" :columns="tableColumns" row-key="Id">
+                <template #Operation="{ row, rowIndex }">
+                    <t-link theme="primary" hover="color" @click="updateModal.open(row)">
+                        修改
+                    </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteKey(rowIndex)">
                         <t-link theme="danger" hover="color">
                             删除
@@ -84,5 +91,6 @@ export default class KeypairList extends Vue {
         </t-card>
 
         <KeypairCreate ref="createModal" @submit="getKeypairList" />
+        <KeypairUpdate ref="updateModal" @submit="getKeypairList" />
     </t-space>
 </template>

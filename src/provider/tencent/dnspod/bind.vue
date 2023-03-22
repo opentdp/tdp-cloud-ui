@@ -85,11 +85,11 @@ export default class DnspodBind extends Vue {
 </script>
 
 <template>
-    <t-card title="域名列表" hover-shadow header-bordered>
+    <t-card :loading="loading" title="域名列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ domainCount }}
         </template>
-        <t-table v-loading="loading" :data="domainList" :columns="tableColumns" row-key="DomainId">
+        <t-table :data="domainList" :columns="tableColumns" row-key="DomainId">
             <template #Status="{ row }">
                 {{ DomainStatusMap[row.Status] }}
             </template>

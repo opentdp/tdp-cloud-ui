@@ -48,8 +48,8 @@ export default class CertbotList extends Vue {
         { colKey: 'Domain', title: '域名', ellipsis: true },
         { colKey: 'Email', title: '邮箱', ellipsis: true },
         { colKey: 'CaType', title: 'CA', ellipsis: true },
-        { colKey: 'History', title: '证书', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "60px" },
+        { colKey: 'History', title: '状态', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "110px" },
     ]
 }
 </script>
@@ -65,7 +65,7 @@ export default class CertbotList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="证书列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="证书列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ certbotList.length }}
             </template>
@@ -77,22 +77,21 @@ export default class CertbotList extends Vue {
                     申请证书
                 </t-button>
             </template>
-            <t-table v-loading="loading" :data="certbotList" :columns="tableColumns" row-key="Id">
+            <t-table :data="certbotList" :columns="tableColumns" row-key="Id">
                 <template #CaType="{ row }">
                     {{ CaTypeList[row.CaType].Name }}
                 </template>
                 <template #History="{ row }">
-                    <span v-if="row.History?.event == 'cached'" v-route="'/certbot/detail/' + row.Id">
-                        详情
-                    </span>
-                    <span v-else-if="row.History?.event == 'obtained'" v-route="'/certbot/detail/' + row.Id">
-                        详情
-                    </span>
-                    <div v-else>
-                        {{ row.History?.event ? JobStatus[row.History.event] : "未知" }}
-                    </div>
+                    {{ row.History?.event ? JobStatus[row.History.event] : "未知" }}
                 </template>
-                <template #Operation="{ rowIndex }">
+                <template #Operation="{ row, rowIndex }">
+                    <t-link v-if="row.History && /cached|obtained/.test(row.History.event)"
+                        v-route="'/certbot/detail/' + row.Id" theme="primary" hover="color">
+                        查看
+                    </t-link>
+                    <t-link v-else theme="warning" hover="color">
+                        暂无
+                    </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteCertbot(rowIndex)">
                         <t-link theme="danger" hover="color">
                             删除

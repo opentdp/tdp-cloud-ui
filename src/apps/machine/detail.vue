@@ -4,12 +4,16 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/native/machine"
 
-import CvmInstance from "@/provider/tencent/cvm/instance.vue"
-import LighthouseInstance from "@/provider/tencent/lighthouse/instance.vue"
-import WorkerInstance from "@/provider/worker/instance.vue"
+import AlibabaEcs from "@/provider/alibaba/ecs/instance.vue"
+import AlibabaSwas from "@/provider/alibaba/swas/instance.vue"
+
+import TencentCvm from "@/provider/tencent/cvm/instance.vue"
+import TencentLighthouse from "@/provider/tencent/lighthouse/instance.vue"
+
+import NativeWorker from "@/provider/worker/instance.vue"
 
 @Component({
-    components: { CvmInstance, LighthouseInstance, WorkerInstance }
+    components: { AlibabaEcs, AlibabaSwas, TencentCvm, TencentLighthouse, NativeWorker }
 })
 export default class MachineDetail extends Vue {
     public MachineModels = MachineModels
@@ -53,16 +57,24 @@ export default class MachineDetail extends Vue {
             <t-loading />
         </t-space>
 
+        <template v-if="machine?.Model == 'alibaba/ecs'">
+            <AlibabaEcs :machine="machine" />
+        </template>
+
+        <template v-if="machine?.Model == 'alibaba/swas'">
+            <AlibabaSwas :machine="machine" />
+        </template>
+
         <template v-if="machine?.Model == 'tencent/cvm'">
-            <CvmInstance :machine="machine" />
+            <TencentCvm :machine="machine" />
         </template>
 
         <template v-if="machine?.Model == 'tencent/lighthouse'">
-            <LighthouseInstance :machine="machine" />
+            <TencentLighthouse :machine="machine" />
         </template>
 
         <template v-if="machine?.Model == 'native/worker'">
-            <WorkerInstance :machine="machine" />
+            <NativeWorker :machine="machine" />
         </template>
     </t-space>
 </template>

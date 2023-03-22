@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
 import Api, { TcApi } from "@/api"
 import * as TC from "@/api/tencent/typings"
@@ -38,7 +38,7 @@ export default class LighthouseFirewallUpdate extends Vue {
 
     // 提交表单
 
-    async formSubmit(ctx: SubmitContext<FormData>) {
+    async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
             Api.msg.err("请检查表单")
             return false

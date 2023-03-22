@@ -55,7 +55,7 @@ export default class Error404 extends Vue {
     }
 
     span:nth-child(3) {
-        color: var(--td-brand-color-6);
+        color: var(--td-warning-color-6);
     }
 }
 

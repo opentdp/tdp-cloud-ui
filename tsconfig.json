@@ -31,5 +31,6 @@
         "src/**/*.d.ts",
         "src/**/*.vue",
         "src/**/*.tsx",
+        "node_modules/tdesign-vue-next/global.d.ts"
     ]
 }

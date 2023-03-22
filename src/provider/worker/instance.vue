@@ -5,10 +5,10 @@ import { MachineItem } from "@/api/native/machine"
 
 import { bytesToSize, dateFormat } from "@/helper/format"
 
-import StatChart from "./stat_chart.vue"
+import SysLoad from "./sys_load.vue"
 
 @Component({
-    components: { StatChart }
+    components: { SysLoad }
 })
 export default class WorkerInstance extends Vue {
     public bytesToSize = bytesToSize
@@ -21,8 +21,8 @@ export default class WorkerInstance extends Vue {
 
 <template>
     <t-space fixed direction="vertical">
-        <t-card>
-            <StatChart :id="machine.WorkerId" />
+        <t-card title="实例负载" hover-shadow header-bordered>
+            <SysLoad :id="machine.WorkerId" />
         </t-card>
 
         <t-card title="实例信息" hover-shadow header-bordered>
@@ -48,8 +48,15 @@ export default class WorkerInstance extends Vue {
                     <span> {{ machine.WorkerMeta.Platform }}（{{ machine.WorkerMeta.KernelArch }}）</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>公网 IP</b>
-                    <span> {{ machine.WorkerMeta.IpAddress }}</span>
+                    <b>接口 IP </b>
+                    <span class="text-right">
+                        <template v-for="v in machine.WorkerMeta.Ipv4List" :key="v">
+                            {{ v }} <br>
+                        </template>
+                        <template v-for="v in machine.WorkerMeta.Ipv6List" :key="v">
+                            {{ v }} <br>
+                        </template>
+                    </span>
                 </t-list-item>
                 <t-list-item>
                     <b>上次同步</b>

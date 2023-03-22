@@ -65,7 +65,7 @@ export default class ScriptList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="脚本列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="脚本列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ scriptList.length }}
             </template>
@@ -77,7 +77,7 @@ export default class ScriptList extends Vue {
                     新建脚本
                 </t-button>
             </template>
-            <t-table v-loading="loading" :data="scriptList" :columns="tableColumns" row-key="Id">
+            <t-table :data="scriptList" :columns="tableColumns" row-key="Id">
                 <template #Operation="{ row }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改

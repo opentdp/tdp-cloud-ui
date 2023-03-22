@@ -111,7 +111,7 @@ export default class CloudflareCustomHostnames extends Vue {
         <t-space />
     </template>
 
-    <t-card v-else v-loading="loading" title="自定义主机名" hover-shadow header-bordered>
+    <t-card v-else :loading="loading" title="自定义主机名" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ customHostnames?.length || 0 }}
         </template>

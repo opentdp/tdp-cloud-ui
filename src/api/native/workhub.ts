@@ -1,18 +1,22 @@
 import { HttpClient } from "@/api/basic/http"
 
-import { SummaryStat, DetailStat, ScriptPayload } from "./typings"
+import { SummaryStat, DetailStat, IpSets, ScriptPayload } from "./typings"
 
 export class WorkhubModel extends HttpClient {
-    public host(): Promise<HostDetail> {
+    public host(): Promise<NodeDetail> {
         return this.post("/workhub/host", {})
+    }
+
+    public hostIp(): Promise<IpSets> {
+        return this.post("/workhub/host/ip", {})
     }
 
     public list(): Promise<WorkerPaged> {
         return this.post("/workhub/list", {})
     }
 
-    public stat(id: string): Promise<DetailStat> {
-        return this.post("/workhub/stat/" + id, {})
+    public detail(id: string): Promise<NodeDetail> {
+        return this.post("/workhub/detail/" + id, {})
     }
 
     public exec(id: string, rq: ScriptPayload): Promise<{ Id: number }> {
@@ -26,7 +30,7 @@ export class WorkhubModel extends HttpClient {
     }
 }
 
-export interface HostDetail {
+export interface NodeDetail {
     Stat: DetailStat
 }
 

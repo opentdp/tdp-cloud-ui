@@ -60,11 +60,11 @@ export default class DomainList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="域名列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="域名列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ domainList.length }}
             </template>
-            <t-table v-loading="loading" :data="domainList" :columns="tableColumns" row-key="Id">
+            <t-table :data="domainList" :columns="tableColumns" row-key="Id">
                 <template #Model="{ row }">
                     <t-tooltip :content="DomainModels[row.Model]">
                         {{ cache.vendorList[row.VendorId]?.Description || "-" }}

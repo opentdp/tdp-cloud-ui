@@ -26,53 +26,63 @@ export default class CvmBind extends Vue {
 
     public created() {
         TcApi.vendor(this.vendorId)
-        this.getRegionInstanceList()
+        this.getRegionList()
+        this.getInstanceList()
     }
 
-    // 获取列表
+    // 区域列表
 
     public regionList: Record<string, TC.Cvm.RegionInfo> = {}
+
+    async getRegionList() {
+        const res = await TcApi.cvm.describeRegions().finally(() => this.loading--)
+        res.RegionSet.forEach(async item => {
+            this.regionList[item.Region] = item
+        })
+    }
+
+    // 实例列表
 
     public instanceList: TC.Cvm.Instance[] = []
     public instanceCount = 0
 
-    async getRegionInstanceList() {
-        const res = await TcApi.cvm.describeRegions()
-        this.loading = res.TotalCount
-        res.RegionSet.forEach(async item => {
-            this.regionList[item.Region] = item
-            // 获取当前大区实例
-            const rs2 = await TcApi.cvm.describeInstances(item.Region)
+    async getInstanceList() {
+        const res = await TcApi.cvm.describeInstanceStatistics()
+        res.InstanceStatisticsSet.forEach(async item => {
+            if (item.TotalCount == 0) {
+                return
+            }
+            this.loading++
+            const rs2 = await TcApi.cvm.describeInstances(item.Region).finally(() => this.loading--)
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet)
                 this.instanceCount += rs2.TotalCount
             }
-            this.loading--
         })
     }
 
     // 执行脚本
 
-    async runCommand(instance: Required<TC.Cvm.Instance>, code: string) {
-        const region = instance.Placement.Zone.replace(/-(\d+)$/, '')
+    async runCommand(item: Required<TC.Cvm.Instance>, code: string) {
+        const region = item.Placement.Zone.replace(/-(\d+)$/, '')
         const res = await TcApi.tat.runCommand(region, {
-            InstanceIds: [instance.InstanceId],
+            InstanceIds: [item.InstanceId],
             Content: code,
         })
         return res.InvocationId
     }
 
-    // PENDING 等待下发
-    // RUNNING 命令运行中
-    // SUCCESS 命令成功
-    // FAILED 命令失败
-    // TIMEOUT 命令超时
-    // PARTIAL_FAILED 命令部分失败
-    async getInvocationStatus(instance: Required<TC.Cvm.Instance>, id: string) {
-        const region = instance.Placement.Zone.replace(/-(\d+)$/, '')
+    async getInvocationStatus(item: Required<TC.Cvm.Instance>, id: string) {
+        const region = item.Placement.Zone.replace(/-(\d+)$/, '')
         const res = await TcApi.tat.describeInvocations(region, {
             InvocationIds: [id]
         })
+        // PENDING 等待下发
+        // RUNNING 命令运行中
+        // SUCCESS 命令成功
+        // FAILED 命令失败
+        // TIMEOUT 命令超时
+        // PARTIAL_FAILED 命令部分失败
         return res.InvocationSet[0].InvocationStatus
     }
 
@@ -170,12 +180,11 @@ export default class CvmBind extends Vue {
 </script>
 
 <template>
-    <t-card title="实例列表" hover-shadow header-bordered>
+    <t-card :loading="loading > 0" title="实例列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
-            row-key="InstanceId">
+        <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId">
             <template #Placement="{ row }">
                 {{ parseRegion(row.Placement.Zone) }}
             </template>

@@ -37,42 +37,41 @@ export default class LighthouseBind extends Vue {
     public instanceCount = 0
 
     async getRegionInstanceList() {
-        const res = await TcApi.lighthouse.describeRegions()
+        const res = await TcApi.lighthouse.describeRegions().finally(() => this.loading--)
         this.loading = res.TotalCount
         res.RegionSet.forEach(async item => {
             this.regionList[item.Region] = item
             // 获取当前大区实例
-            const rs2 = await TcApi.lighthouse.describeInstances(item.Region)
+            const rs2 = await TcApi.lighthouse.describeInstances(item.Region).finally(() => this.loading--)
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet)
                 this.instanceCount += rs2.TotalCount
             }
-            this.loading--
         })
     }
 
     // 执行脚本
 
-    async runCommand(instance: TC.Lighthouse.Instance, code: string) {
-        const region = instance.Zone.replace(/-(\d+)$/, '')
+    async runCommand(item: TC.Lighthouse.Instance, code: string) {
+        const region = item.Zone.replace(/-(\d+)$/, '')
         const res = await TcApi.tat.runCommand(region, {
-            InstanceIds: [instance.InstanceId],
+            InstanceIds: [item.InstanceId],
             Content: code,
         })
         return res.InvocationId
     }
 
-    // PENDING 等待下发
-    // RUNNING 命令运行中
-    // SUCCESS 命令成功
-    // FAILED 命令失败
-    // TIMEOUT 命令超时
-    // PARTIAL_FAILED 命令部分失败
-    async getInvocationStatus(instance: TC.Lighthouse.Instance, id: string) {
-        const region = instance.Zone.replace(/-(\d+)$/, '')
+    async getInvocationStatus(item: TC.Lighthouse.Instance, id: string) {
+        const region = item.Zone.replace(/-(\d+)$/, '')
         const res = await TcApi.tat.describeInvocations(region, {
             InvocationIds: [id]
         })
+        // PENDING 等待下发
+        // RUNNING 命令运行中
+        // SUCCESS 命令成功
+        // FAILED 命令失败
+        // TIMEOUT 命令超时
+        // PARTIAL_FAILED 命令部分失败
         return res.InvocationSet[0].InvocationStatus
     }
 
@@ -170,12 +169,11 @@ export default class LighthouseBind extends Vue {
 </script>
 
 <template>
-    <t-card title="实例列表" hover-shadow header-bordered>
+    <t-card :loading="loading > 0" title="实例列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table v-loading="loading && instanceList.length == 0" :data="instanceList" :columns="tableColumns"
-            row-key="InstanceId">
+        <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId">
             <template #Zone="{ row }">
                 {{ parseRegion(row.Zone) }}
             </template>

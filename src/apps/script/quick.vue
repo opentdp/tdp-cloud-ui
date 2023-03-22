@@ -48,7 +48,10 @@ export default class ScriptQuick extends Vue {
 </script>
 
 <template>
-    <div v-if="machine.WorkerMeta" v-loading="loading">
+    <div v-if="machine.WorkerMeta">
+        <t-space v-if="loading" fixed align="center">
+            <t-loading />
+        </t-space>
         <div v-if="scriptList.length == 0">
             暂无可用命令，请在 <b v-route="'/script/list'">脚本管理</b> 页面添加命令。
         </div>

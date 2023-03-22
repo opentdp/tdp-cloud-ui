@@ -4,11 +4,12 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { DomainModels, DomainItem } from "@/api/native/domain"
 
+import AlibabaDns from "@/provider/alibaba/dns/domain.vue"
 import CloudflareZone from "@/provider/cloudflare/domain.vue"
-import DnspodDomain from "@/provider/tencent/dnspod/domain.vue"
+import TencentDnspod from "@/provider/tencent/dnspod/domain.vue"
 
 @Component({
-    components: { CloudflareZone, DnspodDomain }
+    components: { AlibabaDns, CloudflareZone, TencentDnspod }
 })
 export default class DomainDetail extends Vue {
     public DomainModels = DomainModels
@@ -52,12 +53,16 @@ export default class DomainDetail extends Vue {
             <t-loading />
         </t-space>
 
+        <template v-if="domain?.Model == 'alibaba/alidns'">
+            <AlibabaDns :domain="domain" />
+        </template>
+
         <template v-if="domain?.Model == 'cloudflare/zone'">
             <CloudflareZone :domain="domain" />
         </template>
 
         <template v-if="domain?.Model == 'tencent/dnspod'">
-            <DnspodDomain :domain="domain" />
+            <TencentDnspod :domain="domain" />
         </template>
     </t-space>
 </template>

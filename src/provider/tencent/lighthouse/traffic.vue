@@ -57,6 +57,9 @@ export default class LighthouseTraffic extends Vue {
             StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
             EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
         })
+        if (res.DataPoints == null || res.DataPoints.length === 0) {
+            return // 没有数据
+        }
         const data = res.DataPoints[0].Timestamps.map(t => {
             return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
         })

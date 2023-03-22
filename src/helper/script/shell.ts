@@ -10,7 +10,7 @@ export const installWorker: ScriptPayload = {
     Description: "",
     Content: codeTrim(`
         export TDP_REMOTE_URL="${NaApi.workhub.getRegisterURL()}"
-        wget -qO- https://apps.rehiy.com/tdp-cloud/worker-linux | sh -
+        wget -qO- https://apps.rehiy.com/tdp-cloud/worker-service | sh -
     `),
     CommandType: "SHELL",
     WorkDirectory: "/root",

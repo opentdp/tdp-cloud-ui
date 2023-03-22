@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Ref, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
 import Api, { NaApi } from "@/api"
 import { UserUpdate } from "@/api/native/passport"
@@ -49,7 +49,7 @@ export default class PassportProfile extends Vue {
         OldPassword: [{ required: true }],
     }
 
-    public formSubmit(ctx: SubmitContext<FormData>) {
+    public formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
             Api.msg.err("请检查表单")
             return false
@@ -74,9 +74,7 @@ export default class PassportProfile extends Vue {
             <t-col :span="5">
                 <t-card title="基础信息" hover-shadow header-bordered>
                     <div class="info">
-                        <div class="info-image">
-                            <img src="@/assets/img/avatar.jpg">
-                        </div>
+                        <t-avatar size="96px" image="assets/img/avatar.jpg" />
                         <div class="info-name">
                             {{ session.Username }}
                         </div>
@@ -91,11 +89,6 @@ export default class PassportProfile extends Vue {
                     <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="70px" @submit="formSubmit">
                         <t-form-item label="AppId">
                             {{ session.AppId }}
-                        </t-form-item>
-                        <t-form-item label="AppKey">
-                            <t-tooltip :content="session.AppKey" placement="bottom">
-                                <i>用于解密私钥及重置密码，建议脱机保管</i>
-                            </t-tooltip>
                         </t-form-item>
                         <t-form-item name="Username" label="用户名">
                             <t-input v-model="formModel.Username" />
@@ -131,19 +124,6 @@ export default class PassportProfile extends Vue {
 .info {
     text-align: center;
     padding: 35px 0;
-
-    .info-image {
-        margin: auto;
-        width: 100px;
-        height: 100px;
-        border-radius: 50px;
-        overflow: hidden;
-
-        img {
-            width: 100%;
-            height: 100%;
-        }
-    }
 
     .info-name {
         margin: 15px 0 10px;

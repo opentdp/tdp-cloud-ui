@@ -3,6 +3,8 @@ import { Prop, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi, AcApi } from "@/api"
 import { DomainItem } from "@/api/native/domain"
+import * as AC from "@/api/alibaba/typings"
+
 import { dateFormat } from "@/helper/format"
 
 @Component({
@@ -27,11 +29,11 @@ export default class DnsBind extends Vue {
 
     // 获取列表
 
-    public domainList = []
+    public domainList: AC.Dns.DescribeDomainsResponseBodyDomainsDomain[] = []
     public domainCount = 0
 
     async getDomainList() {
-        const res = await AcApi.alidns.describeDomainList()
+        const res = await AcApi.alidns.describeDomains()
         if (res.TotalCount > 0) {
             this.domainList = res.Domains.Domain || []
             this.domainCount = res.TotalCount
@@ -41,7 +43,7 @@ export default class DnsBind extends Vue {
 
     // 绑定域名
 
-    async bindDomian(item: any) {
+    async bindDomian(item: AC.Dns.DescribeDomainsResponseBodyDomainsDomain) {
         await NaApi.domain.create({
             VendorId: this.vendorId,
             Name: item.DomainName,
@@ -57,7 +59,7 @@ export default class DnsBind extends Vue {
 
     // 同步域名
 
-    public syncDomian(item: any) {
+    public syncDomian(item: AC.Dns.DescribeDomainsResponseBodyDomainsDomain) {
         const bd = this.boundList[item.DomainId]
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
@@ -81,11 +83,11 @@ export default class DnsBind extends Vue {
 </script>
 
 <template>
-    <t-card title="域名列表" hover-shadow header-bordered>
+    <t-card :loading="loading" title="域名列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ domainCount }}
         </template>
-        <t-table v-loading="loading" :data="domainList" :columns="tableColumns" row-key="DomainId">
+        <t-table :data="domainList" :columns="tableColumns" row-key="DomainId">
             <template #DnsServers="{ row }">
                 {{ row.DnsServers.DnsServer.join(",") }}
             </template>

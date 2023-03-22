@@ -30,6 +30,7 @@ export interface UserLogin {
 
 export interface LoginResult {
     Username: string
+    Level: number
     AppId: string
     Email: string
     Token: string
@@ -60,6 +61,7 @@ export interface UserUpdate {
 }
 
 export interface UserSummary {
+    Certjob: number
     Domain: number
     Keypair: number
     Machine: number

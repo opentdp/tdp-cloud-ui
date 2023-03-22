@@ -1,14 +1,23 @@
 <script lang="ts">
 import { Ref, Component, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext } from "tdesign-vue-next"
+import { NaApi } from "@/api"
+import { VendorItem } from "@/api/native/vendor"
 
-import Api, { NaApi } from "@/api"
-import { VendorItem, VendorOrig } from "@/api/native/vendor"
+import VendorCreate from "./tencent_create.vue"
+import VendorUpdate from "./tencent_update.vue"
 
-@Component
+@Component({
+    components: { VendorCreate, VendorUpdate }
+})
 export default class VendorTencent extends Vue {
     public loading = true
+
+    @Ref
+    public createModal!: VendorCreate
+
+    @Ref
+    public updateModal!: VendorUpdate
 
     // 初始化
 
@@ -34,40 +43,12 @@ export default class VendorTencent extends Vue {
         this.vendorList.splice(idx, 1)
     }
 
-    // 添加厂商
-
-    @Ref
-    public formRef!: FormInstanceFunctions
-
-    public formModel: VendorOrig = {
-        SecretId: "",
-        SecretKey: "",
-        Provider: "tencent",
-        Description: "",
-    }
-
-    public formRules: FormRules<VendorOrig> = {
-        SecretId: [{ required: true }],
-        SecretKey: [{ required: true }],
-        Description: [{ required: true }],
-    }
-
-    async formSubmit(ctx: SubmitContext<FormData>) {
-        if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
-        }
-        await NaApi.vendor.create(this.formModel)
-        this.formRef.reset()
-        this.getVendorList()
-    }
-
     // 表格定义
 
     public tableColumns = [
         { colKey: 'Description', title: '别名', ellipsis: true },
         { colKey: 'SecretId', title: '密钥 ID', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
+        { colKey: 'Operation', title: '操作', width: "160px" },
     ]
 }
 </script>
@@ -83,11 +64,25 @@ export default class VendorTencent extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="账号列表" hover-shadow header-bordered>
+        <t-card :loading="loading" title="账号列表" hover-shadow header-bordered>
+            <template #subtitle>
+                记录总数: {{ vendorList.length }}
+            </template>
+            <template #actions>
+                <t-button theme="primary" size="small" @click="createModal.open()">
+                    <template #icon>
+                        <t-icon name="add" />
+                    </template>
+                    绑定账号
+                </t-button>
+            </template>
             <t-table :data="vendorList" :columns="tableColumns" row-key="Id">
                 <template #Operation="{ row, rowIndex }">
                     <t-link v-route="'/vendor/tencent/' + row.Id" theme="primary" hover="color">
                         管理
+                    </t-link>
+                    <t-link theme="warning" hover="color" @click="updateModal.open(row)">
+                        修改
                     </t-link>
                     <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
                         <t-link theme="danger" hover="color">
@@ -98,28 +93,7 @@ export default class VendorTencent extends Vue {
             </t-table>
         </t-card>
 
-        <t-card title="添加账号" hover-shadow header-bordered>
-            <template #actions>
-                <t-link href="https://apps.rehiy.com/tdp-cloud/docs/" target="_blank" hover="color">
-                    <t-icon name="jump" /> &nbsp;操作指南
-                </t-link>
-            </template>
-            <t-form ref="formRef" :data="formModel" :rules="formRules" @submit="formSubmit">
-                <t-form-item name="Description" label="别名">
-                    <t-input v-model="formModel.Description" />
-                </t-form-item>
-                <t-form-item name="SecretId" label="密钥 ID">
-                    <t-input v-model="formModel.SecretId" />
-                </t-form-item>
-                <t-form-item name="SecretKey" label="密钥 KEY">
-                    <t-input v-model="formModel.SecretKey" />
-                </t-form-item>
-                <t-form-item>
-                    <t-button theme="primary" type="submit">
-                        保存
-                    </t-button>
-                </t-form-item>
-            </t-form>
-        </t-card>
+        <VendorCreate ref="createModal" @submit="getVendorList" />
+        <VendorUpdate ref="updateModal" @submit="getVendorList" />
     </t-space>
 </template>
