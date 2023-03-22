@@ -77,13 +77,13 @@ export default class VendorAlibabaBind extends Vue {
         </t-breadcrumb>
 
         <t-tabs v-model="curTab.id" theme="card">
-            <t-tab-panel value="dns" label="域名解析" :destroy-on-hide="false">
+            <t-tab-panel value="dns" label="域名解析">
                 <DnsBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
             </t-tab-panel>
-            <t-tab-panel value="swas" label="轻量服务器" :destroy-on-hide="false">
+            <t-tab-panel value="swas" label="轻量服务器">
                 <SwasBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </t-tab-panel>
-            <t-tab-panel value="ecs" label="ECS 服务器" :destroy-on-hide="false">
+            <t-tab-panel value="ecs" label="ECS 服务器">
                 <EcsBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </t-tab-panel>
         </t-tabs>

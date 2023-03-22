@@ -77,13 +77,13 @@ export default class VendorTencentBind extends Vue {
         </t-breadcrumb>
 
         <t-tabs v-model="curTab.id" theme="card">
-            <t-tab-panel value="dnspod" label="域名解析" :destroy-on-hide="false">
+            <t-tab-panel value="dnspod" label="域名解析">
                 <DnspodBind v-bind="{ vendorId, boundList: domainList }" @change="getDomainList" />
             </t-tab-panel>
-            <t-tab-panel value="lighthouse" label="轻量服务器" :destroy-on-hide="false">
+            <t-tab-panel value="lighthouse" label="轻量服务器">
                 <LighthouseBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </t-tab-panel>
-            <t-tab-panel value="cvm" label="CVM 服务器" :destroy-on-hide="false">
+            <t-tab-panel value="cvm" label="CVM 服务器">
                 <CvmBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
             </t-tab-panel>
         </t-tabs>
