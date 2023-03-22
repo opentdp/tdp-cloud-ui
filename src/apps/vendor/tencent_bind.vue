@@ -4,14 +4,16 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { DomainItem } from "@/api/native/domain"
 import { MachineItem } from "@/api/native/machine"
+import { CertbotItem } from "@/api/native/certbot"
 import { VendorItem } from "@/api/native/vendor"
 
 import CvmBind from "@/provider/tencent/cvm/bind.vue"
-import LighthouseBind from "@/provider/tencent/lighthouse/bind.vue"
 import DnspodBind from "@/provider/tencent/dnspod/bind.vue"
+import LighthouseBind from "@/provider/tencent/lighthouse/bind.vue"
+import SslBind from "@/provider/tencent/ssl/bind.vue"
 
 @Component({
-    components: { CvmBind, LighthouseBind, DnspodBind }
+    components: { CvmBind, DnspodBind, LighthouseBind, SslBind }
 })
 export default class VendorTencentBind extends Vue {
     public curTab = {
@@ -85,6 +87,9 @@ export default class VendorTencentBind extends Vue {
             </t-tab-panel>
             <t-tab-panel value="cvm" label="CVM 服务器" :destroy-on-hide="false">
                 <CvmBind v-bind="{ vendorId, boundList: machineList }" @change="getMachineList" />
+            </t-tab-panel>
+            <t-tab-panel value="ssl" label="SSL 证书" :destroy-on-hide="false">
+                <SslBind v-bind="{ vendorId }" />
             </t-tab-panel>
         </t-tabs>
     </t-space>

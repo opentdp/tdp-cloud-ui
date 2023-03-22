@@ -29,7 +29,7 @@ export default class CertbotDetail extends Vue {
         this.certbot = res.Item
         this.cert = res.Cert
         if (res.Cert) {
-            this.crtText = this.crtFormat(res.Cert.Certificate).trim()
+            this.crtText = NaApi.certbot.certFormat(res.Cert.Certificate).trim()
             this.pubText = atob(res.Cert.PrivateKey).trim()
             this.dateLimit = [
                 new Date(res.Cert.NotBefore * 1000),
@@ -37,21 +37,6 @@ export default class CertbotDetail extends Vue {
             ]
         }
         this.loading = false
-    }
-
-    private crtFormat(certs: string[]) {
-        const crtB = "-----BEGIN CERTIFICATE-----\n"
-        const crtE = "\n-----END CERTIFICATE-----\n"
-        certs = certs.map(c => this.split(c, 64).join("\n"))
-        return crtB + certs.join(`${crtE}\n${crtB}`) + crtE
-    }
-
-    private split(str: string, n: number) {
-        var arr = []
-        for (var i = 0, l = str.length; i < l / n; i++) {
-            arr.push(str.slice(n * i, n * (i + 1)))
-        }
-        return arr
     }
 }
 </script>
@@ -84,9 +69,9 @@ export default class CertbotDetail extends Vue {
             <h3>有效期</h3>
             <t-date-range-picker v-model="dateLimit" format="YYYY-MM-DD hh:mm:ss" disabled />
             <h3>证书 (<small>Certificate</small>)</h3>
-            <t-textarea v-model="crtText" :autosize="{maxRows: 10}" readonly />
+            <t-textarea v-model="crtText" :autosize="{ maxRows: 10 }" readonly />
             <h3>私钥 (<small>PrivateKey</small>)</h3>
-            <t-textarea v-model="pubText" :autosize="{maxRows: 10}" readonly />
+            <t-textarea v-model="pubText" :autosize="{ maxRows: 10 }" readonly />
         </t-card>
     </t-space>
 </template>

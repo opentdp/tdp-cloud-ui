@@ -20,6 +20,23 @@ export class CertbotModel extends HttpClient {
     public remove(id: number): Promise<null> {
         return this.post("/certbot/delete", { Id: id })
     }
+
+    // helper
+
+    public certFormat(certs: string[]) {
+        const crtB = "-----BEGIN CERTIFICATE-----\n"
+        const crtE = "\n-----END CERTIFICATE-----\n"
+        certs = certs.map(c => this.certSplit(c, 64).join("\n"))
+        return crtB + certs.join(`${crtE}\n${crtB}`) + crtE
+    }
+
+    public certSplit(str: string, n: number) {
+        const arr = []
+        for (let i = 0, l = str.length; i < l / n; i++) {
+            arr.push(str.slice(n * i, n * (i + 1)))
+        }
+        return arr
+    }
 }
 
 export const CaTypeList: Record<string, { Name: string, Eab: number }> = {
@@ -47,7 +64,10 @@ export interface CertbotOrig {
     CaType: string
     EabKeyId: string
     EabMacKey: string
-    History: string
+    History?: {
+        event: string
+        identifier: string
+    }
 }
 
 export interface CertbotItem extends CertbotOrig {
