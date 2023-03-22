@@ -28,23 +28,18 @@ export default class LayoutSidebar extends Vue {
         },
         {
             icon: "lock-off",
-            index: "/certbot/list",
+            index: "/certbot",
             title: "SSL 证书",
-        },
-        {
-            icon: "control-platform",
-            index: "/task",
-            title: "快捷命令",
             subs: [
                 {
-                    icon: "code",
-                    index: "/script/list",
-                    title: "脚本管理",
+                    icon: "relativity",
+                    index: "/certbot/list",
+                    title: "证书管理",
                 },
                 {
-                    icon: "folder-open",
-                    index: "/taskline/list",
-                    title: "任务记录",
+                    icon: "forward",
+                    index: "/certbot/deploy",
+                    title: "证书部署",
                 },
             ]
         },
@@ -62,6 +57,23 @@ export default class LayoutSidebar extends Vue {
                     icon: "gift",
                     index: "/keypair/list",
                     title: "密钥管理",
+                },
+            ]
+        },
+        {
+            icon: "control-platform",
+            index: "/task",
+            title: "快捷命令",
+            subs: [
+                {
+                    icon: "code",
+                    index: "/script/list",
+                    title: "脚本管理",
+                },
+                {
+                    icon: "folder-open",
+                    index: "/taskline/list",
+                    title: "任务记录",
                 },
             ]
         },

@@ -39,7 +39,16 @@ export const routes: RouteRecordRaw[] = [
                     title: "证书详情",
                     login: true,
                 },
-                component: () => import("./certbot/detail.vue"),
+                component: () => import("./certbot/deploy.vue"),
+            },
+            {
+                path: "/certbot/deploy",
+                name: "certbot-deploy",
+                meta: {
+                    title: "证书部署",
+                    login: true,
+                },
+                component: () => import("./certbot/deploy.vue"),
             },
             //////
             {
