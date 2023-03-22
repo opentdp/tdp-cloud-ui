@@ -2,11 +2,13 @@
 import { Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
+import cacheStore from "@/store/cache"
 import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
 @Component
 export default class LayoutHeader extends Vue {
+    public cache = cacheStore()
     public layout = layoutStore()
     public session = sessionStore()
 
@@ -44,6 +46,8 @@ export default class LayoutHeader extends Vue {
                 content: '清理缓存',
                 value: "delcache",
                 onClick: () => {
+                    this.cache.$reset()
+                    this.layout.$reset()
                     NaApi.cache.clear()
                     location.reload()
                 }

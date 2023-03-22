@@ -1,20 +1,20 @@
-import { Cached } from "@/helper/cached"
 import sessionStore from "@/store/session"
 
+import { StorageMan } from "./storage"
 import { errMessage, okMessage } from "./notify"
 
-let cached: Cached
+let storage: StorageMan
 let session: ReturnType<typeof sessionStore>
 
 export class HttpClient {
     protected api = "/api"
 
-    protected get cached() {
-        return cached || (cached = new Cached('http'))
-    }
-
     protected get session() {
         return session || (session = sessionStore())
+    }
+
+    protected get storage() {
+        return storage || (storage = new StorageMan('http'))
     }
 
     protected get(url: string, query?: unknown) {
@@ -26,10 +26,10 @@ export class HttpClient {
     }
 
     protected async rcache(req: HttpRequest, expiry: number) {
-        let res = this.cached.get(req)
+        let res = this.storage.get(req)
         if (!res) {
             res = await this.request(req)
-            this.cached.set(req, res, expiry)
+            this.storage.set(req, res, expiry)
         }
         return res
     }

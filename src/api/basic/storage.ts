@@ -1,8 +1,8 @@
 /**
- * 缓存中间层
+ * 本地缓存中间层
  */
 
-export class Cached {
+export class StorageMan {
     protected prefix: string
     protected driver: Storage
 
