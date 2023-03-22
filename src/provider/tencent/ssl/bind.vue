@@ -89,7 +89,7 @@ export default class SslBind extends Vue {
             </template>
             <template #Operation="{ row }">
                 <t-popconfirm content="确定删除？" @confirm="deleteCert(row)">
-                    <t-link theme="danger" hover="color" @click="deleteCert(row)">
+                    <t-link theme="danger" hover="color">
                         删除
                     </t-link>
                 </t-popconfirm>
