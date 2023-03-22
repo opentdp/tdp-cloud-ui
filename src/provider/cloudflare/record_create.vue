@@ -39,19 +39,20 @@ export default class CloudflareRecordCreate extends Vue {
             Api.msg.err("请检查表单")
             return false
         }
-        await CfApi.zones.dnsRecordCreate(
-            this.domainInfo.id,
-            {
-                name: this.formModel.name,
-                type: this.formModel.type,
-                content: this.formModel.content,
-                proxied: this.formModel.proxied,
-                priority: this.formModel.priority || 0,
-                ttl: +this.formModel.ttl || 1,
-                comment: this.formModel.comment || "",
-                tags: this.formModel.tags || []
-            }
-        )
+        const query = {
+            name: this.formModel.name,
+            type: this.formModel.type,
+            content: this.formModel.content,
+            proxied: this.formModel.proxied,
+            priority: this.formModel.priority || 0,
+            ttl: +this.formModel.ttl || 1,
+            comment: this.formModel.comment || "",
+            tags: this.formModel.tags || []
+        }
+        if (query.type == "MX") {
+            delete query.proxied
+        }
+        await CfApi.zones.dnsRecordCreate(this.domainInfo.id, query)
         this.close()
     }
 
@@ -95,13 +96,13 @@ export default class CloudflareRecordCreate extends Vue {
             <t-form-item name="content" label="记录值">
                 <t-textarea v-model="formModel.content" autosize />
             </t-form-item>
-            <t-form-item name="proxied" label="加速">
+            <t-form-item v-if="formModel.type != 'MX'" name="proxied" label="加速">
                 <t-radio-group v-model="formModel.proxied">
                     <t-radio-button :value="true" label="启用" />
                     <t-radio-button :value="false" label="禁用" />
                 </t-radio-group>
             </t-form-item>
-            <t-form-item name="priority" label="权重">
+            <t-form-item v-if="formModel.type == 'MX'" name="priority" label="优先级">
                 <t-input-number v-model="formModel.priority" />
             </t-form-item>
             <t-form-item name="ttl" label="TTL">
