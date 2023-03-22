@@ -61,7 +61,7 @@ export default class CertbotList extends Vue {
                 首页
             </t-breadcrumb-item>
             <t-breadcrumb-item>
-                证书管理
+                云端部署
             </t-breadcrumb-item>
         </t-breadcrumb>
 
