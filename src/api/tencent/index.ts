@@ -5,6 +5,7 @@ import { CvmModel } from "./cvm"
 import { DnspodModel } from "./dnspod"
 import { LighthouseModel } from "./lighthouse"
 import { MonitorModel } from "./monitor"
+import { SslModel } from "./ssl"
 import { TatModel } from "./tat"
 
 export default {
@@ -15,5 +16,6 @@ export default {
     dnspod: new DnspodModel(),
     lighthouse: new LighthouseModel(),
     monitor: new MonitorModel(),
+    ssl: new SslModel(),
     tat: new TatModel(),
 }
