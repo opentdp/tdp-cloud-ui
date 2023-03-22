@@ -46,7 +46,8 @@ export default class DnspodRecordCreate extends Vue {
             Value: this.formModel.Value,
             MX: +this.formModel.MX || 0,
             TTL: +this.formModel.TTL || 600,
-            Weight: +this.formModel.Weight || 0
+            Weight: +this.formModel.Weight || 0,
+            Status: this.formModel.Status || "ENABLE",
         }
         await TcApi.dnspod.createRecord(query)
         this.close()
@@ -128,7 +129,7 @@ export default class DnspodRecordCreate extends Vue {
             <t-form-item name="Weight" label="权重">
                 <t-input-number v-model="formModel.Weight" />
             </t-form-item>
-            <t-form-item name="MX" label="MX">
+            <t-form-item v-if="formModel.Type == 'MX'" name="MX" label="MX">
                 <t-input-number v-model="formModel.MX" />
             </t-form-item>
             <t-form-item name="TTL" label="TTL">
