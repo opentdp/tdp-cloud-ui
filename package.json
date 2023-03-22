@@ -15,7 +15,7 @@
         "pinia-plugin-persist": "^1.0.0",
         "prismjs": "^1.29.0",
         "tdesign-icons-vue-next": "^0.1.8",
-        "tdesign-vue-next": "^1.2.0",
+        "tdesign-vue-next": "^1.2.1",
         "vue": "^3.2.47",
         "vue-echarts": "^6.5.4",
         "vue-facing-decorator": "^2.1.14",
