@@ -51,6 +51,7 @@ export default class SslBind extends Vue {
         await TcApi.ssl.deleteCertificate({
             CertificateId: item.CertificateId,
         })
+        this.getCertList()
         this.$emit("change")
     }
 

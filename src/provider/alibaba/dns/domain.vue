@@ -12,6 +12,8 @@ import RecordUpdate from "./record_update.vue"
     components: { RecordCreate, RecordUpdate }
 })
 export default class DnsDomain extends Vue {
+    public loading = true
+
     @Ref
     public createModal!: RecordCreate
 
@@ -42,7 +44,7 @@ export default class DnsDomain extends Vue {
         if (res.DomainId) {
             this.domainInfo = res
         }
-        console.log(res)
+        this.loading = false
     }
 
     // 解析记录
@@ -84,7 +86,7 @@ export default class DnsDomain extends Vue {
 </script>
 
 <template>
-    <t-card :loading="!recordList" title="解析列表" hover-shadow header-bordered>
+    <t-card :loading="loading" title="解析列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ recordCount || 0 }}
         </template>
