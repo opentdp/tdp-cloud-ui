@@ -1,6 +1,6 @@
 # TDP Cloud UI
 
-[TDP Cloud](https://github.com/open-tdp/tdp-cloud) 的前端组件, 框架基于 [vue-admin-template](https://github.com/rehiy/vue-admin-template)
+[TDP Cloud](https://github.com/open-tdp/tdp-cloud) 的前端组件
 
 ## 开发说明
 
