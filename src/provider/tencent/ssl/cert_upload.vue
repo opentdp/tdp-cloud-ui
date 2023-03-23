@@ -104,12 +104,12 @@ export default class SslCertUpload extends Vue {
             <t-form-item name="CertificatePrivateKey" label="私钥">
                 <t-textarea v-model="formModel.CertificatePrivateKey" :autosize="{ minRows: 5, maxRows: 10 }" />
             </t-form-item>
-            <t-form-item name="CertificateType" label="类型">
+            <!--t-form-item name="CertificateType" label="类型">
                 <t-select v-model="formModel.CertificateType">
                     <t-option value="SVR" label="服务器证书" />
                     <t-option value="CA" label="客户端证书" />
                 </t-select>
-            </t-form-item>
+            </t-form-item-->
             <t-form-item name="Alias" label="备注">
                 <t-input v-model="formModel.Alias" />
             </t-form-item>

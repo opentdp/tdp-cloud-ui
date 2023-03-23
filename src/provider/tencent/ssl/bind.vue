@@ -28,7 +28,9 @@ export default class SslBind extends Vue {
 
     public created() {
         TcApi.vendor(this.vendorId)
-        this.getCertList()
+        this.getCertList().then(() => {
+            this.getDeployedResources("cdn")
+        })
     }
 
     // 获取列表
@@ -41,7 +43,6 @@ export default class SslBind extends Vue {
         if (res.TotalCount) {
             this.certList = res.Certificates || []
             this.certCount = res.TotalCount
-            this.getDeployedResources("cdn")
         }
         this.loading = false
     }
@@ -82,7 +83,7 @@ export default class SslBind extends Vue {
         { colKey: 'CertEndTime', title: '有效期', ellipsis: true },
         { colKey: 'From', title: '来源', ellipsis: true },
         { colKey: 'StatusName', title: '状态', ellipsis: true },
-        { colKey: 'Deployed', title: '绑定资源', ellipsis: true },
+        { colKey: 'Deployed', title: '关联资源', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: "110px" },
     ]
 }
