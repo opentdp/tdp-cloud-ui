@@ -20,4 +20,8 @@ export class SslModel extends TencentClient {
     public deleteCertificate(query: ISsl.DeleteCertificateRequest): Promise<ISsl.DeleteCertificateResponse> {
         return this.bus({ Action: "DeleteCertificate", Payload: query })
     }
+
+    public describeDeployedResources(query: ISsl.DescribeDeployedResourcesRequest): Promise<ISsl.DescribeDeployedResourcesResponse> {
+        return this.bus({ Action: "DescribeDeployedResources", Payload: query })
+    }
 }

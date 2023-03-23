@@ -34,7 +34,7 @@ export default class LayoutSidebar extends Vue {
                 {
                     icon: "relativity",
                     index: "/certbot/list",
-                    title: "证书托管",
+                    title: "证书签发",
                 },
                 {
                     icon: "cloud-upload",
