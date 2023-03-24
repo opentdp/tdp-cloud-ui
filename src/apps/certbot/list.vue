@@ -89,8 +89,8 @@ export default class CertbotList extends Vue {
                         v-route="'/certbot/detail/' + row.Id" theme="primary" hover="color">
                         查看
                     </t-link>
-                    <t-link v-else theme="warning" hover="color">
-                        暂无
+                    <t-link v-else theme="default" hover="color" :disabled="true">
+                        查看
                     </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteCertbot(rowIndex)">
                         <t-link theme="danger" hover="color">
