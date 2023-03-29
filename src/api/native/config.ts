@@ -1,8 +1,8 @@
 import { HttpClient } from "@/api/basic/http"
 
 export class ConfigModel extends HttpClient {
-    public list(): Promise<ConfigPaged> {
-        return this.post("/config/list", {})
+    public list(rq: { Module?: string }): Promise<ConfigPaged> {
+        return this.post("/config/list", rq)
     }
 
     public detail(name: string): Promise<ConfigDetail> {
@@ -49,5 +49,5 @@ export interface ConfigPaged {
 
 export interface UIOption {
     Version: string
-    Register: boolean
+    Registrable: string
 }

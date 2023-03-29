@@ -22,6 +22,15 @@ export const routes: RouteRecordRaw[] = [
                 },
                 component: () => import("./dashboard/index.vue"),
             },
+            {
+                path: "/config/system",
+                name: "config-system",
+                meta: {
+                    title: "系统参数",
+                    login: true,
+                },
+                component: () => import("./config/system.vue"),
+            },
             //////
             {
                 path: "/certbot/list",

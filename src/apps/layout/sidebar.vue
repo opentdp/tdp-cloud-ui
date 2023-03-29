@@ -1,12 +1,14 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
+import { onBeforeRouteUpdate, RouteLocationNormalized } from "vue-router"
 
 import layoutStore from "@/store/layout"
-import { onBeforeRouteUpdate, RouteLocationNormalized } from "vue-router"
+import sessionStore from "@/store/session"
 
 @Component
 export default class LayoutSidebar extends Vue {
     public layout = layoutStore()
+    public session = sessionStore()
 
     // 菜单列表
 
@@ -104,6 +106,12 @@ export default class LayoutSidebar extends Vue {
             index: "/workhub/worker",
             title: "节点管理",
         },
+        {
+            icon: "setting",
+            index: "/config/system",
+            title: "系统参数",
+            level: 1,
+        },
     ]
 
     // 侧栏控制
@@ -140,6 +148,7 @@ interface MenuItem {
     icon: string
     index: string
     title: string
+    level?: number
     subs?: MenuItem[]
 }
 </script>

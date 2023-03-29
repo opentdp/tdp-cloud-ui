@@ -73,7 +73,7 @@ export default class PassportLogin extends Vue {
                         </t-button>
                     </t-form-item>
                 </t-form>
-                <div v-if="layout.Register" class="magic-guide">
+                <div v-if="layout.Registrable" class="magic-guide">
                     没有账号吗？
                     <t-link v-route="'/passport/register'" theme="default">
                         注册新账号
