@@ -14,6 +14,8 @@ export default class PassportRegister extends Vue {
     public layout = layoutStore()
     public session = sessionStore()
 
+    // 初始化
+
     public created() {
         this.layout.initUIConfig()
     }
@@ -102,8 +104,8 @@ export default class PassportRegister extends Vue {
             </t-space>
         </t-content>
         <t-footer class="copyright">
-            <a href="https://apps.rehiy.com/tdp-cloud/" target="_blank" hover="color">
-                Powered by TDP Cloud
+            <a href="https://apps.rehiy.com/open-tdp/" target="_blank" hover="color">
+                Powered by Open TDP
             </a>
             {{ layout.Version ? "v" + layout.Version : "" }}
         </t-footer>

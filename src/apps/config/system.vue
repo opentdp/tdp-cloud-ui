@@ -21,7 +21,7 @@ export default class VendorAlibabaUpdate extends Vue {
     public configList: ConfigItem[] = []
 
     async getConfigList() {
-        const res = await NaApi.config.list({ Module: '' })
+        const res = await NaApi.config.list({})
         this.configList = res.Items
     }
 
