@@ -40,16 +40,11 @@ export default class LayoutSidebar extends Vue {
     public getExpanded(to: RouteLocationNormalized): string[] {
         if (this.items.findIndex(item => item.index === to.path) >= 0) {
             return []
-        } else {
-            const idx = this.items.findIndex(item => {
-                return item.subs && item.subs.findIndex(sub_item => sub_item.index === to.path) >= 0
-            })
-            if (idx == -1) {
-                return []
-            } else {
-                return [this.items[idx].index]
-            }
         }
+        const idx = this.items.findIndex(item => {
+            return item.subs && item.subs.findIndex(sub => sub.index === to.path) >= 0
+        })
+        return idx == -1 ? [] : [this.items[idx].index]
     }
 
     public mounted() {
