@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator"
 
-import { NaApi } from "@/api"
+import Api, { NaApi } from "@/api"
 import { VendorItem } from "@/api/native/vendor"
 
 import SslBind from "@/provider/tencent/ssl/bind.vue"
@@ -24,6 +24,11 @@ export default class CertbotDeploy extends Vue {
 
     async getVendorList() {
         const res = await NaApi.vendor.list({ Provider: "tencent" })
+        if (res.Items.length == 0) {
+            this.$router.push("/vendor/tencent")
+            Api.msg.err("请先添加厂商")
+            return
+        }
         this.curTab.id = res.Items[0].Id
         this.vendorList = res.Items
         this.loading = false
