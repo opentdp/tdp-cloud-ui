@@ -23,8 +23,8 @@ export default class LayoutSidebar extends Vue {
     public itemFilter(items: MenuItem[]) {
         const level = this.session.Level
         return items.filter(item => {
-            if (item.level && item.level <= level) {
-                return false
+            if (item.level && item.level < level) {
+                return false //用户组权限不足
             }
             if (item.subs) {
                 item.subs = this.itemFilter(item.subs)
@@ -59,7 +59,6 @@ export default class LayoutSidebar extends Vue {
             this.getExpanded(to).forEach(item => exp.add(item))
             this.expanded = Array.from(exp)
         })
-
     }
 }
 
