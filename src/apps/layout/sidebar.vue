@@ -12,107 +12,26 @@ export default class LayoutSidebar extends Vue {
 
     // 菜单列表
 
-    public items: MenuItem[] = [
-        {
-            icon: "home",
-            index: "/dashboard",
-            title: "首页",
-        },
-        {
-            icon: "laptop",
-            index: "/machine/list",
-            title: "主机管理",
-        },
-        {
-            icon: "internet",
-            index: "/domain/list",
-            title: "域名解析",
-        },
-        {
-            icon: "lock-off",
-            index: "/certbot",
-            title: "SSL 证书",
-            subs: [
-                {
-                    icon: "relativity",
-                    index: "/certbot/list",
-                    title: "证书签发",
-                },
-                {
-                    icon: "cloud-upload",
-                    index: "/certbot/deploy",
-                    title: "云端部署",
-                },
-            ]
-        },
-        {
-            icon: "fork",
-            index: "/terminal",
-            title: "SSH 终端",
-            subs: [
-                {
-                    icon: "fullscreen-exit",
-                    index: "/terminal/ssh",
-                    title: "SSH 连接",
-                },
-                {
-                    icon: "gift",
-                    index: "/keypair/list",
-                    title: "密钥管理",
-                },
-            ]
-        },
-        {
-            icon: "control-platform",
-            index: "/task",
-            title: "快捷命令",
-            subs: [
-                {
-                    icon: "code",
-                    index: "/script/list",
-                    title: "脚本管理",
-                },
-                {
-                    icon: "folder-open",
-                    index: "/taskline/list",
-                    title: "任务记录",
-                },
-            ]
-        },
-        {
-            icon: "wallet",
-            index: "/vendor",
-            title: "厂商管理",
-            subs: [
-                {
-                    icon: "cloud",
-                    index: "/vendor/tencent",
-                    title: "腾讯云",
-                },
-                {
-                    icon: "cloud",
-                    index: "/vendor/alibaba",
-                    title: "阿里云",
-                },
-                {
-                    icon: "cloud",
-                    index: "/vendor/cloudflare",
-                    title: "Cloudflare",
-                },
-            ]
-        },
-        {
-            icon: "share",
-            index: "/workhub/worker",
-            title: "节点管理",
-        },
-        {
-            icon: "setting",
-            index: "/config/system",
-            title: "系统参数",
-            level: 1,
-        },
-    ]
+    public items: MenuItem[] = []
+
+    // 初始化
+
+    public created() {
+        this.items = this.itemFilter(menuItems)
+    }
+
+    public itemFilter(items: MenuItem[]) {
+        const level = this.session.Level
+        return items.filter(item => {
+            if (item.level && item.level <= level) {
+                return false
+            }
+            if (item.subs) {
+                item.subs = this.itemFilter(item.subs)
+            }
+            return true
+        })
+    }
 
     // 侧栏控制
 
@@ -151,6 +70,108 @@ interface MenuItem {
     level?: number
     subs?: MenuItem[]
 }
+
+const menuItems: MenuItem[] = [
+    {
+        icon: "home",
+        index: "/dashboard",
+        title: "首页",
+    },
+    {
+        icon: "laptop",
+        index: "/machine/list",
+        title: "主机管理",
+    },
+    {
+        icon: "internet",
+        index: "/domain/list",
+        title: "域名解析",
+    },
+    {
+        icon: "lock-off",
+        index: "/certbot",
+        title: "SSL 证书",
+        subs: [
+            {
+                icon: "relativity",
+                index: "/certbot/list",
+                title: "证书签发",
+            },
+            {
+                icon: "cloud-upload",
+                index: "/certbot/deploy",
+                title: "云端部署",
+            },
+        ]
+    },
+    {
+        icon: "fork",
+        index: "/terminal",
+        title: "SSH 终端",
+        subs: [
+            {
+                icon: "fullscreen-exit",
+                index: "/terminal/ssh",
+                title: "SSH 连接",
+            },
+            {
+                icon: "gift",
+                index: "/keypair/list",
+                title: "密钥管理",
+            },
+        ]
+    },
+    {
+        icon: "control-platform",
+        index: "/task",
+        title: "快捷命令",
+        subs: [
+            {
+                icon: "code",
+                index: "/script/list",
+                title: "脚本管理",
+            },
+            {
+                icon: "folder-open",
+                index: "/taskline/list",
+                title: "任务记录",
+            },
+        ]
+    },
+    {
+        icon: "wallet",
+        index: "/vendor",
+        title: "厂商管理",
+        subs: [
+            {
+                icon: "cloud",
+                index: "/vendor/tencent",
+                title: "腾讯云",
+            },
+            {
+                icon: "cloud",
+                index: "/vendor/alibaba",
+                title: "阿里云",
+            },
+            {
+                icon: "cloud",
+                index: "/vendor/cloudflare",
+                title: "Cloudflare",
+            },
+        ]
+    },
+    {
+        icon: "share",
+        index: "/workhub/worker",
+        title: "节点管理",
+    },
+    {
+        icon: "setting",
+        index: "/config/system",
+        title: "系统参数",
+        level: 1,
+    },
+]
 </script>
 
 <template>
