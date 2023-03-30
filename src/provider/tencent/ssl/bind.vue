@@ -57,6 +57,9 @@ export default class SslBind extends Vue {
             CertificateIds: ids,
             ResourceType: type,
         })
+        if (!rs1.DeployedResources || rs1.DeployedResources.length === 0) {
+            return // 没有关联资源
+        }
         rs1.DeployedResources.forEach(item => {
             if (this.deployedResources[item.CertificateId] === undefined) {
                 this.deployedResources[item.CertificateId] = 0
