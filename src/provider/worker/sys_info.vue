@@ -75,26 +75,15 @@ export default class WorkerSysInfo extends Vue {
             <b>运行时长</b>
             <span>{{ (stat.Uptime / 86400).toFixed(1) }} 天</span>
         </t-list-item>
-        <t-list-item>
-            <b>接口 IP </b>
-            <span class="text-right">
-                <template v-for="v in stat.Ipv4List" :key="v">
-                    {{ v }} <br>
-                </template>
-                <template v-for="v in stat.Ipv6List" :key="v">
-                    {{ v }} <br>
-                </template>
-            </span>
-        </t-list-item>
         <t-list-item v-if="ipsets">
-            <b>出口 IP</b>
+            <b>公网 IP</b>
             <span class="text-right">
-                <template v-for="v in ipsets.Ipv4List" :key="v">
-                    {{ v }} <br>
-                </template>
-                <template v-for="v in ipsets.Ipv6List" :key="v">
-                    {{ v }} <br>
-                </template>
+                <div v-if="ipsets.Ipv4">
+                    {{ ipsets.Ipv4 }}
+                </div>
+                <div v-if="ipsets.Ipv6">
+                    {{ ipsets.Ipv6 }}
+                </div>
             </span>
         </t-list-item>
     </t-list>

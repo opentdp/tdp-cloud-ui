@@ -47,7 +47,7 @@ export default class WorkerBind extends Vue {
         NaApi.machine.create({
             VendorId: 0,
             HostName: meta.HostName,
-            IpAddress: meta.Ipv4List[0] || meta.Ipv6List[0],
+            IpAddress: meta.PublicIpv4 || meta.PublicIpv6,
             OSType: meta.OS,
             Region: "",
             Model: "native/worker",
@@ -68,7 +68,7 @@ export default class WorkerBind extends Vue {
         await NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: meta.HostName,
-            IpAddress: meta.Ipv4List[0] || meta.Ipv6List[0],
+            IpAddress: meta.PublicIpv4 || meta.PublicIpv6,
             OSType: meta.OS,
             WorkerId: item.WorkerId,
             WorkerMeta: item.WorkerMeta,
@@ -94,7 +94,7 @@ export default class WorkerBind extends Vue {
     <t-card title="在线节点" hover-shadow header-bordered>
         <t-table :data="workerList" :columns="tableColumns" row-key="Id">
             <template #WorkerMeta_IpAddress="{ row }">
-                {{ row.WorkerMeta.Ipv4List[0] || row.WorkerMeta.Ipv6List[0] }}
+                {{ row.WorkerMeta.PublicIpv4 || row.WorkerMeta.PublicIpv6 }}
             </template>
             <template #WorkerMeta_CpuCore="{ row }">
                 {{ row.WorkerMeta.CpuPercent[0].toFixed(2) }}%，{{ row.WorkerMeta.CpuCore }} Cores

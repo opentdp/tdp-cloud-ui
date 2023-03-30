@@ -48,14 +48,14 @@ export default class WorkerInstance extends Vue {
                     <span> {{ machine.WorkerMeta.Platform }}（{{ machine.WorkerMeta.KernelArch }}）</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>接口 IP </b>
+                    <b>公网 IP </b>
                     <span class="text-right">
-                        <template v-for="v in machine.WorkerMeta.Ipv4List" :key="v">
-                            {{ v }} <br>
-                        </template>
-                        <template v-for="v in machine.WorkerMeta.Ipv6List" :key="v">
-                            {{ v }} <br>
-                        </template>
+                        <div v-if="machine.WorkerMeta.PublicIpv4">
+                            {{ machine.WorkerMeta.PublicIpv4 }}
+                        </div>
+                        <div v-if="machine.WorkerMeta.PublicIpv6">
+                            {{ machine.WorkerMeta.PublicIpv6 }}
+                        </div>
                     </span>
                 </t-list-item>
                 <t-list-item>
