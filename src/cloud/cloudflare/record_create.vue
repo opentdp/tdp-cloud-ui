@@ -98,8 +98,8 @@ export default class CloudflareRecordCreate extends Vue {
             </t-form-item>
             <t-form-item v-if="formModel.type != 'MX'" name="proxied" label="加速">
                 <t-radio-group v-model="formModel.proxied">
-                    <t-radio-button :value="true" label="启用" />
-                    <t-radio-button :value="false" label="禁用" />
+                    <t-radio :value="true" label="启用" />
+                    <t-radio :value="false" label="禁用" />
                 </t-radio-group>
             </t-form-item>
             <t-form-item v-if="formModel.type == 'MX'" name="priority" label="优先级">

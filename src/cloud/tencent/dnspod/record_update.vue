@@ -125,8 +125,8 @@ export default class DnspodRecordUpdate extends Vue {
             </t-form-item>
             <t-form-item name="Status" label="状态">
                 <t-radio-group v-model="formModel.Status">
-                    <t-radio-button value="ENABLE" label="启用" />
-                    <t-radio-button value="DISABLE" label="禁用" />
+                    <t-radio value="ENABLE" label="启用" />
+                    <t-radio value="DISABLE" label="禁用" />
                 </t-radio-group>
             </t-form-item>
             <t-form-item>

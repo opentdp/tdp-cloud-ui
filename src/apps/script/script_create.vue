@@ -88,9 +88,9 @@ export default class ScriptCreate extends Vue {
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
             <t-form-item name="CommandType" label="类型">
                 <t-radio-group v-model="formModel.CommandType" @change="updateCommandType">
-                    <t-radio-button value="SHELL" label="SHELL" />
-                    <t-radio-button value="POWERSHELL" label="POWERSHELL" />
-                    <t-radio-button value="BAT" label="BAT" />
+                    <t-radio value="SHELL" label="SHELL" />
+                    <t-radio value="POWERSHELL" label="POWERSHELL" />
+                    <t-radio value="BAT" label="BAT" />
                 </t-radio-group>
             </t-form-item>
             <t-form-item name="Name" label="名称">
