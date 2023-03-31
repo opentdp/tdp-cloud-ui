@@ -55,12 +55,18 @@ export default class ConfigUpdate extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="修改参数" :footer="false" width="750px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="修改参数" :footer="false" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="Description" label="参数名">
                 <t-input v-model="formModel.Description" readonly />
             </t-form-item>
-            <t-form-item name="Value" label="参数值">
+            <t-form-item v-if="formModel.Type == 'bool'" name="Value" label="参数值">
+                <t-radio-group v-model="formModel.Value">
+                    <t-radio-button value="true" label="是" />
+                    <t-radio-button value="false" label="否" />
+                </t-radio-group>
+            </t-form-item>
+            <t-form-item v-else name="Value" label="参数值">
                 <t-input v-model="formModel.Value" />
             </t-form-item>
             <t-form-item>

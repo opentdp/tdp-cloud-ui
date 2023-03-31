@@ -29,6 +29,7 @@ export class ConfigModel extends HttpClient {
 export interface ConfigOrig {
     Name: string
     Value: string
+    Type: "string" | "int" | "float" | "bool"
     Module: string
     Description: string
 }
