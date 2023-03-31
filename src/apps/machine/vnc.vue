@@ -4,7 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"
 
-import LighthouseVNC from "@/provider/tencent/lighthouse/vnc.vue"
+import LighthouseVNC from "@/cloud/tencent/lighthouse/vnc.vue"
 
 @Component({
     components: { LighthouseVNC }

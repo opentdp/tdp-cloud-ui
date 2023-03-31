@@ -4,9 +4,9 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { DomainModels, DomainItem } from "@/api/native/domain"
 
-import AlibabaDns from "@/provider/alibaba/dns/domain.vue"
-import CloudflareZone from "@/provider/cloudflare/domain.vue"
-import TencentDnspod from "@/provider/tencent/dnspod/domain.vue"
+import AlibabaDns from "@/cloud/alibaba/dns/domain.vue"
+import CloudflareZone from "@/cloud/cloudflare/domain.vue"
+import TencentDnspod from "@/cloud/tencent/dnspod/domain.vue"
 
 @Component({
     components: { AlibabaDns, CloudflareZone, TencentDnspod }

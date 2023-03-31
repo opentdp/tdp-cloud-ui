@@ -6,9 +6,9 @@ import { DomainItem } from "@/api/native/domain"
 import { MachineItem } from "@/api/native/machine"
 import { VendorItem } from "@/api/native/vendor"
 
-import EcsBind from "@/provider/alibaba/ecs/bind.vue"
-import SwasBind from "@/provider/alibaba/swas/bind.vue"
-import DnsBind from "@/provider/alibaba/dns/bind.vue"
+import EcsBind from "@/cloud/alibaba/ecs/bind.vue"
+import SwasBind from "@/cloud/alibaba/swas/bind.vue"
+import DnsBind from "@/cloud/alibaba/dns/bind.vue"
 
 @Component({
     components: { EcsBind, SwasBind, DnsBind }

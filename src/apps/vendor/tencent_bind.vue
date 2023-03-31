@@ -6,9 +6,9 @@ import { DomainItem } from "@/api/native/domain"
 import { MachineItem } from "@/api/native/machine"
 import { VendorItem } from "@/api/native/vendor"
 
-import CvmBind from "@/provider/tencent/cvm/bind.vue"
-import DnspodBind from "@/provider/tencent/dnspod/bind.vue"
-import LighthouseBind from "@/provider/tencent/lighthouse/bind.vue"
+import CvmBind from "@/cloud/tencent/cvm/bind.vue"
+import DnspodBind from "@/cloud/tencent/dnspod/bind.vue"
+import LighthouseBind from "@/cloud/tencent/lighthouse/bind.vue"
 
 @Component({
     components: { CvmBind, DnspodBind, LighthouseBind }

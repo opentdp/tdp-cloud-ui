@@ -4,7 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import Api, { NaApi } from "@/api"
 import { VendorItem } from "@/api/native/vendor"
 
-import SslBind from "@/provider/tencent/ssl/bind.vue"
+import SslBind from "@/cloud/tencent/ssl/bind.vue"
 
 @Component({
     components: { SslBind }

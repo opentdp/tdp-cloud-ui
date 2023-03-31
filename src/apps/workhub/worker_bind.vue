@@ -6,7 +6,7 @@ import { MachineItem } from "@/api/native/machine"
 
 import { installWorker } from "@/helper/script/shell"
 
-import WorkerBind from "@/provider/worker/bind.vue"
+import WorkerBind from "@/cloud/worker/bind.vue"
 
 @Component({
     components: { WorkerBind }

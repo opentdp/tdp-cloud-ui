@@ -5,7 +5,7 @@ import { NaApi } from "@/api"
 import { DomainItem } from "@/api/native/domain"
 import { VendorItem } from "@/api/native/vendor"
 
-import CloudflareBind from "@/provider/cloudflare/bind.vue"
+import CloudflareBind from "@/cloud/cloudflare/bind.vue"
 
 @Component({
     components: { CloudflareBind }

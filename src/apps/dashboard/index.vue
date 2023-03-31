@@ -6,8 +6,8 @@ import { UserSummary } from "@/api/native/passport"
 
 import sessionStore from "@/store/session"
 
-import SysLoad from "@/provider/worker/sys_load.vue"
-import SysInfo from "@/provider/worker/sys_info.vue"
+import SysLoad from "@/cloud/worker/sys_load.vue"
+import SysInfo from "@/cloud/worker/sys_info.vue"
 
 @Component({
     components: { SysLoad, SysInfo }

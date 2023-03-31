@@ -4,13 +4,13 @@ import { Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/native/machine"
 
-import AlibabaEcs from "@/provider/alibaba/ecs/instance.vue"
-import AlibabaSwas from "@/provider/alibaba/swas/instance.vue"
+import AlibabaEcs from "@/cloud/alibaba/ecs/instance.vue"
+import AlibabaSwas from "@/cloud/alibaba/swas/instance.vue"
 
-import TencentCvm from "@/provider/tencent/cvm/instance.vue"
-import TencentLighthouse from "@/provider/tencent/lighthouse/instance.vue"
+import TencentCvm from "@/cloud/tencent/cvm/instance.vue"
+import TencentLighthouse from "@/cloud/tencent/lighthouse/instance.vue"
 
-import NativeWorker from "@/provider/worker/instance.vue"
+import NativeWorker from "@/cloud/worker/instance.vue"
 
 @Component({
     components: { AlibabaEcs, AlibabaSwas, TencentCvm, TencentLighthouse, NativeWorker }
