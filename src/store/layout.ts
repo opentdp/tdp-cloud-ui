@@ -4,14 +4,17 @@ import { NaApi } from "@/api"
 
 export default defineStore("layout", {
     state: () => ({
-        // 版本号
-        Version: "",
-        // 允许注册
-        Registrable: false,
         // 侧栏折叠
         Collapse: false,
         // 主题模式
         ThemeMode: "",
+        // 下发配置
+        Version: "",
+        Registrable: false,
+        Analytics: "",
+        Copylink: "",
+        Copytext: "",
+        IcpCode: "",
     }),
     actions: {
         // 侧边栏折叠
@@ -22,6 +25,7 @@ export default defineStore("layout", {
         initUIConfig() {
             NaApi.config.ui().then(res => {
                 Object.assign(this, res)
+                // 修正参数类型
                 this.Registrable = res.Registrable == "true"
             })
         },

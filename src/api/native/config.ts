@@ -51,4 +51,8 @@ export interface ConfigPaged {
 export interface UIOption {
     Version: string
     Registrable: string
+    Analytics: string
+    Copylink: string
+    Copytext: string
+    IcpCode: string
 }

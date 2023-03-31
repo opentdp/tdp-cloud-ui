@@ -21,10 +21,9 @@ export default class ConfigUpdate extends Vue {
 
     public formRules: FormRules<ConfigOrig> = {
         Value: [
-            { required: true, message: '不能为空' },
-            { max: 64, message: '字符数量不能超过 64' },
+            { required: true },
+            { max: 64 },
         ],
-        Description: [{ required: true }],
     }
 
     // 提交表单
@@ -57,6 +56,9 @@ export default class ConfigUpdate extends Vue {
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close header="修改参数" :footer="false" width="400px">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
+            <t-form-item name="Name" label="参数">
+                <t-input v-model="formModel.Name" readonly />
+            </t-form-item>
             <t-form-item name="Description" label="参数名">
                 <t-input v-model="formModel.Description" readonly />
             </t-form-item>
