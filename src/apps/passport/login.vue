@@ -14,11 +14,7 @@ export default class PassportLogin extends Vue {
     public layout = layoutStore()
     public session = sessionStore()
 
-    // 初始化
-
-    public created() {
-        this.layout.initUIConfig()
-    }
+    // 创建表单
 
     @Ref
     public formRef!: FormInstanceFunctions

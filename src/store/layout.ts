@@ -21,7 +21,7 @@ export default defineStore("layout", {
         // 获取前端配置
         initUIConfig() {
             NaApi.config.ui().then(res => {
-                this.Version = res.Version
+                Object.assign(this, res)
                 this.Registrable = res.Registrable == "true"
             })
         },
