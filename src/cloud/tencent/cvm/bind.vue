@@ -184,7 +184,7 @@ export default class CvmBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId">
+        <t-table :data="instanceList" :columns="tableColumns" :hover="true" row-key="InstanceId">
             <template #Placement="{ row }">
                 {{ parseRegion(row.Placement.Zone) }}
             </template>

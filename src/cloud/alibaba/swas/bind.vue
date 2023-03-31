@@ -135,7 +135,7 @@ export default class SwasBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId">
+        <t-table :data="instanceList" :columns="tableColumns" :hover="true" row-key="InstanceId">
             <template #RegionId="{ row }">
                 {{ regionList[row.RegionId].LocalName }}
             </template>

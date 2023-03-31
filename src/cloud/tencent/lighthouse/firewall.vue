@@ -88,7 +88,7 @@ export default class LighthouseFirewall extends Vue {
                 添加规则
             </t-button>
         </template>
-        <t-table :data="firewallRuleList" :columns="tableColumns" row-key="Id">
+        <t-table :data="firewallRuleList" :columns="tableColumns" :hover="true" row-key="Id">
             <template #FirewallRuleDescription="{ row }">
                 {{ row.FirewallRuleDescription }}
                 <t-button shape="circle" variant="text" @click="remarkModal.open(instance, row)">

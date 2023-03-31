@@ -76,7 +76,7 @@ export default class VendorCloudflare extends Vue {
                     绑定账号
                 </t-button>
             </template>
-            <t-table :data="vendorList" :columns="tableColumns" row-key="Id">
+            <t-table :data="vendorList" :columns="tableColumns" :hover="true" row-key="Id">
                 <template #Operation="{ row, rowIndex }">
                     <t-link v-route="'/vendor/cloudflare/' + row.Id" theme="primary" hover="color">
                         管理

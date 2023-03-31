@@ -155,7 +155,7 @@ export default class CloudflareCustomHostnames extends Vue {
 
         <t-divider />
 
-        <t-table :data="customHostnames" :columns="tableColumns" row-key="id">
+        <t-table :data="customHostnames" :columns="tableColumns" :hover="true" row-key="id">
             <template #expires_on="{ row }">
                 {{
                     row.ssl.certificates &&

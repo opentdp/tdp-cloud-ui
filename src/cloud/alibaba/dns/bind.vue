@@ -87,7 +87,7 @@ export default class DnsBind extends Vue {
         <template #subtitle>
             记录总数: {{ domainCount }}
         </template>
-        <t-table :data="domainList" :columns="tableColumns" row-key="DomainId">
+        <t-table :data="domainList" :columns="tableColumns" :hover="true" row-key="DomainId">
             <template #DnsServers="{ row }">
                 {{ row.DnsServers.DnsServer.join(",") }}
             </template>

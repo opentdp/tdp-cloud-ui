@@ -98,7 +98,7 @@ export default class LighthouseSnapshot extends Vue {
                 创建快照
             </t-button>
         </template>
-        <t-table :data="snapshotList.SnapshotSet" :columns="tableColumns" row-key="SnapshotId">
+        <t-table :data="snapshotList.SnapshotSet" :columns="tableColumns" :hover="true" row-key="SnapshotId">
             <template #DiskSize="{ row }">
                 {{ row.DiskSize + "GB" }}
             </template>

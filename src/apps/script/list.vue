@@ -77,7 +77,7 @@ export default class ScriptList extends Vue {
                     新建脚本
                 </t-button>
             </template>
-            <t-table :data="scriptList" :columns="tableColumns" row-key="Id">
+            <t-table :data="scriptList" :columns="tableColumns" :hover="true" row-key="Id">
                 <template #Operation="{ row }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改

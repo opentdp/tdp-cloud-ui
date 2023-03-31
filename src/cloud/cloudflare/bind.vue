@@ -80,7 +80,7 @@ export default class CloudflareBind extends Vue {
 
 <template>
     <t-card :loading="loading" title="域名列表" hover-shadow header-bordered>
-        <t-table :data="domainList" :columns="tableColumns" row-key="Id">
+        <t-table :data="domainList" :columns="tableColumns" :hover="true" row-key="Id">
             <template #type="{ row }">
                 {{ row.type == "full" ? "NS" : row.host?.name }}
             </template>

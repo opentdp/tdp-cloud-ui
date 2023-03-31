@@ -64,7 +64,7 @@ export default class DomainList extends Vue {
             <template #subtitle>
                 记录总数: {{ domainList.length }}
             </template>
-            <t-table :data="domainList" :columns="tableColumns" row-key="Id">
+            <t-table :data="domainList" :columns="tableColumns" :hover="true" row-key="Id">
                 <template #Model="{ row }">
                     <t-tooltip :content="DomainModels[row.Model]">
                         {{ cache.vendorList[row.VendorId]?.Description || "-" }}

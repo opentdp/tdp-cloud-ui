@@ -93,7 +93,7 @@ export default class WorkerBind extends Vue {
 
 <template>
     <t-card title="在线节点" hover-shadow header-bordered>
-        <t-table :data="workerList" :columns="tableColumns" row-key="Id">
+        <t-table :data="workerList" :columns="tableColumns" :hover="true" row-key="Id">
             <template #WorkerMeta_IpAddress="{ row }">
                 {{ row.WorkerMeta.PublicIpv4 || row.WorkerMeta.PublicIpv6 }}
             </template>
