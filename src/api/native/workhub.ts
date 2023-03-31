@@ -37,6 +37,7 @@ export interface NodeDetail {
 export interface WorkerOrig {
     WorkerId: string
     WorkerMeta: SummaryStat
+    WorkerVersion: string
 }
 
 export interface WorkerItem extends WorkerOrig {
