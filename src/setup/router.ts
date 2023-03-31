@@ -1,6 +1,7 @@
 import { App } from "vue"
 import { createRouter, createWebHashHistory } from "vue-router"
 
+import layoutStore from "@/store/layout"
 import sessionStore from "@/store/session"
 
 import { routes } from "@/apps/routes"
@@ -11,9 +12,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    document.title = `${to.meta.title} - TDP Cloud`
-
+    const layout = layoutStore()
     const session = sessionStore()
+
+    document.title = `${to.meta.title} - ${layout.SiteName}`
 
     const isLogin = !!session.Token
     if (to.meta.login && !isLogin) {

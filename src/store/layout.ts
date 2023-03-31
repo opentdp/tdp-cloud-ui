@@ -8,9 +8,14 @@ export default defineStore("layout", {
         Collapse: false,
         // 主题模式
         ThemeMode: "",
-        // 下发配置
+        // 后端本号
         Version: "",
+        // 允许注册
         Registrable: false,
+        // 前端配置
+        SiteName: "",
+        SiteLogo: "",
+        SiteIcon: "",
         Analytics: "",
         Copylink: "",
         Copytext: "",
@@ -26,6 +31,7 @@ export default defineStore("layout", {
             NaApi.config.ui().then(res => {
                 Object.assign(this, res)
                 // 修正参数类型
+                this.SiteName = res.SiteName || 'TDP Cloud'
                 this.Registrable = res.Registrable == "true"
             })
         },

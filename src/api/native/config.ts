@@ -21,7 +21,7 @@ export class ConfigModel extends HttpClient {
         return this.post("/config/delete", { Id: id })
     }
 
-    public ui(): Promise<UIOption> {
+    public ui(): Promise<Record<string, string>> {
         return this.post("/config/ui", {})
     }
 }
@@ -46,13 +46,4 @@ export interface ConfigDetail {
 
 export interface ConfigPaged {
     Items: ConfigItem[]
-}
-
-export interface UIOption {
-    Version: string
-    Registrable: string
-    Analytics: string
-    Copylink: string
-    Copytext: string
-    IcpCode: string
 }

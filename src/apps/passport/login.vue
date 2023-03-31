@@ -47,7 +47,7 @@ export default class PassportLogin extends Vue {
         <t-content class="content">
             <t-space fixed direction="vertical" class="magic-box">
                 <div class="magic-title">
-                    登录到<br>TDP Cloud Console
+                    登录到<br>{{ layout.SiteName }} 控制面板
                 </div>
                 <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="0px" class="magic-body"
                     @submit="formSubmit">
