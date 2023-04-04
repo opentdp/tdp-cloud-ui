@@ -1,10 +1,10 @@
 {
     "recommendations": [
         "akamud.vscode-caniuse",
-        "DavidAnson.vscode-markdownlint",
+        "davidanson.vscode-markdownlint",
         "dbaeumer.vscode-eslint",
         "ecmel.vscode-html-css",
         "mhutchie.git-graph",
-        "Vue.volar"
+        "vue.volar"
     ]
 }
