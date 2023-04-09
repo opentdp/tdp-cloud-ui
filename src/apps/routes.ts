@@ -1,18 +1,31 @@
 import { RouteRecordRaw } from "vue-router"
 
-import portal from "./portal/index.vue"
-import layout from "./layout/index.vue"
+import LayoutConsole from "./layout/console.vue"
+import LayoutContent from "./layout/content.vue"
+
+import HomeIndex from "./home/index.vue"
 
 export const routes: RouteRecordRaw[] = [
     {
         path: "/",
-        component: portal,
+        name: "portal",
+        component: LayoutContent,
+        children: [
+            {
+                path: "/",
+                name: "home-index",
+                meta: {
+                    title: "首页",
+                },
+                component: HomeIndex,
+            },
+        ],
     },
     //////
     {
         path: "/",
-        name: "home",
-        component: layout,
+        name: "console",
+        component: LayoutConsole,
         children: [
             {
                 path: "/dashboard",
@@ -259,7 +272,6 @@ export const routes: RouteRecordRaw[] = [
         },
         component: () => import("./passport/register.vue"),
     },
-    //////
     {
         path: "/:catchAll(.*)",
         name: "NotFound",

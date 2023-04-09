@@ -4,7 +4,7 @@ import { Component, Vue } from "vue-facing-decorator"
 import sessionStore from "@/store/session"
 
 @Component
-export default class LayoutIndex extends Vue {
+export default class HomeIndex extends Vue {
     public session = sessionStore()
 
     public created() {
