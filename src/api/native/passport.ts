@@ -29,6 +29,7 @@ export interface UserLogin {
 }
 
 export interface LoginResult {
+    UserId: number
     Username: string
     Level: number
     AppId: string
