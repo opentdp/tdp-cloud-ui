@@ -6,6 +6,9 @@ set -o noglob
 
 ###########################################
 
-[ -d node_modules ] || npm install
+if [ ! -d node_modules ] ; then
+    echo Installing node modules...
+    npm install
+fi
 
 npm run build
