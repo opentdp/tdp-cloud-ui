@@ -16,7 +16,6 @@ export const config: UserConfig = {
             },
             "/upload": {
                 target: "http://127.0.0.1:7800",
-                ws: true
             },
         },
     },
