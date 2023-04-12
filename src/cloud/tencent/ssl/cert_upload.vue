@@ -54,7 +54,9 @@ export default class SslCertUpload extends Vue {
 
     async detailCertificate() {
         this.loading = true
-        const res = await NaApi.certbot.detail(this.certbotId).finally(() => this.loading = false)
+        const res = await NaApi.certbot.detail(this.certbotId).finally(() => {
+            this.loading = false
+        })
         if (res.Cert) {
             this.formModel.CertificatePublicKey = NaApi.certbot.certFormat(res.Cert.Certificate).trim()
             this.formModel.CertificatePrivateKey = atob(res.Cert.PrivateKey).trim()
@@ -105,11 +107,11 @@ export default class SslCertUpload extends Vue {
                 <t-textarea v-model="formModel.CertificatePrivateKey" :autosize="{ minRows: 5, maxRows: 10 }" />
             </t-form-item>
             <!--t-form-item name="CertificateType" label="类型">
-                <t-select v-model="formModel.CertificateType">
-                    <t-option value="SVR" label="服务器证书" />
-                    <t-option value="CA" label="客户端证书" />
-                </t-select>
-            </t-form-item-->
+                    <t-select v-model="formModel.CertificateType">
+                        <t-option value="SVR" label="服务器证书" />
+                        <t-option value="CA" label="客户端证书" />
+                    </t-select>
+                </t-form-item-->
             <t-form-item name="Alias" label="备注">
                 <t-input v-model="formModel.Alias" />
             </t-form-item>

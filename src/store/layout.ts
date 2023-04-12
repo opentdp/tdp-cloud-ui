@@ -14,7 +14,7 @@ export default defineStore("layout", {
         // 允许注册
         Registrable: false,
         // 前端配置
-        SiteName: "",
+        SiteName: "Open TDP",
         SiteLogo: "",
         SiteIcon: "",
         Analytics: "",
