@@ -160,7 +160,7 @@ const menuItems: MenuItem[] = [
         title: "节点管理",
     },
     {
-        icon: "user-avatar",
+        icon: "usergroup",
         index: "/user/list",
         title: "用户管理",
         level: 1,
