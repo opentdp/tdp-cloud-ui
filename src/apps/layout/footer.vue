@@ -12,11 +12,8 @@ export default class LayoutFooter extends Vue {
 <template>
     <div class="copyright">
         <t-space :size="4" separator="•">
-            <a v-if="layout.Copytext" :href="layout.Copylink" target="_blank" hover="color">
-                &copy; {{ layout.Copytext }}
-            </a>
-            <a v-else href="https://www.opentdp.org/" target="_blank" hover="color">
-                Powered by Open TDP
+            <a :href="layout.Copylink" target="_blank" hover="color">
+                {{ layout.Copytext }}
             </a>
             <a v-if="layout.IcpCode" href="https://beian.miit.gov.cn/" target="_blank" hover="color">
                 {{ layout.IcpCode }}

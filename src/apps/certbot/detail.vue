@@ -44,7 +44,7 @@ export default class CertbotDetail extends Vue {
 <template>
     <t-space fixed direction="vertical">
         <t-breadcrumb>
-            <t-breadcrumb-item to="/">
+            <t-breadcrumb-item to="/dashboard">
                 首页
             </t-breadcrumb-item>
             <t-breadcrumb-item to="/certbot/list">
