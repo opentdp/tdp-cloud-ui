@@ -6,12 +6,12 @@ import { PrimaryTableCol, TableRowData } from "tdesign-vue-next"
 import { NaApi } from "@/api"
 import { ConfigItem } from "@/api/native/config"
 
-import ConfigUpdate from "./config_update.vue"
+import ConfigUpdate from "./update.vue"
 
 @Component({
     components: { ConfigUpdate }
 })
-export default class ConfigSystem extends Vue {
+export default class ConfigList extends Vue {
     public loading = true
 
     @Ref

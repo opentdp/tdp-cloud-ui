@@ -167,7 +167,7 @@ const menuItems: MenuItem[] = [
     },
     {
         icon: "setting",
-        index: "/config/system",
+        index: "/config/list",
         title: "系统参数",
         level: 1,
     },

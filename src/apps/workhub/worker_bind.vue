@@ -11,7 +11,7 @@ import WorkerBind from "@/cloud/worker/bind.vue"
 @Component({
     components: { WorkerBind }
 })
-export default class VendoWorkerBind extends Vue {
+export default class WorkhubWorkerBind extends Vue {
     public installWorker = installWorker
 
     // 初始化

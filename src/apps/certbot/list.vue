@@ -4,7 +4,7 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { CaTypeList, JobStatus, CertbotItem } from "@/api/native/certbot"
 
-import CertbotCreate from "./certbot_create.vue"
+import CertbotCreate from "./create.vue"
 
 @Component({
     components: { CertbotCreate }

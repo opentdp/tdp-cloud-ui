@@ -4,8 +4,8 @@ import { Ref, Component, Vue } from "vue-facing-decorator"
 import { NaApi } from "@/api"
 import { KeypairItem } from "@/api/native/keypair"
 
-import KeypairCreate from "./keypair_create.vue"
-import KeypairUpdate from "./keypair_update.vue"
+import KeypairCreate from "./create.vue"
+import KeypairUpdate from "./update.vue"
 
 @Component({
     components: { KeypairCreate, KeypairUpdate }
