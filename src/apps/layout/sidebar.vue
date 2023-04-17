@@ -178,11 +178,10 @@ const menuItems: MenuItem[] = [
     <t-menu v-model:expanded="expanded" :value="$route.path" :collapsed="layout.Collapse">
         <template #logo>
             <a v-if="layout.Collapse" class="logo" href="/">
-                <b>Cloud</b>
+                <img :src="layout.SiteIcon">
             </a>
             <a v-else class="logo" href="/">
-                <img src="/assets/img/logo.svg">
-                <b>Cloud</b>
+                <img :src="layout.SiteLogo" :title="layout.SiteName">
             </a>
         </template>
         <template v-for="item in items">

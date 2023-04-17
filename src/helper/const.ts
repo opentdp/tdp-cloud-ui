@@ -1,4 +1,11 @@
 export const SiteName = 'TDP Cloud'
+export const SiteLogo = "/assets/img/logo.svg"
+export const SiteIcon = "/assets/img/icon.svg"
+
+export const Copylink = "https://www.opentdp.org"
+export const Copytext = "Powered by Open TDP"
+
+export const IcpCode = ""
 
 export const Analytics = `
     var _hmt = _hmt || [];
