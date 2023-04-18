@@ -19,6 +19,7 @@ export default class DashboardIndex extends Vue {
 
     public created() {
         this.getUserSummary()
+        this.checkUpgrade()
     }
 
     // 资源统计
@@ -29,11 +30,41 @@ export default class DashboardIndex extends Vue {
         const res = await NaApi.passport.summary()
         this.summary = res
     }
+
+    // 在线更新
+
+    public newVersion = ""
+    public upgrading = false
+
+    async checkUpgrade() {
+        const res = await NaApi.upgrade.check()
+        if (res.BinaryUrl.startsWith("https://")) {
+            this.newVersion = res.Version
+        }
+    }
+
+    public applyUpgrade() {
+        this.upgrading = true
+        NaApi.upgrade.apply().finally(() => {
+            this.upgrading = false
+            location.reload()
+        })
+    }
 }
 </script>
 
 <template>
     <t-space fixed direction="vertical">
+        <t-alert v-if="newVersion" theme="info" close>
+            <template #message>
+                检测到新版本 v{{ newVersion }}，在线更新完成后将自动刷新页面。
+            </template>
+            <template #operation>
+                <t-loading v-if="upgrading" size="12px" />
+                <span v-else @click="applyUpgrade">立即更新</span>
+            </template>
+        </t-alert>
+
         <t-card :loading="!summary" title="资源统计" hover-shadow header-bordered>
             <t-space v-if="summary" fixed break-line>
                 <t-card v-route="'/vendor/tencent'" class="summary" hover-shadow>

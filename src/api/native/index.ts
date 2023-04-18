@@ -7,6 +7,7 @@ import { DomainModel } from "./domain"
 import { KeypairModel } from "./keypair"
 import { MachineModel } from "./machine"
 import { PassportModel } from "./passport"
+import { UpgradeModel } from "./upgrade"
 import { UserModel } from "./user"
 import { ScriptModel } from "./script"
 import { TasklineModel } from "./taskline"
@@ -24,6 +25,7 @@ export default {
     keypair: new KeypairModel(),
     machine: new MachineModel(),
     passport: new PassportModel(),
+    upgrade: new UpgradeModel(),
     user: new UserModel(),
     script: new ScriptModel(),
     taskline: new TasklineModel(),
