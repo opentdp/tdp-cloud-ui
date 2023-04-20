@@ -45,7 +45,7 @@ export default class DomainDetail extends Vue {
                 域名管理
             </t-breadcrumb-item>
             <t-breadcrumb-item v-if="domain">
-                {{ DomainModels[domain.Model] }} · {{ domain.Name }}
+                {{ domain.Name }} · {{ DomainModels[domain.Model] }}
             </t-breadcrumb-item>
         </t-breadcrumb>
 

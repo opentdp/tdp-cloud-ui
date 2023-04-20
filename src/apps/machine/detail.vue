@@ -49,7 +49,7 @@ export default class MachineDetail extends Vue {
                 主机管理
             </t-breadcrumb-item>
             <t-breadcrumb-item v-if="machine">
-                {{ MachineModels[machine.Model] }} · {{ machine.HostName || machine.Id }}
+                {{ machine.HostName || machine.Id }} · {{ MachineModels[machine.Model] }}
             </t-breadcrumb-item>
         </t-breadcrumb>
 
