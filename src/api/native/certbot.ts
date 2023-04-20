@@ -25,7 +25,7 @@ export class CertbotModel extends HttpClient {
 
     public certFormat(certs: string[]) {
         const crtB = "-----BEGIN CERTIFICATE-----\n"
-        const crtE = "\n-----END CERTIFICATE-----\n"
+        const crtE = "\n-----END CERTIFICATE-----"
         certs = certs.map(c => this.certSplit(c, 64).join("\n"))
         return crtB + certs.join(`${crtE}\n${crtB}`) + crtE
     }
