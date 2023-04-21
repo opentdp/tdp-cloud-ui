@@ -1,5 +1,7 @@
 # TDP Cloud UI
 
+[![TDP Cloud UI Builder](https://github.com/open-tdp/tdp-cloud-ui/actions/workflows/release.yml/badge.svg)](https://github.com/open-tdp/tdp-cloud-ui/actions/workflows/release.yml)
+
 [TDP Cloud](https://github.com/open-tdp/tdp-cloud) 的前端组件
 
 ## 开发说明

@@ -1,4 +1,4 @@
-name: TDP Cloud Builder
+name: TDP Cloud UI Builder
 
 on:
   push:
