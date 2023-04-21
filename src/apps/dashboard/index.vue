@@ -38,7 +38,7 @@ export default class DashboardIndex extends Vue {
 
     async checkUpgrade() {
         const res = await NaApi.upgrade.check()
-        if (res.BinaryUrl.startsWith("https://")) {
+        if (res.Package.startsWith("https://")) {
             this.newVersion = res.Version
         }
     }
