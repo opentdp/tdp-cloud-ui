@@ -39,6 +39,7 @@ export default class ConfigList extends Vue {
     public tableColumns: PrimaryTableCol<TableRowData | ConfigItem>[] = [
         { colKey: 'Description', title: '参数名', ellipsis: true },
         { colKey: 'Value', title: '参数值', ellipsis: true },
+        { colKey: 'Module', title: '模块', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: "120px" },
     ]
 }
