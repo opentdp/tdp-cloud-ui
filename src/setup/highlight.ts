@@ -1,33 +1,18 @@
 /**
  * 代码高亮组件
- * https://prismjs.com
+ * https://github.com/highlightjs/highlight.js
  */
 
 import type { App, Plugin } from "vue"
 
-import Prism from "prismjs"
-import "prismjs/themes/prism-okaidia.css"
-
-import "prismjs/components/prism-bash"
-import "prismjs/components/prism-batch"
-import "prismjs/components/prism-json"
-import "prismjs/components/prism-powershell"
-
-import 'prismjs/plugins/toolbar/prism-toolbar'
-import "prismjs/plugins/toolbar/prism-toolbar.css"
-import "prismjs/plugins/show-language/prism-show-language"
-import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard"
-
-import 'prismjs/plugins/line-numbers/prism-line-numbers'
-import "prismjs/plugins/line-numbers/prism-line-numbers.css"
-
-import "prismjs/plugins/normalize-whitespace/prism-normalize-whitespace"
+import hljs from "highlight.js"
+import "highlight.js/styles/github.css"
 
 const plugin: Plugin = {
     install: (app: App) => {
-        app.directive('highlight', pre => {
-            pre.querySelectorAll('code').forEach((code: Element) => {
-                Prism.highlightElement(code)
+        app.directive("highlight", (el) => {
+            el.querySelectorAll("code").forEach((code: HTMLElement) => {
+                hljs.highlightElement(code)
             })
         })
     },

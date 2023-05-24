@@ -1,9 +1,9 @@
 import "@/helper/globals"
+import "@/theme/main.scss"
 
 import { createApp } from "vue"
 
 import App from "@/app.vue"
-import "@/theme/index.scss"
 
 import setupPinia from "@/setup/pinia"
 
