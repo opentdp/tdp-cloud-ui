@@ -50,13 +50,16 @@ export class HttpClient {
             method: req.method,
             headers,
         }
-        // 发起请求并返回结构数据
+        // 返回结构数据
         return this.newFetch(req.url, request)
     }
 
     protected async newFetch(url: string, req: RequestInit) {
-        const body = await fetch(this.api + url, req)
-        const data = await body.json()
+        const resp = await fetch(this.api + url, req)
+        const data = await resp.json()
+        if (resp.status != 200 && !data) {
+            throw new Error("HTTP Error: " + resp.status)
+        }
         // 捕获错误信息
         if (data.Error) {
             const err = errMessage(data.Error)
@@ -112,3 +115,5 @@ export interface HttpRequest {
 export interface HttpMessage {
     Message: string
 }
+
+export type Callback = (d: string) => void
