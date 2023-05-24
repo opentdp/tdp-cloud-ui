@@ -36,7 +36,26 @@ ul {
     list-style: none;
 }
 
+ol {
+    padding-left: 16px;
+}
+
 b,
 strong {
     font-weight: bolder;
+}
+
+p {
+    margin: 0 0 8px 0;
+}
+
+blockquote {
+    margin: 0;
+    padding: 8px;
+    border-left: 3px solid gray;
+    background: #f5f5f5;
+
+    &:not(:last-child) {
+        margin-bottom: 8px;
+    }
 }
