@@ -121,7 +121,7 @@ export default class ScriptQuickExec extends Vue {
             </pre>
             <pre v-highlight max-height="300">
                 <h3>响应内容</h3>
-                <code>{{ result.Response.Output }}</code>
+                <code class="language-text">{{ result.Response.Output }}</code>
             </pre>
         </div>
     </t-dialog>

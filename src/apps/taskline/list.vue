@@ -75,17 +75,17 @@ export default class TasklineList extends Vue {
                     {{ dateFormat(row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
                 </template>
                 <template #expandedRow="{ row }">
-                    <pre v-highlight max-height="500" class="lang-json">
+                    <pre v-highlight max-height="500">
                         <h3>请求信息</h3>
-                        <code>{{ JSON.stringify(row.Request, null, 4) }}</code>
+                        <code class="language-json">{{ JSON.stringify(row.Request, null, 4) }}</code>
                     </pre>
-                    <pre v-if="row.Response.Error" v-highlight max-height="500" class="lang-json">
+                    <pre v-if="row.Response.Error" v-highlight max-height="500">
                         <h3>错误信息</h3>
-                        <code>{{ JSON.stringify(row.Response.Error) }}</code>
+                        <code class="language-json">{{ JSON.stringify(row.Response.Error) }}</code>
                     </pre>
                     <pre v-highlight max-height="500">
                         <h3>响应内容</h3>
-                        <code>{{ row.Response.Output }}</code>
+                        <code class="language-text">{{ row.Response.Output }}</code>
                     </pre>
                 </template>
             </t-table>

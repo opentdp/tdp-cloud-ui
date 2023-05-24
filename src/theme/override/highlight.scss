@@ -1,16 +1,10 @@
-pre[max-height] {
+pre.highlight {
+    margin: 0;
     overflow: auto;
+    white-space: unset;
 
-    &+.toolbar {
-        right: 20px !important;
-
-        .toolbar-item+.toolbar-item {
-            margin-left: 4px;
-        }
-    }
-
-    &>h3 {
-        margin-top: 0;
+    code {
+        white-space: pre;
     }
 }
 

@@ -46,9 +46,9 @@ export default class WorkhubWorkerBind extends Vue {
 
         <WorkerBind v-bind="{ boundList: machineList }" @change="getMachineList" />
 
-        <pre v-highlight max-height="300" class="lang-bash">
+        <pre v-highlight max-height="300">
             <h3>注册子节点</h3>
-            <code>{{ installWorker.Content }}</code>
+            <code class="language-bash">{{ installWorker.Content }}</code>
         </pre>
     </t-space>
 </template>
