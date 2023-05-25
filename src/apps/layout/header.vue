@@ -18,8 +18,10 @@ export default class LayoutHeader extends Vue {
     }
 
     // 切换主题模式
+    public themeIcon = "sun"
     public themeModeChange() {
         const mode = this.layout.ThemeMode == "dark" ? "light" : "dark"
+        this.themeIcon = mode == "dark" ? "moon" : "sun"
         this.layout.setThemeMode(mode)
     }
 
@@ -66,8 +68,7 @@ export default class LayoutHeader extends Vue {
         </template>
         <template #operations>
             <t-button shape="circle" variant="text" @click="themeModeChange">
-                <img v-if="layout.ThemeMode == 'dark'" src="assets/image/sun.svg" width="20">
-                <img v-else src="assets/image/moon.svg" width="20">
+                <img :src="'assets/image/' + themeIcon + '.svg'" width="20">
             </t-button>
             <t-button shape="circle" variant="text" href="https://github.com/open-tdp/tdp-aiart" target="_blank">
                 <t-icon name="logo-github" size="20" />
