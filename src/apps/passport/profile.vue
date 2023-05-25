@@ -83,7 +83,7 @@ export default class PassportProfile extends Vue {
     // 图片裁剪
 
     @Ref
-    public cropper: VueCropper
+    public cropper!: typeof VueCropper
 
     public imageUpload = ""
 
