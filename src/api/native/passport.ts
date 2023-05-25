@@ -13,8 +13,13 @@ export class PassportModel extends HttpClient {
         return this.post("/passport/profile", {})
     }
 
-    public update(rq: UserUpdate): Promise<null> {
+    public profileUpdate(rq: UserUpdate): Promise<null> {
         return this.post("/passport/profile/update", rq)
+    }
+
+    public avatarUpdate(img: string): Promise<{ Avatar: string }> {
+        const rq = { Base64Image: img.split(",")[1] }
+        return this.post("/passport/avatar/update", rq)
     }
 
     public summary(): Promise<UserSummary> {
@@ -30,6 +35,7 @@ export interface UserLogin {
 export interface LoginResult {
     UserId: number
     Username: string
+    Avatar: string
     Level: number
     AppId: string
     Email: string

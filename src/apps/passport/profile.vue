@@ -1,7 +1,8 @@
 <script lang="ts">
 import { Component, Ref, Vue } from "vue-facing-decorator"
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData, UploadFile, RequestMethodResponse } from "tdesign-vue-next"
+import { VueCropper } from "vue-cropper"
 
 import Api, { NaApi } from "@/api"
 import { UserUpdate } from "@/api/native/passport"
@@ -54,7 +55,43 @@ export default class PassportProfile extends Vue {
             Api.msg.err("请检查表单")
             return false
         }
-        NaApi.passport.update(this.formModel)
+        NaApi.passport.profileUpdate(this.formModel)
+    }
+
+    async avatarSubmit() {
+        const res = await NaApi.passport.avatarUpdate(this.imageUpload)
+        this.session.Avatar = res.Avatar
+        this.imageOrigin = ""
+        this.imageUpload = ""
+    }
+
+    // 图片选择
+
+    public imageOrigin = ""
+
+    public imageSelect(file: UploadFile) {
+        const reader = new FileReader()
+        file.raw && reader.readAsDataURL(file.raw)
+        reader.onload = () => this.imageOrigin = String(reader.result)
+        const data: RequestMethodResponse = {
+            status: 'success', response: {
+                url: 'assets/image/avatar.jpg'
+            }
+        }
+        return Promise.resolve(data)
+    }
+
+    // 图片裁剪
+
+    @Ref
+    public cropper: VueCropper
+
+    public imageUpload = ""
+
+    public cropperPreview() {
+        this.cropper.getCropData((data: string) => {
+            this.imageUpload = data
+        })
     }
 }
 </script>
@@ -71,10 +108,29 @@ export default class PassportProfile extends Vue {
         </t-breadcrumb>
 
         <t-row :gutter="16">
-            <t-col :span="5">
+            <t-col v-if="imageOrigin" :span="5">
+                <t-card title="编辑头像" hover-shadow header-bordered>
+                    <t-space fixed direction="vertical">
+                        <vueCropper ref="cropper" class="cropper" mode="contain" output-type="png" :img="imageOrigin"
+                            :auto-crop="true" :info-true="true" :fixed="true" :fixed-number="[1, 1]" :center-box="true"
+                            @real-time="cropperPreview" />
+                        <t-space size="small">
+                            <t-button theme="primary" @click="avatarSubmit">
+                                提交
+                            </t-button>
+                            <t-button theme="default" @click="imageOrigin = ''">
+                                取消
+                            </t-button>
+                        </t-space>
+                    </t-space>
+                </t-card>
+            </t-col>
+            <t-col v-else :span="5">
                 <t-card title="基础信息" hover-shadow header-bordered>
                     <div class="info">
-                        <t-avatar size="96px" image="assets/image/avatar.jpg" />
+                        <t-upload theme="custom" :request-method="imageSelect">
+                            <t-avatar size="96px" :image="session.Avatar" />
+                        </t-upload>
                         <div class="info-name">
                             {{ session.Username }}
                         </div>
@@ -110,7 +166,7 @@ export default class PassportProfile extends Vue {
                         </t-form-item>
                         <t-form-item>
                             <t-button theme="primary" type="submit">
-                                保存
+                                提交
                             </t-button>
                         </t-form-item>
                     </t-form>
@@ -130,5 +186,10 @@ export default class PassportProfile extends Vue {
         font-size: 150%;
         font-weight: 600;
     }
+}
+
+.cropper {
+    width: 100%;
+    height: 300px;
 }
 </style>

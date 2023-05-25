@@ -74,7 +74,7 @@ export default class LayoutHeader extends Vue {
             </t-button>
             <t-dropdown :options="userDropdown">
                 <t-button theme="default" variant="text">
-                    <t-avatar size="20px" image="assets/image/avatar.jpg" />
+                    <t-avatar size="20px" :image="session.Avatar" />
                     &nbsp; {{ session.Username }}
                     <template #suffix>
                         <t-icon name="chevron-down" size="16" />

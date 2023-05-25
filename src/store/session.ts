@@ -6,6 +6,7 @@ export default defineStore("session", {
     state: () => ({
         UserId: 0,
         Username: "",
+        Avatar: "",
         Level: 0,
         AppId: "",
         Email: "",
