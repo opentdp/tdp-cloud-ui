@@ -10,6 +10,9 @@ export const config: UserConfig = {
     build: {
         outDir: "build",
         manifest: false,
+        rollupOptions: {
+            external: [/^assets/],
+        }
     },
     plugins: [
         vue(),
