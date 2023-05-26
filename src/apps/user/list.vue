@@ -60,7 +60,7 @@ export default class UserList extends Vue {
             <template #subtitle>
                 记录总数: {{ userList?.length || 0 }}
             </template>
-            <t-table :loading="loading" :data="userList" :columns="tableColumns" :hover="true" row-key="Id"
+            <t-table :loading="loading" :data="userList" :columns="tableColumns" row-key="Id" hover
                 cell-empty-content="--">
                 <template #Operation="{ row }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">

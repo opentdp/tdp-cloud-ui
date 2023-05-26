@@ -93,7 +93,7 @@ export default class MachineList extends Vue {
             <template #subtitle>
                 记录总数: {{ machineList.length }}
             </template>
-            <t-table :data="machineList" :columns="tableColumns" :hover="true" row-key="Id" select-on-row-click
+            <t-table :data="machineList" :columns="tableColumns" row-key="Id" hover select-on-row-click
                 @select-change="tableRowChange">
                 <template #Model="{ row }">
                     <t-tooltip :content="MachineModels[row.Model]">

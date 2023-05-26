@@ -60,7 +60,7 @@ export default class ConfigList extends Vue {
             <template #subtitle>
                 记录总数: {{ configList?.length || 0 }}
             </template>
-            <t-table :loading="loading" :data="configList" :columns="tableColumns" :hover="true" row-key="Id"
+            <t-table :loading="loading" :data="configList" :columns="tableColumns" row-key="Id" hover
                 cell-empty-content="--">
                 <template #Operation="{ row }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">

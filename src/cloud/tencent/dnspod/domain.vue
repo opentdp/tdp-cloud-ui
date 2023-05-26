@@ -98,7 +98,7 @@ export default class DnspodDomain extends Vue {
                 添加记录
             </t-button>
         </template>
-        <t-table :data="recordList" :columns="tableColumns" :hover="true" row-key="recordId">
+        <t-table :data="recordList" :columns="tableColumns" row-key="recordId" hover>
             <template #Status="{ row }">
                 {{ row.Status == "ENABLE" ? "启用" : "禁用" }}
             </template>

@@ -69,7 +69,7 @@ export default class TasklineList extends Vue {
             <template #subtitle>
                 记录总数: {{ historyList.length }}
             </template>
-            <t-table :data="historyList" :columns="tableColumns" :hover="true" row-key="Id" expand-on-row-click
+            <t-table :data="historyList" :columns="tableColumns" row-key="Id" hover expand-on-row-click
                 @expand-change="expandChange">
                 <template #UpdatedAt="{ row }">
                     {{ dateFormat(row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}

@@ -77,7 +77,7 @@ export default class CertbotList extends Vue {
                     申请证书
                 </t-button>
             </template>
-            <t-table :data="certbotList" :columns="tableColumns" :hover="true" row-key="Id">
+            <t-table :data="certbotList" :columns="tableColumns" row-key="Id" hover>
                 <template #CaType="{ row }">
                     {{ CaTypeList[row.CaType].Name }}
                 </template>

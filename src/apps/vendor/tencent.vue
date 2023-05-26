@@ -76,7 +76,7 @@ export default class VendorTencent extends Vue {
                     绑定账号
                 </t-button>
             </template>
-            <t-table :data="vendorList" :columns="tableColumns" :hover="true" row-key="Id">
+            <t-table :data="vendorList" :columns="tableColumns" row-key="Id" hover>
                 <template #Operation="{ row, rowIndex }">
                     <t-link v-route="'/vendor/tencent/' + row.Id" theme="primary" hover="color">
                         管理

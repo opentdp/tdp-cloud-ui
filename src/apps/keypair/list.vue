@@ -76,7 +76,7 @@ export default class KeypairList extends Vue {
                     添加密钥
                 </t-button>
             </template>
-            <t-table :data="keylist" :columns="tableColumns" :hover="true" row-key="Id">
+            <t-table :data="keylist" :columns="tableColumns" row-key="Id" hover>
                 <template #Operation="{ row, rowIndex }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改

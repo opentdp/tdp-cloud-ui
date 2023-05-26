@@ -173,7 +173,7 @@ export default class LighthouseBind extends Vue {
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>
-        <t-table :data="instanceList" :columns="tableColumns" :hover="true" row-key="InstanceId">
+        <t-table :data="instanceList" :columns="tableColumns" row-key="InstanceId" hover>
             <template #Zone="{ row }">
                 {{ parseRegion(row.Zone) }}
             </template>

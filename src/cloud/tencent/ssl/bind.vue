@@ -105,7 +105,7 @@ export default class SslBind extends Vue {
                 上传证书
             </t-button>
         </template>
-        <t-table :data="certList" :columns="tableColumns" :hover="true" row-key="CertificateId">
+        <t-table :data="certList" :columns="tableColumns" row-key="CertificateId" hover>
             <template #SubjectAltName="{ row }">
                 {{ row.SubjectAltName.join(", ") }}
             </template>
