@@ -1,21 +1,24 @@
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "vue-facing-decorator"
 
 import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/native/machine"
 import { WorkerItem } from "@/api/native/workhub"
 
 import UseCache from '@/store/cache'
-import QuickExec from "@/apps/script/quick.vue"
+import ScriptQuick from "@/apps/script/quick.vue"
 
 @Component({
-    components: { QuickExec }
+    components: { ScriptQuick }
 })
 export default class MachineList extends Vue {
     public MachineModels = MachineModels
     public cache = UseCache()
 
     public loading = true
+
+    @Ref
+    public quickModal!: ScriptQuick
 
     // 初始化
 
@@ -54,25 +57,15 @@ export default class MachineList extends Vue {
         })
     }
 
-    // 选择主机
-
-    public selectedRow!: MachineItem
-
-    public tableRowChange(ids: (string | number)[]) {
-        const ret = this.machineList.find(item => item.Id === ids[0])
-        this.selectedRow = ret as MachineItem
-    }
-
     // 表格定义
 
     public tableColumns = [
-        { colKey: 'row-select', width: "30px" },
         { colKey: 'HostName', title: '名称', ellipsis: true },
         { colKey: 'IpAddress', title: '公网 IP', ellipsis: true },
         { colKey: 'Region', title: '地域', ellipsis: true },
         { colKey: 'Model', title: '云账号', ellipsis: true },
         { colKey: 'WorkerId', title: '土豆片', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" }
+        { colKey: 'Operation', title: '操作', width: "150px" }
     ]
 
 }
@@ -93,8 +86,7 @@ export default class MachineList extends Vue {
             <template #subtitle>
                 记录总数: {{ machineList.length }}
             </template>
-            <t-table :data="machineList" :columns="tableColumns" row-key="Id" hover select-on-row-click
-                @select-change="tableRowChange">
+            <t-table :data="machineList" :columns="tableColumns" row-key="Id" hover>
                 <template #Model="{ row }">
                     <t-tooltip :content="MachineModels[row.Model]">
                         {{ cache.vendorList[row.VendorId]?.Description || "-" }}
@@ -115,6 +107,9 @@ export default class MachineList extends Vue {
                     <t-link v-route="'/machine/detail/' + row.Id" theme="primary" hover="color">
                         管理
                     </t-link>
+                    <t-link theme="warning" hover="color" @click="quickModal.open(row)">
+                        运行
+                    </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteMachine(rowIndex)">
                         <t-link theme="danger" hover="color">
                             删除
@@ -124,8 +119,6 @@ export default class MachineList extends Vue {
             </t-table>
         </t-card>
 
-        <t-card v-if="selectedRow" title="快捷命令" hover-shadow header-bordered>
-            <QuickExec :machine="selectedRow" />
-        </t-card>
+        <ScriptQuick ref="quickModal" />
     </t-space>
 </template>

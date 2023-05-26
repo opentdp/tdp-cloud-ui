@@ -12,7 +12,7 @@ import { TasklineItem } from "@/api/native/taskline"
     emits: ['submit'],
     expose: ['open']
 })
-export default class ScriptQuickExec extends Vue {
+export default class ScriptExec extends Vue {
     public machine!: MachineItem
 
     public loading = false
@@ -105,7 +105,7 @@ export default class ScriptQuickExec extends Vue {
             </t-form-item>
             <t-form-item>
                 <t-space size="small">
-                    <t-button theme="primary" type="submit">
+                    <t-button theme="primary" type="submit" :loading="loading">
                         提交
                     </t-button>
                     <t-button theme="default" @click="visible = false">
