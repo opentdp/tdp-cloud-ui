@@ -20,10 +20,6 @@ export class UserModel extends HttpClient {
     public remove(id: number): Promise<null> {
         return this.post("/user/delete", { Id: id })
     }
-
-    public ui(): Promise<Record<string, string>> {
-        return this.post("/user/ui", {})
-    }
 }
 
 export interface UserOrig {
