@@ -1,5 +1,5 @@
-import "@/helper/globals"
 import "@/theme/main.scss"
+import "@/helper/polyfills"
 
 import { createApp } from "vue"
 

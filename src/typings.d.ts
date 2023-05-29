@@ -1,13 +1,5 @@
 /// <reference types="vite/client" />
 
-// Vue Component
-
-declare module "*.vue" {
-    import type { DefineComponent } from 'vue'
-    const component: DefineComponent<object, object, unknown>
-    export default component
-}
-
 // Import Meta
 
 interface ImportMeta {
@@ -22,4 +14,12 @@ interface ImportMetaEnv {
 
     readonly VITE_SECRET_ID: string
     readonly VITE_SECRET_KEY: string
+}
+
+// Declare Vue Component
+
+declare module "*.vue" {
+    import type { DefineComponent } from 'vue'
+    const component: DefineComponent<object, object, unknown>
+    export default component
 }
