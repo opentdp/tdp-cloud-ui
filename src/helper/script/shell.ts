@@ -9,8 +9,9 @@ export const installWorker: ScriptPayload = {
     Username: "root",
     Description: "",
     Content: codeTrim(`
+        export TDP_SERVICE=install
         export TDP_REMOTE_URL="${NaApi.workhub.getRegisterURL()}"
-        wget -qO- https://get.opentdp.org/cloud/service-server.sh | sh -
+        wget -qO- https://get.opentdp.org/cloud/service-worker.sh | sh -
     `),
     CommandType: "SHELL",
     WorkDirectory: "/root",
