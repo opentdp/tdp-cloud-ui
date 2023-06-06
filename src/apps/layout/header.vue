@@ -23,7 +23,7 @@ export default class LayoutHeader extends Vue {
         this.layout.setThemeMode(mode)
     }
 
-    // 用户名下拉菜单选择事件
+    // 用户名下拉菜单
     public get userDropdown() {
         return [
             {
