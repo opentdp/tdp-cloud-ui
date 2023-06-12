@@ -68,6 +68,10 @@ export class HttpClient {
             }
             throw new Error(err)
         }
+        // 刷新登录令牌
+        if (data.Token) {
+            this.session.Token = data.Token
+        }
         // 显示提示消息
         if (data.Message) {
             okMessage(data.Message)
