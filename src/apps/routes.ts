@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from "vue-router"
 
-import LayoutConsole from "./layout/console.vue"
 import LayoutContent from "./layout/content.vue"
+import LayoutConsole from "./layout/console.vue"
 
 import HomeIndex from "./home/index.vue"
 

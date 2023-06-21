@@ -15,16 +15,17 @@ router.beforeEach((to, from, next) => {
     const layout = layoutStore()
     const session = sessionStore()
 
+    // 设置页面标题
     document.title = `${to.meta.title} - ${layout.SiteName}`
 
-    const isLogin = !!session.Token
-    if (to.meta.login && !isLogin) {
+    // 未登录跳转到登录页
+    if (to.meta.login && !session.validToken()) {
         next("/passport/login")
         return
     }
 
-    const isAdmin = session.Level == 1
-    if (to.meta.admin && !isAdmin) {
+    // 非管理员提示无权限
+    if (to.meta.admin && session.Level != 1) {
         next("/error/403")
         return
     }

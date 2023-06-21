@@ -70,7 +70,7 @@ export class HttpClient {
         }
         // 刷新登录令牌
         if (data.Token) {
-            this.session.Token = data.Token
+            this.session.updateToken(data.Token)
         }
         // 显示提示消息
         if (data.Message) {
