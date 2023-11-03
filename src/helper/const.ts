@@ -3,7 +3,7 @@ export const SiteLogo = "assets/image/logo.svg"
 export const SiteIcon = "assets/image/icon.svg"
 
 export const Copylink = "https://www.opentdp.org"
-export const Copytext = "Powered by Open TDP"
+export const Copytext = "Powered by OpenTDP"
 
 export const IcpCode = ""
 

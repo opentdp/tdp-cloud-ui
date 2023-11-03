@@ -67,4 +67,4 @@
 
 License [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
 
-Copyright (c) 2022 - 2023 Open TDP
+Copyright (c) 2022 - 2023 OpenTDP
