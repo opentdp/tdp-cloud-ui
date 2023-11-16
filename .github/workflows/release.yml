@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Setup node
         uses: actions/setup-node@v3
@@ -19,10 +21,12 @@ jobs:
           node-version: 16
 
       - name: Build ui package
-        run: sh build.sh
+        run: |
+          sh build.sh
 
       - name: Compress ui package
-        run: tar czvf ./tdp-cloud-front.tar.gz ./build
+        run: |
+          tar czvf ./tdp-cloud-front.tar.gz ./build
 
       - name: Create github release
         uses: softprops/action-gh-release@v1
