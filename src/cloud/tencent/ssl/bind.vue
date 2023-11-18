@@ -30,6 +30,7 @@ export default class SslBind extends Vue {
         TcApi.vendor(this.vendorId)
         this.getCertList().then(() => {
             this.getDeployedResources("cdn")
+            this.getDeployedResources("teo")
         })
     }
 
