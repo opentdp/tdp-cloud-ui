@@ -778,7 +778,7 @@ export interface RunCommandRequest {
     InstanceId: string
     Name: string
     Parameters: {
-        [key: string]: any
+        [key: string]: unknown
     }
     RegionId: string
     Timeout: number
@@ -1008,7 +1008,7 @@ export interface DescribeInvocationsResponseBodyInvocations {
     InvokeId: string
     InvokeStatus: string
     Parameters: {
-        [key: string]: any
+        [key: string]: unknown
     }
 }
 

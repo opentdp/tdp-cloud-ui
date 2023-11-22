@@ -60,11 +60,11 @@ export default class SwasBind extends Vue {
     async runCommand(item: AC.Swas.ListInstancesResponseBodyInstances, code: string) {
         const region = item.RegionId
         const res = await AcApi.tat.runCommand(region, {
-            InstanceIds: [item.InstanceId],
+            InstanceId: item.InstanceId,
             Content: code,
         })
         const rs2 = AcApi.tat.describeInvocations(region, {
-            InvocationIds: [res.InvocationId],
+            InvocationId: res.InvocationId,
         })
         console.log(rs2)
     }

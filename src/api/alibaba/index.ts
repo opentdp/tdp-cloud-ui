@@ -1,4 +1,4 @@
-import { TatModel } from '../tencent/tat'
+import { TatModel } from './tat'
 import { AliDnsModel } from './alidns'
 import { AlibabaVendor } from './base'
 import { EcsModel } from './ecs'

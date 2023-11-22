@@ -6651,7 +6651,7 @@ export interface InvokeCommandRequest {
     OwnerAccount: string
     OwnerId: number
     Parameters: {
-        [key: string]: any
+        [key: string]: unknown
     }
     RegionId: string
     RepeatMode: string
@@ -9054,7 +9054,7 @@ export interface RunCommandRequest {
     OwnerAccount: string
     OwnerId: number
     Parameters: {
-        [key: string]: any
+        [key: string]: unknown
     }
     RegionId: string
     RepeatMode: string

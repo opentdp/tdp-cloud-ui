@@ -54,11 +54,11 @@ export default class EcsBind extends Vue {
     async runCommand(item: Required<AC.Ecs.DescribeInstancesResponseBodyInstancesInstance>, code: string) {
         const region = item.RegionId
         const res = await AcApi.tat.runCommand(region, {
-            InstanceIds: [item.InstanceId],
+            InstanceIds: item.InstanceId,
             Content: code,
         })
         const rs2 = AcApi.tat.describeInvocations(region, {
-            InvocationIds: [res.InvocationId],
+            InvocationId: res.InvocationId,
         })
         console.log(rs2)
     }
