@@ -69,24 +69,29 @@ export default class TasklineList extends Vue {
             <template #subtitle>
                 记录总数: {{ historyList.length }}
             </template>
-            <t-table :data="historyList" :columns="tableColumns" row-key="Id" hover expand-on-row-click
-                @expand-change="expandChange">
+            <t-table :data="historyList" :columns="tableColumns" row-key="Id" hover expand-on-row-click @expand-change="expandChange">
                 <template #UpdatedAt="{ row }">
                     {{ dateFormat(row.UpdatedAt * 1000, "yyyy-MM-dd hh:mm:ss") }}
                 </template>
                 <template #expandedRow="{ row }">
-                    <pre v-highlight max-height="500">
+                    <template v-if="row.Request">
                         <h3>请求信息</h3>
-                        <code class="language-json">{{ JSON.stringify(row.Request, null, 4) }}</code>
-                    </pre>
-                    <pre v-if="row.Response.Error" v-highlight max-height="500">
+                        <pre v-highlight max-height="500">
+                            <code class="language-json">{{ JSON.stringify(row.Request, null, 4) }}</code>
+                        </pre>
+                    </template>
+                    <template v-if="row.Response.Error">
                         <h3>错误信息</h3>
-                        <code class="language-json">{{ JSON.stringify(row.Response.Error) }}</code>
-                    </pre>
-                    <pre v-highlight max-height="500">
+                        <pre v-highlight max-height="500">
+                            <code class="language-json">{{ JSON.stringify(row.Response.Error, null, 4) }}</code>
+                        </pre>
+                    </template>
+                    <template v-if="row.Response.Output">
                         <h3>响应内容</h3>
-                        <code class="language-text">{{ row.Response.Output }}</code>
-                    </pre>
+                        <pre v-highlight max-height="500">
+                            <code class="language-text">{{ row.Response.Output }}</code>
+                        </pre>
+                    </template>
                 </template>
             </t-table>
         </t-card>
