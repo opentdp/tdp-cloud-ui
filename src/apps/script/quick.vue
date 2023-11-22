@@ -68,11 +68,13 @@ export default class ScriptQuick extends Vue {
             <div v-if="scriptList.length == 0">
                 暂无可用命令，请在 <b v-route="'/script/list'">脚本管理</b> 页面添加命令。
             </div>
-            <template v-for="v in scriptList" :key="v.Id">
-                <t-button variant="outline" @click="execModal.open(machine, v)">
-                    {{ v.Name }}
-                </t-button>
-            </template>
+            <t-space size="8px">
+                <template v-for="v in scriptList" :key="v.Id">
+                    <t-button variant="outline" @click="execModal.open(machine, v)">
+                        {{ v.Name }}
+                    </t-button>
+                </template>
+            </t-space>
             <ScriptExec ref="execModal" />
         </div>
         <div v-else-if="machine">
@@ -84,3 +86,5 @@ export default class ScriptQuick extends Vue {
         </div>
     </t-dialog>
 </template>
+
+<style lang="scss" scoped></style>
