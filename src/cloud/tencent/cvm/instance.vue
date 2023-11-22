@@ -101,20 +101,16 @@ export default class CvmInstance extends Vue {
         </template>
         <template #actions>
             <t-space>
-                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'STOPPED'"
-                    :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
+                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'STOPPED'" :loading="instance.InstanceState == 'STARTING'" @click="startInstance">
                     开机
                 </t-button>
-                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                    :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
+                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'RUNNING'" :loading="instance.InstanceState == 'STOPPING'" @click="stopInstance">
                     关机
                 </t-button>
-                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'RUNNING'"
-                    :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
+                <t-button theme="primary" size="small" :disabled="instance.InstanceState != 'RUNNING'" :loading="instance.InstanceState == 'REBOOTING'" @click="rebootInstance">
                     重启
                 </t-button>
-                <t-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id" theme="primary"
-                    size="small">
+                <t-button v-if="instance.InstanceState == 'RUNNING'" v-route="'/machine/vnc/' + machine.Id" theme="primary" size="small">
                     VNC 终端
                 </t-button>
                 <t-button v-else theme="primary" size="small" disabled>

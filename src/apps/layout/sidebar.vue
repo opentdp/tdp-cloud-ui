@@ -190,8 +190,7 @@ const menuItems: MenuItem[] = [
                     <template #icon>
                         <t-icon :name="item.icon" />
                     </template>
-                    <t-menu-item v-for="item2 in item.subs" :key="item2.index" :value="item2.index"
-                        :to="{ path: item2.index }">
+                    <t-menu-item v-for="item2 in item.subs" :key="item2.index" :value="item2.index" :to="{ path: item2.index }">
                         {{ item2.title }}
                         <template #icon>
                             <t-icon :name="item2.icon" />

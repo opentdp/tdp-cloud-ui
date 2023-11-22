@@ -45,6 +45,7 @@ export default class Error403 extends Vue {
     line-height: 1;
     font-size: 250px;
     font-weight: bolder;
+
     span:nth-child(1) {
         color: var(--td-brand-color-6);
     }

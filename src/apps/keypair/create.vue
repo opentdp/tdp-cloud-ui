@@ -85,8 +85,7 @@ export default class KeypairCreate extends Vue {
                 <t-input v-model="formModel.Description" />
             </t-form-item>
             <t-form-item name="PublicKey" label="公钥">
-                <t-textarea v-model="formModel.PublicKey" placeholder="若无公钥请输入任意字符"
-                    :autosize="{ minRows: 3, maxRows: 5 }" />
+                <t-textarea v-model="formModel.PublicKey" placeholder="若无公钥请输入任意字符" :autosize="{ minRows: 3, maxRows: 5 }" />
             </t-form-item>
             <t-form-item name="PrivateKey" label="私钥">
                 <t-textarea v-model="formModel.PrivateKey" :autosize="{ minRows: 5, maxRows: 10 }" />

@@ -95,16 +95,13 @@ export default class EcsInstance extends Vue {
             </template>
             <template #actions>
                 <t-space>
-                    <t-button theme="primary" size="small" :disabled="instance.Status != 'Stopped'"
-                        :loading="instance.Status == 'Starting'" @click="startInstance">
+                    <t-button theme="primary" size="small" :disabled="instance.Status != 'Stopped'" :loading="instance.Status == 'Starting'" @click="startInstance">
                         开机
                     </t-button>
-                    <t-button theme="primary" size="small" :disabled="instance.Status != 'Running'"
-                        :loading="instance.Status == 'Stopping'" @click="stopInstance">
+                    <t-button theme="primary" size="small" :disabled="instance.Status != 'Running'" :loading="instance.Status == 'Stopping'" @click="stopInstance">
                         关机
                     </t-button>
-                    <t-button theme="primary" size="small" :disabled="instance.Status != 'Running'"
-                        :loading="instance.Status == 'Resetting'" @click="rebootInstance">
+                    <t-button theme="primary" size="small" :disabled="instance.Status != 'Running'" :loading="instance.Status == 'Resetting'" @click="rebootInstance">
                         重启
                     </t-button>
                 </t-space>

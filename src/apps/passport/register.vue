@@ -60,8 +60,7 @@ export default class PassportRegister extends Vue {
                 <div class="magic-title">
                     登录到<br>{{ layout.SiteName }} 控制面板
                 </div>
-                <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="0px" class="magic-body"
-                    @submit="formSubmit">
+                <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="0px" class="magic-body" @submit="formSubmit">
                     <t-form-item name="Username" :required-mark="false">
                         <t-input v-model="formModel.Username" size="large" placeholder="用户名">
                             <template #prefix-icon>

@@ -157,10 +157,7 @@ export default class CloudflareCustomHostnames extends Vue {
 
         <t-table :data="customHostnames" :columns="tableColumns" row-key="Id" hover>
             <template #expires_on="{ row }">
-                {{
-                    row.ssl.certificates &&
-                        dateFormat(row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-'
-                }}
+                {{ row.ssl.certificates && dateFormat(row.ssl.certificates[0].expires_on, "yyyy-MM-dd hh:mm:ss") || '-' }}
             </template>
             <template #Operation="{ row }">
                 <t-popconfirm content="确定删除?" @confirm="deleteCustomHostnames(row.id)">

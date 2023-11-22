@@ -100,8 +100,7 @@ export default class SslCertUpload extends Vue {
                 </t-select>
             </t-form-item>
             <t-form-item name="CertificatePublicKey" label="公钥">
-                <t-textarea v-model="formModel.CertificatePublicKey" placeholder="CA证书请输入任意字符"
-                    :autosize="{ minRows: 3, maxRows: 5 }" />
+                <t-textarea v-model="formModel.CertificatePublicKey" placeholder="CA证书请输入任意字符" :autosize="{ minRows: 3, maxRows: 5 }" />
             </t-form-item>
             <t-form-item name="CertificatePrivateKey" label="私钥">
                 <t-textarea v-model="formModel.CertificatePrivateKey" :autosize="{ minRows: 5, maxRows: 10 }" />

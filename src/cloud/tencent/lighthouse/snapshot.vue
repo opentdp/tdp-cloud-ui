@@ -78,8 +78,8 @@ export default class LighthouseSnapshot extends Vue {
         { colKey: 'SnapshotName', title: '名称', ellipsis: true },
         { colKey: 'DiskSize', title: '容量', ellipsis: true },
         { colKey: 'Percent', title: '进度', ellipsis: true },
-        { colKey: 'LatestOperationState', title: '状态',  ellipsis: true },
-        { colKey: 'CreatedTime', title: '创建时间',  ellipsis: true },
+        { colKey: 'LatestOperationState', title: '状态', ellipsis: true },
+        { colKey: 'CreatedTime', title: '创建时间', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: "110px" },
     ]
 }

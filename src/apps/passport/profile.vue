@@ -110,9 +110,7 @@ export default class PassportProfile extends Vue {
             <t-col v-if="imageOrigin" :span="5">
                 <t-card title="编辑头像" hover-shadow header-bordered>
                     <t-space fixed direction="vertical">
-                        <vueCropper ref="cropper" class="cropper" mode="contain" output-type="png" :img="imageOrigin"
-                            :auto-crop="true" :info-true="true" :fixed="true" :fixed-number="[1, 1]" :center-box="true"
-                            @real-time="cropperPreview" />
+                        <vueCropper ref="cropper" class="cropper" mode="contain" output-type="png" :img="imageOrigin" :auto-crop="true" :info-true="true" :fixed="true" :fixed-number="[1, 1]" :center-box="true" @real-time="cropperPreview" />
                         <t-space size="small">
                             <t-button theme="primary" @click="avatarSubmit">
                                 提交

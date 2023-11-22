@@ -85,8 +85,7 @@ export default class CertbotList extends Vue {
                     {{ row.History?.event ? JobStatus[row.History.event] : "未知" }}
                 </template>
                 <template #Operation="{ row, rowIndex }">
-                    <t-link v-if="row.History && /cached|obtained/.test(row.History.event)"
-                        v-route="'/certbot/detail/' + row.Id" theme="primary" hover="color">
+                    <t-link v-if="row.History && /cached|obtained/.test(row.History.event)" v-route="'/certbot/detail/' + row.Id" theme="primary" hover="color">
                         查看
                     </t-link>
                     <t-link v-else theme="default" hover="color" :disabled="true">
