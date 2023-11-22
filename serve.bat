@@ -1,5 +1,10 @@
 @ECHO OFF
-::
+
+::加载Node环境
+
+IF EXIST D:\RunTime\node\runtime.bat (
+    CALL D:\RunTime\node\runtime set "%~n0"
+)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
