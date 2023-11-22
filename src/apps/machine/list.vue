@@ -8,8 +8,10 @@ import { WorkerItem } from "@/api/native/workhub"
 import UseCache from '@/store/cache'
 import ScriptQuick from "@/apps/script/quick.vue"
 
+import MachineUpdate from "./update.vue"
+
 @Component({
-    components: { ScriptQuick }
+    components: { ScriptQuick, MachineUpdate }
 })
 export default class MachineList extends Vue {
     public MachineModels = MachineModels
@@ -19,6 +21,9 @@ export default class MachineList extends Vue {
 
     @Ref
     public quickModal!: ScriptQuick
+
+    @Ref
+    public updateModal!: MachineUpdate
 
     // 初始化
 
@@ -65,7 +70,8 @@ export default class MachineList extends Vue {
         { colKey: 'Region', title: '地域', ellipsis: true },
         { colKey: 'Model', title: '云账号', ellipsis: true },
         { colKey: 'WorkerId', title: '土豆片', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "150px" }
+        { colKey: 'Description', title: '备注', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: "180px" }
     ]
 
 }
@@ -107,6 +113,9 @@ export default class MachineList extends Vue {
                     <t-link v-route="'/machine/detail/' + row.Id" theme="primary" hover="color">
                         管理
                     </t-link>
+                    <t-link theme="success" hover="color" @click="updateModal.open(row)">
+                        编辑
+                    </t-link>
                     <t-link theme="warning" hover="color" @click="quickModal.open(row)">
                         运行
                     </t-link>
@@ -120,5 +129,6 @@ export default class MachineList extends Vue {
         </t-card>
 
         <ScriptQuick ref="quickModal" />
+        <MachineUpdate ref="updateModal" @submit="getMachineList" />
     </t-space>
 </template>
