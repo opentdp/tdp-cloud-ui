@@ -92,7 +92,7 @@ export default class TerminalSshConnect extends Vue {
 </script>
 
 <template>
-    <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
+    <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
         <t-form-item name="Addr" label="主机">
             <t-auto-complete v-model="formModel.Addr" :options="machineFilter()" clearable />
         </t-form-item>

@@ -77,7 +77,7 @@ export default class ScriptUpdate extends Vue {
 
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close header="修改脚本" :footer="false" width="600px">
-        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
             <t-form-item name="CommandType" label="类型">
                 <t-radio-group v-model="formModel.CommandType" @change="updateCommandType">
                     <t-radio value="SHELL" label="SHELL" />
