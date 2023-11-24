@@ -66,7 +66,8 @@ export default class LayoutHeader extends Vue {
         </template>
         <template #operations>
             <t-button shape="circle" variant="text" @click="themeModeChange">
-                <img :src="'assets/image/' + (layout.ThemeMode == 'dark' ? 'sun' : 'moon') + '.svg'" width="20">
+                <t-icon v-if="layout.ThemeMode == 'dark'" color="orange" name="sunny" size="20" />
+                <t-icon v-else name="moon" size="20" />
             </t-button>
             <t-button shape="circle" variant="text" href="https://github.com/opentdp/tdp-aiart" target="_blank">
                 <t-icon name="logo-github" size="20" />
