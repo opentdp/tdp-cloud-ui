@@ -68,7 +68,7 @@ export default class ScriptQuick extends Vue {
             <div v-if="scriptList.length == 0">
                 暂无可用命令，请在 <b v-route="'/script/list'">脚本管理</b> 页面添加命令。
             </div>
-            <t-space size="8px">
+            <t-space break-line size="8px">
                 <template v-for="v in scriptList" :key="v.Id">
                     <t-button variant="outline" @click="execModal.open(machine, v)">
                         {{ v.Name }}
