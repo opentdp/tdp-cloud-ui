@@ -48,7 +48,8 @@ export default class ScriptList extends Vue {
     public tableColumns = [
         { colKey: 'Name', title: '名称', ellipsis: true },
         { colKey: 'CommandType', title: '类型', ellipsis: true },
-        { colKey: 'Content', title: '脚本', ellipsis: true },
+        { colKey: 'WorkDirectory', title: '执行路径', ellipsis: true },
+        { colKey: 'Timeout', title: '超时', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: "110px" },
     ]
 }
@@ -77,7 +78,7 @@ export default class ScriptList extends Vue {
                     新建脚本
                 </t-button>
             </template>
-            <t-table :data="scriptList" :columns="tableColumns" row-key="Id" hover>
+            <t-table :data="scriptList" :columns="tableColumns" row-key="Id" hover expand-on-row-click>
                 <template #Operation="{ row }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改
@@ -87,6 +88,13 @@ export default class ScriptList extends Vue {
                             删除
                         </t-link>
                     </t-popconfirm>
+                </template>
+                <template #expandedRow="{ row }">
+                    <pre v-highlight max-height="500">
+                        <code v-if="row.CommandType == 'SHELL'" class="language-shell">{{ row.Content }}</code>
+                        <code v-if="row.CommandType == 'POWERSHELL'" class="language-powershell">{{ row.Content }}</code>
+                        <code v-if="row.CommandType == 'BAT'" class="language-bat">{{ row.Content }}</code>
+                    </pre>
                 </template>
             </t-table>
         </t-card>

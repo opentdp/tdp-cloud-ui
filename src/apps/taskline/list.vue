@@ -34,7 +34,7 @@ export default class TasklineList extends Vue {
         this.historyList = res.Items
     }
 
-    // 侧边栏开关
+    // 展开详情
 
     public expanded = false
 
