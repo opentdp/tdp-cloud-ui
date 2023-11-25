@@ -46,8 +46,8 @@ export default class DashboardIndex extends Vue {
     public applyUpgrade() {
         this.upgrading = true
         NaApi.upgrade.apply().finally(() => {
+            setTimeout(() => location.reload(), 3000)
             this.upgrading = false
-            location.reload()
         })
     }
 }
