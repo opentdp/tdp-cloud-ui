@@ -65,7 +65,7 @@ export default class MachineList extends Vue {
     // 表格定义
 
     public tableColumns = [
-        { colKey: 'HostName', title: '名称', ellipsis: true },
+        { colKey: 'HostName', title: '主机名', ellipsis: true },
         { colKey: 'IpAddress', title: '公网 IP', ellipsis: true },
         { colKey: 'Region', title: '地域', ellipsis: true },
         { colKey: 'Model', title: '云账号', ellipsis: true },
