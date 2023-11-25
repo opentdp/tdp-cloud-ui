@@ -54,7 +54,7 @@ export default class ConfigUpdate extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="修改参数" :footer="false" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="修改参数" :footer="false" width="50%">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="Name" label="参数">
                 <t-input v-model="formModel.Name" readonly />

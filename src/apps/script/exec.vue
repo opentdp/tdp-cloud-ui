@@ -81,7 +81,7 @@ export default class ScriptExec extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close :header="'执行脚本：' + formModel?.Name" :footer="false" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close :header="'执行脚本：' + formModel?.Name" :footer="false" width="50%">
         <t-space fixed direction="vertical">
             <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
                 <t-form-item name="CommandType" label="类型">

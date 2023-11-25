@@ -60,7 +60,7 @@ export default class ScriptQuick extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="选择脚本" :footer="false" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="选择脚本" :footer="false" width="50%">
         <div v-if="machine?.WorkerMeta">
             <t-space v-if="loading" fixed align="center">
                 <t-loading />

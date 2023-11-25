@@ -99,7 +99,7 @@ export default class CertbotCreate extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="添加计划" :footer="false" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="添加计划" :footer="false" width="50%">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="110px" @submit="formSubmit">
             <t-form-item name="Domain" label="域名">
                 <t-input-adornment>

@@ -84,7 +84,7 @@ export default class ScriptCreate extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="添加脚本" :footer="false" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="添加脚本" :footer="false" width="50%">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
             <t-form-item name="CommandType" label="类型">
                 <t-radio-group v-model="formModel.CommandType" @change="updateCommandType">

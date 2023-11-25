@@ -66,7 +66,7 @@ export default class LighthouseFirewallCreate extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="添加规则" :footer="false" width="400px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="添加规则" :footer="false" width="50%">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="CidrBlock" label="来源">
                 <t-input v-model="formModel.CidrBlock" />

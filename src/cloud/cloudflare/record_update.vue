@@ -87,7 +87,7 @@ export default class CloudflareRecordUpdate extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="更新记录" :footer="false" width="400px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="更新记录" :footer="false" width="50%">
         <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
             <t-form-item name="name" label="主机记录">
                 <t-input v-model="formModel.name" />

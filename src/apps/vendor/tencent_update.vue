@@ -51,7 +51,7 @@ export default class VendorTencentCUpdate extends Vue {
 </script>
 
 <template>
-    <t-dialog v-model:visible="visible" destroy-on-close header="修改账号" :footer="false" width="600px">
+    <t-dialog v-model:visible="visible" destroy-on-close header="修改账号" :footer="false" width="50%">
         <t-form ref="formRef" :data="formModel" :rules="formRules" @submit="formSubmit">
             <t-form-item name="Description" label="别名">
                 <t-input v-model="formModel.Description" />
