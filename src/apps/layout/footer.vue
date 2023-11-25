@@ -12,15 +12,15 @@ export default class LayoutFooter extends Vue {
 <template>
     <div class="copyright">
         <t-space :size="4" separator="•">
-            <a :href="layout.Copylink" target="_blank" hover="color">
+            <t-link :href="layout.Copylink" target="_blank">
                 {{ layout.Copytext }}
-            </a>
-            <a v-if="layout.IcpCode" href="https://beian.miit.gov.cn/" target="_blank" hover="color">
+            </t-link>
+            <t-link v-if="layout.IcpCode" href="https://beian.miit.gov.cn/" target="_blank">
                 {{ layout.IcpCode }}
-            </a>
-            <a href="https://cloud.opentdp.org/" target="_blank" hover="color">
+            </t-link>
+            <t-link href="https://cloud.opentdp.org/" target="_blank">
                 Cloud {{ layout.Version ? "v" + layout.Version : "" }}
-            </a>
+            </t-link>
         </t-space>
     </div>
 </template>

@@ -177,9 +177,9 @@ const menuItems: MenuItem[] = [
 <template>
     <t-menu v-model:expanded="expanded" :value="$route.path" :collapsed="layout.Collapse">
         <template #logo>
-            <a class="logo" href="/" :title="layout.SiteName">
+            <t-link class="logo" href="/" :title="layout.SiteName" hover="color">
                 <img :src="layout.Collapse ? layout.SiteIcon : layout.SiteLogo">
-            </a>
+            </t-link>
         </template>
         <template v-for="item in items">
             <template v-if="item.subs">
