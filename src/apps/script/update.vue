@@ -49,6 +49,9 @@ export default class ScriptUpdate extends Vue {
             case "SHELL":
                 this.formModel.Username = "root"
                 this.formModel.WorkDirectory = "/root"
+                if (this.formModel.Content.indexOf("#!/") !== 0) {
+                    this.formModel.Content = "#!/bin/sh\n" + this.formModel.Content
+                }
                 break
             case "POWERSHELL":
             case "BAT":
@@ -95,7 +98,7 @@ export default class ScriptUpdate extends Vue {
                 <t-input v-model="formModel.WorkDirectory" />
             </t-form-item>
             <t-form-item name="Content" label="脚本内容">
-                <t-textarea v-model="formModel.Content" :autosize="{ minRows: 4, maxRows: 15 }" />
+                <t-textarea v-model="formModel.Content" :autosize="{ minRows: 4, maxRows: 15 }" :placeholder="formModel.CommandType == 'SHELL' ? '请在首行声明解释器，如 #!/bin/sh' : ''" />
             </t-form-item>
             <t-form-item name="Description" label="脚本描述">
                 <t-textarea v-model="formModel.Description" :autosize="{ minRows: 2, maxRows: 15 }" />

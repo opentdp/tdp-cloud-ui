@@ -49,6 +49,9 @@ export default class ScriptCreate extends Vue {
             case "SHELL":
                 this.formModel.Username = "root"
                 this.formModel.WorkDirectory = "/root"
+                if (this.formModel.Content.indexOf("#!/") !== 0) {
+                    this.formModel.Content = "#!/bin/sh\n" + this.formModel.Content
+                }
                 break
             case "POWERSHELL":
             case "BAT":
