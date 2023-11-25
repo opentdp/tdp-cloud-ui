@@ -90,10 +90,14 @@ export default class ScriptList extends Vue {
                     </t-popconfirm>
                 </template>
                 <template #expandedRow="{ row }">
-                    <pre v-highlight max-height="500">
-                        <code v-if="row.CommandType == 'SHELL'" class="language-shell">{{ row.Content }}</code>
-                        <code v-if="row.CommandType == 'POWERSHELL'" class="language-powershell">{{ row.Content }}</code>
-                        <code v-if="row.CommandType == 'BAT'" class="language-bat">{{ row.Content }}</code>
+                    <pre v-if="row.CommandType == 'SHELL'" v-highlight>
+                        <code max-height="500" class="language-bash">{{ row.Content }}</code>
+                    </pre>
+                    <pre v-if="row.CommandType == 'POWERSHELL'" v-highlight>
+                        <code max-height="500" class="language-powershell">{{ row.Content }}</code>
+                    </pre>
+                    <pre v-if="row.CommandType == 'BAT'" v-highlight>
+                        <code max-height="500" class="language-bat">{{ row.Content }}</code>
                     </pre>
                 </template>
             </t-table>

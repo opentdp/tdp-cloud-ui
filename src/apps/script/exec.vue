@@ -114,18 +114,14 @@ export default class ScriptExec extends Vue {
                 </t-form-item>
             </t-form>
             <div v-if="result">
-                <template v-if="result.Response.Error">
+                <pre v-if="result.Response.Error" v-highlight>
                     <h3>错误信息</h3>
-                    <pre v-highlight max-height="300" class="lang-json">
-                        <code>{{ JSON.stringify(result.Response.Error, null, 4) }}</code>
-                    </pre>
-                </template>
-                <template v-if="result.Response.Output">
+                    <code max-height="300" class="lang-json">{{ JSON.stringify(result.Response.Error, null, 4) }}</code>
+                </pre>
+                <pre v-if="result.Response.Output" v-highlight>
                     <h3>响应内容</h3>
-                    <pre v-highlight max-height="300">
-                        <code class="language-text">{{ result.Response.Output }}</code>
-                    </pre>
-                </template>
+                    <code max-height="300" class="language-text">{{ result.Response.Output }}</code>
+                </pre>
             </div>
         </t-space>
     </t-dialog>

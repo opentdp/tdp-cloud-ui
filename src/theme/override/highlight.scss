@@ -5,14 +5,15 @@ pre.highlight {
 
     code {
         white-space: pre;
+        overflow-y: auto;
     }
-}
 
-pre[max-height="300"] {
-    max-height: 300px !important;
-}
+    code[max-height="300"] {
+        max-height: 300px !important;
+    }
 
 
-pre[max-height="500"] {
-    max-height: 500px !important;
+    code[max-height="500"] {
+        max-height: 500px !important;
+    }
 }
