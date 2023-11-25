@@ -87,9 +87,6 @@ export default class ScriptExec extends Vue {
                 <t-form-item name="CommandType" label="类型">
                     {{ formModel.CommandType }}
                 </t-form-item>
-                <t-form-item name="Description" label="脚本描述">
-                    {{ formModel.Description }}
-                </t-form-item>
                 <t-form-item name="Timeout" label="超时时间">
                     <t-input-number v-model="formModel.Timeout" placeholder="默认为 300s" :min="1" :max="86400" />
                 </t-form-item>
@@ -101,6 +98,9 @@ export default class ScriptExec extends Vue {
                 </t-form-item>
                 <t-form-item name="Content" label="脚本内容">
                     <t-textarea v-model="formModel.Content" :autosize="{ minRows: 4, maxRows: 15 }" />
+                </t-form-item>
+                <t-form-item name="Description" label="脚本描述">
+                    <t-textarea v-model="formModel.Description" :autosize="{ minRows: 2, maxRows: 5 }" readonly />
                 </t-form-item>
                 <t-form-item>
                     <t-space size="small">
