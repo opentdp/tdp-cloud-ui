@@ -67,7 +67,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
     {
-        icon: "home",
+        icon: "houses",
         index: "/dashboard",
         title: "首页",
     },
@@ -87,7 +87,7 @@ const menuItems: MenuItem[] = [
         title: "SSL 证书",
         subs: [
             {
-                icon: "relativity",
+                icon: "functions-1",
                 index: "/certbot/list",
                 title: "证书签发",
             },
@@ -99,24 +99,24 @@ const menuItems: MenuItem[] = [
         ]
     },
     {
-        icon: "fork",
+        icon: "terminal-rectangle",
         index: "/terminal",
         title: "SSH 终端",
         subs: [
             {
-                icon: "fullscreen-exit",
+                icon: "flight-landing",
                 index: "/terminal/ssh",
                 title: "SSH 连接",
             },
             {
-                icon: "gift",
+                icon: "fingerprint",
                 index: "/keypair/list",
                 title: "密钥管理",
             },
         ]
     },
     {
-        icon: "control-platform",
+        icon: "command",
         index: "/task",
         title: "快捷命令",
         subs: [
@@ -133,34 +133,34 @@ const menuItems: MenuItem[] = [
         ]
     },
     {
-        icon: "wallet",
+        icon: "pantone",
         index: "/vendor",
         title: "厂商管理",
         subs: [
             {
-                icon: "cloud",
+                icon: "letters-t",
                 index: "/vendor/tencent",
                 title: "腾讯云",
             },
             {
-                icon: "cloud",
+                icon: "letters-a",
                 index: "/vendor/alibaba",
                 title: "阿里云",
             },
             {
-                icon: "cloud",
+                icon: "letters-c",
                 index: "/vendor/cloudflare",
                 title: "Cloudflare",
             },
         ]
     },
     {
-        icon: "share",
+        icon: "radar",
         index: "/workhub/worker",
         title: "节点管理",
     },
     {
-        icon: "usergroup",
+        icon: "user-list",
         index: "/user/list",
         title: "用户管理",
         level: 1,
