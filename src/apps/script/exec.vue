@@ -97,7 +97,7 @@ export default class ScriptExec extends Vue {
                     <t-input v-model="formModel.WorkDirectory" :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
                 </t-form-item>
                 <t-form-item name="Description" label="脚本描述">
-                    <t-textarea v-model="formModel.Description" :autosize="{ minRows: 2, maxRows: 8 }" disabled />
+                    <t-textarea v-model="formModel.Description" :autosize="{ minRows: 1, maxRows: 8 }" disabled />
                 </t-form-item>
                 <t-form-item name="Content" label="脚本内容">
                     <t-textarea v-model="formModel.Content" :autosize="{ minRows: 5, maxRows: 15 }" />
