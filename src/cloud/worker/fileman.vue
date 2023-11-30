@@ -127,7 +127,7 @@ export default class WorkerFileman extends Vue {
 <template>
     <t-card :loading="loading" title="文件管理" hover-shadow header-bordered>
         <template #subtitle>
-            文件总数: {{ fileList.length }}
+            记录总数: {{ fileList.length }}
         </template>
         <template #actions>
             <t-space>
