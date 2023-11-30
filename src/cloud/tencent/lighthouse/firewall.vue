@@ -81,7 +81,7 @@ export default class LighthouseFirewall extends Vue {
             记录总数: {{ firewallRuleCount }}
         </template>
         <template #actions>
-            <t-button theme="primary" size="small" @click="createModal.open(instance)">
+            <t-button theme="primary" @click="createModal.open(instance)">
                 <template #icon>
                     <t-icon name="add" />
                 </template>

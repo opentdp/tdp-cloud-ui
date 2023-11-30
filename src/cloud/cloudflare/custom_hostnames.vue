@@ -116,7 +116,7 @@ export default class CloudflareCustomHostnames extends Vue {
             记录总数: {{ customHostnames?.length || 0 }}
         </template>
         <template #actions>
-            <t-button theme="primary" size="small" @click="refresh">
+            <t-button theme="primary" @click="refresh">
                 <template #icon>
                     <t-icon name="refresh" />
                 </template>

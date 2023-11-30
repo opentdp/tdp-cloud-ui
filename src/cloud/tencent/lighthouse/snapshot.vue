@@ -91,7 +91,7 @@ export default class LighthouseSnapshot extends Vue {
             记录总数: {{ snapshotList.TotalCount }}
         </template>
         <template #actions>
-            <t-button theme="primary" size="small" @click="createModal.open(instance)">
+            <t-button theme="primary" @click="createModal.open(instance)">
                 <template #icon>
                     <t-icon name="add" />
                 </template>

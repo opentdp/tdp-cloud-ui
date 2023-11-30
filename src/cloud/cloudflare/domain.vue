@@ -80,7 +80,7 @@ export default class CloudflareDomain extends Vue {
                 记录总数: {{ recordList?.length || 0 }}
             </template>
             <template #actions>
-                <t-button theme="primary" size="small" @click="createModal.open(domainInfo)">
+                <t-button theme="primary" @click="createModal.open(domainInfo)">
                     <template #icon>
                         <t-icon name="add" />
                     </template>

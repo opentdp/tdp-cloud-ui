@@ -69,7 +69,7 @@ export default class KeypairList extends Vue {
                 记录总数: {{ keylist?.length || 0 }}
             </template>
             <template #actions>
-                <t-button theme="primary" size="small" @click="createModal.open()">
+                <t-button theme="primary" @click="createModal.open()">
                     <template #icon>
                         <t-icon name="add" />
                     </template>

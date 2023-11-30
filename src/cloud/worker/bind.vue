@@ -90,9 +90,12 @@ export default class WorkerBind extends Vue {
     ]
 }
 </script>
-
+ 
 <template>
     <t-card title="在线节点" hover-shadow header-bordered>
+        <template #subtitle>
+            记录总数: {{ workerList.length }}
+        </template>
         <t-table :data="workerList" :columns="tableColumns" row-key="Id" hover>
             <template #WorkerMeta_IpAddress="{ row }">
                 {{ row.WorkerMeta.PublicIpv4 || row.WorkerMeta.PublicIpv6 }}

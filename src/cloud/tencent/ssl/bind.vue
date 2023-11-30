@@ -99,7 +99,7 @@ export default class SslBind extends Vue {
             记录总数: {{ certCount }}
         </template>
         <template #actions>
-            <t-button theme="primary" size="small" @click="uploadModal.open()">
+            <t-button theme="primary" @click="uploadModal.open()">
                 <template #icon>
                     <t-icon name="add" />
                 </template>
