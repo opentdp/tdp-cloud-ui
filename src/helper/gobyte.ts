@@ -2,44 +2,40 @@
  * go byte array helper
  */
 
-// 解析go的[]byte序列化值
-export function decodeByteArray(data: string) {
-    const rawString = atob(data)
-    const byteArray = new Uint8Array(rawString.length)
-    for (let i = 0; i < rawString.length; i++) {
-        byteArray[i] = rawString.charCodeAt(i)
+// 将Base64字符串转换为Uint8Array
+export function base64ToBuffer(data: string) {
+    const binstr = atob(data)
+    const bytes = new Uint8Array(binstr.length)
+    for (let i = 0; i < binstr.length; i++) {
+        bytes[i] = binstr.charCodeAt(i)
     }
-    return byteArray
+    return bytes
 }
 
-// 编码为go的[]byte序列化值
-export function encodeByteArray(data: Uint8Array) {
-    const byteArray = Array.prototype.slice.call(data)
-    const rawString = String.fromCharCode.apply(null, byteArray)
-    return btoa(rawString)
-}
-
-// 将Uint8Array转换为字符串
-export function byteArrayToText(data: string) {
-    const decoder = new TextDecoder('utf8')
-    return decoder.decode(decodeByteArray(data))
+// 将Uint8Array转换为Base64字符串
+export function bufferToBase64(data: Uint8Array) {
+    const binstr = Array.prototype.map.call(data, ch => {
+        return String.fromCharCode(ch)
+    }).join('')
+    return btoa(binstr)
 }
 
 // 将File转为go的[]byte序列化值
-export function fileToByteArrayString(file: File, fn: (data: string) => void) {
+export function fileToBase64(file: File, fn: (data: string) => void) {
     const reader = new FileReader()
-    reader.onload = function () {
-        const byteArray = new Uint8Array(reader.result as ArrayBuffer)
-        const base64String = encodeByteArray(byteArray)
-        fn && fn(base64String)
+    reader.onload = () => {
+        const bytes = new Uint8Array(reader.result as ArrayBuffer)
+        fn && fn(bufferToBase64(bytes))
     }
     reader.readAsArrayBuffer(file)
 }
 
 // 将go的[]byte序列化值转为下载
-export function byteArrayStringToFile(input: string, filename: string) {
-    const data = decodeByteArray(input)
-    const blob = new Blob([data], { type: "application/octet-stream" })
+export function base64ToDownload(input: string, filename: string) {
+    const data = base64ToBuffer(input)
+    const blob = new Blob([data], {
+        type: "application/octet-stream"
+    })
     const url = URL.createObjectURL(blob)
     // 创建一个隐藏的a元素
     const a = document.createElement("a")
