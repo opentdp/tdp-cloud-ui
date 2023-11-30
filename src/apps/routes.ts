@@ -123,6 +123,15 @@ export const routes: RouteRecordRaw[] = [
                 component: () => import("./machine/detail.vue"),
             },
             {
+                path: "/machine/filer/:id",
+                name: "machine-filer",
+                meta: {
+                    title: "文件管理",
+                    login: true,
+                },
+                component: () => import("./machine/filer.vue"),
+            },
+            {
                 path: "/machine/vnc/:id",
                 name: "machine-vnc",
                 meta: {

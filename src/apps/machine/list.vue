@@ -71,7 +71,7 @@ export default class MachineList extends Vue {
         { colKey: 'Model', title: '云账号', ellipsis: true },
         { colKey: 'WorkerId', title: '土豆片', ellipsis: true },
         { colKey: 'Description', title: '备注', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "180px" }
+        { colKey: 'Operation', title: '操作', width: "220px" }
     ]
 
 }
@@ -112,6 +112,12 @@ export default class MachineList extends Vue {
                 <template #Operation="{ row, rowIndex }">
                     <t-link v-route="'/machine/detail/' + row.Id" theme="primary" hover="color">
                         管理
+                    </t-link>
+                    <t-link v-if="!workerList[row.WorkerId]" hover="color" disabled>
+                        文件
+                    </t-link>
+                    <t-link v-else v-route="'/machine/filer/' + row.Id" theme="primary" hover="color">
+                        文件
                     </t-link>
                     <t-link theme="success" hover="color" @click="updateModal.open(row)">
                         编辑

@@ -1,6 +1,6 @@
 import { HttpClient } from "@/api/basic/http"
 
-import { SummaryStat, DetailStat, IpSets, ScriptPayload } from "./typings"
+import { SummaryStat, DetailStat, IpSets, FilerPayload, FileInfo, ScriptPayload } from "./typings"
 
 export class WorkhubModel extends HttpClient {
     public host(): Promise<NodeDetail> {
@@ -21,6 +21,10 @@ export class WorkhubModel extends HttpClient {
 
     public exec(id: string, rq: ScriptPayload): Promise<{ Id: number }> {
         return this.post("/workhub/exec/" + id, rq)
+    }
+
+    public filer(id: string, rq: FilerPayload): Promise<FileInfo[]> {
+        return this.post("/workhub/filer/" + id, rq)
     }
 
     public getRegisterURL() {
