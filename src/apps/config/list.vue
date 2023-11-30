@@ -40,7 +40,7 @@ export default class ConfigList extends Vue {
         { colKey: 'Description', title: '参数名', ellipsis: true },
         { colKey: 'Value', title: '参数值', ellipsis: true },
         { colKey: 'Module', title: '模块', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "120px" },
+        { colKey: 'Operation', title: '操作', width: "110px" },
     ]
 }
 </script>

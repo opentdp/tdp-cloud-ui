@@ -40,7 +40,7 @@ export default class UserList extends Vue {
         { colKey: 'Username', title: '用户名', ellipsis: true },
         { colKey: 'Email', title: '邮箱', ellipsis: true },
         { colKey: 'Level', title: '用户组', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "120px" },
+        { colKey: 'Operation', title: '操作', width: "110px" },
     ]
 }
 </script>
