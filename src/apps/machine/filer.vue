@@ -6,6 +6,7 @@ import { MachineModels, MachineItem } from "@/api/native/machine"
 import { FileInfo } from "@/api/native/typings"
 
 import { bytesToSize, dateFormat } from "@/helper/format"
+import * as gobyte from "@/helper/gobyte"
 
 @Component({})
 export default class MachineFiler extends Vue {
@@ -17,14 +18,17 @@ export default class MachineFiler extends Vue {
     public loading = true
 
     public path = '/'
-    public files: FileInfo[] = []
+    public fileList: FileInfo[] = []
 
     // 初始化
 
     async created() {
         const machineId = +this.$route.params.id
         await this.getMachine(machineId)
-        await this.getFiles()
+        if (this.machine.OSType == 'windows') {
+            this.path = 'C:'
+        }
+        await this.getFileList()
     }
 
     // 获取主机
@@ -36,38 +40,47 @@ export default class MachineFiler extends Vue {
         this.machine = res.Item
     }
 
+    // 改变浏览路径
+
+    public setPath(path: string) {
+        this.path = path.replace(/\\+/g, '/').replace(/\/+/g, '/')
+        this.getFileList()
+    }
+
     // 获取路径列表
 
-    public splitPath() {
+    public getPathCrumb() {
         const res = []
         const list = this.path.split('/').filter(v => v)
         for (let i = 0; i < list.length; i++) {
             res.push({
-                path: list.slice(0, i + 1).join('/'),
-                name: list[i]
+                name: list[i],
+                path: list.slice(0, i + 1).join('/')
             })
         }
         return res
     }
 
-    // 改变浏览路径
-
-    public changePath(path: string) {
-        this.path = path.replace(/\\+/g, '/').replace(/\/+/g, '/')
-        this.getFiles()
-    }
-
     // 获取文件列表
 
-    async getFiles() {
+    async getFileList() {
         this.loading = true
-        this.files = []
-        const res = await NaApi.workhub.filer(this.machine.WorkerId, {
-            Action: 'list', Path: this.path
-        })
-        if (res && res.length > 0) {
-            this.files = res
+        this.fileList = []
+        const req = { Action: 'ls', Path: this.path }
+        const res = await NaApi.workhub.filer(this.machine.WorkerId, req)
+        if (res.FileList && res.FileList.length > 0) {
+            this.fileList = res.FileList
         }
+        this.loading = false
+    }
+
+    // 获取文件数据
+
+    async getFileData(name: string) {
+        this.loading = true
+        const req = { Action: 'read', Path: this.path + '/' + name }
+        const res = await NaApi.workhub.filer(this.machine.WorkerId, req)
+        gobyte.byteArrayStringToFile(res.FileData + "", name)
         this.loading = false
     }
 
@@ -98,23 +111,23 @@ export default class MachineFiler extends Vue {
 
         <t-card :loading="loading" title="文件管理" hover-shadow header-bordered>
             <template #subtitle>
-                文件总数: {{ files.length }}
+                文件总数: {{ fileList.length }}
             </template>
             <t-space fixed direction="vertical">
                 <t-breadcrumb>
-                    <t-breadcrumb-item @click="changePath('/')">
+                    <t-breadcrumb-item v-if="machine?.OSType != 'windows'" @click="setPath('/')">
                         <small>/</small>
                     </t-breadcrumb-item>
-                    <t-breadcrumb-item v-for="v, k in splitPath()" :key="k" @click="changePath(v.path)">
+                    <t-breadcrumb-item v-for="v, k in getPathCrumb()" :key="k" @click="setPath(v.path)">
                         {{ v.name }}
                     </t-breadcrumb-item>
                 </t-breadcrumb>
-                <t-table :data="files" :columns="tableColumns" row-key="Id" hover>
+                <t-table :data="fileList" :columns="tableColumns" row-key="Id" hover>
                     <template #Name="{ row }">
-                        <div v-if="row.IsDir" class="hover" @click="changePath(path + '/' + row.Name)">
+                        <div v-if="row.IsDir" class="hover" @click="setPath(path + '/' + row.Name)">
                             {{ row.Name }}/
                         </div>
-                        <div v-else>
+                        <div v-else class="hover" @click="getFileData(row.Name)">
                             {{ row.Name }}
                         </div>
                     </template>

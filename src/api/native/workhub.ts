@@ -1,6 +1,6 @@
 import { HttpClient } from "@/api/basic/http"
 
-import { SummaryStat, DetailStat, IpSets, FilerPayload, FileInfo, ScriptPayload } from "./typings"
+import { SummaryStat, DetailStat, IpSets, FilerRequest, FilerResponse, ScriptPayload } from "./typings"
 
 export class WorkhubModel extends HttpClient {
     public host(): Promise<NodeDetail> {
@@ -23,7 +23,8 @@ export class WorkhubModel extends HttpClient {
         return this.post("/workhub/exec/" + id, rq)
     }
 
-    public filer(id: string, rq: FilerPayload): Promise<FileInfo[]> {
+    public filer(id: string, rq: FilerRequest): Promise<FilerResponse> {
+        rq.Path = rq.Path.replace(/\\+/g, '/').replace(/\/+/g, '/')
         return this.post("/workhub/filer/" + id, rq)
     }
 

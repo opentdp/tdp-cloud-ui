@@ -1,5 +1,5 @@
 /**
- * 工具仓库
+ * 格式化工具
  */
 
 export function codeTrim(s: string) {
@@ -44,3 +44,4 @@ export function dateFormat(t: string | number, fmt: string) {
 
     return fmt
 }
+
