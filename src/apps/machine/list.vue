@@ -116,7 +116,7 @@ export default class MachineList extends Vue {
                     <t-link v-if="!workerList[row.WorkerId]" hover="color" disabled>
                         文件
                     </t-link>
-                    <t-link v-else v-route="'/machine/filer/' + row.Id" theme="primary" hover="color">
+                    <t-link v-else v-route="'/machine/fileman/' + row.Id" theme="primary" hover="color">
                         文件
                     </t-link>
                     <t-link theme="success" hover="color" @click="updateModal.open(row)">
