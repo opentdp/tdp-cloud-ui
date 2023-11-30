@@ -152,7 +152,7 @@ export default class MachineFiler extends Vue {
             </template>
             <template #actions>
                 <t-space>
-                    <t-upload :request-method="uploadFile" />
+                    <t-upload theme="custom" :request-method="uploadFile" />
                     <t-button theme="primary" @click="getFileList()">
                         <template #icon>
                             <t-icon name="load" />
