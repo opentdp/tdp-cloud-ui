@@ -20,6 +20,7 @@ export default class WorkerFileman extends Vue {
     public loading = true
 
     public path = '/'
+    public editing = false
     public fileList: FileInfo[] = []
 
     @Prop
@@ -45,7 +46,7 @@ export default class WorkerFileman extends Vue {
     }
 
     public setPath(path: string) {
-        this.path = path.replace(/\\+/g, '/').replace(/\/+/g, '/')
+        this.path = path.replace(/\\+/g, '/').replace(/\/+/g, '/').trim()
         this.getFileList()
     }
 
@@ -66,8 +67,12 @@ export default class WorkerFileman extends Vue {
     // 获取文件列表
 
     async getFileList() {
-        this.loading = true
         this.fileList = []
+        this.loading = true
+        this.editing = false
+        if (this.path == '') {
+            this.path = this.machine.OSType == 'windows' ? 'C:' : '/'
+        }
         const req = { Action: 'ls', Path: this.path }
         const res = await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false
@@ -151,23 +156,23 @@ export default class WorkerFileman extends Vue {
             <t-upload theme="custom" :request-method="uploadFile" />
         </template>
         <t-space fixed direction="vertical">
-            <t-row :gutter="12">
-                <t-col>
+            <t-row>
+                <t-col class="col-btn">
                     <t-button shape="circle" variant="text" @click="rootPath()">
                         <t-icon name="home" />
                     </t-button>
                 </t-col>
-                <t-col>
+                <t-col class="col-btn">
                     <t-button shape="circle" variant="text" @click="getFileList()">
                         <t-icon name="load" />
                     </t-button>
                 </t-col>
-                <t-col>
+                <t-col class="col-btn">
                     <t-button shape="circle" variant="text" :disabled="path.split('/').length < 2" @click="prePath">
                         <t-icon name="rollback" />
                     </t-button>
                 </t-col>
-                <t-col flex="auto">
+                <t-col v-if="!editing" flex="auto">
                     <t-breadcrumb class="breadcrumb">
                         <t-breadcrumb-item v-if="machine?.OSType != 'windows'" @click="setPath('/')">
                             <small>/</small>
@@ -176,6 +181,18 @@ export default class WorkerFileman extends Vue {
                             {{ v.name }}
                         </t-breadcrumb-item>
                     </t-breadcrumb>
+                </t-col>
+                <t-col v-else flex="auto">
+                    <t-input v-model="path">
+                        <template #suffixIcon>
+                            <t-icon name="enter" class="pointer" @click="setPath(path)" />
+                        </template>
+                    </t-input>
+                </t-col>
+                <t-col v-if="!editing" class="col-gray">
+                    <t-button shape="circle" variant="text" @click="editing = true">
+                        <t-icon name="edit-2" />
+                    </t-button>
                 </t-col>
             </t-row>
             <t-table :data="fileList" :columns="tableColumns" row-key="Id" hover>
@@ -210,8 +227,16 @@ export default class WorkerFileman extends Vue {
 </template>
 
 <style lang="scss" scoped>
-.hover {
+.pointer {
     cursor: pointer;
+}
+
+.col-btn {
+    width: 50px;
+}
+
+.col-gray {
+    background-color: var(--td-gray-color-1);
 }
 
 .breadcrumb {
