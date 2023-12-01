@@ -28,13 +28,21 @@ export default class WorkerFileman extends Vue {
     // 初始化
 
     async created() {
-        if (this.machine.OSType == 'windows') {
-            this.path = 'C:'
-        }
-        await this.getFileList()
+        this.rootPath()
     }
 
     // 改变浏览路径
+
+    public prePath() {
+        const p = this.path.split('/')
+        this.path = p.slice(0, p.length - 1).join('/')
+        this.getFileList()
+    }
+
+    public rootPath() {
+        this.path = this.machine.OSType == 'windows' ? 'C:' : '/'
+        this.getFileList()
+    }
 
     public setPath(path: string) {
         this.path = path.replace(/\\+/g, '/').replace(/\/+/g, '/')
@@ -126,8 +134,8 @@ export default class WorkerFileman extends Vue {
 
     public tableColumns = [
         { colKey: 'Name', title: '名称', ellipsis: true },
-        { colKey: 'Size', title: '大小', ellipsis: true },
         { colKey: 'Mode', title: '权限', ellipsis: true },
+        { colKey: 'Size', title: '大小', ellipsis: true },
         { colKey: 'ModTime', title: '修改时间', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: "110px" }
     ]
@@ -140,34 +148,45 @@ export default class WorkerFileman extends Vue {
             记录总数: {{ fileList.length }}
         </template>
         <template #actions>
-            <t-space>
-                <t-upload theme="custom" :request-method="uploadFile" />
-                <t-button theme="primary" @click="getFileList()">
-                    <template #icon>
-                        <t-icon name="load" />
-                    </template>
-                    刷新
-                </t-button>
-            </t-space>
+            <t-upload theme="custom" :request-method="uploadFile" />
         </template>
         <t-space fixed direction="vertical">
-            <t-breadcrumb>
-                <t-breadcrumb-item v-if="machine?.OSType != 'windows'" @click="setPath('/')">
-                    <small>/</small>
-                </t-breadcrumb-item>
-                <t-breadcrumb-item v-for="v, k in getPathCrumb()" :key="k" @click="setPath(v.path)">
-                    {{ v.name }}
-                </t-breadcrumb-item>
-            </t-breadcrumb>
+            <t-row :gutter="12">
+                <t-col>
+                    <t-button shape="circle" variant="text" @click="rootPath()">
+                        <t-icon name="home" />
+                    </t-button>
+                </t-col>
+                <t-col>
+                    <t-button shape="circle" variant="text" @click="getFileList()">
+                        <t-icon name="load" />
+                    </t-button>
+                </t-col>
+                <t-col>
+                    <t-button shape="circle" variant="text" :disabled="path.split('/').length < 2" @click="prePath">
+                        <t-icon name="rollback" />
+                    </t-button>
+                </t-col>
+                <t-col flex="auto">
+                    <t-breadcrumb class="breadcrumb">
+                        <t-breadcrumb-item v-if="machine?.OSType != 'windows'" @click="setPath('/')">
+                            <small>/</small>
+                        </t-breadcrumb-item>
+                        <t-breadcrumb-item v-for="v, k in getPathCrumb()" :key="k" @click="setPath(v.path)">
+                            {{ v.name }}
+                        </t-breadcrumb-item>
+                    </t-breadcrumb>
+                </t-col>
+            </t-row>
             <t-table :data="fileList" :columns="tableColumns" row-key="Id" hover>
                 <template #Name="{ row }">
                     {{ row.Name }}{{ row.IsDir ? '/' : '' }}
                 </template>
-                <template #Size="{ row }">
-                    {{ row.IsDir ? '-' : bytesToSize(row.Size) }}
-                </template>
                 <template #Mode="{ row }">
                     {{ octalPermissionsToText(row.Mode) }}
+                </template>
+                <template #Size="{ row }">
+                    {{ row.IsDir ? '-' : bytesToSize(row.Size) }}
                 </template>
                 <template #ModTime="{ row }">
                     {{ dateFormat(row.ModTime * 1000, "yyyy-MM-dd hh:mm:ss") }}
@@ -193,5 +212,10 @@ export default class WorkerFileman extends Vue {
 <style lang="scss" scoped>
 .hover {
     cursor: pointer;
+}
+
+.breadcrumb {
+    padding: 5px 10px;
+    background-color: var(--td-gray-color-1);
 }
 </style>
