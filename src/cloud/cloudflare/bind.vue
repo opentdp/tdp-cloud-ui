@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-facing-decorator"
+import { Prop, Component, Vue } from "@/apps/basic"
 
 import { NaApi, CfApi } from "@/api"
 import * as CF from "@/api/cloudflare/typings"

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator"
+import { Component, Vue } from "@/apps/basic"
 
 import { NaApi } from "@/api"
 import { DomainItem } from "@/api/native/domain"

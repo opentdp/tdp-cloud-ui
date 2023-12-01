@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "vue-facing-decorator"
+import { Prop, Component, Vue } from "@/apps/basic"
 
 import { UploadFile, RequestMethodResponse } from "tdesign-vue-next"
 

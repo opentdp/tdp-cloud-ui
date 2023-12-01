@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "@/apps/basic"
 
 import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 
@@ -11,7 +11,6 @@ import { VendorOrig, VendorItem } from "@/api/native/vendor"
     expose: ['open']
 })
 export default class VendorAlibabaUpdate extends Vue {
-
     // 创建表单
 
     @Ref

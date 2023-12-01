@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Prop, Ref, Component, Vue } from "vue-facing-decorator"
+import { Prop, Ref, Component, Vue } from "@/apps/basic"
 
 import { NaApi, TcApi } from "@/api"
 import { MachineItem } from "@/api/native/machine"

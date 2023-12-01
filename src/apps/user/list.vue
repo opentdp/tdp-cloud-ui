@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "@/apps/basic"
 
 import { PrimaryTableCol, TableRowData } from "tdesign-vue-next"
 

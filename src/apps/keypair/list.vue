@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "@/apps/basic"
 
 import { NaApi } from "@/api"
 import { KeypairItem } from "@/api/native/keypair"

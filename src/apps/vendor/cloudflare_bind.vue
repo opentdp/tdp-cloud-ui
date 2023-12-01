@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator"
+import { Component, Vue } from "@/apps/basic"
 
 import { NaApi } from "@/api"
 import { DomainItem } from "@/api/native/domain"
@@ -11,7 +11,6 @@ import CloudflareBind from "@/cloud/cloudflare/bind.vue"
     components: { CloudflareBind }
 })
 export default class VendorCloudflareBind extends Vue {
-
     // 初始化
 
     public created() {

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "vue-facing-decorator"
+import { Ref, Prop, Component, Vue } from "@/apps/basic"
 
 import { TcApi } from "@/api"
 import { InstanceStateMap } from "@/api/tencent/cvm"

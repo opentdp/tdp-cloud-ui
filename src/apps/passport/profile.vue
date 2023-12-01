@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Ref, Vue } from "vue-facing-decorator"
+import { Component, Ref, Vue } from "@/apps/basic"
 
 import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData, UploadFile, RequestMethodResponse } from "tdesign-vue-next"
 import { VueCropper } from "vue-cropper"

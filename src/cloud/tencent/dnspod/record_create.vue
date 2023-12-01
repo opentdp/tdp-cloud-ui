@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "vue-facing-decorator"
+import { Ref, Component, Vue } from "@/apps/basic"
 
 import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
 

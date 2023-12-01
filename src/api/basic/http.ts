@@ -51,12 +51,16 @@ export class HttpClient {
             headers,
         }
         // 返回结构数据
-        return this.newFetch(req.url, request)
+        this.session.Loading++
+        return this.newFetch(req.url, request).finally(() => {
+            this.session.Loading--
+        })
     }
 
     protected async newFetch(url: string, req: RequestInit) {
         const resp = await fetch(this.api + url, req)
         const data = await resp.json()
+        // 捕获HTTP错误
         if (resp.status != 200 && !data) {
             throw new Error("HTTP Error: " + resp.status)
         }
@@ -69,18 +73,11 @@ export class HttpClient {
             throw new Error(err)
         }
         // 刷新登录令牌
-        if (data.Token) {
-            this.session.updateToken(data.Token)
-        }
+        data.Token && this.session.updateToken(data.Token)
         // 显示提示消息
-        if (data.Message) {
-            okMessage(data.Message)
-        }
+        data.Message && okMessage(data.Message)
         // 处理正确结果
-        if (data.Payload) {
-            return data.Payload
-        }
-        return data
+        return data.Payload || data
     }
 
     protected buildQuery(obj: unknown, key?: string) {

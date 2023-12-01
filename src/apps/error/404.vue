@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Vue } from "vue-facing-decorator"
+import { Component, Vue } from "@/apps/basic"
 
 @Component
 export default class Error404 extends Vue {
