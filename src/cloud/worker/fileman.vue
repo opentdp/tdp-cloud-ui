@@ -37,6 +37,9 @@ export default class WorkerFileman extends Vue {
     public prePath() {
         const p = this.path.split('/')
         this.path = p.slice(0, p.length - 1).join('/')
+        if (this.machine.OSType != 'windows') {
+            this.path = '/' + this.path
+        }
         this.getFileList()
     }
 
@@ -47,6 +50,9 @@ export default class WorkerFileman extends Vue {
 
     public setPath(path: string) {
         this.path = path.replace(/\\+/g, '/').replace(/\/+/g, '/').trim()
+        if (this.machine.OSType != 'windows') {
+            this.path = '/' + this.path
+        }
         this.getFileList()
     }
 
