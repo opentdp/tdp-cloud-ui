@@ -112,6 +112,16 @@ export default class WorkerFileman extends Vue {
         await this.getFileList()
     }
 
+    public octalPermissionsToText(permissions: number): string {
+        let result = ''
+        const octalString = permissions.toString(8)
+        const permissionMap = ['---', '--x', '-w-', '-wx', 'r--', 'r-x', 'rw-', 'rwx']
+        for (let i = 0; i < octalString.length; i++) {
+            result += permissionMap[parseInt(octalString[i], 10)]
+        }
+        return result
+    }
+
     // 表格定义
 
     public tableColumns = [
@@ -155,6 +165,9 @@ export default class WorkerFileman extends Vue {
                 </template>
                 <template #Size="{ row }">
                     {{ row.IsDir ? '-' : bytesToSize(row.Size) }}
+                </template>
+                <template #Mode="{ row }">
+                    {{ octalPermissionsToText(row.Mode) }}
                 </template>
                 <template #ModTime="{ row }">
                     {{ dateFormat(row.ModTime * 1000, "yyyy-MM-dd hh:mm:ss") }}
