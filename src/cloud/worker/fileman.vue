@@ -28,7 +28,7 @@ export default class WorkerFileman extends Vue {
 
     // 初始化
 
-    async created() {
+    public created() {
         this.getFileList('')
     }
 
@@ -59,16 +59,15 @@ export default class WorkerFileman extends Vue {
         this.loading = true
         this.editing = false
         // 处理路径
+        p = p.replace(/\\+/g, '/').replace(/\/+/g, '/').replace(/^\/+|\/+$/, '')
         if (this.machine.OSType != 'windows') {
             p = '/' + p
         } else if (p == '') {
             p = 'C:'
         }
-        p = p.replace(/\\+/g, '/').replace(/\/+/g, '/')
-        p = p.replace(/\/$/, '').trim()
         // 获取文件列表
         this.fileList = []
-        const req = { Action: 'ls', Path: this.path = p }
+        const req = { Action: 'ls', Path: this.path = p.trim() }
         const res = await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false
         })
@@ -93,19 +92,15 @@ export default class WorkerFileman extends Vue {
     async uploadFile(file: UploadFile) {
         if (file.raw) {
             gobyte.fileToBase64(file.raw, async res => {
-                const req = {
+                await NaApi.workhub.filer(this.machine.WorkerId, {
                     Action: 'write',
                     Path: this.path + '/' + file.name,
                     File: { Data: res }
-                }
-                await NaApi.workhub.filer(this.machine.WorkerId, req)
+                })
                 await this.getFileList(this.path)
             })
         }
-        const data: RequestMethodResponse = {
-            status: 'success',
-            response: {}
-        }
+        const data: RequestMethodResponse = { status: 'success', response: {} }
         return Promise.resolve(data)
     }
 
