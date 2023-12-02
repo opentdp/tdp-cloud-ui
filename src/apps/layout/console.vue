@@ -1,8 +1,6 @@
 <script lang="ts">
 import { Component, Vue } from "@/apps/basic"
 
-import layoutStore from "@/store/layout"
-
 import Header from "./header.vue"
 import Content from "./content.vue"
 import Footer from "./footer.vue"
@@ -11,9 +9,7 @@ import Sidebar from "./sidebar.vue"
 @Component({
     components: { Header, Content, Footer, Sidebar }
 })
-export default class LayoutConsole extends Vue {
-    public layout = layoutStore()
-}
+export default class LayoutConsole extends Vue { }
 </script>
 
 <template>

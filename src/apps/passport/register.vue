@@ -6,15 +6,9 @@ import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "
 import Api, { NaApi } from "@/api"
 import { UserRegister } from "@/api/native/passport"
 
-import layoutStore from "@/store/layout"
-import sessionStore from "@/store/session"
-
 @Component
 export default class PassportRegister extends Vue {
     public loading = false
-
-    public layout = layoutStore()
-    public session = sessionStore()
 
     // 创建表单
 

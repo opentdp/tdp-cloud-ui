@@ -7,11 +7,8 @@ import { VueCropper } from "vue-cropper"
 import Api, { NaApi } from "@/api"
 import { UserUpdate } from "@/api/native/passport"
 
-import sessionStore from "@/store/session"
-
 @Component
 export default class PassportProfile extends Vue {
-    public session = sessionStore()
     public loading = true
 
     // 初始化

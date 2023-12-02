@@ -2,16 +2,8 @@
 import { Component, Vue } from "@/apps/basic"
 import { onBeforeRouteUpdate, RouteLocationNormalized } from "vue-router"
 
-import layoutStore from "@/store/layout"
-import sessionStore from "@/store/session"
-
 @Component
 export default class LayoutSidebar extends Vue {
-    public layout = layoutStore()
-    public session = sessionStore()
-
-    // 菜单列表
-
     public items: MenuItem[] = []
 
     // 初始化

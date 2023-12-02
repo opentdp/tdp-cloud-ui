@@ -4,12 +4,9 @@ import { Component, Vue } from "@/apps/basic"
 import { NaApi } from "@/api"
 import { DomainModels, DomainItem } from "@/api/native/domain"
 
-import UseCache from '@/store/cache'
-
 @Component
 export default class DomainList extends Vue {
     public DomainModels = DomainModels
-    public cache = UseCache()
 
     public loading = true
 

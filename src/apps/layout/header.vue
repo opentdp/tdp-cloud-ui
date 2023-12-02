@@ -2,16 +2,9 @@
 import { Component, Vue } from "@/apps/basic"
 
 import { NaApi } from "@/api"
-import cacheStore from "@/store/cache"
-import layoutStore from "@/store/layout"
-import sessionStore from "@/store/session"
 
 @Component
 export default class LayoutHeader extends Vue {
-    public cache = cacheStore()
-    public layout = layoutStore()
-    public session = sessionStore()
-
     // 侧边栏折叠
     public collapseChange() {
         this.layout.setCollapse(!this.layout.Collapse)

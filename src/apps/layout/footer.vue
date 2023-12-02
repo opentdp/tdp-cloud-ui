@@ -1,12 +1,8 @@
 <script lang="ts">
 import { Component, Vue } from "@/apps/basic"
 
-import layoutStore from "@/store/layout"
-
 @Component
-export default class LayoutFooter extends Vue {
-    public layout = layoutStore()
-}
+export default class LayoutFooter extends Vue { }
 </script>
 
 <template>

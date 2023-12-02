@@ -4,8 +4,6 @@ import { Component, Vue } from "@/apps/basic"
 import { NaApi } from "@/api"
 import { UserSummary } from "@/api/native/passport"
 
-import sessionStore from "@/store/session"
-
 import SysLoad from "@/cloud/worker/sys_load.vue"
 import SysInfo from "@/cloud/worker/sys_info.vue"
 
@@ -13,8 +11,6 @@ import SysInfo from "@/cloud/worker/sys_info.vue"
     components: { SysLoad, SysInfo }
 })
 export default class DashboardIndex extends Vue {
-    public session = sessionStore()
-
     // 初始化
 
     public created() {

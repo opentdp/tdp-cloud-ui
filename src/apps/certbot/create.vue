@@ -7,14 +7,11 @@ import Api, { NaApi } from "@/api"
 import { CaTypeList, CertbotOrig } from "@/api/native/certbot"
 import { DomainItem } from "@/api/native/domain"
 
-import sessionStore from "@/store/session"
-
 @Component({
     emits: ["submit"],
     expose: ["open"],
 })
 export default class CertbotCreate extends Vue {
-    public session = sessionStore()
     public CaTypeList = CaTypeList
 
     // 域名列表

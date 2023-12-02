@@ -5,7 +5,6 @@ import { NaApi } from "@/api"
 import { MachineModels, MachineItem } from "@/api/native/machine"
 import { WorkerItem } from "@/api/native/workhub"
 
-import UseCache from '@/store/cache'
 import ScriptQuick from "@/apps/script/quick.vue"
 import WorkhubWorkerInstall from "@/apps/workhub/worker_install.vue"
 
@@ -16,7 +15,6 @@ import MachineUpdate from "./update.vue"
 })
 export default class MachineList extends Vue {
     public MachineModels = MachineModels
-    public cache = UseCache()
 
     public loading = true
 
