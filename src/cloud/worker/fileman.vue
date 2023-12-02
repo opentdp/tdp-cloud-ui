@@ -29,31 +29,14 @@ export default class WorkerFileman extends Vue {
     // 初始化
 
     async created() {
-        this.rootPath()
+        this.getFileList('')
     }
 
-    // 改变浏览路径
+    // 获取上级目录
 
-    public prePath() {
-        const p = this.path.split('/')
-        this.path = p.slice(0, p.length - 1).join('/')
-        if (this.machine.OSType != 'windows') {
-            this.path = '/' + this.path
-        }
-        this.getFileList()
-    }
-
-    public rootPath() {
-        this.path = this.machine.OSType == 'windows' ? 'C:' : '/'
-        this.getFileList()
-    }
-
-    public setPath(path: string) {
-        this.path = path.replace(/\\+/g, '/').replace(/\/+/g, '/').trim()
-        if (this.machine.OSType != 'windows') {
-            this.path = '/' + this.path
-        }
-        this.getFileList()
+    public prevPath() {
+        const ps = this.path.split('/')
+        this.getFileList(ps.slice(0, ps.length - 1).join('/'))
     }
 
     // 获取路径列表
@@ -72,14 +55,20 @@ export default class WorkerFileman extends Vue {
 
     // 获取文件列表
 
-    async getFileList() {
-        this.fileList = []
+    async getFileList(p: string) {
         this.loading = true
         this.editing = false
-        if (this.path == '') {
-            this.path = this.machine.OSType == 'windows' ? 'C:' : '/'
+        // 处理路径
+        if (this.machine.OSType != 'windows') {
+            p = '/' + p
+        } else if (p == '') {
+            p = 'C:'
         }
-        const req = { Action: 'ls', Path: this.path }
+        p = p.replace(/\\+/g, '/').replace(/\/+/g, '/')
+        p = p.replace(/\/$/, '').trim()
+        // 获取文件列表
+        this.fileList = []
+        const req = { Action: 'ls', Path: this.path = p }
         const res = await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false
         })
@@ -96,7 +85,7 @@ export default class WorkerFileman extends Vue {
         const res = await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false
         })
-        gobyte.base64ToDownload(res.FileData + "", name)
+        gobyte.base64ToDownload(res.FileData + '', name)
     }
 
     // 上传文件
@@ -110,7 +99,7 @@ export default class WorkerFileman extends Vue {
                     File: { Data: res }
                 }
                 await NaApi.workhub.filer(this.machine.WorkerId, req)
-                await this.getFileList()
+                await this.getFileList(this.path)
             })
         }
         const data: RequestMethodResponse = {
@@ -128,8 +117,10 @@ export default class WorkerFileman extends Vue {
         await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false
         })
-        await this.getFileList()
+        await this.getFileList(this.path)
     }
+
+    // 权限转换
 
     public octalPermissionsToText(permissions: number): string {
         let result = ''
@@ -148,7 +139,7 @@ export default class WorkerFileman extends Vue {
         { colKey: 'Mode', title: '权限', ellipsis: true },
         { colKey: 'Size', title: '大小', ellipsis: true },
         { colKey: 'ModTime', title: '修改时间', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" }
+        { colKey: 'Operation', title: '操作', width: '110px' }
     ]
 }
 </script>
@@ -164,26 +155,26 @@ export default class WorkerFileman extends Vue {
         <t-space fixed direction="vertical">
             <t-row>
                 <t-col class="col-btn">
-                    <t-button shape="circle" variant="text" @click="rootPath()">
+                    <t-button shape="circle" variant="text" @click="getFileList('')">
                         <t-icon name="home" />
                     </t-button>
                 </t-col>
                 <t-col class="col-btn">
-                    <t-button shape="circle" variant="text" @click="getFileList()">
+                    <t-button shape="circle" variant="text" @click="getFileList(path)">
                         <t-icon name="load" />
                     </t-button>
                 </t-col>
                 <t-col class="col-btn">
-                    <t-button shape="circle" variant="text" :disabled="path.split('/').length < 2" @click="prePath">
+                    <t-button shape="circle" variant="text" :disabled="path.split('/').length < 2" @click="prevPath()">
                         <t-icon name="rollback" />
                     </t-button>
                 </t-col>
                 <t-col v-if="!editing" flex="auto">
                     <t-breadcrumb class="breadcrumb">
-                        <t-breadcrumb-item v-if="machine?.OSType != 'windows'" @click="setPath('/')">
+                        <t-breadcrumb-item v-if="machine?.OSType != 'windows'" @click="getFileList('')">
                             <small>/</small>
                         </t-breadcrumb-item>
-                        <t-breadcrumb-item v-for="v, k in getPathCrumb()" :key="k" @click="setPath(v.path)">
+                        <t-breadcrumb-item v-for="v, k in getPathCrumb()" :key="k" @click="getFileList(v.path)">
                             {{ v.name }}
                         </t-breadcrumb-item>
                     </t-breadcrumb>
@@ -191,7 +182,7 @@ export default class WorkerFileman extends Vue {
                 <t-col v-else flex="auto">
                     <t-input v-model="path">
                         <template #suffixIcon>
-                            <t-icon name="enter" class="pointer" @click="setPath(path)" />
+                            <t-icon name="enter" class="pointer" @click="getFileList(path)" />
                         </template>
                     </t-input>
                 </t-col>
@@ -215,7 +206,7 @@ export default class WorkerFileman extends Vue {
                     {{ dateFormat(row.ModTime * 1000, "yyyy-MM-dd hh:mm:ss") }}
                 </template>
                 <template #Operation="{ row }">
-                    <t-link v-if="row.IsDir" theme="primary" hover="color" @click="setPath(path + '/' + row.Name)">
+                    <t-link v-if="row.IsDir" theme="primary" hover="color" @click="getFileList(path + '/' + row.Name)">
                         浏览
                     </t-link>
                     <t-link v-else theme="success" hover="color" @click="getFileData(row.Name)">
