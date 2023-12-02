@@ -40,7 +40,7 @@ export default class MachineFileman extends Vue {
                 首页
             </t-breadcrumb-item>
             <t-breadcrumb-item to="/machine/list">
-                文件管理
+                主机管理
             </t-breadcrumb-item>
             <t-breadcrumb-item v-if="machine">
                 {{ machine.HostName || machine.Id }} · {{ MachineModels[machine.Model] }}
