@@ -7,11 +7,12 @@ import { WorkerItem } from "@/api/native/workhub"
 
 import UseCache from '@/store/cache'
 import ScriptQuick from "@/apps/script/quick.vue"
+import WorkhubWorkerInstall from "@/apps/workhub/worker_install.vue"
 
 import MachineUpdate from "./update.vue"
 
 @Component({
-    components: { ScriptQuick, MachineUpdate }
+    components: { ScriptQuick, MachineUpdate, WorkhubWorkerInstall }
 })
 export default class MachineList extends Vue {
     public MachineModels = MachineModels
@@ -24,6 +25,9 @@ export default class MachineList extends Vue {
 
     @Ref
     public updateModal!: MachineUpdate
+
+    @Ref
+    public installModal!: WorkhubWorkerInstall
 
     // 初始化
 
@@ -122,8 +126,14 @@ export default class MachineList extends Vue {
                     <t-link theme="success" hover="color" @click="updateModal.open(row)">
                         编辑
                     </t-link>
-                    <t-link theme="warning" hover="color" @click="quickModal.open(row)">
+                    <t-link v-if="workerList[row.WorkerId]" theme="warning" hover="color" @click="quickModal.open([row])">
                         运行
+                    </t-link>
+                    <t-link v-else-if="row.WorkerMeta" theme="danger" hover="color" disabled>
+                        运行
+                    </t-link>
+                    <t-link v-else hover="color" @click="installModal.open(row)">
+                        注册
                     </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteMachine(rowIndex)">
                         <t-link theme="danger" hover="color">
@@ -135,6 +145,7 @@ export default class MachineList extends Vue {
         </t-card>
 
         <ScriptQuick ref="quickModal" />
+        <WorkhubWorkerInstall ref="installModal" />
         <MachineUpdate ref="updateModal" @submit="getMachineList" />
     </t-space>
 </template>

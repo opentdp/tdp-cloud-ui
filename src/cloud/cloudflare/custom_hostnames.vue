@@ -27,7 +27,9 @@ export default class CloudflareCustomHostnames extends Vue {
 
     public refresh() {
         this.loading = true
-        this.getFallbackOrigin().then(
+        this.getFallbackOrigin().finally(() => {
+            this.loading = false
+        }).then(
             () => {
                 this.getCustomHostnames()
             },
@@ -40,9 +42,7 @@ export default class CloudflareCustomHostnames extends Vue {
                     return this.saasError = 2
                 }
             }
-        ).finally(() => {
-            this.loading = false
-        })
+        )
     }
 
     // 默认回退源

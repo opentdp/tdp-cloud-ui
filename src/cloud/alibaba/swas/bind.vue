@@ -41,17 +41,16 @@ export default class SwasBind extends Vue {
         res.Regions.forEach(async region => {
             this.regionList[region.RegionId] = region
             // 获取当前大区实例
-            AcApi.swas.listInstances(region.RegionId).then(async rs2 => {
-                if (rs2.TotalCount && rs2.Instances) {
-                    const plan = await AcApi.swas.listPlans(region.RegionId)
-                    const instances = rs2.Instances.map(item => {
-                        const instancePlan = plan.Plans.find(x => x.PlanId === item.PlanId)
-                        return { ...item, ...instancePlan } as AC.SwasInstance
-                    })
-                    this.instanceList.push(...instances)
-                    this.instanceCount += rs2.TotalCount
-                }
-            }).finally(() => this.loading--)
+            const rs2 = await AcApi.swas.listInstances(region.RegionId).finally(() => this.loading--)
+            if (rs2 && rs2.TotalCount && rs2.Instances) {
+                const plan = await AcApi.swas.listPlans(region.RegionId)
+                const instances = rs2.Instances.map(item => {
+                    const instancePlan = plan.Plans.find(x => x.PlanId === item.PlanId)
+                    return { ...item, ...instancePlan } as AC.SwasInstance
+                })
+                this.instanceList.push(...instances)
+                this.instanceCount += rs2.TotalCount
+            }
         })
     }
 

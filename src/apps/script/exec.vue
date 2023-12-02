@@ -13,10 +13,19 @@ import { TasklineItem } from "@/api/native/taskline"
     expose: ['open']
 })
 export default class ScriptExec extends Vue {
-    public machine!: MachineItem
+    public machines!: MachineItem[]
 
     public loading = false
     public timer = 0
+
+    // 机器列表
+
+    public get hostnames() {
+        if (this.machines) {
+            return this.machines.map(item => item.HostName)
+        }
+        return []
+    }
 
     // 创建表单
 
@@ -37,18 +46,24 @@ export default class ScriptExec extends Vue {
             Api.msg.err("请检查表单")
             return false
         }
+        // 批量提交任务
         this.loading = true
-        const res = await NaApi.workhub.exec(
-            this.machine.WorkerId, this.formModel
-        )
+        const taskIds: number[] = []
+        for (const machine of this.machines) {
+            const res = await NaApi.workhub.exec(machine.WorkerId, this.formModel)
+            taskIds.push(res.Id)
+        }
         // 循环获取状态
-        this.timer = setInterval(() => {
-            this.getOutput(res.Id)
-        }, 1500)
+        if (taskIds.length > 1) {
+            this.message = "批量提交成功，请在任务列表查看执行结果"
+        } else {
+            this.timer = setInterval(() => this.getOutput(taskIds[0]), 1500)
+        }
     }
 
     // 获取结果
 
+    public message = ""
     public result!: TasklineItem | null
 
     async getOutput(id: number) {
@@ -70,11 +85,11 @@ export default class ScriptExec extends Vue {
         clearInterval(this.timer)
     }
 
-    public open(machine: MachineItem, script: ScriptItem) {
+    public open(machines: MachineItem[], script: ScriptItem) {
         this.result = null
         this.visible = true
         this.loading = false
-        this.machine = machine
+        this.machines = machines
         this.formModel = { ...script }
     }
 }
@@ -83,6 +98,9 @@ export default class ScriptExec extends Vue {
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close :header="'执行脚本：' + formModel?.Name" :footer="false" width="50%">
         <t-space fixed direction="vertical">
+            <div v-if="message">
+                <t-alert theme="success" :message="message" close />
+            </div>
             <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
                 <t-form-item name="CommandType" label="类型">
                     {{ formModel.CommandType }}
@@ -95,6 +113,9 @@ export default class ScriptExec extends Vue {
                 </t-form-item>
                 <t-form-item name="WorkDirectory" label="执行路径">
                     <t-input v-model="formModel.WorkDirectory" :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
+                </t-form-item>
+                <t-form-item name="Hostnames" label="目标机器">
+                    <t-tag-input v-model="hostnames" readonly />
                 </t-form-item>
                 <t-form-item name="Description" label="脚本描述">
                     <t-textarea v-model="formModel.Description" :autosize="{ minRows: 1, maxRows: 8 }" disabled />

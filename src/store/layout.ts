@@ -33,21 +33,20 @@ export default defineStore("layout", {
             this.applyConfig()
         },
         // 获取前端配置
-        fetchConfig() {
-            NaApi.config.ui().then(res => {
-                Object.keys(res).forEach(k => {
-                    const v = res[k].trim()
-                    v && Object.assign(this, { [k]: v })
-                })
-                // 修正参数类型
-                this.Registrable = res.Registrable == "true"
-                // 安装统计代码
-                if (this.Analytics) {
-                    this.runScript(this.Analytics)
-                }
-                // 应用前端配置
-                this.applyConfig()
+        async fetchConfig() {
+            const res = await NaApi.config.ui()
+            Object.keys(res).forEach(k => {
+                const v = res[k].trim()
+                v && Object.assign(this, { [k]: v })
             })
+            // 修正参数类型
+            this.Registrable = res.Registrable == "true"
+            // 安装统计代码
+            if (this.Analytics) {
+                this.runScript(this.Analytics)
+            }
+            // 应用前端配置
+            this.applyConfig()
         },
         // 应用布局设置
         applyConfig() {

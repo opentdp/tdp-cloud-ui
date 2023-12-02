@@ -28,10 +28,7 @@ export default class SslBind extends Vue {
 
     public created() {
         TcApi.vendor(this.vendorId)
-        this.getCertList().then(() => {
-            this.getDeployedResources("cdn")
-            this.getDeployedResources("teo")
-        })
+        this.getCertList()
     }
 
     // 获取列表
@@ -45,6 +42,8 @@ export default class SslBind extends Vue {
             this.certList = res.Certificates || []
             this.certCount = res.TotalCount
         }
+        this.getDeployedResources("cdn")
+        this.getDeployedResources("teo")
         this.loading = false
     }
 
