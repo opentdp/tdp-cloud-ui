@@ -18,9 +18,9 @@ export default class WorkerFileman extends Vue {
     public dateFormat = dateFormat
 
     public loading = true
+    public editing = false
 
     public path = '/'
-    public editing = false
     public fileList: FileInfo[] = []
 
     @Prop

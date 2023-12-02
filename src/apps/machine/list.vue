@@ -64,9 +64,22 @@ export default class MachineList extends Vue {
         })
     }
 
+    // 选择主机
+
+    public selectedRow: MachineItem[] = []
+
+    public tableRowChange(ids: (string | number)[]) {
+        this.selectedRow = []
+        for (let id of ids) {
+            const m = this.machineList.find(item => item.Id === id)
+            m && this.selectedRow.push(m)
+        }
+    }
+
     // 表格定义
 
     public tableColumns = [
+        { colKey: 'row-select', type: 'multiple', width: "30px" },
         { colKey: 'HostName', title: '主机名', ellipsis: true },
         { colKey: 'IpAddress', title: '公网 IP', ellipsis: true },
         { colKey: 'Region', title: '地域', ellipsis: true },
@@ -94,7 +107,15 @@ export default class MachineList extends Vue {
             <template #subtitle>
                 记录总数: {{ machineList.length }}
             </template>
-            <t-table :data="machineList" :columns="tableColumns" row-key="Id" hover>
+            <template #actions>
+                <t-button theme="danger" :disabled="selectedRow.length == 0" @click="quickModal.open(selectedRow)">
+                    <template #icon>
+                        <t-icon name="caret-right-small" />
+                    </template>
+                    运行
+                </t-button>
+            </template>
+            <t-table :data="machineList" :columns="tableColumns" row-key="Id" hover @select-change="tableRowChange">
                 <template #Model="{ row }">
                     <t-tooltip :content="MachineModels[row.Model]">
                         {{ cache.vendorList[row.VendorId]?.Description || "-" }}
