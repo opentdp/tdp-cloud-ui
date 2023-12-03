@@ -99,7 +99,7 @@ export default class CloudflareDomain extends Vue {
                 </template>
                 <template #Operation="{ row }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
-                        编辑
+                        修改
                     </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteRecord(row.id)">
                         <t-link theme="danger" hover="color">

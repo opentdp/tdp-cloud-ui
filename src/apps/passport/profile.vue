@@ -105,7 +105,7 @@ export default class PassportProfile extends Vue {
 
         <t-row :gutter="16">
             <t-col v-if="imageOrigin" :span="5">
-                <t-card title="编辑头像" hover-shadow header-bordered>
+                <t-card title="修改头像" hover-shadow header-bordered>
                     <t-space fixed direction="vertical">
                         <vueCropper ref="cropper" class="cropper" mode="contain" output-type="png" :img="imageOrigin" :auto-crop="true" :info-true="true" :fixed="true" :fixed-number="[1, 1]" :center-box="true" @real-time="cropperPreview" />
                         <t-space size="small">
@@ -135,7 +135,7 @@ export default class PassportProfile extends Vue {
                 </t-card>
             </t-col>
             <t-col :span="7">
-                <t-card title="账户编辑" hover-shadow header-bordered>
+                <t-card title="修改资料" hover-shadow header-bordered>
                     <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="70px" @submit="formSubmit">
                         <t-form-item label="AppId">
                             {{ session.AppId }}
