@@ -1,45 +1,45 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { CaTypeList, JobStatus, CertbotItem } from "@/api/native/certbot"
+import { NaApi } from '@/api';
+import { CaTypeList, JobStatus, CertbotItem } from '@/api/native/certbot';
 
-import CertbotCreate from "./create.vue"
+import CertbotCreate from './create.vue';
 
 @Component({
     components: { CertbotCreate }
 })
 export default class CertbotList extends Vue {
-    public CaTypeList = CaTypeList
-    public JobStatus = JobStatus
+    public CaTypeList = CaTypeList;
+    public JobStatus = JobStatus;
 
-    public loading = true
+    public loading = true;
 
     @Ref
-    public createModal!: CertbotCreate
+    public createModal!: CertbotCreate;
 
     // 初始化
 
     public created() {
-        this.getCertbotList()
+        this.getCertbotList();
     }
 
     // 证书列表
 
-    public certbotList: CertbotItem[] = []
+    public certbotList: CertbotItem[] = [];
 
     async getCertbotList() {
-        const res = await NaApi.certbot.list()
-        this.certbotList = res.Items
-        this.loading = false
+        const res = await NaApi.certbot.list();
+        this.certbotList = res.Items;
+        this.loading = false;
     }
 
     // 删除证书
 
     async deleteCertbot(idx: number) {
-        const item = this.certbotList[idx]
-        await NaApi.certbot.remove(item.Id)
-        this.certbotList.splice(idx, 1)
+        const item = this.certbotList[idx];
+        await NaApi.certbot.remove(item.Id);
+        this.certbotList.splice(idx, 1);
     }
 
     // 表格定义
@@ -49,8 +49,8 @@ export default class CertbotList extends Vue {
         { colKey: 'Email', title: '邮箱', ellipsis: true },
         { colKey: 'CaType', title: 'CA', ellipsis: true },
         { colKey: 'History', title: '状态', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

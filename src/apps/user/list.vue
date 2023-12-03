@@ -1,37 +1,37 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { PrimaryTableCol, TableRowData } from "tdesign-vue-next"
+import { PrimaryTableCol, TableRowData } from 'tdesign-vue-next';
 
-import { NaApi } from "@/api"
-import { UserItem } from "@/api/native/user"
+import { NaApi } from '@/api';
+import { UserItem } from '@/api/native/user';
 
-import UserUpdate from "./update.vue"
+import UserUpdate from './update.vue';
 
 @Component({
     components: { UserUpdate }
 })
 export default class UserList extends Vue {
-    public loading = true
+    public loading = true;
 
     @Ref
-    public updateModal!: UserUpdate
+    public updateModal!: UserUpdate;
 
     // 初始化
 
     public created() {
-        this.getUserList()
+        this.getUserList();
     }
 
     // 列表
 
-    public userList: UserItem[] = []
+    public userList: UserItem[] = [];
 
     async getUserList() {
         const res = await NaApi.user.list({}).finally(() => {
-            this.loading = false
-        })
-        this.userList = res.Items
+            this.loading = false;
+        });
+        this.userList = res.Items;
     }
 
     // 表格定义
@@ -40,8 +40,8 @@ export default class UserList extends Vue {
         { colKey: 'Username', title: '用户名', ellipsis: true },
         { colKey: 'Email', title: '邮箱', ellipsis: true },
         { colKey: 'Level', title: '用户组', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

@@ -1,22 +1,22 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { MachineOrig, MachineItem } from "@/api/native/machine"
+import Api, { NaApi } from '@/api';
+import { MachineOrig, MachineItem } from '@/api/native/machine';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class MachineUpdate extends Vue {
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: MachineOrig
+    public formModel!: MachineOrig;
 
     public formRules: FormRules<MachineOrig> = {
         Region: [
@@ -25,33 +25,33 @@ export default class MachineUpdate extends Vue {
         Description: [
             { required: true },
         ],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        await NaApi.machine.update(this.formModel)
-        this.close()
+        await NaApi.machine.update(this.formModel);
+        this.close();
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(data: MachineItem) {
-        this.visible = true
-        this.formModel = { ...data }
+        this.visible = true;
+        this.formModel = { ...data };
         if (this.formModel.WorkerMeta) {
-            delete this.formModel.WorkerMeta
+            delete this.formModel.WorkerMeta;
         }
     }
 }

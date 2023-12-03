@@ -1,36 +1,36 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { DomainModels, DomainItem } from "@/api/native/domain"
+import { NaApi } from '@/api';
+import { DomainModels, DomainItem } from '@/api/native/domain';
 
-import AlibabaDns from "@/cloud/alibaba/dns/domain.vue"
-import CloudflareZone from "@/cloud/cloudflare/domain.vue"
-import TencentDnspod from "@/cloud/tencent/dnspod/domain.vue"
+import AlibabaDns from '@/cloud/alibaba/dns/domain.vue';
+import CloudflareZone from '@/cloud/cloudflare/domain.vue';
+import TencentDnspod from '@/cloud/tencent/dnspod/domain.vue';
 
 @Component({
     components: { AlibabaDns, CloudflareZone, TencentDnspod }
 })
 export default class DomainDetail extends Vue {
-    public DomainModels = DomainModels
+    public DomainModels = DomainModels;
 
-    public loading = true
+    public loading = true;
 
     // 初始化
 
     public created() {
-        const domainId = +this.$route.params.id
-        this.getDomain(domainId)
+        const domainId = +this.$route.params.id;
+        this.getDomain(domainId);
     }
 
     // 域名信息
 
-    public domain!: DomainItem
+    public domain!: DomainItem;
 
     async getDomain(id: number) {
-        const res = await NaApi.domain.detail(id)
-        this.domain = res.Item
-        this.loading = false
+        const res = await NaApi.domain.detail(id);
+        this.domain = res.Item;
+        this.loading = false;
     }
 }
 </script>

@@ -1,7 +1,7 @@
-import { HttpClient } from "@/api/basic/http"
+import { HttpClient } from '@/api/basic/http';
 
 export class CacheModel extends HttpClient {
     public clear() {
-        this.storage.clear(true)
+        this.storage.clear(true);
     }
 }

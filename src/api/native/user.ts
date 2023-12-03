@@ -1,24 +1,24 @@
-import { HttpClient } from "@/api/basic/http"
+import { HttpClient } from '@/api/basic/http';
 
 export class UserModel extends HttpClient {
     public list(rq: { Module?: string }): Promise<UserPaged> {
-        return this.post("/user/list", rq)
+        return this.post('/user/list', rq);
     }
 
     public detail(name: string): Promise<UserDetail> {
-        return this.post("/user/detail", { name: name })
+        return this.post('/user/detail', { name: name });
     }
 
     public create(rq: UserOrig): Promise<{ Id: number }> {
-        return this.post("/user/create", rq)
+        return this.post('/user/create', rq);
     }
 
     public update(rq: Partial<UserItem>): Promise<null> {
-        return this.post("/user/update", rq)
+        return this.post('/user/update', rq);
     }
 
     public remove(id: number): Promise<null> {
-        return this.post("/user/delete", { Id: id })
+        return this.post('/user/delete', { Id: id });
     }
 }
 

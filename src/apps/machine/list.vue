@@ -1,95 +1,95 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { MachineModels, MachineItem } from "@/api/native/machine"
-import { WorkerItem } from "@/api/native/workhub"
+import { NaApi } from '@/api';
+import { MachineModels, MachineItem } from '@/api/native/machine';
+import { WorkerItem } from '@/api/native/workhub';
 
-import ScriptQuick from "@/apps/script/quick.vue"
-import WorkhubWorkerInstall from "@/apps/workhub/worker_install.vue"
+import ScriptQuick from '@/apps/script/quick.vue';
+import WorkhubWorkerInstall from '@/apps/workhub/worker_install.vue';
 
-import MachineUpdate from "./update.vue"
+import MachineUpdate from './update.vue';
 
 @Component({
     components: { ScriptQuick, MachineUpdate, WorkhubWorkerInstall }
 })
 export default class MachineList extends Vue {
-    public MachineModels = MachineModels
+    public MachineModels = MachineModels;
 
-    public loading = true
-
-    @Ref
-    public quickModal!: ScriptQuick
+    public loading = true;
 
     @Ref
-    public updateModal!: MachineUpdate
+    public quickModal!: ScriptQuick;
 
     @Ref
-    public installModal!: WorkhubWorkerInstall
+    public updateModal!: MachineUpdate;
+
+    @Ref
+    public installModal!: WorkhubWorkerInstall;
 
     // 初始化
 
     public created() {
-        this.cache.initVendorList()
-        this.getMachineList()
-        this.getWorkerList()
+        this.cache.initVendorList();
+        this.getMachineList();
+        this.getWorkerList();
     }
 
     // 主机列表
 
-    public machineList: MachineItem[] = []
+    public machineList: MachineItem[] = [];
 
     async getMachineList() {
-        const res = await NaApi.machine.list()
-        this.machineList = res.Items
-        this.loading = false
+        const res = await NaApi.machine.list();
+        this.machineList = res.Items;
+        this.loading = false;
     }
 
     // 删除主机
 
     async deleteMachine() {
         for (let item of this.selectedRow) {
-            const idx = this.machineList.findIndex(m => m.Id === item.Id)
-            idx >= 0 && this.machineList.splice(idx, 1)
-            await NaApi.machine.remove(item.Id)
+            const idx = this.machineList.findIndex(m => m.Id === item.Id);
+            idx >= 0 && this.machineList.splice(idx, 1);
+            await NaApi.machine.remove(item.Id);
         }
     }
 
     // 节点列表
 
-    public workerList: Record<string, WorkerItem> = {}
+    public workerList: Record<string, WorkerItem> = {};
 
     async getWorkerList() {
-        const res = await NaApi.workhub.list()
+        const res = await NaApi.workhub.list();
         res.Items.forEach(item => {
-            this.workerList[item.WorkerId] = item
-        })
+            this.workerList[item.WorkerId] = item;
+        });
     }
 
     // 选择主机
 
-    public selectedRow: MachineItem[] = []
+    public selectedRow: MachineItem[] = [];
 
     public tableRowChange(ids: (string | number)[]) {
-        this.selectedRow = []
+        this.selectedRow = [];
         for (let id of ids) {
-            const m = this.machineList.find(v => v.Id === id)
-            m && this.selectedRow.push(m)
+            const m = this.machineList.find(v => v.Id === id);
+            m && this.selectedRow.push(m);
         }
     }
 
     // 表格定义
 
     public tableColumns = [
-        { colKey: 'row-select', type: 'multiple', width: "30px" },
+        { colKey: 'row-select', type: 'multiple', width: '30px' },
         { colKey: 'HostName', title: '主机名', ellipsis: true },
         { colKey: 'IpAddress', title: '公网 IP', ellipsis: true },
         { colKey: 'Region', title: '地域', ellipsis: true },
         { colKey: 'Model', title: '云账号', ellipsis: true },
         { colKey: 'WorkerId', title: '土豆片', ellipsis: true },
         { colKey: 'Description', title: '备注', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "160px" }
-    ]
+        { colKey: 'Operation', title: '操作', width: '160px' }
+    ];
 
 }
 </script>

@@ -1,27 +1,27 @@
-export { }
+export { };
 
 function errorHandler() {
 
     window.addEventListener('error', event => {
 
-        event.preventDefault()
-        console.warn(event.type, event.message)
+        event.preventDefault();
+        console.warn(event.type, event.message);
 
-    })
+    });
 
-    window.addEventListener("rejectionhandled", event => {
+    window.addEventListener('rejectionhandled', event => {
 
-        console.warn(event.reason)
+        console.warn(event.reason);
 
-    }, false)
+    }, false);
 
-    window.addEventListener("unhandledrejection", event => {
+    window.addEventListener('unhandledrejection', event => {
 
-        event.preventDefault()
-        console.warn(event.reason)
+        event.preventDefault();
+        console.warn(event.reason);
 
-    })
+    });
 
 }
 
-import.meta.env.PROD && errorHandler()
+import.meta.env.PROD && errorHandler();

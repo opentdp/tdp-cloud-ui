@@ -1,32 +1,32 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
+import { NaApi } from '@/api';
+import { MachineItem } from '@/api/native/machine';
 
-import LighthouseVNC from "@/cloud/tencent/lighthouse/vnc.vue"
+import LighthouseVNC from '@/cloud/tencent/lighthouse/vnc.vue';
 
 @Component({
     components: { LighthouseVNC }
 })
 export default class MachineVnc extends Vue {
-    public loading = true
+    public loading = true;
 
     // 初始化
 
     public created() {
-        const machineId = +this.$route.params.id
-        this.getMachine(machineId)
+        const machineId = +this.$route.params.id;
+        this.getMachine(machineId);
     }
 
     // 获取主机
 
-    public machine!: MachineItem
+    public machine!: MachineItem;
 
     async getMachine(id: number) {
-        const res = await NaApi.machine.detail(id)
-        this.machine = res.Item
-        this.loading = false
+        const res = await NaApi.machine.detail(id);
+        this.machine = res.Item;
+        this.loading = false;
     }
 }
 </script>

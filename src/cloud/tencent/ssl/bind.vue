@@ -1,71 +1,71 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "@/apps/basic"
+import { Ref, Prop, Component, Vue } from '@/apps/basic';
 
-import { TcApi } from "@/api"
-import { CertbotItem } from "@/api/native/certbot"
-import * as TC from "@/api/tencent/typings"
+import { TcApi } from '@/api';
+import { CertbotItem } from '@/api/native/certbot';
+import * as TC from '@/api/tencent/typings';
 
-import CertUpload from "./cert_upload.vue"
+import CertUpload from './cert_upload.vue';
 
 @Component({
-    emits: ["change"],
+    emits: ['change'],
     components: { CertUpload },
 })
 export default class SslBind extends Vue {
 
-    public loading = true
+    public loading = true;
 
     @Ref
-    public uploadModal!: CertUpload
+    public uploadModal!: CertUpload;
 
     @Prop
-    public vendorId = 0
+    public vendorId = 0;
 
     @Prop
-    public boundList: Record<string, CertbotItem> = {}
+    public boundList: Record<string, CertbotItem> = {};
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.vendorId)
-        this.getCertList()
+        TcApi.vendor(this.vendorId);
+        this.getCertList();
     }
 
     // 获取列表
 
-    public certList: TC.Ssl.Certificates[] = []
-    public certCount = 0
+    public certList: TC.Ssl.Certificates[] = [];
+    public certCount = 0;
 
     async getCertList() {
-        const res = await TcApi.ssl.describeCertificates({})
+        const res = await TcApi.ssl.describeCertificates({});
         if (res.TotalCount) {
-            this.certList = res.Certificates || []
-            this.certCount = res.TotalCount
+            this.certList = res.Certificates || [];
+            this.certCount = res.TotalCount;
         }
-        this.getDeployedResources("cdn")
-        this.getDeployedResources("teo")
-        this.loading = false
+        this.getDeployedResources('cdn');
+        this.getDeployedResources('teo');
+        this.loading = false;
     }
 
     // 关联资源
 
-    public deployedResources: Record<string, number> = {}
+    public deployedResources: Record<string, number> = {};
 
     public async getDeployedResources(type: string) {
-        const ids = this.certList.map(item => item.CertificateId)
+        const ids = this.certList.map(item => item.CertificateId);
         const rs1 = await TcApi.ssl.describeDeployedResources({
             CertificateIds: ids,
             ResourceType: type,
-        })
+        });
         if (!rs1.DeployedResources || rs1.DeployedResources.length === 0) {
-            return // 没有关联资源
+            return; // 没有关联资源
         }
         rs1.DeployedResources.forEach(item => {
             if (this.deployedResources[item.CertificateId] === undefined) {
-                this.deployedResources[item.CertificateId] = 0
+                this.deployedResources[item.CertificateId] = 0;
             }
-            this.deployedResources[item.CertificateId] += item.Count
-        })
+            this.deployedResources[item.CertificateId] += item.Count;
+        });
     }
 
     // 删除证书
@@ -73,9 +73,9 @@ export default class SslBind extends Vue {
     async deleteCert(item: TC.Ssl.Certificates) {
         await TcApi.ssl.deleteCertificate({
             CertificateId: item.CertificateId,
-        })
-        this.getCertList()
-        this.$emit("change")
+        });
+        this.getCertList();
+        this.$emit('change');
     }
 
     // 表格定义
@@ -87,8 +87,8 @@ export default class SslBind extends Vue {
         { colKey: 'From', title: '来源', ellipsis: true },
         { colKey: 'StatusName', title: '状态', ellipsis: true },
         { colKey: 'Deployed', title: '关联资源', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

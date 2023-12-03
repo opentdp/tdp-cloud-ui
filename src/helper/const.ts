@@ -1,11 +1,11 @@
-export const SiteName = 'TDP Cloud'
-export const SiteLogo = "assets/image/logo.svg"
-export const SiteIcon = "assets/image/icon.svg"
+export const SiteName = 'TDP Cloud';
+export const SiteLogo = 'assets/image/logo.svg';
+export const SiteIcon = 'assets/image/icon.svg';
 
-export const Copylink = "https://www.opentdp.org"
-export const Copytext = "Powered by OpenTDP"
+export const Copylink = 'https://www.opentdp.org';
+export const Copytext = 'Powered by OpenTDP';
 
-export const IcpCode = ""
+export const IcpCode = '';
 
 export const Analytics = `
     var _hmt = _hmt || [];
@@ -15,4 +15,4 @@ export const Analytics = `
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();
-`
+`;

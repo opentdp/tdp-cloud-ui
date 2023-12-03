@@ -1,38 +1,38 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { DomainModels, DomainItem } from "@/api/native/domain"
+import { NaApi } from '@/api';
+import { DomainModels, DomainItem } from '@/api/native/domain';
 
 @Component
 export default class DomainList extends Vue {
-    public DomainModels = DomainModels
+    public DomainModels = DomainModels;
 
-    public loading = true
+    public loading = true;
 
     // 初始化
 
     public created() {
-        this.cache.initVendorList()
-        this.getDomainList()
+        this.cache.initVendorList();
+        this.getDomainList();
     }
 
     // 域名列表
 
-    public domainList: DomainItem[] = []
+    public domainList: DomainItem[] = [];
 
     async getDomainList() {
-        const res = await NaApi.domain.list()
-        this.domainList = res.Items
-        this.loading = false
+        const res = await NaApi.domain.list();
+        this.domainList = res.Items;
+        this.loading = false;
     }
 
     // 删除域名
 
     async deleteDomain(idx: number) {
-        const item = this.domainList[idx]
-        await NaApi.domain.remove(item.Id)
-        this.domainList.splice(idx, 1)
+        const item = this.domainList[idx];
+        await NaApi.domain.remove(item.Id);
+        this.domainList.splice(idx, 1);
     }
 
     // 表格定义
@@ -41,8 +41,8 @@ export default class DomainList extends Vue {
         { colKey: 'Name', title: '域名', ellipsis: true },
         { colKey: 'NSList', title: 'NS 服务器', ellipsis: true },
         { colKey: 'Model', title: '云账号', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

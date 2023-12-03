@@ -1,10 +1,10 @@
-import { CloudflareVendor } from "./base"
+import { CloudflareVendor } from './base';
 
-import { ZonesModel } from "./zones"
+import { ZonesModel } from './zones';
 
 
 export default {
     vendor: CloudflareVendor,
 
     zones: new ZonesModel(),
-}
+};

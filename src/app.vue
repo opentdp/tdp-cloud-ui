@@ -1,10 +1,10 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
 @Component
 export default class AppRoot extends Vue {
     public created() {
-        this.layout.fetchConfig()
+        this.layout.fetchConfig();
     }
 }
 </script>

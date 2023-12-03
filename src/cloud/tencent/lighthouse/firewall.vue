@@ -1,55 +1,55 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "@/apps/basic"
+import { Ref, Prop, Component, Vue } from '@/apps/basic';
 
-import { TcApi } from "@/api"
-import * as TC from "@/api/tencent/typings"
+import { TcApi } from '@/api';
+import * as TC from '@/api/tencent/typings';
 
-import FirewallCreate from "./firewall_create.vue"
-import FirewallUpdate from "./firewall_update.vue"
-import FirewallRemark from "./firewall_remark.vue"
+import FirewallCreate from './firewall_create.vue';
+import FirewallUpdate from './firewall_update.vue';
+import FirewallRemark from './firewall_remark.vue';
 
 @Component({
     components: { FirewallCreate, FirewallUpdate, FirewallRemark }
 })
 export default class LighthouseFirewall extends Vue {
     @Ref
-    public createModal!: FirewallCreate
+    public createModal!: FirewallCreate;
 
     @Ref
-    public updateModal!: FirewallUpdate
+    public updateModal!: FirewallUpdate;
 
     @Ref
-    public remarkModal!: FirewallRemark
+    public remarkModal!: FirewallRemark;
 
     @Prop
-    public instance!: TC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance;
 
     // 初始化
 
     public created() {
-        this.getFirewallRuleList()
+        this.getFirewallRuleList();
     }
 
     // 获取区域
 
     public get region() {
-        return this.instance.Zone.replace(/-\d$/, "")
+        return this.instance.Zone.replace(/-\d$/, '');
     }
 
     // 规则列表
 
-    public firewallRuleList!: TC.Lighthouse.FirewallRule[]
-    public firewallRuleCount = 0
+    public firewallRuleList!: TC.Lighthouse.FirewallRule[];
+    public firewallRuleCount = 0;
 
     async getFirewallRuleList() {
         const res = await TcApi.lighthouse.describeFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
-        })
+        });
         this.firewallRuleList = res.FirewallRuleSet.map(item => {
-            delete (item as Partial<TC.Lighthouse.FirewallRuleInfo>).AppType
-            return item
-        })
-        this.firewallRuleCount = res.TotalCount
+            delete (item as Partial<TC.Lighthouse.FirewallRuleInfo>).AppType;
+            return item;
+        });
+        this.firewallRuleCount = res.TotalCount;
     }
 
     // 删除规则
@@ -58,8 +58,8 @@ export default class LighthouseFirewall extends Vue {
         await TcApi.lighthouse.deleteFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRules: [item]
-        })
-        this.getFirewallRuleList()
+        });
+        this.getFirewallRuleList();
     }
 
     // 表格定义
@@ -70,8 +70,8 @@ export default class LighthouseFirewall extends Vue {
         { colKey: 'Port', title: '端口', ellipsis: true },
         { colKey: 'Action', title: '策略', ellipsis: true },
         { colKey: 'FirewallRuleDescription', title: '备注', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

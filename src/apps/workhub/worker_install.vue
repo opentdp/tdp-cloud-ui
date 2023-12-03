@@ -1,28 +1,28 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { MachineItem } from "@/api/native/machine"
+import { MachineItem } from '@/api/native/machine';
 
-import { installWorker } from "@/helper/script/shell"
+import { installWorker } from '@/helper/script/shell';
 
 @Component
 export default class WorkhubWorkerInstall extends Vue {
-    public installWorker = installWorker
+    public installWorker = installWorker;
 
-    public machine!: MachineItem
+    public machine!: MachineItem;
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(machine: MachineItem) {
-        this.visible = true
-        this.machine = machine
+        this.visible = true;
+        this.machine = machine;
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
 @Component
 export default class LayoutContent extends Vue {

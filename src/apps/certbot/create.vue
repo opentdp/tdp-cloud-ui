@@ -1,96 +1,96 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { CaTypeList, CertbotOrig } from "@/api/native/certbot"
-import { DomainItem } from "@/api/native/domain"
+import Api, { NaApi } from '@/api';
+import { CaTypeList, CertbotOrig } from '@/api/native/certbot';
+import { DomainItem } from '@/api/native/domain';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class CertbotCreate extends Vue {
-    public CaTypeList = CaTypeList
+    public CaTypeList = CaTypeList;
 
     // 域名列表
 
-    public domainList: DomainItem[] = []
+    public domainList: DomainItem[] = [];
 
     async getDomainList() {
-        const res = await NaApi.domain.list()
-        this.domainList = res.Items
+        const res = await NaApi.domain.list();
+        this.domainList = res.Items;
     }
 
     // 创建表单
 
-    public domainId!: number
-    public domainSub = ""
+    public domainId!: number;
+    public domainSub = '';
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
     public formModel: CertbotOrig = {
         VendorId: 0,
-        Email: "",
-        Domain: "",
-        CaType: "",
-        EabKeyId: "",
-        EabMacKey: "",
+        Email: '',
+        Domain: '',
+        CaType: '',
+        EabKeyId: '',
+        EabMacKey: '',
         History: {
-            event: "queued",
-            identifier: ""
+            event: 'queued',
+            identifier: ''
         },
-    }
+    };
 
     public formRules: FormRules<CertbotOrig> = {
         Email: [{ required: true }],
         CaType: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        const domain = this.domainList[this.domainId]
+        const domain = this.domainList[this.domainId];
         if (!domain) {
-            Api.msg.err("请选择主域名")
-            return false
+            Api.msg.err('请选择主域名');
+            return false;
         }
-        const prefix = this.domainSub ? this.domainSub + "." : ""
-        this.formModel.Domain = prefix + domain.Name
-        this.formModel.VendorId = domain.VendorId
-        await NaApi.certbot.create(this.formModel)
-        this.close()
+        const prefix = this.domainSub ? this.domainSub + '.' : '';
+        this.formModel.Domain = prefix + domain.Name;
+        this.formModel.VendorId = domain.VendorId;
+        await NaApi.certbot.create(this.formModel);
+        this.close();
     }
 
     // 表单事件
 
-    public caEab = 0
+    public caEab = 0;
 
     public updateCaEab() {
-        const ca = CaTypeList[this.formModel.CaType]
-        this.caEab = ca ? ca.Eab : 0
+        const ca = CaTypeList[this.formModel.CaType];
+        this.caEab = ca ? ca.Eab : 0;
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open() {
-        this.visible = true
-        this.formModel.Email = this.session.Email
+        this.visible = true;
+        this.formModel.Email = this.session.Email;
         // 加载数据
-        this.domainList.length == 0 && this.getDomainList()
+        this.domainList.length == 0 && this.getDomainList();
     }
 }
 </script>

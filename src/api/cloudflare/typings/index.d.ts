@@ -9,6 +9,6 @@ export interface Datainfo {
     Total: number
 }
 
-export * from "./zone"
-export * from "./zone_record"
-export * from "./custom_hostnames"
+export * from './zone';
+export * from './zone_record';
+export * from './custom_hostnames';

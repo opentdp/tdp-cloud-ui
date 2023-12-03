@@ -1,21 +1,21 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { MachineItem } from "@/api/native/machine"
+import { MachineItem } from '@/api/native/machine';
 
-import { bytesToSize, dateFormat } from "@/helper/format"
+import { bytesToSize, dateFormat } from '@/helper/format';
 
-import SysLoad from "./sys_load.vue"
+import SysLoad from './sys_load.vue';
 
 @Component({
     components: { SysLoad }
 })
 export default class WorkerInstance extends Vue {
-    public bytesToSize = bytesToSize
-    public dateFormat = dateFormat
+    public bytesToSize = bytesToSize;
+    public dateFormat = dateFormat;
 
     @Prop
-    public machine!: MachineItem
+    public machine!: MachineItem;
 }
 </script>
 

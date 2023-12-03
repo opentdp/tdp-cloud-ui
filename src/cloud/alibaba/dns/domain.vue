@@ -1,64 +1,64 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "@/apps/basic"
+import { Ref, Prop, Component, Vue } from '@/apps/basic';
 
-import { AcApi } from "@/api"
-import { DomainItem } from "@/api/native/domain"
-import * as AC from "@/api/alibaba/typings"
+import { AcApi } from '@/api';
+import { DomainItem } from '@/api/native/domain';
+import * as AC from '@/api/alibaba/typings';
 
-import RecordCreate from "./record_create.vue"
-import RecordUpdate from "./record_update.vue"
+import RecordCreate from './record_create.vue';
+import RecordUpdate from './record_update.vue';
 
 @Component({
     components: { RecordCreate, RecordUpdate }
 })
 export default class DnsDomain extends Vue {
-    public loading = true
+    public loading = true;
 
     @Ref
-    public createModal!: RecordCreate
+    public createModal!: RecordCreate;
 
     @Ref
-    public updateModal!: RecordUpdate
+    public updateModal!: RecordUpdate;
 
     @Prop
-    public domain!: Omit<DomainItem, "CloudMeta"> & {
+    public domain!: Omit<DomainItem, 'CloudMeta'> & {
         CloudMeta: AC.Dns.DescribeDomainInfoResponseBody
-    }
+    };
 
     // 初始化
 
     public created() {
-        AcApi.vendor(this.domain.VendorId)
-        this.getDomain()
-        this.getRecordList()
+        AcApi.vendor(this.domain.VendorId);
+        this.getDomain();
+        this.getRecordList();
     }
 
     // 域名概要
 
-    public domainInfo!: AC.Dns.DescribeDomainInfoResponseBody
+    public domainInfo!: AC.Dns.DescribeDomainInfoResponseBody;
 
     async getDomain() {
         const res = await AcApi.alidns.describeDomainInfo({
             DomainName: this.domain.Name
-        })
+        });
         if (res.DomainId) {
-            this.domainInfo = res
+            this.domainInfo = res;
         }
-        this.loading = false
+        this.loading = false;
     }
 
     // 解析记录
 
-    public recordList!: AC.Dns.DescribeDomainRecordsResponseBodyDomainRecordsRecord[]
-    public recordCount = 0
+    public recordList!: AC.Dns.DescribeDomainRecordsResponseBodyDomainRecordsRecord[];
+    public recordCount = 0;
 
     async getRecordList() {
         const res = await AcApi.alidns.describeDomainRecords({
             DomainName: this.domain.Name
-        })
+        });
         if (res.TotalCount) {
-            this.recordList = res.DomainRecords.Record
-            this.recordCount = res.TotalCount
+            this.recordList = res.DomainRecords.Record;
+            this.recordCount = res.TotalCount;
         }
     }
 
@@ -67,8 +67,8 @@ export default class DnsDomain extends Vue {
     async deleteRecord(recordId: string) {
         await AcApi.alidns.deleteDomainRecord({
             RecordId: recordId
-        })
-        this.getRecordList()
+        });
+        this.getRecordList();
     }
 
     // 表格定义
@@ -80,8 +80,8 @@ export default class DnsDomain extends Vue {
         { colKey: 'Value', title: '记录值', ellipsis: true },
         { colKey: 'TTL', title: 'TTL', ellipsis: true },
         { colKey: 'Status', title: '状态', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

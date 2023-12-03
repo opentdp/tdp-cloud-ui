@@ -28,8 +28,12 @@
     },
     "rules": {
         "semi": [
-            "warn",
-            "never"
+            "error",
+            "always"
+        ],
+        "quotes": [
+            "error",
+            "single"
         ],
         "vue/html-indent": [
             "error",

@@ -6433,59 +6433,59 @@ export interface EnablePhysicalConnectionResponse {
 
 export declare class
 ExportImageRequest {
-    ImageFormat: string
-    ImageId: string
-    OSSBucket: string
-    OSSPrefix: string
-    OwnerId: number
-    RegionId: string
-    ResourceOwnerAccount: string
-    ResourceOwnerId: number
-    RoleName: string
+    ImageFormat: string;
+    ImageId: string;
+    OSSBucket: string;
+    OSSPrefix: string;
+    OwnerId: number;
+    RegionId: string;
+    ResourceOwnerAccount: string;
+    ResourceOwnerId: number;
+    RoleName: string;
 }
 
 export declare class
 ExportImageResponseBody {
-    RegionId: string
-    RequestId: string
-    TaskId: string
+    RegionId: string;
+    RequestId: string;
+    TaskId: string;
 }
 
 export declare class
 ExportImageResponse {
     Headers: {
         [key: string]: string
-    }
-    StatusCode: number
+    };
+    StatusCode: number;
     Body:
-    ExportImageResponseBody
+    ExportImageResponseBody;
 }
 
 export declare class
 ExportSnapshotRequest {
-    OssBucket: string
-    OwnerId: number
-    RegionId: string
-    ResourceOwnerAccount: string
-    ResourceOwnerId: number
-    RoleName: string
-    SnapshotId: string
+    OssBucket: string;
+    OwnerId: number;
+    RegionId: string;
+    ResourceOwnerAccount: string;
+    ResourceOwnerId: number;
+    RoleName: string;
+    SnapshotId: string;
 }
 
 export declare class
 ExportSnapshotResponseBody {
-    RequestId: string
-    TaskId: string
+    RequestId: string;
+    TaskId: string;
 }
 
 export declare class
 ExportSnapshotResponse {
     Headers: {
         [key: string]: string
-    }
-    StatusCode: number
+    };
+    StatusCode: number;
     Body:
-    ExportSnapshotResponseBody
+    ExportSnapshotResponseBody;
 }
 
 export interface GetInstanceConsoleOutputRequest {

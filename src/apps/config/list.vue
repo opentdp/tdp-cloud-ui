@@ -1,37 +1,37 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { PrimaryTableCol, TableRowData } from "tdesign-vue-next"
+import { PrimaryTableCol, TableRowData } from 'tdesign-vue-next';
 
-import { NaApi } from "@/api"
-import { ConfigItem } from "@/api/native/config"
+import { NaApi } from '@/api';
+import { ConfigItem } from '@/api/native/config';
 
-import ConfigUpdate from "./update.vue"
+import ConfigUpdate from './update.vue';
 
 @Component({
     components: { ConfigUpdate }
 })
 export default class ConfigList extends Vue {
-    public loading = true
+    public loading = true;
 
     @Ref
-    public updateModal!: ConfigUpdate
+    public updateModal!: ConfigUpdate;
 
     // 初始化
 
     public created() {
-        this.getConfigList()
+        this.getConfigList();
     }
 
     // 列表
 
-    public configList: ConfigItem[] = []
+    public configList: ConfigItem[] = [];
 
     async getConfigList() {
         const res = await NaApi.config.list({}).finally(() => {
-            this.loading = false
-        })
-        this.configList = res.Items
+            this.loading = false;
+        });
+        this.configList = res.Items;
     }
 
     // 表格定义
@@ -40,8 +40,8 @@ export default class ConfigList extends Vue {
         { colKey: 'Description', title: '参数名', ellipsis: true },
         { colKey: 'Value', title: '参数值', ellipsis: true },
         { colKey: 'Module', title: '模块', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

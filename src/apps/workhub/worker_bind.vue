@@ -1,34 +1,34 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
+import { NaApi } from '@/api';
+import { MachineItem } from '@/api/native/machine';
 
-import { installWorker } from "@/helper/script/shell"
+import { installWorker } from '@/helper/script/shell';
 
-import WorkerBind from "@/cloud/worker/bind.vue"
+import WorkerBind from '@/cloud/worker/bind.vue';
 
 @Component({
     components: { WorkerBind }
 })
 export default class WorkhubWorkerBind extends Vue {
-    public installWorker = installWorker
+    public installWorker = installWorker;
 
     // 初始化
 
     public created() {
-        this.getMachineList()
+        this.getMachineList();
     }
 
     // 已绑定主机
 
-    public machineList: Record<string, MachineItem> = {}
+    public machineList: Record<string, MachineItem> = {};
 
     async getMachineList() {
-        const res = await NaApi.machine.list()
+        const res = await NaApi.machine.list();
         res.Items.forEach(item => {
-            this.machineList[item.WorkerId] = item
-        })
+            this.machineList[item.WorkerId] = item;
+        });
     }
 }
 </script>

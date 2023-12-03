@@ -1,44 +1,44 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import Api, { NaApi } from "@/api"
-import { VendorItem } from "@/api/native/vendor"
+import Api, { NaApi } from '@/api';
+import { VendorItem } from '@/api/native/vendor';
 
-import SslBind from "@/cloud/tencent/ssl/bind.vue"
+import SslBind from '@/cloud/tencent/ssl/bind.vue';
 
 @Component({
     components: { SslBind }
 })
 export default class CertbotDeploy extends Vue {
-    public loading = true
+    public loading = true;
 
     // 初始化
 
     public created() {
-        this.getVendorList()
+        this.getVendorList();
     }
 
     // 厂商列表
 
-    public vendorList: VendorItem[] = []
+    public vendorList: VendorItem[] = [];
 
     async getVendorList() {
-        const res = await NaApi.vendor.list({ Provider: "tencent" })
+        const res = await NaApi.vendor.list({ Provider: 'tencent' });
         if (res.Items.length == 0) {
-            this.$router.push("/vendor/tencent")
-            Api.msg.err("请先添加厂商")
-            return
+            this.$router.push('/vendor/tencent');
+            Api.msg.err('请先添加厂商');
+            return;
         }
-        this.curTab.id = res.Items[0].Id
-        this.vendorList = res.Items
-        this.loading = false
+        this.curTab.id = res.Items[0].Id;
+        this.vendorList = res.Items;
+        this.loading = false;
     }
 
     // 管理标签页
 
     public curTab = {
-        id: 0, label: ""
-    }
+        id: 0, label: ''
+    };
 }
 </script>
 

@@ -1,43 +1,43 @@
 <script lang="ts">
-import { Component, Ref, Vue } from "@/apps/basic"
+import { Component, Ref, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData, UploadFile, RequestMethodResponse } from "tdesign-vue-next"
-import { VueCropper } from "vue-cropper"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData, UploadFile, RequestMethodResponse } from 'tdesign-vue-next';
+import { VueCropper } from 'vue-cropper';
 
-import Api, { NaApi } from "@/api"
-import { UserUpdate } from "@/api/native/passport"
+import Api, { NaApi } from '@/api';
+import { UserUpdate } from '@/api/native/passport';
 
 @Component
 export default class PassportProfile extends Vue {
-    public loading = true
+    public loading = true;
 
     // 初始化
 
     public created() {
-        this.getProfile()
+        this.getProfile();
     }
 
     // 获取用户信息
 
     async getProfile() {
-        const res = await NaApi.passport.profile()
-        Object.assign(this.formModel, res)
-        this.loading = false
+        const res = await NaApi.passport.profile();
+        Object.assign(this.formModel, res);
+        this.loading = false;
     }
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
     public formModel: UserUpdate = {
-        Username: "",
-        Password: "",
-        Password2: "",
-        Email: "",
-        Description: "",
-        OldPassword: "",
-    }
+        Username: '',
+        Password: '',
+        Password2: '',
+        Email: '',
+        Description: '',
+        OldPassword: '',
+    };
 
     public formRules: FormRules<UserUpdate> = {
         Username: [{ required: true }],
@@ -45,49 +45,49 @@ export default class PassportProfile extends Vue {
         Email: [{ required: true }],
         Description: [{ required: true }],
         OldPassword: [{ required: true }],
-    }
+    };
 
     public formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        NaApi.passport.profileUpdate(this.formModel)
+        NaApi.passport.profileUpdate(this.formModel);
     }
 
     async avatarSubmit() {
-        const res = await NaApi.passport.avatarUpdate(this.imageUpload)
-        this.session.Avatar = res.Avatar
-        this.imageOrigin = ""
-        this.imageUpload = ""
+        const res = await NaApi.passport.avatarUpdate(this.imageUpload);
+        this.session.Avatar = res.Avatar;
+        this.imageOrigin = '';
+        this.imageUpload = '';
     }
 
     // 图片选择
 
-    public imageOrigin = ""
+    public imageOrigin = '';
 
     public imageSelect(file: UploadFile) {
-        const reader = new FileReader()
-        file.raw && reader.readAsDataURL(file.raw)
-        reader.onload = () => this.imageOrigin = String(reader.result)
+        const reader = new FileReader();
+        file.raw && reader.readAsDataURL(file.raw);
+        reader.onload = () => this.imageOrigin = String(reader.result);
         const data: RequestMethodResponse = {
             status: 'success',
             response: {}
-        }
-        return Promise.resolve(data)
+        };
+        return Promise.resolve(data);
     }
 
     // 图片裁剪
 
     @Ref
-    public cropper!: typeof VueCropper
+    public cropper!: typeof VueCropper;
 
-    public imageUpload = ""
+    public imageUpload = '';
 
     public cropperPreview() {
         this.cropper.getCropData((data: string) => {
-            this.imageUpload = data
-        })
+            this.imageUpload = data;
+        });
     }
 }
 </script>

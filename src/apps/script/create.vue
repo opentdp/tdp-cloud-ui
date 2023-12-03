@@ -1,10 +1,10 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { ScriptPayload } from "@/api/native/typings"
+import Api, { NaApi } from '@/api';
+import { ScriptPayload } from '@/api/native/typings';
 
 @Component({
     emits: ['submit'],
@@ -14,9 +14,9 @@ export default class ScriptCreate extends Vue {
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: ScriptPayload
+    public formModel!: ScriptPayload;
 
     public formRules: FormRules<ScriptPayload> = {
         Name: [{ required: true }],
@@ -24,63 +24,63 @@ export default class ScriptCreate extends Vue {
         Content: [{ required: true }],
         Description: [{ required: true }],
         Timeout: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        if (this.formModel.CommandType == "SHELL" && this.formModel.Content.indexOf("#!/") !== 0) {
-            Api.msg.err("请在首行声明解释器，如 #!/bin/sh")
-            return false
+        if (this.formModel.CommandType == 'SHELL' && this.formModel.Content.indexOf('#!/') !== 0) {
+            Api.msg.err('请在首行声明解释器，如 #!/bin/sh');
+            return false;
         }
-        await NaApi.script.create(this.formModel)
-        this.close()
+        await NaApi.script.create(this.formModel);
+        this.close();
     }
 
     // 表单事件
 
     public updateCommandType() {
         switch (this.formModel.CommandType) {
-            case "SHELL":
-                this.formModel.Username = "root"
-                this.formModel.WorkDirectory = "/root"
-                if (this.formModel.Content.indexOf("#!/") !== 0) {
-                    this.formModel.Content = "#!/bin/sh\n" + this.formModel.Content
+            case 'SHELL':
+                this.formModel.Username = 'root';
+                this.formModel.WorkDirectory = '/root';
+                if (this.formModel.Content.indexOf('#!/') !== 0) {
+                    this.formModel.Content = '#!/bin/sh\n' + this.formModel.Content;
                 }
-                break
-            case "POWERSHELL":
-            case "BAT":
-                this.formModel.Username = "System"
-                this.formModel.WorkDirectory = "C:\\"
-                break
+                break;
+            case 'POWERSHELL':
+            case 'BAT':
+                this.formModel.Username = 'System';
+                this.formModel.WorkDirectory = 'C:\\';
+                break;
         }
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open() {
-        this.visible = true
+        this.visible = true;
         this.formModel = {
-            Name: "",
-            CommandType: "SHELL",
-            Username: "",
-            WorkDirectory: "",
-            Content: "",
-            Description: "",
+            Name: '',
+            CommandType: 'SHELL',
+            Username: '',
+            WorkDirectory: '',
+            Content: '',
+            Description: '',
             Timeout: 300,
-        }
-        this.updateCommandType()
+        };
+        this.updateCommandType();
     }
 }
 </script>

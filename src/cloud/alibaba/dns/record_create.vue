@@ -1,28 +1,28 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { AcApi } from "@/api"
-import { RecordLineMap, RecordTypeMap } from "@/api/alibaba/alidns"
-import * as AC from "@/api/alibaba/typings"
+import Api, { AcApi } from '@/api';
+import { RecordLineMap, RecordTypeMap } from '@/api/alibaba/alidns';
+import * as AC from '@/api/alibaba/typings';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class DnsRecordCreate extends Vue {
-    public domainInfo!: AC.Dns.DescribeDomainInfoResponseBody
+    public domainInfo!: AC.Dns.DescribeDomainInfoResponseBody;
 
-    public recordType = RecordTypeMap
-    public recordLineList = RecordLineMap
+    public recordType = RecordTypeMap;
+    public recordLineList = RecordLineMap;
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: AC.Dns.AddDomainRecordRequest
+    public formModel!: AC.Dns.AddDomainRecordRequest;
 
     public formRules: FormRules<AC.Dns.AddDomainRecordRequest> = {
         RR: [{ required: true }],
@@ -31,14 +31,14 @@ export default class DnsRecordCreate extends Vue {
         Value: [{ required: true }],
         Priority: [{ required: true }],
         TTL: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
         const query = {
             DomainName: this.domainInfo.DomainName,
@@ -48,33 +48,33 @@ export default class DnsRecordCreate extends Vue {
             Value: this.formModel.Value,
             Priority: +this.formModel.Priority || 1,
             TTL: +this.formModel.TTL || 600,
-        }
-        await AcApi.alidns.addDomainRecord(query)
-        this.close()
+        };
+        await AcApi.alidns.addDomainRecord(query);
+        this.close();
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(info: AC.Dns.DescribeDomainInfoResponseBody) {
-        this.visible = true
-        this.domainInfo = info
+        this.visible = true;
+        this.domainInfo = info;
         this.formModel = {
-            RR: "",
-            Type: "A",
-            Line: "default",
-            Value: "",
+            RR: '',
+            Type: 'A',
+            Line: 'default',
+            Value: '',
             Priority: 1,
             TTL: 600,
-        } as AC.Dns.AddDomainRecordRequest
+        } as AC.Dns.AddDomainRecordRequest;
 
-        console.log(info)
+        console.log(info);
     }
 }
 </script>

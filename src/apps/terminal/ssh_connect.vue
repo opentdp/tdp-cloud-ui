@@ -1,92 +1,92 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "@/apps/basic"
+import { Ref, Prop, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData, AutoCompleteOption } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData, AutoCompleteOption } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
-import { KeypairItem } from "@/api/native/keypair"
-import { SSHRequest } from "@/api/native/terminal"
+import Api, { NaApi } from '@/api';
+import { MachineItem } from '@/api/native/machine';
+import { KeypairItem } from '@/api/native/keypair';
+import { SSHRequest } from '@/api/native/terminal';
 
 @Component({
-    emits: ["submit"],
+    emits: ['submit'],
 })
 export default class TerminalSshConnect extends Vue {
     @Prop
-    public addr = ""
+    public addr = '';
 
     // 初始化
 
     public created() {
-        this.formModel.Addr = this.addr
-        this.getMachineList()
-        this.getKeypairList()
+        this.formModel.Addr = this.addr;
+        this.getMachineList();
+        this.getKeypairList();
     }
 
     // 获取密钥列表
 
-    public keypairList: KeypairItem[] = []
+    public keypairList: KeypairItem[] = [];
 
     async getKeypairList() {
-        const res = await NaApi.keypair.list()
-        this.keypairList = res.Items
+        const res = await NaApi.keypair.list();
+        this.keypairList = res.Items;
     }
 
     // 获取主机列表
 
-    public machineList: MachineItem[] = []
+    public machineList: MachineItem[] = [];
 
     async getMachineList() {
-        const res = await NaApi.machine.list()
-        this.machineList = res.Items
+        const res = await NaApi.machine.list();
+        this.machineList = res.Items;
     }
 
     public machineFilter() {
-        const rs: AutoCompleteOption[] = []
+        const rs: AutoCompleteOption[] = [];
         this.machineList.forEach(item => {
-            if (item.OSType == "linux") {
+            if (item.OSType == 'linux') {
                 rs.push({
-                    label: item.IpAddress + " - " + item.Region,
+                    label: item.IpAddress + ' - ' + item.Region,
                     text: item.IpAddress
-                })
+                });
             }
-        })
-        return rs
+        });
+        return rs;
     }
 
     // 创建表单
 
-    public authType = "0"
+    public authType = '0';
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
     public formModel: SSHRequest = {
-        Addr: "",
-        User: "root",
-        Password: "",
-        PrivateKey: ""
-    }
+        Addr: '',
+        User: 'root',
+        Password: '',
+        PrivateKey: ''
+    };
 
     public formRules: FormRules<SSHRequest> = {
-        Addr: [{ required: true, message: "格式 1.1.1.1:22" }],
+        Addr: [{ required: true, message: '格式 1.1.1.1:22' }],
         User: [{ required: true }],
         Password: [{ required: true }],
         PrivateKey: [{ required: true }],
-    }
+    };
 
     public formSubmit(ctx: SubmitContext<TData>) {
-        if (this.authType == "0") {
-            this.formModel.PrivateKey = ""
+        if (this.authType == '0') {
+            this.formModel.PrivateKey = '';
         } else {
-            this.formModel.Password = ""
+            this.formModel.Password = '';
         }
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
 
-        this.$emit("submit", this.formModel)
+        this.$emit('submit', this.formModel);
     }
 }
 </script>

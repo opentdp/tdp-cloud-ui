@@ -1,42 +1,42 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { CertbotItem, Certificate } from "@/api/native/certbot"
+import { NaApi } from '@/api';
+import { CertbotItem, Certificate } from '@/api/native/certbot';
 
 @Component
 export default class CertbotDetail extends Vue {
-    public loading = true
+    public loading = true;
 
     // 初始化
 
     public created() {
-        const certbotId = +this.$route.params.id
-        this.getCertbot(certbotId)
+        const certbotId = +this.$route.params.id;
+        this.getCertbot(certbotId);
     }
 
     // 域名信息
 
-    public crtText = ""
-    public pubText = ""
-    public dateLimit!: [Date, Date]
+    public crtText = '';
+    public pubText = '';
+    public dateLimit!: [Date, Date];
 
-    public cert!: Certificate
-    public certbot!: CertbotItem
+    public cert!: Certificate;
+    public certbot!: CertbotItem;
 
     async getCertbot(id: number) {
-        const res = await NaApi.certbot.detail(id)
-        this.certbot = res.Item
-        this.cert = res.Cert
+        const res = await NaApi.certbot.detail(id);
+        this.certbot = res.Item;
+        this.cert = res.Cert;
         if (res.Cert) {
-            this.crtText = NaApi.certbot.certFormat(res.Cert.Certificate).trim()
-            this.pubText = atob(res.Cert.PrivateKey).trim()
+            this.crtText = NaApi.certbot.certFormat(res.Cert.Certificate).trim();
+            this.pubText = atob(res.Cert.PrivateKey).trim();
             this.dateLimit = [
                 new Date(res.Cert.NotBefore * 1000),
                 new Date(res.Cert.NotAfter * 1000),
-            ]
+            ];
         }
-        this.loading = false
+        this.loading = false;
     }
 }
 </script>

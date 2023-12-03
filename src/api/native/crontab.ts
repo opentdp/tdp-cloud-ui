@@ -1,24 +1,24 @@
-import { HttpClient } from "@/api/basic/http"
+import { HttpClient } from '@/api/basic/http';
 
 export class CrontabModel extends HttpClient {
     public list(): Promise<CrontabPaged> {
-        return this.post("/crontab/list", {})
+        return this.post('/crontab/list', {});
     }
 
     public detail(id: number): Promise<CrontabDetail> {
-        return this.post("/crontab/detail", { Id: id })
+        return this.post('/crontab/detail', { Id: id });
     }
 
     public create(rq: CrontabOrig): Promise<{ Id: number }> {
-        return this.post("/crontab/create", rq)
+        return this.post('/crontab/create', rq);
     }
 
     public update(rq: Partial<CrontabItem>): Promise<null> {
-        return this.post("/crontab/update", rq)
+        return this.post('/crontab/update', rq);
     }
 
     public remove(id: number): Promise<null> {
-        return this.post("/crontab/delete", { Id: id })
+        return this.post('/crontab/delete', { Id: id });
     }
 }
 

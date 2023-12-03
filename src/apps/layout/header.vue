@@ -1,19 +1,19 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
+import { NaApi } from '@/api';
 
 @Component
 export default class LayoutHeader extends Vue {
     // 侧边栏折叠
     public collapseChange() {
-        this.layout.setCollapse(!this.layout.Collapse)
+        this.layout.setCollapse(!this.layout.Collapse);
     }
 
     // 切换主题模式
     public themeModeChange() {
-        const mode = this.layout.ThemeMode == "dark" ? "light" : "dark"
-        this.layout.setThemeMode(mode)
+        const mode = this.layout.ThemeMode == 'dark' ? 'light' : 'dark';
+        this.layout.setThemeMode(mode);
     }
 
     // 用户名下拉菜单
@@ -21,30 +21,30 @@ export default class LayoutHeader extends Vue {
         return [
             {
                 content: '个人资料',
-                value: "profile",
+                value: 'profile',
                 onClick: () => {
-                    this.$router.push({ name: "passport-profile" })
+                    this.$router.push({ name: 'passport-profile' });
                 }
             },
             {
                 content: '清理缓存',
-                value: "delcache",
+                value: 'delcache',
                 onClick: () => {
-                    this.cache.$reset()
-                    this.layout.$reset()
-                    NaApi.cache.clear()
-                    location.reload()
+                    this.cache.$reset();
+                    this.layout.$reset();
+                    NaApi.cache.clear();
+                    location.reload();
                 }
             },
             {
                 content: '退出登录',
-                value: "loginout",
+                value: 'loginout',
                 onClick: () => {
-                    this.session.$reset()
-                    this.$router.push({ name: "home-index" })
+                    this.session.$reset();
+                    this.$router.push({ name: 'home-index' });
                 }
             },
-        ]
+        ];
     }
 }
 </script>

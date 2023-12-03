@@ -1,62 +1,62 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { DomainItem } from "@/api/native/domain"
-import { MachineItem } from "@/api/native/machine"
-import { VendorItem } from "@/api/native/vendor"
+import { NaApi } from '@/api';
+import { DomainItem } from '@/api/native/domain';
+import { MachineItem } from '@/api/native/machine';
+import { VendorItem } from '@/api/native/vendor';
 
-import EcsBind from "@/cloud/alibaba/ecs/bind.vue"
-import SwasBind from "@/cloud/alibaba/swas/bind.vue"
-import DnsBind from "@/cloud/alibaba/dns/bind.vue"
+import EcsBind from '@/cloud/alibaba/ecs/bind.vue';
+import SwasBind from '@/cloud/alibaba/swas/bind.vue';
+import DnsBind from '@/cloud/alibaba/dns/bind.vue';
 
 @Component({
     components: { EcsBind, SwasBind, DnsBind }
 })
 export default class VendorAlibabaBind extends Vue {
     public curTab = {
-        id: "dns", label: ""
-    }
+        id: 'dns', label: ''
+    };
 
     // 初始化
 
     public created() {
-        this.vendorId = +this.$route.params.id
-        this.getVendor(this.vendorId)
-        this.getDomainList()
-        this.getMachineList()
+        this.vendorId = +this.$route.params.id;
+        this.getVendor(this.vendorId);
+        this.getDomainList();
+        this.getMachineList();
     }
 
     // 厂商信息
 
-    public vendorId = 0
-    public vendor?: VendorItem
+    public vendorId = 0;
+    public vendor?: VendorItem;
 
     async getVendor(id: number) {
-        const res = await NaApi.vendor.detail(id)
-        this.vendor = res.Item
+        const res = await NaApi.vendor.detail(id);
+        this.vendor = res.Item;
     }
 
     // 已绑定主机
 
-    public machineList: Record<string, MachineItem> = {}
+    public machineList: Record<string, MachineItem> = {};
 
     async getMachineList() {
-        const res = await NaApi.machine.list()
+        const res = await NaApi.machine.list();
         res.Items.forEach(item => {
-            this.machineList[item.CloudId] = item
-        })
+            this.machineList[item.CloudId] = item;
+        });
     }
 
     // 已绑定域名
 
-    public domainList: Record<string, DomainItem> = {}
+    public domainList: Record<string, DomainItem> = {};
 
     async getDomainList() {
-        const res = await NaApi.domain.list()
+        const res = await NaApi.domain.list();
         res.Items.forEach(item => {
-            this.domainList[item.CloudId] = item
-        })
+            this.domainList[item.CloudId] = item;
+        });
     }
 
 }

@@ -1,32 +1,32 @@
-import "@/theme/main.scss"
-import "@/helper/polyfills"
+import '@/theme/main.scss';
+import '@/helper/polyfills';
 
-import { createApp } from "vue"
+import { createApp } from 'vue';
 
-import App from "@/app.vue"
+import App from '@/app.vue';
 
-import setupPinia from "@/setup/pinia"
+import setupPinia from '@/setup/pinia';
 
-import setupRoute from "@/setup/route"
-import setupRouter from "@/setup/router"
+import setupRoute from '@/setup/route';
+import setupRouter from '@/setup/router';
 
-import setupTDesign from "@/setup/tdesign"
+import setupTDesign from '@/setup/tdesign';
 
-import setupCropper from "@/setup/cropper"
-import setupEcharts from "@/setup/echarts"
-import setupHighlight from "@/setup/highlight"
+import setupCropper from '@/setup/cropper';
+import setupEcharts from '@/setup/echarts';
+import setupHighlight from '@/setup/highlight';
 
-const app = createApp(App)
+const app = createApp(App);
 
-setupPinia(app)
+setupPinia(app);
 
-setupRoute(app)
-setupRouter(app)
+setupRoute(app);
+setupRouter(app);
 
-setupTDesign(app)
+setupTDesign(app);
 
-setupCropper(app)
-setupEcharts(app)
-setupHighlight(app)
+setupCropper(app);
+setupEcharts(app);
+setupHighlight(app);
 
-app.mount("#app")
+app.mount('#app');

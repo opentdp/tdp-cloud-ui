@@ -1,26 +1,26 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { UserRegister } from "@/api/native/passport"
+import Api, { NaApi } from '@/api';
+import { UserRegister } from '@/api/native/passport';
 
 @Component
 export default class PassportRegister extends Vue {
-    public loading = false
+    public loading = false;
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
     public formModel: UserRegister = {
-        Username: "",
-        Password: "",
-        Password2: "",
-        Email: "",
-    }
+        Username: '',
+        Password: '',
+        Password2: '',
+        Email: '',
+    };
 
     public formRules: FormRules<UserRegister> = {
         Username: [{ required: true }],
@@ -30,19 +30,19 @@ export default class PassportRegister extends Vue {
             { validator: val => val == this.formModel.Password, message: '两次密码不一致' }
         ],
         Email: [{ required: true }],
-    }
+    };
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        this.loading = true
+        this.loading = true;
         await NaApi.passport.register(this.formModel).finally(() => {
-            this.loading = false
-        })
+            this.loading = false;
+        });
         // 切换到登陆页面
-        this.$router.push("/passport/login")
+        this.$router.push('/passport/login');
     }
 }
 </script>

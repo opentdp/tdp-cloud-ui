@@ -1,62 +1,62 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "@/apps/basic"
+import { Ref, Prop, Component, Vue } from '@/apps/basic';
 
-import { CfApi } from "@/api"
-import * as CF from "@/api/cloudflare/typings"
-import { DomainItem } from "@/api/native/domain"
+import { CfApi } from '@/api';
+import * as CF from '@/api/cloudflare/typings';
+import { DomainItem } from '@/api/native/domain';
 
-import CustomHostnames from "./custom_hostnames.vue"
+import CustomHostnames from './custom_hostnames.vue';
 
-import RecordCreate from "./record_create.vue"
-import RecordUpdate from "./record_update.vue"
+import RecordCreate from './record_create.vue';
+import RecordUpdate from './record_update.vue';
 
 @Component({
     components: { RecordCreate, RecordUpdate, CustomHostnames }
 })
 export default class CloudflareDomain extends Vue {
     @Ref
-    public createModal!: RecordCreate
+    public createModal!: RecordCreate;
 
     @Ref
-    public updateModal!: RecordUpdate
+    public updateModal!: RecordUpdate;
 
     @Prop
-    public domain!: Omit<DomainItem, "CloudMeta"> & {
+    public domain!: Omit<DomainItem, 'CloudMeta'> & {
         CloudMeta: CF.ZoneItem
-    }
+    };
 
     // 初始化
 
     public created() {
-        CfApi.vendor(this.domain.VendorId)
-        this.domainInfo = this.domain.CloudMeta
-        this.getDomain()
-        this.getRecordList()
+        CfApi.vendor(this.domain.VendorId);
+        this.domainInfo = this.domain.CloudMeta;
+        this.getDomain();
+        this.getRecordList();
     }
 
     // 域名概要
 
-    public domainInfo!: CF.ZoneItem
+    public domainInfo!: CF.ZoneItem;
 
     async getDomain() {
-        const res = await CfApi.zones.detail(this.domainInfo.id)
-        this.domainInfo = res.Datasets
+        const res = await CfApi.zones.detail(this.domainInfo.id);
+        this.domainInfo = res.Datasets;
     }
 
     // 解析记录
 
-    public recordList!: CF.ZoneRecordItem[]
+    public recordList!: CF.ZoneRecordItem[];
 
     async getRecordList() {
-        const res = await CfApi.zones.dnsRecords(this.domainInfo.id)
-        this.recordList = res.Datasets
+        const res = await CfApi.zones.dnsRecords(this.domainInfo.id);
+        this.recordList = res.Datasets;
     }
 
     // 删除记录
 
     async deleteRecord(id: string) {
-        await CfApi.zones.dnsRecordDelete(this.domainInfo.id, id)
-        this.getRecordList()
+        await CfApi.zones.dnsRecordDelete(this.domainInfo.id, id);
+        this.getRecordList();
     }
 
     // 表格定义
@@ -68,8 +68,8 @@ export default class CloudflareDomain extends Vue {
         { colKey: 'proxied', title: '加速', ellipsis: true },
         { colKey: 'ttl', title: 'TTL', ellipsis: true },
         { colKey: 'comment', title: '备注', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

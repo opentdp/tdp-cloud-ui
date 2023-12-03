@@ -1,27 +1,27 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { CfApi } from "@/api"
-import { ZoneRecordTypes } from "@/api/cloudflare/zones"
-import * as CF from "@/api/cloudflare/typings"
+import Api, { CfApi } from '@/api';
+import { ZoneRecordTypes } from '@/api/cloudflare/zones';
+import * as CF from '@/api/cloudflare/typings';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class CloudflareRecordUpdate extends Vue {
-    public ZoneRecordTypes = ZoneRecordTypes
+    public ZoneRecordTypes = ZoneRecordTypes;
 
-    public recordInfo!: CF.ZoneRecordItem
+    public recordInfo!: CF.ZoneRecordItem;
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: CF.ZoneRecordCreate
+    public formModel!: CF.ZoneRecordCreate;
 
     public formRules: FormRules<CF.ZoneRecordCreate> = {
         name: [{ required: true }],
@@ -30,14 +30,14 @@ export default class CloudflareRecordUpdate extends Vue {
         proxied: [{ required: true }],
         priority: [{ required: true }],
         ttl: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
         const query = {
             name: this.formModel.name,
@@ -46,42 +46,42 @@ export default class CloudflareRecordUpdate extends Vue {
             proxied: this.formModel.proxied,
             priority: this.formModel.priority || 0,
             ttl: +this.formModel.ttl || 1,
-            comment: this.formModel.comment || "",
+            comment: this.formModel.comment || '',
             tags: this.formModel.tags || []
-        }
-        if (query.type == "MX") {
-            delete query.proxied
+        };
+        if (query.type == 'MX') {
+            delete query.proxied;
         }
         await CfApi.zones.dnsRecordUpdate(
             this.recordInfo.zone_id,
             this.recordInfo.id,
             query
-        )
-        this.close()
+        );
+        this.close();
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(record: CF.ZoneRecordItem) {
-        this.visible = true
-        this.recordInfo = record
+        this.visible = true;
+        this.recordInfo = record;
         this.formModel = {
-            name: record.name.replace(record.zone_name, "").replace(/\.$/, "") || "@",
+            name: record.name.replace(record.zone_name, '').replace(/\.$/, '') || '@',
             type: record.type,
             content: record.content,
             proxied: record.proxied,
             priority: record.priority || 0,
             ttl: record.ttl,
-            comment: record.comment || "",
+            comment: record.comment || '',
             tags: record.tags
-        }
+        };
     }
 }
 </script>

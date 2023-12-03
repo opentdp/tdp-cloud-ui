@@ -1,44 +1,44 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { NaApi, TcApi } from "@/api"
-import { DomainItem } from "@/api/native/domain"
-import { DomainStatusMap } from "@/api/tencent/dnspod"
-import * as TC from "@/api/tencent/typings"
+import { NaApi, TcApi } from '@/api';
+import { DomainItem } from '@/api/native/domain';
+import { DomainStatusMap } from '@/api/tencent/dnspod';
+import * as TC from '@/api/tencent/typings';
 
 @Component({
-    emits: ["change"]
+    emits: ['change']
 })
 export default class DnspodBind extends Vue {
-    public DomainStatusMap = DomainStatusMap
+    public DomainStatusMap = DomainStatusMap;
 
-    public loading = true
-
-    @Prop
-    public vendorId = 0
+    public loading = true;
 
     @Prop
-    public boundList: Record<string, DomainItem> = {}
+    public vendorId = 0;
+
+    @Prop
+    public boundList: Record<string, DomainItem> = {};
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.vendorId)
-        this.getDomainList()
+        TcApi.vendor(this.vendorId);
+        this.getDomainList();
     }
 
     // 获取列表
 
-    public domainList: TC.Dnspod.DomainListItem[] = []
-    public domainCount = 0
+    public domainList: TC.Dnspod.DomainListItem[] = [];
+    public domainCount = 0;
 
     async getDomainList() {
-        const res = await TcApi.dnspod.describeDomainList()
+        const res = await TcApi.dnspod.describeDomainList();
         if (res.DomainCountInfo) {
-            this.domainList = res.DomainList || []
-            this.domainCount = res.DomainCountInfo.AllTotal
+            this.domainList = res.DomainList || [];
+            this.domainCount = res.DomainCountInfo.AllTotal;
         }
-        this.loading = false
+        this.loading = false;
     }
 
     // 绑定域名
@@ -47,26 +47,26 @@ export default class DnspodBind extends Vue {
         await NaApi.domain.create({
             VendorId: this.vendorId,
             Name: item.Name,
-            NSList: item.EffectiveDNS.join(","),
-            Model: "tencent/dnspod",
+            NSList: item.EffectiveDNS.join(','),
+            Model: 'tencent/dnspod',
             CloudId: item.DomainId + '',
             CloudMeta: item,
-            Status: "",
-            Description: "",
-        })
-        this.$emit("change")
+            Status: '',
+            Description: '',
+        });
+        this.$emit('change');
     }
 
     // 同步域名
 
     public syncDomian(item: TC.Dnspod.DomainListItem) {
-        const bd = this.boundList[item.DomainId]
+        const bd = this.boundList[item.DomainId];
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
-            NSList: item.EffectiveDNS.join(","),
+            NSList: item.EffectiveDNS.join(','),
             CloudId: item.DomainId + '',
             CloudMeta: item,
-        })
+        });
     }
 
     // 表格定义
@@ -79,8 +79,8 @@ export default class DnspodBind extends Vue {
         { colKey: 'DNSStatus', title: 'NS 记录', ellipsis: true },
         { colKey: 'GradeTitle', title: '套餐', ellipsis: true },
         { colKey: 'VipEndAt', title: '有效期', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

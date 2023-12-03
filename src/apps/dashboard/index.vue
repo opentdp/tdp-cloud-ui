@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { UserSummary } from "@/api/native/passport"
+import { NaApi } from '@/api';
+import { UserSummary } from '@/api/native/passport';
 
-import SysLoad from "@/cloud/worker/sys_load.vue"
-import SysInfo from "@/cloud/worker/sys_info.vue"
+import SysLoad from '@/cloud/worker/sys_load.vue';
+import SysInfo from '@/cloud/worker/sys_info.vue';
 
 @Component({
     components: { SysLoad, SysInfo }
@@ -14,37 +14,37 @@ export default class DashboardIndex extends Vue {
     // 初始化
 
     public created() {
-        this.getUserSummary()
-        this.checkUpgrade()
+        this.getUserSummary();
+        this.checkUpgrade();
     }
 
     // 资源统计
 
-    public summary!: UserSummary
+    public summary!: UserSummary;
 
     async getUserSummary() {
-        const res = await NaApi.passport.summary()
-        this.summary = res
+        const res = await NaApi.passport.summary();
+        this.summary = res;
     }
 
     // 在线更新
 
-    public newVersion = ""
-    public upgrading = false
+    public newVersion = '';
+    public upgrading = false;
 
     async checkUpgrade() {
-        const res = await NaApi.upgrade.check()
-        if (res.Package.startsWith("https://")) {
-            this.newVersion = res.Version
+        const res = await NaApi.upgrade.check();
+        if (res.Package.startsWith('https://')) {
+            this.newVersion = res.Version;
         }
     }
 
     public applyUpgrade() {
-        this.upgrading = true
+        this.upgrading = true;
         NaApi.upgrade.apply().finally(() => {
-            setTimeout(() => location.reload(), 3000)
-            this.upgrading = false
-        })
+            setTimeout(() => location.reload(), 3000);
+            this.upgrading = false;
+        });
     }
 }
 </script>

@@ -1,79 +1,79 @@
-import { CloudflareClient } from "./base"
+import { CloudflareClient } from './base';
 import {
     Payload,
     ZoneItem, ZoneRecordItem, ZoneRecordCreate,
     FallbackOrigin, CustomHostnameItem
-} from "./typings"
+} from './typings';
 
 export class ZonesModel extends CloudflareClient {
     public list(filter?: unknown): Promise<Payload & { Datasets: ZoneItem[] }> {
-        return this.bus({ Method: "GET", Path: "/zones", Query: filter })
+        return this.bus({ Method: 'GET', Path: '/zones', Query: filter });
     }
 
     public detail(zone: string): Promise<Payload & { Datasets: ZoneItem }> {
-        return this.bus({ Method: "GET", Path: "/zones/" + zone })
+        return this.bus({ Method: 'GET', Path: '/zones/' + zone });
     }
 
     // 域名设置
 
     public settings(zone: string): Promise<Payload> {
-        return this.bus({ Method: "GET", Path: "/zones/" + zone + "/settings" })
+        return this.bus({ Method: 'GET', Path: '/zones/' + zone + '/settings' });
     }
 
     // DNS 记录
 
     public dnsRecords(zone: string): Promise<Payload & { Datasets: ZoneRecordItem[] }> {
-        return this.bus({ Method: "GET", Path: "/zones/" + zone + "/dns_records" })
+        return this.bus({ Method: 'GET', Path: '/zones/' + zone + '/dns_records' });
     }
 
     public dnsRecordCreate(zone: string, query: ZoneRecordCreate): Promise<Payload> {
-        return this.bus({ Method: "POST", Path: "/zones/" + zone + "/dns_records", Payload: query })
+        return this.bus({ Method: 'POST', Path: '/zones/' + zone + '/dns_records', Payload: query });
     }
 
     public dnsRecordUpdate(zone: string, rid: string, query: ZoneRecordCreate): Promise<Payload> {
-        return this.bus({ Method: "PUT", Path: "/zones/" + zone + "/dns_records/" + rid, Payload: query })
+        return this.bus({ Method: 'PUT', Path: '/zones/' + zone + '/dns_records/' + rid, Payload: query });
     }
 
     public dnsRecordDelete(zone: string, rid: string): Promise<Payload> {
-        return this.bus({ Method: "DELETE", Path: "/zones/" + zone + "/dns_records/" + rid })
+        return this.bus({ Method: 'DELETE', Path: '/zones/' + zone + '/dns_records/' + rid });
     }
 
     // Custom Hostnames
 
     public customHostnames(zone: string): Promise<Payload & { Datasets: CustomHostnameItem[] }> {
-        return this.bus({ Method: "GET", Path: "/zones/" + zone + "/custom_hostnames" })
+        return this.bus({ Method: 'GET', Path: '/zones/' + zone + '/custom_hostnames' });
     }
 
     public customHostnamesCreate(zone: string, hostname: string): Promise<Payload> {
         const query = {
             hostname: hostname,
             ssl: {
-                method: "http",
-                type: "dv",
+                method: 'http',
+                type: 'dv',
                 settings: {
-                    min_tls_version: "1.0"
+                    min_tls_version: '1.0'
                 }
             }
-        }
-        return this.bus({ Method: "POST", Path: "/zones/" + zone + "/custom_hostnames", Payload: query })
+        };
+        return this.bus({ Method: 'POST', Path: '/zones/' + zone + '/custom_hostnames', Payload: query });
     }
 
     public customHostnamesDelete(zone: string, rid: string): Promise<Payload> {
-        return this.bus({ Method: "DELETE", Path: "/zones/" + zone + "/custom_hostnames/" + rid })
+        return this.bus({ Method: 'DELETE', Path: '/zones/' + zone + '/custom_hostnames/' + rid });
     }
 
     // Custom Hostnames - Fallback Origin
 
     public fallbackOrigin(zone: string): Promise<Payload & { Datasets: FallbackOrigin }> {
-        return this.bus({ Method: "GET", Path: "/zones/" + zone + "/custom_hostnames/fallback_origin" })
+        return this.bus({ Method: 'GET', Path: '/zones/' + zone + '/custom_hostnames/fallback_origin' });
     }
 
     public fallbackOriginUpdate(zone: string, origin: string): Promise<Payload & { Datasets: FallbackOrigin }> {
-        return this.bus({ Method: "PUT", Path: "/zones/" + zone + "/custom_hostnames/fallback_origin", Payload: { origin } })
+        return this.bus({ Method: 'PUT', Path: '/zones/' + zone + '/custom_hostnames/fallback_origin', Payload: { origin } });
     }
 
     public fallbackOriginDelete(zone: string): Promise<Payload> {
-        return this.bus({ Method: "DELETE", Path: "/zones/" + zone + "/custom_hostnames/fallback_origin" })
+        return this.bus({ Method: 'DELETE', Path: '/zones/' + zone + '/custom_hostnames/fallback_origin' });
     }
 
 }
@@ -99,4 +99,4 @@ export const ZoneRecordTypes: Record<string, unknown> = {
     TLSA: {},
     TXT: {},
     URI: {},
-}
+};

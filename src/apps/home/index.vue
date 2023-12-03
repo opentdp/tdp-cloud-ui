@@ -1,13 +1,13 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
 @Component
 export default class HomeIndex extends Vue {
     public created() {
         if (this.session.Username) {
-            this.$router.push("/dashboard")
+            this.$router.push('/dashboard');
         } else {
-            this.$router.push("/login")
+            this.$router.push('/login');
         }
     }
 }

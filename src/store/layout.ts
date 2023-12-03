@@ -1,16 +1,16 @@
-import { defineStore } from "pinia"
+import { defineStore } from 'pinia';
 
-import { NaApi } from "@/api"
-import * as vars from "@/helper/const"
+import { NaApi } from '@/api';
+import * as vars from '@/helper/const';
 
-export default defineStore("layout", {
+export default defineStore('layout', {
     state: () => ({
         // 侧栏折叠
         Collapse: false,
         // 主题模式
-        ThemeMode: "",
+        ThemeMode: '',
         // 后端版本
-        Version: "",
+        Version: '',
         // 功能开关
         Registrable: false,
         // 前端配置
@@ -25,51 +25,51 @@ export default defineStore("layout", {
     actions: {
         // 侧边栏折叠
         setCollapse(data: boolean) {
-            this.Collapse = data
+            this.Collapse = data;
         },
         // 设置主题模式
-        setThemeMode(mode: "dark" | "light" | "classic") {
-            this.ThemeMode = mode
-            this.applyConfig()
+        setThemeMode(mode: 'dark' | 'light' | 'classic') {
+            this.ThemeMode = mode;
+            this.applyConfig();
         },
         // 获取前端配置
         async fetchConfig() {
-            const res = await NaApi.config.ui()
+            const res = await NaApi.config.ui();
             Object.keys(res).forEach(k => {
-                const v = res[k].trim()
-                v && Object.assign(this, { [k]: v })
-            })
+                const v = res[k].trim();
+                v && Object.assign(this, { [k]: v });
+            });
             // 修正参数类型
-            this.Registrable = res.Registrable == "true"
+            this.Registrable = res.Registrable == 'true';
             // 安装统计代码
             if (this.Analytics) {
-                this.runScript(this.Analytics)
+                this.runScript(this.Analytics);
             }
             // 应用前端配置
-            this.applyConfig()
+            this.applyConfig();
         },
         // 应用布局设置
         applyConfig() {
             if (document.body.clientWidth < 1000) {
-                this.setCollapse(true)
+                this.setCollapse(true);
             }
-            document.documentElement.setAttribute('theme-mode', this.ThemeMode)
+            document.documentElement.setAttribute('theme-mode', this.ThemeMode);
         },
         // 执行行内脚本
         runScript(code: string) {
-            const script = document.createElement('script')
-            script.innerHTML = code // 写入行内脚本
-            document.body.appendChild(script)
-            document.body.removeChild(script)
+            const script = document.createElement('script');
+            script.innerHTML = code; // 写入行内脚本
+            document.body.appendChild(script);
+            document.body.removeChild(script);
         },
     },
     persist: {
         enabled: true,
         strategies: [
             {
-                key: "tdp/layout",
+                key: 'tdp/layout',
                 storage: sessionStorage,
             },
         ],
     },
-})
+});

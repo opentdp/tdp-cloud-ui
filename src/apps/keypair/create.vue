@@ -1,68 +1,68 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { KeypairTypeList, KeypairOrig } from "@/api/native/keypair"
+import Api, { NaApi } from '@/api';
+import { KeypairTypeList, KeypairOrig } from '@/api/native/keypair';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class KeypairCreate extends Vue {
-    public KeypairTypeList = KeypairTypeList
+    public KeypairTypeList = KeypairTypeList;
 
-    public loading = false
+    public loading = false;
 
     async keygen() {
-        this.loading = true
-        const res = await NaApi.keypair.keygen(this.formModel.KeyType)
-        this.formModel.PrivateKey = res.PrivateKey
-        this.formModel.PublicKey = res.PublicKey
-        this.loading = false
+        this.loading = true;
+        const res = await NaApi.keypair.keygen(this.formModel.KeyType);
+        this.formModel.PrivateKey = res.PrivateKey;
+        this.formModel.PublicKey = res.PublicKey;
+        this.loading = false;
     }
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
     public formModel: KeypairOrig = {
-        PublicKey: "",
-        PrivateKey: "",
-        KeyType: "",
-        Description: "",
-    }
+        PublicKey: '',
+        PrivateKey: '',
+        KeyType: '',
+        Description: '',
+    };
 
     public formRules: FormRules<KeypairOrig> = {
         PublicKey: [{ required: true }],
         PrivateKey: [{ required: true }],
         Description: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        await NaApi.keypair.create(this.formModel)
-        this.close()
+        await NaApi.keypair.create(this.formModel);
+        this.close();
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open() {
-        this.visible = true
+        this.visible = true;
     }
 }
 </script>

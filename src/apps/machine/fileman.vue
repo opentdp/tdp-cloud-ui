@@ -1,34 +1,34 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { MachineModels, MachineItem } from "@/api/native/machine"
+import { NaApi } from '@/api';
+import { MachineModels, MachineItem } from '@/api/native/machine';
 
-import WorkerFileman from "@/cloud/worker/fileman.vue"
+import WorkerFileman from '@/cloud/worker/fileman.vue';
 
 @Component({
     components: { WorkerFileman }
 })
 export default class MachineFileman extends Vue {
-    public MachineModels = MachineModels
+    public MachineModels = MachineModels;
 
-    public loading = true
+    public loading = true;
 
     // 初始化
 
     async created() {
-        const machineId = +this.$route.params.id
-        await this.getMachine(machineId)
+        const machineId = +this.$route.params.id;
+        await this.getMachine(machineId);
     }
 
     // 获取主机
 
-    public machine!: MachineItem
+    public machine!: MachineItem;
 
     async getMachine(id: number) {
-        const res = await NaApi.machine.detail(id)
-        this.machine = res.Item
-        this.loading = false
+        const res = await NaApi.machine.detail(id);
+        this.machine = res.Item;
+        this.loading = false;
     }
 }
 </script>

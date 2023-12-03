@@ -1,46 +1,46 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { VendorItem } from "@/api/native/vendor"
+import { NaApi } from '@/api';
+import { VendorItem } from '@/api/native/vendor';
 
-import VendorCreate from "./cloudflare_create.vue"
-import VendorUpdate from "./cloudflare_update.vue"
+import VendorCreate from './cloudflare_create.vue';
+import VendorUpdate from './cloudflare_update.vue';
 
 @Component({
     components: { VendorCreate, VendorUpdate }
 })
 export default class VendorCloudflare extends Vue {
-    public loading = true
+    public loading = true;
 
     @Ref
-    public createModal!: VendorCreate
+    public createModal!: VendorCreate;
 
     @Ref
-    public updateModal!: VendorUpdate
+    public updateModal!: VendorUpdate;
 
     // 初始化
 
     public created() {
-        this.getVendorList()
+        this.getVendorList();
     }
 
     // 厂商列表
 
-    public vendorList: VendorItem[] = []
+    public vendorList: VendorItem[] = [];
 
     async getVendorList() {
-        const res = await NaApi.vendor.list({ Provider: "cloudflare" })
-        this.vendorList = res.Items
-        this.loading = false
+        const res = await NaApi.vendor.list({ Provider: 'cloudflare' });
+        this.vendorList = res.Items;
+        this.loading = false;
     }
 
     // 删除厂商
 
     async deleteVendor(idx: number) {
-        const item = this.vendorList[idx]
-        await NaApi.vendor.remove(item.Id)
-        this.vendorList.splice(idx, 1)
+        const item = this.vendorList[idx];
+        await NaApi.vendor.remove(item.Id);
+        this.vendorList.splice(idx, 1);
     }
 
     // 表格定义
@@ -48,8 +48,8 @@ export default class VendorCloudflare extends Vue {
     public tableColumns = [
         { colKey: 'Description', title: '别名', ellipsis: true },
         { colKey: 'SecretId', title: '邮箱', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "160px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '160px' },
+    ];
 }
 </script>
 

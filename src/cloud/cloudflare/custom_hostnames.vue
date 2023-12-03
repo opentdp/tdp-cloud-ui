@@ -1,91 +1,91 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { CfApi } from "@/api"
-import * as CF from "@/api/cloudflare/typings"
+import { CfApi } from '@/api';
+import * as CF from '@/api/cloudflare/typings';
 
-import { dateFormat } from "@/helper/format"
+import { dateFormat } from '@/helper/format';
 
 @Component
 export default class CloudflareCustomHostnames extends Vue {
-    public dateFormat = dateFormat
+    public dateFormat = dateFormat;
 
-    public loading = true
+    public loading = true;
 
     @Prop
-    public domainInfo!: CF.ZoneItem
+    public domainInfo!: CF.ZoneItem;
 
     // 初始化
 
     public created() {
-        this.refresh()
+        this.refresh();
     }
 
     // 刷新记录
 
-    public saasError = 0
+    public saasError = 0;
 
     public refresh() {
-        this.loading = true
+        this.loading = true;
         this.getFallbackOrigin().finally(() => {
-            this.loading = false
+            this.loading = false;
         }).then(
             () => {
-                this.getCustomHostnames()
+                this.getCustomHostnames();
             },
             (e: Error) => {
-                const msg = e && e.message || ""
-                if (msg.indexOf("has not been granted") >= 0) {
-                    return this.saasError = 4
+                const msg = e && e.message || '';
+                if (msg.indexOf('has not been granted') >= 0) {
+                    return this.saasError = 4;
                 }
-                if (msg.indexOf("Resource not found") >= 0) {
-                    return this.saasError = 2
+                if (msg.indexOf('Resource not found') >= 0) {
+                    return this.saasError = 2;
                 }
             }
-        )
+        );
     }
 
     // 默认回退源
 
     public fallbackOrigin: CF.FallbackOrigin = {
-        origin: "",
-        status: "active"
-    }
+        origin: '',
+        status: 'active'
+    };
 
     async getFallbackOrigin() {
-        const res = await CfApi.zones.fallbackOrigin(this.domainInfo.id)
-        this.fallbackOrigin = res.Datasets
+        const res = await CfApi.zones.fallbackOrigin(this.domainInfo.id);
+        this.fallbackOrigin = res.Datasets;
     }
 
     async updateFallbackOrigin() {
-        const res = await CfApi.zones.fallbackOriginUpdate(this.domainInfo.id, this.fallbackOrigin.origin)
-        setTimeout(() => this.getFallbackOrigin(), 3000)
-        this.fallbackOrigin = res.Datasets
+        const res = await CfApi.zones.fallbackOriginUpdate(this.domainInfo.id, this.fallbackOrigin.origin);
+        setTimeout(() => this.getFallbackOrigin(), 3000);
+        this.fallbackOrigin = res.Datasets;
     }
 
     public deleteFallbackOrigin() {
-        CfApi.zones.fallbackOriginDelete(this.domainInfo.id)
+        CfApi.zones.fallbackOriginDelete(this.domainInfo.id);
     }
 
     // 自定义主机名
 
-    public newHostname = ""
-    public customHostnames: CF.CustomHostnameItem[] = []
+    public newHostname = '';
+    public customHostnames: CF.CustomHostnameItem[] = [];
 
     async getCustomHostnames() {
-        const res = await CfApi.zones.customHostnames(this.domainInfo.id)
-        this.customHostnames = res.Datasets
+        const res = await CfApi.zones.customHostnames(this.domainInfo.id);
+        this.customHostnames = res.Datasets;
     }
 
     async createCustomHostnames() {
-        await CfApi.zones.customHostnamesCreate(this.domainInfo.id, this.newHostname)
-        this.getCustomHostnames()
-        this.newHostname = ""
+        await CfApi.zones.customHostnamesCreate(this.domainInfo.id, this.newHostname);
+        this.getCustomHostnames();
+        this.newHostname = '';
     }
 
     async deleteCustomHostnames(rid: string) {
-        await CfApi.zones.customHostnamesDelete(this.domainInfo.id, rid)
-        this.getCustomHostnames()
+        await CfApi.zones.customHostnamesDelete(this.domainInfo.id, rid);
+        this.getCustomHostnames();
     }
 
     // 表格定义
@@ -95,8 +95,8 @@ export default class CloudflareCustomHostnames extends Vue {
         { colKey: 'status', title: '域名状态', ellipsis: true },
         { colKey: 'ssl.status', title: '证书状态', ellipsis: true },
         { colKey: 'expires_on', title: '证书有效期', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

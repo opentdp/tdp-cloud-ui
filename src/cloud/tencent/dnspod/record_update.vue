@@ -1,24 +1,24 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { TcApi } from "@/api"
-import * as TC from "@/api/tencent/typings"
+import Api, { TcApi } from '@/api';
+import * as TC from '@/api/tencent/typings';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class DnspodRecordUpdate extends Vue {
-    public domainInfo!: TC.Dnspod.DomainInfo
+    public domainInfo!: TC.Dnspod.DomainInfo;
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: TC.Dnspod.RecordListItem
+    public formModel!: TC.Dnspod.RecordListItem;
 
     public formRules: FormRules<TC.Dnspod.RecordListItem> = {
         Name: [{ required: true }],
@@ -29,14 +29,14 @@ export default class DnspodRecordUpdate extends Vue {
         TTL: [{ required: true }],
         Weight: [{ required: true }],
         Status: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
         const query: TC.Dnspod.ModifyRecordRequest = {
             RecordId: this.formModel.RecordId || 0,
@@ -48,49 +48,49 @@ export default class DnspodRecordUpdate extends Vue {
             MX: +this.formModel.MX || 0,
             TTL: +this.formModel.TTL || 600,
             Weight: +this.formModel.Weight || 0,
-            Status: this.formModel.Status || "ENABLE",
-        }
-        await TcApi.dnspod.modifyRecord(query)
-        this.close()
+            Status: this.formModel.Status || 'ENABLE',
+        };
+        await TcApi.dnspod.modifyRecord(query);
+        this.close();
     }
 
     // 记录类型及线路
 
-    public recordType: string[] = []
-    public recordLineList: TC.Dnspod.LineInfo[] = []
+    public recordType: string[] = [];
+    public recordLineList: TC.Dnspod.LineInfo[] = [];
 
     async getRecordType() {
         const res = await TcApi.dnspod.describeRecordType({
             DomainGrade: this.domainInfo.Grade
-        })
-        this.recordType = res.TypeList || []
+        });
+        this.recordType = res.TypeList || [];
     }
 
     async getRecordLine() {
         const res = await TcApi.dnspod.describeRecordLineList({
             DomainGrade: this.domainInfo.Grade,
             Domain: this.domainInfo.Domain
-        })
-        this.recordLineList = res.LineList || []
+        });
+        this.recordLineList = res.LineList || [];
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(info: TC.Dnspod.DomainInfo, record: TC.Dnspod.RecordListItem) {
-        this.visible = true
-        this.domainInfo = info
-        this.formModel = record
-        this.formModel.Weight = record.Weight || 0
+        this.visible = true;
+        this.domainInfo = info;
+        this.formModel = record;
+        this.formModel.Weight = record.Weight || 0;
         // 加载数据
-        this.recordType.length == 0 && this.getRecordType()
-        this.recordLineList.length == 0 && this.getRecordLine()
+        this.recordType.length == 0 && this.getRecordType();
+        this.recordLineList.length == 0 && this.getRecordLine();
     }
 }
 </script>

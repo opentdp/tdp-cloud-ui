@@ -1,53 +1,53 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { ConfigOrig, ConfigItem } from "@/api/native/config"
+import Api, { NaApi } from '@/api';
+import { ConfigOrig, ConfigItem } from '@/api/native/config';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class ConfigUpdate extends Vue {
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: ConfigOrig
+    public formModel!: ConfigOrig;
 
     public formRules: FormRules<ConfigOrig> = {
         Value: [
             { required: true },
             { max: 64 },
         ],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        await NaApi.config.update(this.formModel)
-        this.close()
+        await NaApi.config.update(this.formModel);
+        this.close();
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(data: ConfigItem) {
-        this.visible = true
-        this.formModel = data
+        this.visible = true;
+        this.formModel = data;
     }
 }
 </script>

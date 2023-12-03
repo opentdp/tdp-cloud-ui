@@ -1,40 +1,40 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { MachineModels, MachineItem } from "@/api/native/machine"
+import { NaApi } from '@/api';
+import { MachineModels, MachineItem } from '@/api/native/machine';
 
-import AlibabaEcs from "@/cloud/alibaba/ecs/instance.vue"
-import AlibabaSwas from "@/cloud/alibaba/swas/instance.vue"
+import AlibabaEcs from '@/cloud/alibaba/ecs/instance.vue';
+import AlibabaSwas from '@/cloud/alibaba/swas/instance.vue';
 
-import TencentCvm from "@/cloud/tencent/cvm/instance.vue"
-import TencentLighthouse from "@/cloud/tencent/lighthouse/instance.vue"
+import TencentCvm from '@/cloud/tencent/cvm/instance.vue';
+import TencentLighthouse from '@/cloud/tencent/lighthouse/instance.vue';
 
-import NativeWorker from "@/cloud/worker/instance.vue"
+import NativeWorker from '@/cloud/worker/instance.vue';
 
 @Component({
     components: { AlibabaEcs, AlibabaSwas, TencentCvm, TencentLighthouse, NativeWorker }
 })
 export default class MachineDetail extends Vue {
-    public MachineModels = MachineModels
+    public MachineModels = MachineModels;
 
-    public loading = true
+    public loading = true;
 
     // 初始化
 
     public created() {
-        const machineId = +this.$route.params.id
-        this.getMachine(machineId)
+        const machineId = +this.$route.params.id;
+        this.getMachine(machineId);
     }
 
     // 获取主机
 
-    public machine!: MachineItem
+    public machine!: MachineItem;
 
     async getMachine(id: number) {
-        const res = await NaApi.machine.detail(id)
-        this.machine = res.Item
-        this.loading = false
+        const res = await NaApi.machine.detail(id);
+        this.machine = res.Item;
+        this.loading = false;
     }
 }
 </script>

@@ -1,10 +1,10 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
 @Component
 export default class Error404 extends Vue {
     public goBack() {
-        this.$router.go(-1)
+        this.$router.go(-1);
     }
 }
 </script>

@@ -1,65 +1,65 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { TcApi } from "@/api"
-import * as TC from "@/api/tencent/typings"
+import Api, { TcApi } from '@/api';
+import * as TC from '@/api/tencent/typings';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class LighthouseFirewallRemark extends Vue {
-    public instance!: TC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance;
 
     public get region() {
-        return this.instance.Zone.replace(/-\d$/, "")
+        return this.instance.Zone.replace(/-\d$/, '');
     }
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
     public formModel: TC.Lighthouse.FirewallRule = {
-        CidrBlock: "",
-        Protocol: "",
-        Action: "",
-        FirewallRuleDescription: ""
-    }
+        CidrBlock: '',
+        Protocol: '',
+        Action: '',
+        FirewallRuleDescription: ''
+    };
 
     public formRules: FormRules<TC.Lighthouse.FirewallRule> = {
         FirewallRuleDescription: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
         await TcApi.lighthouse.modifyFirewallRuleDescription(this.region, {
             InstanceId: this.instance.InstanceId,
             FirewallRule: this.formModel
-        })
-        this.close()
+        });
+        this.close();
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(instance: TC.Lighthouse.Instance, rule: TC.Lighthouse.FirewallRule) {
-        this.instance = instance
-        this.formModel = rule
-        this.visible = true
+        this.instance = instance;
+        this.formModel = rule;
+        this.visible = true;
     }
 }
 </script>

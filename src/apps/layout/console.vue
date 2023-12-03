@@ -1,10 +1,10 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import Header from "./header.vue"
-import Content from "./content.vue"
-import Footer from "./footer.vue"
-import Sidebar from "./sidebar.vue"
+import Header from './header.vue';
+import Content from './content.vue';
+import Footer from './footer.vue';
+import Sidebar from './sidebar.vue';
 
 @Component({
     components: { Header, Content, Footer, Sidebar }

@@ -1,74 +1,74 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { EChartsOption } from "echarts"
+import { EChartsOption } from 'echarts';
 
-import { TcApi } from "@/api"
-import * as TC from "@/api/tencent/typings"
+import { TcApi } from '@/api';
+import * as TC from '@/api/tencent/typings';
 
-import { bytesToSize, dateFormat } from "@/helper/format"
+import { bytesToSize, dateFormat } from '@/helper/format';
 
 @Component
 export default class LighthouseTraffic extends Vue {
-    public bytesToSize = bytesToSize
+    public bytesToSize = bytesToSize;
 
     @Prop
-    public instance!: TC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance;
 
     // 初始化
 
     public created() {
-        this.getTrafficPackage()
-        this.getLighthouseOuttraffic()
+        this.getTrafficPackage();
+        this.getLighthouseOuttraffic();
     }
 
     // 获取区域
 
     public get region() {
-        return this.instance.Zone.replace(/-\d$/, "")
+        return this.instance.Zone.replace(/-\d$/, '');
     }
 
     // 流量信息
 
-    public trafficPackage!: TC.Lighthouse.TrafficPackage
+    public trafficPackage!: TC.Lighthouse.TrafficPackage;
 
     async getTrafficPackage() {
         const res = await TcApi.lighthouse.describeInstancesTrafficPackages(this.region, {
             InstanceIds: [this.instance.InstanceId],
-        })
-        this.trafficPackage = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0]
+        });
+        this.trafficPackage = res.InstanceTrafficPackageSet[0].TrafficPackageSet[0];
     }
 
     async getLighthouseOuttraffic() {
         const res = await TcApi.monitor.getMonitorData(this.region, {
-            Namespace: "QCE/LIGHTHOUSE",
-            MetricName: "LighthouseOuttraffic",
+            Namespace: 'QCE/LIGHTHOUSE',
+            MetricName: 'LighthouseOuttraffic',
             Instances: [
                 {
                     Dimensions: [
                         {
-                            Name: "InstanceId",
+                            Name: 'InstanceId',
                             Value: this.instance.InstanceId,
                         },
                     ],
                 },
             ],
             Period: 300,
-            StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, "yyyy-MM-dd hh:mm:ss"),
-            EndTime: dateFormat(Date.now(), "yyyy-MM-dd hh:mm:ss"),
-        })
+            StartTime: dateFormat(Date.now() - 86400 * 30 * 1000, 'yyyy-MM-dd hh:mm:ss'),
+            EndTime: dateFormat(Date.now(), 'yyyy-MM-dd hh:mm:ss'),
+        });
         if (res.DataPoints == null || res.DataPoints.length === 0) {
-            return // 没有数据
+            return; // 没有数据
         }
         const data = res.DataPoints[0].Timestamps.map(t => {
-            return dateFormat(t * 1000, "yyyy-MM-dd\nhh:mm:ss")
-        })
-        this.setOuttrafficChartConfig(data, res.DataPoints[0].Values)
+            return dateFormat(t * 1000, 'yyyy-MM-dd\nhh:mm:ss');
+        });
+        this.setOuttrafficChartConfig(data, res.DataPoints[0].Values);
     }
 
     // 生成图表参数
 
-    public outtrafficChart!: EChartsOption
+    public outtrafficChart!: EChartsOption;
 
     public setOuttrafficChartConfig(xdata: string[], sdata: number[]) {
         this.outtrafficChart = {
@@ -130,7 +130,7 @@ export default class LighthouseTraffic extends Vue {
                     data: sdata
                 }
             ]
-        }
+        };
     }
 }
 </script>

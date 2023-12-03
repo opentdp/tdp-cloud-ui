@@ -1,44 +1,44 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { NaApi, AcApi } from "@/api"
-import { DomainItem } from "@/api/native/domain"
-import * as AC from "@/api/alibaba/typings"
+import { NaApi, AcApi } from '@/api';
+import { DomainItem } from '@/api/native/domain';
+import * as AC from '@/api/alibaba/typings';
 
-import { dateFormat } from "@/helper/format"
+import { dateFormat } from '@/helper/format';
 
 @Component({
-    emits: ["change"],
+    emits: ['change'],
 })
 export default class DnsBind extends Vue {
-    public dateFormat = dateFormat
-    public loading = true
+    public dateFormat = dateFormat;
+    public loading = true;
 
     @Prop
-    public vendorId = 0
+    public vendorId = 0;
 
     @Prop
-    public boundList: Record<string, DomainItem> = {}
+    public boundList: Record<string, DomainItem> = {};
 
     // 初始化
 
     public created() {
-        AcApi.vendor(this.vendorId)
-        this.getDomainList()
+        AcApi.vendor(this.vendorId);
+        this.getDomainList();
     }
 
     // 获取列表
 
-    public domainList: AC.Dns.DescribeDomainsResponseBodyDomainsDomain[] = []
-    public domainCount = 0
+    public domainList: AC.Dns.DescribeDomainsResponseBodyDomainsDomain[] = [];
+    public domainCount = 0;
 
     async getDomainList() {
-        const res = await AcApi.alidns.describeDomains()
+        const res = await AcApi.alidns.describeDomains();
         if (res.TotalCount > 0) {
-            this.domainList = res.Domains.Domain || []
-            this.domainCount = res.TotalCount
+            this.domainList = res.Domains.Domain || [];
+            this.domainCount = res.TotalCount;
         }
-        this.loading = false
+        this.loading = false;
     }
 
     // 绑定域名
@@ -47,26 +47,26 @@ export default class DnsBind extends Vue {
         await NaApi.domain.create({
             VendorId: this.vendorId,
             Name: item.DomainName,
-            NSList: item.DnsServers.DnsServer.join(","),
-            Model: "alibaba/alidns",
+            NSList: item.DnsServers.DnsServer.join(','),
+            Model: 'alibaba/alidns',
             CloudId: item.DomainId,
             CloudMeta: item,
-            Status: "",
-            Description: "",
-        })
-        this.$emit("change")
+            Status: '',
+            Description: '',
+        });
+        this.$emit('change');
     }
 
     // 同步域名
 
     public syncDomian(item: AC.Dns.DescribeDomainsResponseBodyDomainsDomain) {
-        const bd = this.boundList[item.DomainId]
+        const bd = this.boundList[item.DomainId];
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
-            NSList: item.DnsServers.DnsServer.join(","),
+            NSList: item.DnsServers.DnsServer.join(','),
             CloudId: item.DomainId,
             CloudMeta: item,
-        })
+        });
     }
 
     // 表格定义
@@ -77,8 +77,8 @@ export default class DnsBind extends Vue {
         { colKey: 'DnsServers', title: 'NS 服务器', ellipsis: true },
         { colKey: 'VersionCode', title: '套餐', ellipsis: true },
         { colKey: 'CreateTimestamp', title: '接入时间', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

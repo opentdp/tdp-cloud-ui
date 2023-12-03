@@ -1,12 +1,12 @@
-import { okMessage, errMessage } from "./basic/notify"
+import { okMessage, errMessage } from './basic/notify';
 
-import NaApi from "./native"
+import NaApi from './native';
 
-import AcApi from "./alibaba"
-import CfApi from "./cloudflare"
-import TcApi from "./tencent"
+import AcApi from './alibaba';
+import CfApi from './cloudflare';
+import TcApi from './tencent';
 
-export { NaApi, AcApi, CfApi, TcApi }
+export { NaApi, AcApi, CfApi, TcApi };
 
 export default {
     na: NaApi,
@@ -16,4 +16,4 @@ export default {
         ok: okMessage,
         err: errMessage,
     }
-}
+};

@@ -1,42 +1,42 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { DetailStat, IpSets } from "@/api/native/typings"
+import { NaApi } from '@/api';
+import { DetailStat, IpSets } from '@/api/native/typings';
 
-import { bytesToSize } from "@/helper/format"
+import { bytesToSize } from '@/helper/format';
 
 @Component
 export default class WorkerSysInfo extends Vue {
-    public bytesToSize = bytesToSize
+    public bytesToSize = bytesToSize;
 
-    public loading = true
+    public loading = true;
 
     @Prop
-    public id!: string
+    public id!: string;
 
     // 初始化
 
     public created() {
-        this.getDetailStat()
+        this.getDetailStat();
     }
 
     // 获取系统信息
 
-    public stat!: DetailStat
-    public ipsets!: IpSets
+    public stat!: DetailStat;
+    public ipsets!: IpSets;
 
     async getDetailStat() {
-        if (this.id === "host") {
-            const res = await NaApi.workhub.host()
-            this.stat = res.Stat
-            const rs2 = await NaApi.workhub.hostIp()
-            this.ipsets = rs2
+        if (this.id === 'host') {
+            const res = await NaApi.workhub.host();
+            this.stat = res.Stat;
+            const rs2 = await NaApi.workhub.hostIp();
+            this.ipsets = rs2;
         } else if (this.id) {
-            const res = await NaApi.workhub.detail(this.id)
-            this.stat = res.Stat
+            const res = await NaApi.workhub.detail(this.id);
+            this.stat = res.Stat;
         }
-        this.loading = false
+        this.loading = false;
     }
 }
 </script>

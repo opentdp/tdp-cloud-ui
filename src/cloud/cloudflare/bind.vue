@@ -1,68 +1,68 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { NaApi, CfApi } from "@/api"
-import * as CF from "@/api/cloudflare/typings"
-import { DomainItem } from "@/api/native/domain"
+import { NaApi, CfApi } from '@/api';
+import * as CF from '@/api/cloudflare/typings';
+import { DomainItem } from '@/api/native/domain';
 
 @Component({
-    emits: ["change"]
+    emits: ['change']
 })
 export default class CloudflareBind extends Vue {
-    public loading = true
+    public loading = true;
 
     @Prop
-    public vendorId = 0
+    public vendorId = 0;
 
     @Prop
-    public boundList: Record<string, DomainItem> = {}
+    public boundList: Record<string, DomainItem> = {};
 
     // 初始化
 
     public created() {
-        CfApi.vendor(this.vendorId)
-        this.getDomainlist()
+        CfApi.vendor(this.vendorId);
+        this.getDomainlist();
     }
 
     // 获取列表
 
-    public domainList: CF.ZoneItem[] = []
-    public domainCount = 0
+    public domainList: CF.ZoneItem[] = [];
+    public domainCount = 0;
 
     async getDomainlist() {
-        const res = await CfApi.zones.list()
-        this.domainList = res.Datasets
-        this.loading = false
+        const res = await CfApi.zones.list();
+        this.domainList = res.Datasets;
+        this.loading = false;
     }
 
     // 绑定域名
 
     async bindDomian(item: CF.ZoneItem) {
-        const ns = item.name_servers ? item.name_servers.join(",") : "Custom NS"
+        const ns = item.name_servers ? item.name_servers.join(',') : 'Custom NS';
         await NaApi.domain.create({
             VendorId: this.vendorId,
             Name: item.name,
             NSList: ns,
-            Model: "cloudflare/zone",
+            Model: 'cloudflare/zone',
             CloudId: item.id + '',
             CloudMeta: item,
-            Status: "",
-            Description: "",
-        })
-        this.$emit("change")
+            Status: '',
+            Description: '',
+        });
+        this.$emit('change');
     }
 
     // 同步域名
 
     public syncDomian(item: CF.ZoneItem) {
-        const ns = item.name_servers ? item.name_servers.join(",") : "Custom NS"
-        const bd = this.boundList[item.id]
+        const ns = item.name_servers ? item.name_servers.join(',') : 'Custom NS';
+        const bd = this.boundList[item.id];
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
             NSList: ns,
             CloudId: item.id + '',
             CloudMeta: item,
-        })
+        });
     }
 
     // 表格定义
@@ -73,8 +73,8 @@ export default class CloudflareBind extends Vue {
         { colKey: 'type', title: '接入方式', ellipsis: true },
         { colKey: 'name_servers', title: 'NS 服务器', ellipsis: true },
         { colKey: 'plan.name', title: '套餐', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

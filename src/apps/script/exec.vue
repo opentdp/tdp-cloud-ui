@@ -1,96 +1,96 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
-import { ScriptItem } from "@/api/native/script"
-import { TasklineItem } from "@/api/native/taskline"
+import Api, { NaApi } from '@/api';
+import { MachineItem } from '@/api/native/machine';
+import { ScriptItem } from '@/api/native/script';
+import { TasklineItem } from '@/api/native/taskline';
 
 @Component({
     emits: ['submit'],
     expose: ['open']
 })
 export default class ScriptExec extends Vue {
-    public machines!: MachineItem[]
+    public machines!: MachineItem[];
 
-    public loading = false
-    public timer = 0
+    public loading = false;
+    public timer = 0;
 
     // 机器列表
 
     public get hostnames() {
         if (this.machines) {
-            return this.machines.map(item => item.HostName)
+            return this.machines.map(item => item.HostName);
         }
-        return []
+        return [];
     }
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: ScriptItem
+    public formModel!: ScriptItem;
 
     public formRules: FormRules<ScriptItem> = {
         Content: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
-        this.result = null
+        this.result = null;
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
         // 批量提交任务
-        this.loading = true
-        const taskIds: number[] = []
+        this.loading = true;
+        const taskIds: number[] = [];
         for (const machine of this.machines) {
-            const res = await NaApi.workhub.exec(machine.WorkerId, this.formModel)
-            taskIds.push(res.Id)
+            const res = await NaApi.workhub.exec(machine.WorkerId, this.formModel);
+            taskIds.push(res.Id);
         }
         // 循环获取状态
         if (taskIds.length > 1) {
-            this.message = "批量提交成功，请在任务列表查看执行结果"
+            this.message = '批量提交成功，请在任务列表查看执行结果';
         } else {
-            this.timer = setInterval(() => this.getOutput(taskIds[0]), 1500)
+            this.timer = setInterval(() => this.getOutput(taskIds[0]), 1500);
         }
     }
 
     // 获取结果
 
-    public message = ""
-    public result!: TasklineItem | null
+    public message = '';
+    public result!: TasklineItem | null;
 
     async getOutput(id: number) {
-        const res = await NaApi.taskline.detail(id)
-        this.result = res.Item
-        if (this.result.Status != "Doing") {
-            clearInterval(this.timer)
-            this.loading = false
+        const res = await NaApi.taskline.detail(id);
+        this.result = res.Item;
+        if (this.result.Status != 'Doing') {
+            clearInterval(this.timer);
+            this.loading = false;
         }
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
-        clearInterval(this.timer)
+        this.visible = false;
+        this.$emit('submit');
+        clearInterval(this.timer);
     }
 
     public open(machines: MachineItem[], script: ScriptItem) {
-        this.result = null
-        this.visible = true
-        this.loading = false
-        this.machines = machines
-        this.formModel = { ...script }
+        this.result = null;
+        this.visible = true;
+        this.loading = false;
+        this.machines = machines;
+        this.formModel = { ...script };
     }
 }
 </script>

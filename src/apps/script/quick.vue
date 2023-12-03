@@ -1,72 +1,72 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
-import { ScriptItem } from "@/api/native/script"
+import { NaApi } from '@/api';
+import { MachineItem } from '@/api/native/machine';
+import { ScriptItem } from '@/api/native/script';
 
-import { installWorker } from "@/helper/script/shell"
+import { installWorker } from '@/helper/script/shell';
 
-import ScriptExec from "./exec.vue"
+import ScriptExec from './exec.vue';
 
 @Component({
     components: { ScriptExec }
 })
 export default class ScriptQuick extends Vue {
-    public installWorker = installWorker
-    public loading = true
+    public installWorker = installWorker;
+    public loading = true;
 
-    public machines!: MachineItem[]
+    public machines!: MachineItem[];
 
     @Ref
-    public execModal!: ScriptExec
+    public execModal!: ScriptExec;
 
     // 初始化
 
     public created() {
-        this.getScriptList()
+        this.getScriptList();
     }
 
     // 机器列表
 
     public get hostnames() {
         if (this.machines) {
-            return this.machines.map(item => item.HostName)
+            return this.machines.map(item => item.HostName);
         }
-        return []
+        return [];
     }
 
     // 获取脚本列表
 
-    public scriptList: ScriptItem[] = []
+    public scriptList: ScriptItem[] = [];
 
     async getScriptList() {
-        const res = await NaApi.script.list()
-        this.scriptList = res.Items
-        this.loading = false
+        const res = await NaApi.script.list();
+        this.scriptList = res.Items;
+        this.loading = false;
     }
 
     // 执行快捷命令
 
     public workerExec(cmd: ScriptItem) {
         for (const machine of this.machines) {
-            NaApi.workhub.exec(machine.WorkerId, cmd)
+            NaApi.workhub.exec(machine.WorkerId, cmd);
         }
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(machines: MachineItem[]) {
-        this.visible = true
-        this.loading = false
-        this.machines = machines
+        this.visible = true;
+        this.loading = false;
+        this.machines = machines;
     }
 }
 </script>

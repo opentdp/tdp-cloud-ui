@@ -1,29 +1,29 @@
-import { HttpClient } from "@/api/basic/http"
+import { HttpClient } from '@/api/basic/http';
 
 export class PassportModel extends HttpClient {
     public login(rq: UserLogin): Promise<LoginResult> {
-        return this.post("/passport/login", rq)
+        return this.post('/passport/login', rq);
     }
 
     public register(rq: UserRegister): Promise<{ Id: number }> {
-        return this.post("/passport/register", rq)
+        return this.post('/passport/register', rq);
     }
 
     public profile(): Promise<UserItem> {
-        return this.post("/passport/profile", {})
+        return this.post('/passport/profile', {});
     }
 
     public profileUpdate(rq: UserUpdate): Promise<null> {
-        return this.post("/passport/profile/update", rq)
+        return this.post('/passport/profile/update', rq);
     }
 
     public avatarUpdate(img: string): Promise<{ Avatar: string }> {
-        const rq = { Base64Image: img.split(",")[1] }
-        return this.post("/passport/avatar/update", rq)
+        const rq = { Base64Image: img.split(',')[1] };
+        return this.post('/passport/avatar/update', rq);
     }
 
     public summary(): Promise<UserSummary> {
-        return this.post("/passport/summary", {})
+        return this.post('/passport/summary', {});
     }
 }
 

@@ -1,28 +1,28 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { AcApi } from "@/api"
-import { RecordLineMap, RecordTypeMap } from "@/api/alibaba/alidns"
-import * as AC from "@/api/alibaba/typings"
+import Api, { AcApi } from '@/api';
+import { RecordLineMap, RecordTypeMap } from '@/api/alibaba/alidns';
+import * as AC from '@/api/alibaba/typings';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class DnsRecordUpdate extends Vue {
-    public domainInfo!: AC.Dns.DescribeDomainInfoResponseBody
+    public domainInfo!: AC.Dns.DescribeDomainInfoResponseBody;
 
-    public recordType = RecordTypeMap
-    public recordLineList = RecordLineMap
+    public recordType = RecordTypeMap;
+    public recordLineList = RecordLineMap;
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: AC.Dns.DescribeDomainRecordsResponseBodyDomainRecordsRecord
+    public formModel!: AC.Dns.DescribeDomainRecordsResponseBodyDomainRecordsRecord;
 
     public formRules: FormRules<AC.Dns.UpdateDomainRecordRequest> = {
         RR: [{ required: true }],
@@ -31,14 +31,14 @@ export default class DnsRecordUpdate extends Vue {
         Value: [{ required: true }],
         TTL: [{ required: true }],
         Priority: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
         const query = {
             RecordId: this.formModel.RecordId,
@@ -48,24 +48,24 @@ export default class DnsRecordUpdate extends Vue {
             Value: this.formModel.Value,
             TTL: +this.formModel.TTL || 600,
             Priority: +this.formModel.Priority || 1
-        }
-        await AcApi.alidns.updateDomainRecord(query)
-        this.close()
+        };
+        await AcApi.alidns.updateDomainRecord(query);
+        this.close();
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(info: AC.Dns.DescribeDomainInfoResponseBody, record: AC.Dns.DescribeDomainRecordsResponseBodyDomainRecordsRecord) {
-        this.visible = true
-        this.domainInfo = info
-        this.formModel = record
+        this.visible = true;
+        this.domainInfo = info;
+        this.formModel = record;
     }
 }
 </script>

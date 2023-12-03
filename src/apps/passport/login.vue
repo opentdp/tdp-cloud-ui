@@ -1,42 +1,42 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { UserLogin } from "@/api/native/passport"
+import Api, { NaApi } from '@/api';
+import { UserLogin } from '@/api/native/passport';
 
 @Component
 export default class PassportLogin extends Vue {
-    public loading = false
+    public loading = false;
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
     public formModel: UserLogin = {
-        Username: import.meta.env.VITE_USERNAME || "",
-        Password: import.meta.env.VITE_PASSWORD || "",
-    }
+        Username: import.meta.env.VITE_USERNAME || '',
+        Password: import.meta.env.VITE_PASSWORD || '',
+    };
 
     public formRules: FormRules<UserLogin> = {
         Username: [{ required: true }],
         Password: [{ required: true }],
-    }
+    };
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        this.loading = true
+        this.loading = true;
         const res = await NaApi.passport.login(this.formModel).finally(() => {
-            this.loading = false
-        })
-        this.session.update(res)
+            this.loading = false;
+        });
+        this.session.update(res);
         // 切换到后台首页
-        this.$router.push("/")
+        this.$router.push('/');
     }
 }
 </script>

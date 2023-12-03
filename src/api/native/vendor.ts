@@ -1,31 +1,31 @@
-import { HttpClient } from "@/api/basic/http"
+import { HttpClient } from '@/api/basic/http';
 
 export class VendorModel extends HttpClient {
     public list(rq: { Provider?: string }): Promise<VendorPaged> {
-        return this.post("/vendor/list", rq)
+        return this.post('/vendor/list', rq);
     }
 
     public detail(id: number): Promise<VendorDetail> {
-        return this.post("/vendor/detail", { Id: id })
+        return this.post('/vendor/detail', { Id: id });
     }
 
     public create(rq: VendorOrig): Promise<{ Id: number }> {
-        return this.post("/vendor/create", rq)
+        return this.post('/vendor/create', rq);
     }
 
     public update(rq: Partial<VendorItem>): Promise<null> {
-        return this.post("/vendor/update", rq)
+        return this.post('/vendor/update', rq);
     }
 
     public remove(id: number): Promise<null> {
-        return this.post("/vendor/delete", { Id: id })
+        return this.post('/vendor/delete', { Id: id });
     }
 }
 
 export const ProviderList: Record<string, string> = {
-    "cloudflare": "Cloudflare",
-    "tencent": "腾讯云",
-}
+    'cloudflare': 'Cloudflare',
+    'tencent': '腾讯云',
+};
 
 export interface VendorOrig {
     SecretId: string

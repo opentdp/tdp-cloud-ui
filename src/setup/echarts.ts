@@ -4,10 +4,10 @@
  * https://echarts.apache.org/examples/zh/index.html
  */
 
-import { App } from "vue"
-import VChart from "vue-echarts"
+import { App } from 'vue';
+import VChart from 'vue-echarts';
 
-import { use } from "echarts/core"
+import { use } from 'echarts/core';
 import {
     DataZoomComponent,
     GridComponent,
@@ -15,10 +15,10 @@ import {
     TitleComponent,
     ToolboxComponent,
     TooltipComponent,
-} from "echarts/components"
-import { BarChart, LineChart, PieChart } from "echarts/charts"
-import { LabelLayout } from "echarts/features"
-import { CanvasRenderer } from "echarts/renderers"
+} from 'echarts/components';
+import { BarChart, LineChart, PieChart } from 'echarts/charts';
+import { LabelLayout } from 'echarts/features';
+import { CanvasRenderer } from 'echarts/renderers';
 
 use([
     // Component
@@ -36,10 +36,10 @@ use([
     LabelLayout,
     // Renderer
     CanvasRenderer,
-])
+]);
 
 // export default
 
 export default (app: App) => {
-    app.component("VChart", VChart)
-}
+    app.component('VChart', VChart);
+};

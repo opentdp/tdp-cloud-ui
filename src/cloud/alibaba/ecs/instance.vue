@@ -1,88 +1,88 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { AcApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
-import { InstanceStateMap } from "@/api/alibaba/ecs"
-import * as AC from "@/api/alibaba/typings"
+import { AcApi } from '@/api';
+import { MachineItem } from '@/api/native/machine';
+import { InstanceStateMap } from '@/api/alibaba/ecs';
+import * as AC from '@/api/alibaba/typings';
 
-import { dateFormat } from "@/helper/format"
+import { dateFormat } from '@/helper/format';
 
 @Component
 export default class EcsInstance extends Vue {
-    public InstanceStateMap = InstanceStateMap
-    public dateFormat = dateFormat
+    public InstanceStateMap = InstanceStateMap;
+    public dateFormat = dateFormat;
 
     @Prop
-    public machine!: Omit<MachineItem, "CloudMeta"> & {
+    public machine!: Omit<MachineItem, 'CloudMeta'> & {
         CloudMeta: AC.Ecs.DescribeInstancesResponseBodyInstancesInstance
-    }
+    };
 
     // 初始化
 
     public created() {
-        AcApi.vendor(this.machine.VendorId)
-        this.instance = this.machine.CloudMeta
-        this.getInstance()
+        AcApi.vendor(this.machine.VendorId);
+        this.instance = this.machine.CloudMeta;
+        this.getInstance();
     }
 
     // 获取区域
 
     public get region() {
-        return this.instance.RegionId
+        return this.instance.RegionId;
     }
 
     // 实例信息
 
-    public instance!: AC.Ecs.DescribeInstancesResponseBodyInstancesInstance
+    public instance!: AC.Ecs.DescribeInstancesResponseBodyInstancesInstance;
 
     async getInstance() {
         const res = await AcApi.ecs.describeInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
-        })
+        });
         if (res.Instances) {
-            Object.assign(this.instance, res.Instances.Instance[0])
+            Object.assign(this.instance, res.Instances.Instance[0]);
         }
     }
 
     // 关闭实例
 
     async stopInstance() {
-        this.instance.Status = "Stopping"
-        await AcApi.ecs.stopInstance(this.region, this.instance.InstanceId)
-        setTimeout(this.refreshInstance, 1500)
+        this.instance.Status = 'Stopping';
+        await AcApi.ecs.stopInstance(this.region, this.instance.InstanceId);
+        setTimeout(this.refreshInstance, 1500);
     }
 
     // 启动实例
 
     async startInstance() {
-        this.instance.Status = "Starting"
-        await AcApi.ecs.startInstance(this.region, this.instance.InstanceId)
-        setTimeout(this.refreshInstance, 1500)
+        this.instance.Status = 'Starting';
+        await AcApi.ecs.startInstance(this.region, this.instance.InstanceId);
+        setTimeout(this.refreshInstance, 1500);
     }
 
     // 重启实例
 
     async rebootInstance() {
-        this.instance.Status = "Resetting"
-        await AcApi.ecs.rebootInstance(this.region, this.instance.InstanceId)
-        setTimeout(this.refreshInstance, 1500)
+        this.instance.Status = 'Resetting';
+        await AcApi.ecs.rebootInstance(this.region, this.instance.InstanceId);
+        setTimeout(this.refreshInstance, 1500);
     }
 
     // 刷新实例
 
     async refreshInstance() {
-        await this.getInstance()
-        const s = this.instance.Status
-        if (s != "Running" && s.match(/ing$/)) {
-            setTimeout(this.refreshInstance, 1500)
+        await this.getInstance();
+        const s = this.instance.Status;
+        if (s != 'Running' && s.match(/ing$/)) {
+            setTimeout(this.refreshInstance, 1500);
         }
     }
 
     // 转换为GB显示
 
     public parseToGB(s: number) {
-        return s ? (s / 1024).toFixed(1) + " GB" : "--"
+        return s ? (s / 1024).toFixed(1) + ' GB' : '--';
     }
 }
 </script>

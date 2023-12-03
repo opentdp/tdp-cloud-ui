@@ -1,51 +1,51 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
-import { onBeforeRouteUpdate, RouteLocationNormalized } from "vue-router"
+import { Component, Vue } from '@/apps/basic';
+import { onBeforeRouteUpdate, RouteLocationNormalized } from 'vue-router';
 
 @Component
 export default class LayoutSidebar extends Vue {
-    public items: MenuItem[] = []
+    public items: MenuItem[] = [];
 
     // 初始化
 
     public created() {
-        this.items = this.itemFilter(menuItems)
+        this.items = this.itemFilter(menuItems);
     }
 
     public itemFilter(items: MenuItem[]) {
-        const level = this.session.Level
+        const level = this.session.Level;
         return items.filter(item => {
             if (item.level && item.level < level) {
-                return false //用户组权限不足
+                return false; //用户组权限不足
             }
             if (item.subs) {
-                item.subs = this.itemFilter(item.subs)
+                item.subs = this.itemFilter(item.subs);
             }
-            return true
-        })
+            return true;
+        });
     }
 
     // 侧栏控制
 
-    public expanded = [] as string[]
+    public expanded = [] as string[];
 
     public getExpanded(to: RouteLocationNormalized): string[] {
         if (this.items.findIndex(item => item.index === to.path) >= 0) {
-            return []
+            return [];
         }
         const idx = this.items.findIndex(item => {
-            return item.subs && item.subs.findIndex(sub => sub.index === to.path) >= 0
-        })
-        return idx == -1 ? [] : [this.items[idx].index]
+            return item.subs && item.subs.findIndex(sub => sub.index === to.path) >= 0;
+        });
+        return idx == -1 ? [] : [this.items[idx].index];
     }
 
     public mounted() {
-        this.expanded = this.getExpanded(this.$route)
+        this.expanded = this.getExpanded(this.$route);
         onBeforeRouteUpdate((to) => {
-            const exp = new Set<string>(this.expanded)
-            this.getExpanded(to).forEach(item => exp.add(item))
-            this.expanded = Array.from(exp)
-        })
+            const exp = new Set<string>(this.expanded);
+            this.getExpanded(to).forEach(item => exp.add(item));
+            this.expanded = Array.from(exp);
+        });
     }
 }
 
@@ -59,111 +59,111 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
     {
-        icon: "houses",
-        index: "/dashboard",
-        title: "首页",
+        icon: 'houses',
+        index: '/dashboard',
+        title: '首页',
     },
     {
-        icon: "laptop",
-        index: "/machine/list",
-        title: "主机管理",
+        icon: 'laptop',
+        index: '/machine/list',
+        title: '主机管理',
     },
     {
-        icon: "internet",
-        index: "/domain/list",
-        title: "域名解析",
+        icon: 'internet',
+        index: '/domain/list',
+        title: '域名解析',
     },
     {
-        icon: "lock-off",
-        index: "/certbot",
-        title: "SSL 证书",
+        icon: 'lock-off',
+        index: '/certbot',
+        title: 'SSL 证书',
         subs: [
             {
-                icon: "functions-1",
-                index: "/certbot/list",
-                title: "证书签发",
+                icon: 'functions-1',
+                index: '/certbot/list',
+                title: '证书签发',
             },
             {
-                icon: "cloud-upload",
-                index: "/certbot/deploy",
-                title: "云端部署",
+                icon: 'cloud-upload',
+                index: '/certbot/deploy',
+                title: '云端部署',
             },
         ]
     },
     {
-        icon: "terminal-rectangle",
-        index: "/terminal",
-        title: "SSH 终端",
+        icon: 'terminal-rectangle',
+        index: '/terminal',
+        title: 'SSH 终端',
         subs: [
             {
-                icon: "flight-landing",
-                index: "/terminal/ssh",
-                title: "SSH 连接",
+                icon: 'flight-landing',
+                index: '/terminal/ssh',
+                title: 'SSH 连接',
             },
             {
-                icon: "fingerprint",
-                index: "/keypair/list",
-                title: "密钥管理",
+                icon: 'fingerprint',
+                index: '/keypair/list',
+                title: '密钥管理',
             },
         ]
     },
     {
-        icon: "command",
-        index: "/task",
-        title: "快捷命令",
+        icon: 'command',
+        index: '/task',
+        title: '快捷命令',
         subs: [
             {
-                icon: "code",
-                index: "/script/list",
-                title: "脚本管理",
+                icon: 'code',
+                index: '/script/list',
+                title: '脚本管理',
             },
             {
-                icon: "folder-open",
-                index: "/taskline/list",
-                title: "任务记录",
+                icon: 'folder-open',
+                index: '/taskline/list',
+                title: '任务记录',
             },
         ]
     },
     {
-        icon: "pantone",
-        index: "/vendor",
-        title: "厂商管理",
+        icon: 'pantone',
+        index: '/vendor',
+        title: '厂商管理',
         subs: [
             {
-                icon: "letters-t",
-                index: "/vendor/tencent",
-                title: "腾讯云",
+                icon: 'letters-t',
+                index: '/vendor/tencent',
+                title: '腾讯云',
             },
             {
-                icon: "letters-a",
-                index: "/vendor/alibaba",
-                title: "阿里云",
+                icon: 'letters-a',
+                index: '/vendor/alibaba',
+                title: '阿里云',
             },
             {
-                icon: "letters-c",
-                index: "/vendor/cloudflare",
-                title: "Cloudflare",
+                icon: 'letters-c',
+                index: '/vendor/cloudflare',
+                title: 'Cloudflare',
             },
         ]
     },
     {
-        icon: "radar",
-        index: "/workhub/worker",
-        title: "节点管理",
+        icon: 'radar',
+        index: '/workhub/worker',
+        title: '节点管理',
     },
     {
-        icon: "user-list",
-        index: "/user/list",
-        title: "用户管理",
+        icon: 'user-list',
+        index: '/user/list',
+        title: '用户管理',
         level: 1,
     },
     {
-        icon: "setting",
-        index: "/config/list",
-        title: "系统参数",
+        icon: 'setting',
+        index: '/config/list',
+        title: '系统参数',
         level: 1,
     },
-]
+];
 </script>
 
 <template>

@@ -1,26 +1,26 @@
-import { HttpClient } from "@/api/basic/http"
+import { HttpClient } from '@/api/basic/http';
 
-import { ScriptPayload } from "./typings"
+import { ScriptPayload } from './typings';
 
 export class TasklineModel extends HttpClient {
     public list(): Promise<TasklinePaged> {
-        return this.post("/taskline/list", { Order: "id DESC" })
+        return this.post('/taskline/list', { Order: 'id DESC' });
     }
 
     public detail(id: number): Promise<TasklineDetail> {
-        return this.post("/taskline/detail", { Id: id })
+        return this.post('/taskline/detail', { Id: id });
     }
 
     public create(rq: TasklineOrig): Promise<{ Id: number }> {
-        return this.post("/taskline/", rq)
+        return this.post('/taskline/', rq);
     }
 
     public update(rq: Partial<TasklineItem>): Promise<null> {
-        return this.post("/taskline/update", rq)
+        return this.post('/taskline/update', rq);
     }
 
     public remove(id: number): Promise<null> {
-        return this.post("/taskline/delete", { Id: id })
+        return this.post('/taskline/delete', { Id: id });
     }
 }
 

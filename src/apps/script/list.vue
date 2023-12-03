@@ -1,46 +1,46 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { ScriptItem } from "@/api/native/script"
+import { NaApi } from '@/api';
+import { ScriptItem } from '@/api/native/script';
 
-import ScriptCreate from "./create.vue"
-import ScriptUpdate from "./update.vue"
+import ScriptCreate from './create.vue';
+import ScriptUpdate from './update.vue';
 
 @Component({
     components: { ScriptCreate, ScriptUpdate }
 })
 export default class ScriptList extends Vue {
-    public loading = true
+    public loading = true;
 
     @Ref
-    public createModal!: ScriptCreate
+    public createModal!: ScriptCreate;
 
     @Ref
-    public updateModal!: ScriptUpdate
+    public updateModal!: ScriptUpdate;
 
     // 初始化
 
     public created() {
-        this.getScriptList()
+        this.getScriptList();
     }
 
     // 获取脚本列表
 
-    public scriptList: ScriptItem[] = []
+    public scriptList: ScriptItem[] = [];
 
     async getScriptList() {
-        const res = await NaApi.script.list()
-        this.scriptList = res.Items
-        this.loading = false
+        const res = await NaApi.script.list();
+        this.scriptList = res.Items;
+        this.loading = false;
     }
 
     // 删除脚本
 
     async removeScript(id: number) {
-        this.loading = true
-        await NaApi.script.remove(id)
-        await this.getScriptList()
+        this.loading = true;
+        await NaApi.script.remove(id);
+        await this.getScriptList();
     }
 
     // 表格定义
@@ -50,8 +50,8 @@ export default class ScriptList extends Vue {
         { colKey: 'CommandType', title: '类型', ellipsis: true },
         { colKey: 'WorkDirectory', title: '执行路径', ellipsis: true },
         { colKey: 'Timeout', title: '超时', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

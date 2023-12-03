@@ -1,70 +1,70 @@
 <script lang="ts">
-import { Prop, Component, Vue } from "@/apps/basic"
+import { Prop, Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
-import { WorkerItem } from "@/api/native/workhub"
+import { NaApi } from '@/api';
+import { MachineItem } from '@/api/native/machine';
+import { WorkerItem } from '@/api/native/workhub';
 
-import { bytesToSize } from "@/helper/format"
+import { bytesToSize } from '@/helper/format';
 
 @Component({
-    emits: ["change"]
+    emits: ['change']
 })
 export default class WorkerBind extends Vue {
-    public bytesToSize = bytesToSize
+    public bytesToSize = bytesToSize;
 
-    public timer = 0
+    public timer = 0;
 
     @Prop
-    public boundList: Record<string, MachineItem> = {}
+    public boundList: Record<string, MachineItem> = {};
 
     // 初始化
 
     public created() {
-        this.getWorkerList()
+        this.getWorkerList();
         this.timer = setInterval(() => {
-            this.getWorkerList()
-        }, 15000)
+            this.getWorkerList();
+        }, 15000);
     }
 
     public unmounted() {
-        clearInterval(this.timer)
+        clearInterval(this.timer);
     }
 
     // 节点列表
 
-    public workerList: WorkerItem[] = []
+    public workerList: WorkerItem[] = [];
 
     async getWorkerList() {
-        const res = await NaApi.workhub.list()
-        this.workerList = res.Items
+        const res = await NaApi.workhub.list();
+        this.workerList = res.Items;
     }
 
     // 绑定主机
 
     public bindMachine(item: WorkerItem) {
-        const meta = item.WorkerMeta
+        const meta = item.WorkerMeta;
         NaApi.machine.create({
             VendorId: 0,
             HostName: meta.HostName,
             IpAddress: meta.PublicIpv4 || meta.PublicIpv6,
             OSType: meta.OS,
-            Region: "",
-            Model: "native/worker",
-            CloudId: "",
+            Region: '',
+            Model: 'native/worker',
+            CloudId: '',
             CloudMeta: null,
             WorkerId: item.WorkerId,
             WorkerMeta: item.WorkerMeta,
-            Status: "",
-            Description: "",
-        })
+            Status: '',
+            Description: '',
+        });
     }
 
     // 同步主机
 
     async syncMachine(item: WorkerItem) {
-        const bd = this.boundList[item.WorkerId]
-        const meta = item.WorkerMeta
+        const bd = this.boundList[item.WorkerId];
+        const meta = item.WorkerMeta;
         await NaApi.machine.update({
             Id: bd ? bd.Id : 0,
             HostName: meta.HostName,
@@ -72,8 +72,8 @@ export default class WorkerBind extends Vue {
             OSType: meta.OS,
             WorkerId: item.WorkerId,
             WorkerMeta: item.WorkerMeta,
-        })
-        this.$emit("change")
+        });
+        this.$emit('change');
     }
 
     // 表格定义
@@ -86,8 +86,8 @@ export default class WorkerBind extends Vue {
         { colKey: 'WorkerMeta.OS', title: '系统', ellipsis: true },
         { colKey: 'WorkerMeta_Uptime', title: '运行时长', ellipsis: true },
         { colKey: 'WorkerVersion', title: '土豆片', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
  

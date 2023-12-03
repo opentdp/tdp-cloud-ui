@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { DomainItem } from "@/api/native/domain"
-import { VendorItem } from "@/api/native/vendor"
+import { NaApi } from '@/api';
+import { DomainItem } from '@/api/native/domain';
+import { VendorItem } from '@/api/native/vendor';
 
-import CloudflareBind from "@/cloud/cloudflare/bind.vue"
+import CloudflareBind from '@/cloud/cloudflare/bind.vue';
 
 @Component({
     components: { CloudflareBind }
@@ -14,30 +14,30 @@ export default class VendorCloudflareBind extends Vue {
     // 初始化
 
     public created() {
-        this.vendorId = +this.$route.params.id
-        this.getVendor(this.vendorId)
-        this.getDomainList()
+        this.vendorId = +this.$route.params.id;
+        this.getVendor(this.vendorId);
+        this.getDomainList();
     }
 
     // 厂商信息
 
-    public vendorId = 0
-    public vendor?: VendorItem
+    public vendorId = 0;
+    public vendor?: VendorItem;
 
     async getVendor(id: number) {
-        const res = await NaApi.vendor.detail(id)
-        this.vendor = res.Item
+        const res = await NaApi.vendor.detail(id);
+        this.vendor = res.Item;
     }
 
     // 已绑定域名
 
-    public domainList: Record<string, DomainItem> = {}
+    public domainList: Record<string, DomainItem> = {};
 
     async getDomainList() {
-        const res = await NaApi.domain.list()
+        const res = await NaApi.domain.list();
         res.Items.forEach(item => {
-            this.domainList[item.CloudId] = item
-        })
+            this.domainList[item.CloudId] = item;
+        });
     }
 }
 </script>

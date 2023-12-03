@@ -1,53 +1,53 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi } from "@/api"
-import { KeypairTypeList, KeypairOrig, KeypairItem } from "@/api/native/keypair"
+import Api, { NaApi } from '@/api';
+import { KeypairTypeList, KeypairOrig, KeypairItem } from '@/api/native/keypair';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class KeypairUpdate extends Vue {
-    public KeypairTypeList = KeypairTypeList
+    public KeypairTypeList = KeypairTypeList;
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: KeypairOrig
+    public formModel!: KeypairOrig;
 
     public formRules: FormRules<KeypairOrig> = {
         PublicKey: [{ required: true }],
         Description: [{ required: true }],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        await NaApi.keypair.update(this.formModel)
-        this.close()
+        await NaApi.keypair.update(this.formModel);
+        this.close();
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open(data: KeypairItem) {
-        this.visible = true
-        this.formModel = data
+        this.visible = true;
+        this.formModel = data;
     }
 }
 </script>

@@ -1,46 +1,46 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { KeypairItem } from "@/api/native/keypair"
+import { NaApi } from '@/api';
+import { KeypairItem } from '@/api/native/keypair';
 
-import KeypairCreate from "./create.vue"
-import KeypairUpdate from "./update.vue"
+import KeypairCreate from './create.vue';
+import KeypairUpdate from './update.vue';
 
 @Component({
     components: { KeypairCreate, KeypairUpdate }
 })
 export default class KeypairList extends Vue {
-    public loading = true
+    public loading = true;
 
     @Ref
-    public createModal!: KeypairCreate
+    public createModal!: KeypairCreate;
 
     @Ref
-    public updateModal!: KeypairUpdate
+    public updateModal!: KeypairUpdate;
 
     // 初始化
 
     public created() {
-        this.getKeypairList()
+        this.getKeypairList();
     }
 
     // 密钥列表
 
-    public keylist: KeypairItem[] = []
+    public keylist: KeypairItem[] = [];
 
     async getKeypairList() {
-        const res = await NaApi.keypair.list()
-        this.keylist = res.Items
-        this.loading = false
+        const res = await NaApi.keypair.list();
+        this.keylist = res.Items;
+        this.loading = false;
     }
 
     // 删除密钥
 
     async deleteKey(idx: number) {
-        const item = this.keylist[idx]
-        await NaApi.keypair.remove(item.Id)
-        this.keylist.splice(idx, 1)
+        const item = this.keylist[idx];
+        await NaApi.keypair.remove(item.Id);
+        this.keylist.splice(idx, 1);
     }
 
     // 表格定义
@@ -48,8 +48,8 @@ export default class KeypairList extends Vue {
     public tableColumns = [
         { colKey: 'Description', title: '别名', ellipsis: true },
         { colKey: 'PublicKey', title: '公钥', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

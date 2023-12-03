@@ -1,55 +1,55 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "@/apps/basic"
+import { Ref, Prop, Component, Vue } from '@/apps/basic';
 
-import { TcApi } from "@/api"
-import * as TC from "@/api/tencent/typings"
+import { TcApi } from '@/api';
+import * as TC from '@/api/tencent/typings';
 
-import { dateFormat } from "@/helper/format"
+import { dateFormat } from '@/helper/format';
 
-import SnapshotCreate from "./snapshot_create.vue"
+import SnapshotCreate from './snapshot_create.vue';
 
 @Component({
-    emits: ["change"],
+    emits: ['change'],
     components: { SnapshotCreate }
 })
 export default class LighthouseSnapshot extends Vue {
-    public dateFormat = dateFormat
+    public dateFormat = dateFormat;
 
     @Ref
-    public createModal!: SnapshotCreate
+    public createModal!: SnapshotCreate;
 
     @Prop
-    public instance!: TC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance;
 
     // 初始化
 
     public created() {
-        this.getSnapshotList()
+        this.getSnapshotList();
     }
 
     // 获取区域
 
     public get region() {
-        return this.instance.Zone.replace(/-\d$/, "")
+        return this.instance.Zone.replace(/-\d$/, '');
     }
 
     // 快照列表
 
-    public snapshotList!: TC.Lighthouse.DescribeSnapshotsResponse
+    public snapshotList!: TC.Lighthouse.DescribeSnapshotsResponse;
 
     async getSnapshotList() {
         const res = await TcApi.lighthouse.describeSnapshots(this.region, {
-            Filters: [{ Name: "instance-id", Values: [this.instance.InstanceId] }],
-        })
-        this.snapshotList = res
+            Filters: [{ Name: 'instance-id', Values: [this.instance.InstanceId] }],
+        });
+        this.snapshotList = res;
     }
 
     // 刷新列表
 
     async refreshSnapshot() {
-        await this.getSnapshotList()
+        await this.getSnapshotList();
         if (this.snapshotList.SnapshotSet.find(item => item.Percent < 100)) {
-            setTimeout(this.refreshSnapshot, 3000)
+            setTimeout(this.refreshSnapshot, 3000);
         }
     }
 
@@ -59,8 +59,8 @@ export default class LighthouseSnapshot extends Vue {
         await TcApi.lighthouse.applyInstanceSnapshot(this.region, {
             InstanceId: this.instance.InstanceId,
             SnapshotId: item.SnapshotId
-        })
-        this.$emit("change")
+        });
+        this.$emit('change');
     }
 
     // 删除快照
@@ -68,8 +68,8 @@ export default class LighthouseSnapshot extends Vue {
     async deleteSnapshot(item: TC.Lighthouse.Snapshot) {
         await TcApi.lighthouse.deleteSnapshots(this.region, {
             SnapshotIds: [item.SnapshotId],
-        })
-        this.refreshSnapshot()
+        });
+        this.refreshSnapshot();
     }
 
     // 表格定义
@@ -80,8 +80,8 @@ export default class LighthouseSnapshot extends Vue {
         { colKey: 'Percent', title: '进度', ellipsis: true },
         { colKey: 'LatestOperationState', title: '状态', ellipsis: true },
         { colKey: 'CreatedTime', title: '创建时间', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

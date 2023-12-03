@@ -1,45 +1,45 @@
 
 <script lang="ts">
-import { Component, Vue } from "@/apps/basic"
+import { Component, Vue } from '@/apps/basic';
 
-import { NaApi } from "@/api"
-import { TasklineItem } from "@/api/native/taskline"
-import { dateFormat } from "@/helper/format"
+import { NaApi } from '@/api';
+import { TasklineItem } from '@/api/native/taskline';
+import { dateFormat } from '@/helper/format';
 
 @Component
 export default class TasklineList extends Vue {
-    public dateFormat = dateFormat
+    public dateFormat = dateFormat;
 
-    public timer = 0
+    public timer = 0;
 
     // 初始化
 
     public created() {
-        this.getHistory()
+        this.getHistory();
         this.timer = setInterval(() => {
-            this.expanded || this.getHistory()
-        }, 5000)
+            this.expanded || this.getHistory();
+        }, 5000);
     }
 
     public unmounted() {
-        clearInterval(this.timer)
+        clearInterval(this.timer);
     }
 
     // 历史记录
 
-    public historyList: TasklineItem[] = []
+    public historyList: TasklineItem[] = [];
 
     async getHistory() {
-        const res = await NaApi.taskline.list()
-        this.historyList = res.Items
+        const res = await NaApi.taskline.list();
+        this.historyList = res.Items;
     }
 
     // 展开详情
 
-    public expanded = false
+    public expanded = false;
 
     async expandChange(keys: (string | number)[]) {
-        this.expanded = keys.length > 0
+        this.expanded = keys.length > 0;
     }
 
     // 表格定义
@@ -50,7 +50,7 @@ export default class TasklineList extends Vue {
         { colKey: 'Subject', title: '任务名称', ellipsis: true },
         { colKey: 'Status', title: '执行状态', ellipsis: true },
         { colKey: 'UpdatedAt', title: '更新时间', ellipsis: true },
-    ]
+    ];
 }
 </script>
 

@@ -1,97 +1,97 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "@/apps/basic"
+import { Ref, Prop, Component, Vue } from '@/apps/basic';
 
-import { TcApi } from "@/api"
-import { MachineItem } from "@/api/native/machine"
-import { InstanceStateMap } from "@/api/tencent/lighthouse"
-import * as TC from "@/api/tencent/typings"
+import { TcApi } from '@/api';
+import { MachineItem } from '@/api/native/machine';
+import { InstanceStateMap } from '@/api/tencent/lighthouse';
+import * as TC from '@/api/tencent/typings';
 
-import { dateFormat } from "@/helper/format"
+import { dateFormat } from '@/helper/format';
 
-import Firwwall from "./firewall.vue"
-import Snapshot from "./snapshot.vue"
-import Traffic from "./traffic.vue"
-import InstanceRename from "./instance_rename.vue"
+import Firwwall from './firewall.vue';
+import Snapshot from './snapshot.vue';
+import Traffic from './traffic.vue';
+import InstanceRename from './instance_rename.vue';
 
 @Component({
     components: { Firwwall, Snapshot, Traffic, InstanceRename }
 })
 export default class LighthouseInstance extends Vue {
-    public InstanceStateMap = InstanceStateMap
-    public dateFormat = dateFormat
+    public InstanceStateMap = InstanceStateMap;
+    public dateFormat = dateFormat;
 
     @Ref
-    public renameModal!: InstanceRename
+    public renameModal!: InstanceRename;
 
     @Prop
-    public machine!: Omit<MachineItem, "CloudMeta"> & {
+    public machine!: Omit<MachineItem, 'CloudMeta'> & {
         CloudMeta: TC.Lighthouse.Instance
-    }
+    };
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.machine.VendorId)
-        this.instance = this.machine.CloudMeta
-        this.getInstance()
+        TcApi.vendor(this.machine.VendorId);
+        this.instance = this.machine.CloudMeta;
+        this.getInstance();
     }
 
     // 获取区域
 
     public get region() {
-        return this.instance.Zone.replace(/-\d$/, "")
+        return this.instance.Zone.replace(/-\d$/, '');
     }
 
     // 实例信息
 
-    public instance!: TC.Lighthouse.Instance
+    public instance!: TC.Lighthouse.Instance;
 
     async getInstance() {
         const res = await TcApi.lighthouse.describeInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
-        })
+        });
         if (res.InstanceSet) {
-            this.instance = res.InstanceSet[0]
+            this.instance = res.InstanceSet[0];
         }
     }
 
     // 关闭实例
 
     async stopInstance() {
-        this.instance.InstanceState = "STOPPING"
+        this.instance.InstanceState = 'STOPPING';
         await TcApi.lighthouse.stopInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
-        })
-        setTimeout(this.refreshInstance, 1500)
+        });
+        setTimeout(this.refreshInstance, 1500);
     }
 
     // 启动实例
 
     async startInstance() {
-        this.instance.InstanceState = "STARTING"
+        this.instance.InstanceState = 'STARTING';
         await TcApi.lighthouse.startInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
-        })
-        setTimeout(this.refreshInstance, 1500)
+        });
+        setTimeout(this.refreshInstance, 1500);
     }
 
     // 重启实例
 
     async rebootInstance() {
-        this.instance.InstanceState = "REBOOTING"
+        this.instance.InstanceState = 'REBOOTING';
         await TcApi.lighthouse.rebootInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
-        })
-        setTimeout(this.refreshInstance, 1500)
+        });
+        setTimeout(this.refreshInstance, 1500);
     }
 
     // 刷新实例
 
     async refreshInstance() {
-        await this.getInstance()
-        const s = this.instance.InstanceState
-        if (s != "RUNNING" && s.match(/ING$/)) {
-            setTimeout(this.refreshInstance, 1500)
+        await this.getInstance();
+        const s = this.instance.InstanceState;
+        if (s != 'RUNNING' && s.match(/ING$/)) {
+            setTimeout(this.refreshInstance, 1500);
         }
     }
 }

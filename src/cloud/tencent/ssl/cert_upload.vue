@@ -1,88 +1,88 @@
 <script lang="ts">
-import { Ref, Component, Vue } from "@/apps/basic"
+import { Ref, Component, Vue } from '@/apps/basic';
 
-import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from "tdesign-vue-next"
+import { FormInstanceFunctions, FormRules, SubmitContext, Data as TData } from 'tdesign-vue-next';
 
-import Api, { NaApi, TcApi } from "@/api"
-import { CertbotItem } from "@/api/native/certbot"
-import * as TC from "@/api/tencent/typings"
+import Api, { NaApi, TcApi } from '@/api';
+import { CertbotItem } from '@/api/native/certbot';
+import * as TC from '@/api/tencent/typings';
 
 @Component({
-    emits: ["submit"],
-    expose: ["open"],
+    emits: ['submit'],
+    expose: ['open'],
 })
 export default class SslCertUpload extends Vue {
-    public loading = false
+    public loading = false;
 
     // 创建表单
 
     @Ref
-    public formRef!: FormInstanceFunctions
+    public formRef!: FormInstanceFunctions;
 
-    public formModel!: TC.Ssl.UploadCertificateRequest
+    public formModel!: TC.Ssl.UploadCertificateRequest;
 
     public formRules: FormRules<TC.Ssl.UploadCertificateRequest> = {
         CertificatePublicKey: [{ required: true }],
         CertificatePrivateKey: [{ required: true }],
         CertificateType: [{ required: true }],
         Alias: [],
-    }
+    };
 
     // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {
-            Api.msg.err("请检查表单")
-            return false
+            Api.msg.err('请检查表单');
+            return false;
         }
-        await TcApi.ssl.uploadCertificate(this.formModel)
-        this.close()
+        await TcApi.ssl.uploadCertificate(this.formModel);
+        this.close();
     }
 
     // 已绑定证书
 
-    public certbotList: CertbotItem[] = []
+    public certbotList: CertbotItem[] = [];
 
     async getCertbotList() {
-        const res = await NaApi.certbot.list()
-        this.certbotList = res.Items
+        const res = await NaApi.certbot.list();
+        this.certbotList = res.Items;
     }
 
     // 选择证书
 
-    public certbotId!: number
+    public certbotId!: number;
 
     async detailCertificate() {
-        this.loading = true
+        this.loading = true;
         const res = await NaApi.certbot.detail(this.certbotId).finally(() => {
-            this.loading = false
-        })
+            this.loading = false;
+        });
         if (res.Cert) {
-            this.formModel.CertificatePublicKey = NaApi.certbot.certFormat(res.Cert.Certificate).trim()
-            this.formModel.CertificatePrivateKey = atob(res.Cert.PrivateKey).trim()
-            this.formModel.CertificateType = "SVR"
+            this.formModel.CertificatePublicKey = NaApi.certbot.certFormat(res.Cert.Certificate).trim();
+            this.formModel.CertificatePrivateKey = atob(res.Cert.PrivateKey).trim();
+            this.formModel.CertificateType = 'SVR';
         }
     }
 
     // 对话框管理
 
-    public visible = false
+    public visible = false;
 
     public close() {
-        this.visible = false
-        this.$emit("submit")
+        this.visible = false;
+        this.$emit('submit');
     }
 
     public open() {
-        this.visible = true
+        this.visible = true;
         this.formModel = {
-            CertificatePublicKey: "",
-            CertificatePrivateKey: "",
-            CertificateType: "SVR",
-            Alias: "",
-        }
+            CertificatePublicKey: '',
+            CertificatePrivateKey: '',
+            CertificateType: 'SVR',
+            Alias: '',
+        };
         // 加载数据
-        this.certbotList.length == 0 && this.getCertbotList()
+        this.certbotList.length == 0 && this.getCertbotList();
     }
 }
 </script>

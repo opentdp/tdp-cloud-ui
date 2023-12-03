@@ -1,61 +1,61 @@
 <script lang="ts">
-import { Ref, Prop, Component, Vue } from "@/apps/basic"
+import { Ref, Prop, Component, Vue } from '@/apps/basic';
 
-import { TcApi } from "@/api"
-import { DomainItem } from "@/api/native/domain"
-import * as TC from "@/api/tencent/typings"
+import { TcApi } from '@/api';
+import { DomainItem } from '@/api/native/domain';
+import * as TC from '@/api/tencent/typings';
 
-import RecordCreate from "./record_create.vue"
-import RecordUpdate from "./record_update.vue"
+import RecordCreate from './record_create.vue';
+import RecordUpdate from './record_update.vue';
 
 @Component({
     components: { RecordCreate, RecordUpdate }
 })
 export default class DnspodDomain extends Vue {
     @Ref
-    public createModal!: RecordCreate
+    public createModal!: RecordCreate;
 
     @Ref
-    public updateModal!: RecordUpdate
+    public updateModal!: RecordUpdate;
 
     @Prop
-    public domain!: Omit<DomainItem, "CloudMeta"> & {
+    public domain!: Omit<DomainItem, 'CloudMeta'> & {
         CloudMeta: TC.Dnspod.DomainListItem
-    }
+    };
 
     // 初始化
 
     public created() {
-        TcApi.vendor(this.domain.VendorId)
-        this.getDomain()
-        this.getRecordList()
+        TcApi.vendor(this.domain.VendorId);
+        this.getDomain();
+        this.getRecordList();
     }
 
     // 域名概要
 
-    public domainInfo!: TC.Dnspod.DomainInfo
+    public domainInfo!: TC.Dnspod.DomainInfo;
 
     async getDomain() {
         const res = await TcApi.dnspod.describeDomain({
             Domain: this.domain.Name
-        })
+        });
         if (res.DomainInfo) {
-            this.domainInfo = res.DomainInfo
+            this.domainInfo = res.DomainInfo;
         }
     }
 
     // 解析记录
 
-    public recordList!: TC.Dnspod.RecordListItem[]
-    public recordCountInfo!: TC.Dnspod.RecordCountInfo
+    public recordList!: TC.Dnspod.RecordListItem[];
+    public recordCountInfo!: TC.Dnspod.RecordCountInfo;
 
     async getRecordList() {
         const res = await TcApi.dnspod.describeRecordList({
             Domain: this.domain.Name
-        })
+        });
         if (res.RecordCountInfo) {
-            this.recordList = res.RecordList || []
-            this.recordCountInfo = res.RecordCountInfo
+            this.recordList = res.RecordList || [];
+            this.recordCountInfo = res.RecordCountInfo;
         }
     }
 
@@ -65,9 +65,9 @@ export default class DnspodDomain extends Vue {
         const query: TC.Dnspod.DeleteRecordRequest = {
             Domain: this.domain.Name,
             RecordId: recordId
-        }
-        await TcApi.dnspod.deleteRecord(query)
-        this.getRecordList()
+        };
+        await TcApi.dnspod.deleteRecord(query);
+        this.getRecordList();
     }
 
     // 表格定义
@@ -80,8 +80,8 @@ export default class DnspodDomain extends Vue {
         { colKey: 'TTL', title: 'TTL', ellipsis: true },
         { colKey: 'Status', title: '状态', ellipsis: true },
         { colKey: 'Remark', title: '备注', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: "110px" },
-    ]
+        { colKey: 'Operation', title: '操作', width: '110px' },
+    ];
 }
 </script>
 

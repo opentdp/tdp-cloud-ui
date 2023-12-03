@@ -1,37 +1,37 @@
-import { HttpClient } from "@/api/basic/http"
+import { HttpClient } from '@/api/basic/http';
 
-import { SummaryStat, DetailStat, IpSets, FilerRequest, FilerResponse, ScriptPayload } from "./typings"
+import { SummaryStat, DetailStat, IpSets, FilerRequest, FilerResponse, ScriptPayload } from './typings';
 
 export class WorkhubModel extends HttpClient {
     public host(): Promise<NodeDetail> {
-        return this.post("/workhub/host", {})
+        return this.post('/workhub/host', {});
     }
 
     public hostIp(): Promise<IpSets> {
-        return this.post("/workhub/host/ip", {})
+        return this.post('/workhub/host/ip', {});
     }
 
     public list(): Promise<WorkerPaged> {
-        return this.post("/workhub/list", {})
+        return this.post('/workhub/list', {});
     }
 
     public detail(id: string): Promise<NodeDetail> {
-        return this.post("/workhub/detail/" + id, {})
+        return this.post('/workhub/detail/' + id, {});
     }
 
     public exec(id: string, rq: ScriptPayload): Promise<{ Id: number }> {
-        return this.post("/workhub/exec/" + id, rq)
+        return this.post('/workhub/exec/' + id, rq);
     }
 
     public filer(id: string, rq: FilerRequest): Promise<FilerResponse> {
-        rq.Path = rq.Path.replace(/\\+/g, '/').replace(/\/+/g, '/')
-        return this.post("/workhub/filer/" + id, rq)
+        rq.Path = rq.Path.replace(/\\+/g, '/').replace(/\/+/g, '/');
+        return this.post('/workhub/filer/' + id, rq);
     }
 
     public getRegisterURL() {
-        const origin = location.origin.replace(/^http/, "ws")
-        const wsurl = "/wsi/" + this.session.AppId + "/workhub"
-        return origin + wsurl
+        const origin = location.origin.replace(/^http/, 'ws');
+        const wsurl = '/wsi/' + this.session.AppId + '/workhub';
+        return origin + wsurl;
     }
 }
 
