@@ -84,7 +84,15 @@ export default class WorkerFileman extends Vue {
         const res = await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false;
         });
-        gobyte.base64ToDownload(res.FileData + '', name);
+        // 返回数据
+        return res.FileData || '';
+    }
+
+    // 下载文件
+
+    async downloadFile(name: string) {
+        const data = await this.getFileData(name);
+        gobyte.base64ToDownload(data, name);
     }
 
     // 上传文件
@@ -127,6 +135,41 @@ export default class WorkerFileman extends Vue {
         return result;
     }
 
+    // 预览文件
+
+    public reviewData = {
+        visible: false,
+        name: '',
+        data: '',
+        type: ''
+    };
+
+    async reviewFile(name: string) {
+        const data = await this.getFileData(name);
+        if (/\.(bat|cmd|css|html?|ini|js|json|log|php|py|sh|sql|txt|xml)$/.test(name)) {
+            return this.reviewData = {
+                visible: true,
+                name: name,
+                data: gobyte.base64ToText(data),
+                type: 'text'
+            };
+        }
+        if (/\.(bmp|gif|jpg|jpeg|png|webp)$/.test(name)) {
+            return this.reviewData = {
+                visible: true,
+                name: name,
+                data: gobyte.base64ToImage(data),
+                type: 'image'
+            };
+        }
+        return this.reviewData = {
+            visible: true,
+            name: name,
+            data: '不支持的文件类型',
+            type: 'unkown'
+        };
+    }
+
     // 表格定义
 
     public tableColumns = [
@@ -164,6 +207,13 @@ export default class WorkerFileman extends Vue {
                         <t-icon name="rollback" />
                     </t-button>
                 </t-col>
+                <t-col v-if="editing" flex="auto">
+                    <t-input v-model="path">
+                        <template #suffixIcon>
+                            <t-icon name="enter" class="pointer" @click="getFileList(path)" />
+                        </template>
+                    </t-input>
+                </t-col>
                 <t-col v-if="!editing" flex="auto">
                     <t-breadcrumb class="breadcrumb">
                         <t-breadcrumb-item v-if="machine?.OSType != 'windows'" @click="getFileList('')">
@@ -174,13 +224,6 @@ export default class WorkerFileman extends Vue {
                         </t-breadcrumb-item>
                     </t-breadcrumb>
                 </t-col>
-                <t-col v-else flex="auto">
-                    <t-input v-model="path">
-                        <template #suffixIcon>
-                            <t-icon name="enter" class="pointer" @click="getFileList(path)" />
-                        </template>
-                    </t-input>
-                </t-col>
                 <t-col v-if="!editing" class="col-gray">
                     <t-button shape="circle" variant="text" @click="editing = true">
                         <t-icon name="edit-2" />
@@ -189,7 +232,9 @@ export default class WorkerFileman extends Vue {
             </t-row>
             <t-table :data="fileList" :columns="tableColumns" row-key="Id" hover>
                 <template #Name="{ row }">
-                    {{ row.Name }}{{ row.IsDir ? '/' : '' }}
+                    <t-link hover="color" @click="row.IsDir ? getFileList(path + '/' + row.Name) : reviewFile(row.Name)">
+                        {{ row.Name }}{{ row.IsDir ? '/' : '' }}
+                    </t-link>
                 </template>
                 <template #Mode="{ row }">
                     {{ octalPermissionsToText(row.Mode) }}
@@ -204,7 +249,7 @@ export default class WorkerFileman extends Vue {
                     <t-link v-if="row.IsDir" theme="primary" hover="color" @click="getFileList(path + '/' + row.Name)">
                         浏览
                     </t-link>
-                    <t-link v-else theme="success" hover="color" @click="getFileData(row.Name)">
+                    <t-link v-else theme="success" hover="color" @click="downloadFile(row.Name)">
                         下载
                     </t-link>
                     <t-popconfirm content="确定删除?" @confirm="deleteFile(row.Name)">
@@ -215,6 +260,15 @@ export default class WorkerFileman extends Vue {
                 </template>
             </t-table>
         </t-space>
+
+        <t-drawer v-model:visible="reviewData.visible" :header="reviewData.name" :footer="false" :close-btn="true" size="60%">
+            <template v-if="reviewData.type == 'text'">
+                <t-textarea v-model="reviewData.data" autosize readonly />
+            </template>
+            <template v-else-if="reviewData.type == 'image'">
+                <t-image :src="reviewData.data" />
+            </template>
+        </t-drawer>
     </t-card>
 </template>
 

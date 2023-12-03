@@ -30,6 +30,22 @@ export function fileToBase64(file: File, fn: (data: string) => void) {
     reader.readAsArrayBuffer(file);
 }
 
+// 将go的[]byte序列化值转为文本
+export function base64ToText(input: string) {
+    const data = base64ToBuffer(input);
+    const decoder = new TextDecoder('utf-8');
+    return decoder.decode(data);
+}
+
+// 将go的[]byte序列化值转为图片
+export function base64ToImage(input: string) {
+    const data = base64ToBuffer(input);
+    const blob = new Blob([data], {
+        type: 'image/png'
+    });
+    return URL.createObjectURL(blob);
+}
+
 // 将go的[]byte序列化值转为下载
 export function base64ToDownload(input: string, filename: string) {
     const data = base64ToBuffer(input);
