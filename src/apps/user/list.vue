@@ -23,7 +23,7 @@ export default class UserList extends Vue {
         this.getUserList();
     }
 
-    // 列表
+    // 用户列表
 
     public userList: UserItem[] = [];
 
@@ -34,7 +34,7 @@ export default class UserList extends Vue {
         this.userList = res.Items;
     }
 
-    // 删除
+    // 删除用户
 
     async deleteUser(id: number) {
         this.loading = true;

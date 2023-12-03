@@ -23,7 +23,7 @@ export default class ConfigList extends Vue {
         this.getConfigList();
     }
 
-    // 列表
+    // 配置列表
 
     public configList: ConfigItem[] = [];
 
