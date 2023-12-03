@@ -88,7 +88,7 @@ export default class MachineList extends Vue {
         { colKey: 'Model', title: '云账号', ellipsis: true },
         { colKey: 'WorkerId', title: '土豆片', ellipsis: true },
         { colKey: 'Description', title: '备注', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: '160px' }
+        { colKey: 'Operation', title: '操作', width: '150px' }
     ];
 
 }

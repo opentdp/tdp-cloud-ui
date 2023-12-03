@@ -87,7 +87,7 @@ export default class SslBind extends Vue {
         { colKey: 'From', title: '来源', ellipsis: true },
         { colKey: 'StatusName', title: '状态', ellipsis: true },
         { colKey: 'Deployed', title: '关联资源', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: '110px' },
+        { colKey: 'Operation', title: '操作', width: '70px' },
     ];
 }
 </script>

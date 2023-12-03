@@ -48,7 +48,7 @@ export default class VendorAlibaba extends Vue {
     public tableColumns = [
         { colKey: 'Description', title: '别名', ellipsis: true },
         { colKey: 'SecretId', title: '密钥 ID', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: '160px' },
+        { colKey: 'Operation', title: '操作', width: '150px' },
     ];
 }
 </script>

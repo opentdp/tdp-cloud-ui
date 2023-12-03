@@ -37,7 +37,7 @@ export default class ScriptList extends Vue {
 
     // 删除脚本
 
-    async removeScript(id: number) {
+    async deleteScript(id: number) {
         this.loading = true;
         await NaApi.script.remove(id);
         await this.getScriptList();
@@ -79,16 +79,6 @@ export default class ScriptList extends Vue {
                 </t-button>
             </template>
             <t-table :data="scriptList" :columns="tableColumns" row-key="Id" hover expand-on-row-click>
-                <template #Operation="{ row }">
-                    <t-link theme="primary" hover="color" @click="updateModal.open(row)">
-                        修改
-                    </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="removeScript(row.Id)">
-                        <t-link theme="danger" hover="color">
-                            删除
-                        </t-link>
-                    </t-popconfirm>
-                </template>
                 <template #expandedRow="{ row }">
                     <pre v-if="row.CommandType == 'SHELL'" v-highlight>
                         <code max-height="500" class="language-bash">{{ row.Content }}</code>
@@ -99,6 +89,16 @@ export default class ScriptList extends Vue {
                     <pre v-if="row.CommandType == 'BAT'" v-highlight>
                         <code max-height="500" class="language-bat">{{ row.Content }}</code>
                     </pre>
+                </template>
+                <template #Operation="{ row }">
+                    <t-link theme="primary" hover="color" @click="updateModal.open(row)">
+                        修改
+                    </t-link>
+                    <t-popconfirm content="确定删除?" @confirm="deleteScript(row.Id)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
                 </template>
             </t-table>
         </t-card>

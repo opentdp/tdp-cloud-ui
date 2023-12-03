@@ -95,7 +95,7 @@ export default class CloudflareCustomHostnames extends Vue {
         { colKey: 'status', title: '域名状态', ellipsis: true },
         { colKey: 'ssl.status', title: '证书状态', ellipsis: true },
         { colKey: 'expires_on', title: '证书有效期', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: '110px' },
+        { colKey: 'Operation', title: '操作', width: '70px' },
     ];
 }
 </script>

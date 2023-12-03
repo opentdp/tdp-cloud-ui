@@ -48,7 +48,7 @@ export default class VendorCloudflare extends Vue {
     public tableColumns = [
         { colKey: 'Description', title: '别名', ellipsis: true },
         { colKey: 'SecretId', title: '邮箱', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: '160px' },
+        { colKey: 'Operation', title: '操作', width: '150px' },
     ];
 }
 </script>
