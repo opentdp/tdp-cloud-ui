@@ -34,6 +34,14 @@ export default class TasklineList extends Vue {
         this.historyList = res.Items;
     }
 
+    // 删除记录
+
+    async deleteHistory(idx: number) {
+        const item = this.historyList[idx];
+        await NaApi.vendor.remove(item.Id);
+        this.historyList.splice(idx, 1);
+    }
+
     // 展开详情
 
     public expanded = false;
@@ -50,6 +58,7 @@ export default class TasklineList extends Vue {
         { colKey: 'Subject', title: '任务名称', ellipsis: true },
         { colKey: 'Status', title: '执行状态', ellipsis: true },
         { colKey: 'UpdatedAt', title: '更新时间', ellipsis: true },
+        { colKey: 'Operation', title: '操作', width: '70px' },
     ];
 }
 </script>
@@ -86,6 +95,13 @@ export default class TasklineList extends Vue {
                         <h3>响应内容</h3>
                         <code max-height="500" class="language-text">{{ row.Response.Output }}</code>
                     </pre>
+                </template>
+                <template #Operation="{ rowIndex }">
+                    <t-popconfirm content="用户资源不会同步删除，是否继续?" @confirm="deleteHistory(rowIndex)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
                 </template>
             </t-table>
         </t-card>
