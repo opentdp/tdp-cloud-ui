@@ -97,7 +97,7 @@ export default class TasklineList extends Vue {
                     </pre>
                 </template>
                 <template #Operation="{ rowIndex }">
-                    <t-popconfirm content="用户资源不会同步删除，是否继续?" @confirm="deleteHistory(rowIndex)">
+                    <t-popconfirm content="确定删除?" @confirm="deleteHistory(rowIndex)">
                         <t-link theme="danger" hover="color">
                             删除
                         </t-link>

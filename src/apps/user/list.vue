@@ -73,7 +73,7 @@ export default class UserList extends Vue {
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改
                     </t-link>
-                    <t-popconfirm content="用户资源不会同步删除，是否继续?" @confirm="deleteUser(rowIndex)">
+                    <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续?" @confirm="deleteUser(rowIndex)">
                         <t-link theme="danger" hover="color">
                             删除
                         </t-link>
