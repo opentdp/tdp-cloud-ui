@@ -34,6 +34,14 @@ export default class UserList extends Vue {
         this.userList = res.Items;
     }
 
+    // 删除
+
+    async deleteUser(id: number) {
+        this.loading = true;
+        await NaApi.user.remove(id);
+        await this.getUserList();
+    }
+
     // 表格定义
 
     public tableColumns: PrimaryTableCol<TableRowData | UserItem>[] = [
@@ -65,6 +73,11 @@ export default class UserList extends Vue {
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改
                     </t-link>
+                    <t-popconfirm content="用户资源不会同步删除，是否继续?" @confirm="deleteUser(row.Id)">
+                        <t-link theme="danger" hover="color">
+                            删除
+                        </t-link>
+                    </t-popconfirm>
                 </template>
             </t-table>
         </t-card>
