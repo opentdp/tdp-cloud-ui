@@ -69,7 +69,7 @@ export default class ScriptExec extends Vue {
     async getOutput(id: number) {
         const res = await NaApi.taskline.detail(id);
         this.result = res.Item;
-        if (this.result.Status != 'Doing') {
+        if (res.Item.Status != 'Doing') {
             clearInterval(this.timer);
             this.loading = false;
         }
@@ -80,8 +80,8 @@ export default class ScriptExec extends Vue {
     public visible = false;
 
     public close() {
-        this.visible = false;
         this.$emit('submit');
+        this.visible = false;
         clearInterval(this.timer);
     }
 
@@ -134,7 +134,7 @@ export default class ScriptExec extends Vue {
                     </t-space>
                 </t-form-item>
             </t-form>
-            <div v-if="result">
+            <div v-if="result && (result.Response.Error || result.Response.Output)">
                 <pre v-if="result.Response.Error" v-highlight>
                     <h3>错误信息</h3>
                     <code max-height="300" class="lang-json">{{ JSON.stringify(result.Response.Error, null, 4) }}</code>

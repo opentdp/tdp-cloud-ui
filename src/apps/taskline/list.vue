@@ -1,4 +1,3 @@
-
 <script lang="ts">
 import { Component, Vue } from '@/apps/basic';
 
@@ -10,19 +9,12 @@ import { dateFormat } from '@/helper/format';
 export default class TasklineList extends Vue {
     public dateFormat = dateFormat;
 
-    public timer = 0;
+    public loading = true;
 
     // 初始化
 
     public created() {
         this.getHistory();
-        this.timer = setInterval(() => {
-            this.expanded || this.getHistory();
-        }, 5000);
-    }
-
-    public unmounted() {
-        clearInterval(this.timer);
     }
 
     // 历史记录
@@ -32,6 +24,7 @@ export default class TasklineList extends Vue {
     async getHistory() {
         const res = await NaApi.taskline.list();
         this.historyList = res.Items;
+        this.loading = false;
     }
 
     // 删除记录
@@ -74,7 +67,7 @@ export default class TasklineList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card title="任务记录" hover-shadow header-bordered>
+        <t-card :loading="loading" title="任务记录" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ historyList.length }}
             </template>
