@@ -18,6 +18,10 @@ export default class ScriptExec extends Vue {
     public loading = false;
     public timer = 0;
 
+    public unmounted() {
+        clearInterval(this.timer);
+    }
+
     // 机器列表
 
     public get hostnames() {
@@ -80,9 +84,8 @@ export default class ScriptExec extends Vue {
     public visible = false;
 
     public close() {
-        this.$emit('submit');
         this.visible = false;
-        clearInterval(this.timer);
+        this.$emit('submit');
     }
 
     public open(machines: MachineItem[], script: ScriptItem) {
