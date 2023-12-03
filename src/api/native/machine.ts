@@ -33,7 +33,7 @@ export const MachineModels: Record<string, string> = {
 };
 
 export interface MachineOrig {
-    VendorId: number
+    VendorId?: number
     HostName: string
     IpAddress: string
     OSType: string

@@ -45,7 +45,6 @@ export default class WorkerBind extends Vue {
     public bindMachine(item: WorkerItem) {
         const meta = item.WorkerMeta;
         NaApi.machine.create({
-            VendorId: 0,
             HostName: meta.HostName,
             IpAddress: meta.PublicIpv4 || meta.PublicIpv6,
             OSType: meta.OS,
