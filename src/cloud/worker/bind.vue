@@ -86,7 +86,7 @@ export default class WorkerBind extends Vue {
         { colKey: 'WorkerMeta.OS', title: '系统', ellipsis: true },
         { colKey: 'WorkerMeta_Uptime', title: '运行时长', ellipsis: true },
         { colKey: 'WorkerVersion', title: '土豆片', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: '110px' },
+        { colKey: 'Operation', title: '操作', width: '70px' },
     ];
 }
 </script>

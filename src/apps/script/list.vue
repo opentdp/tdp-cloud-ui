@@ -37,10 +37,10 @@ export default class ScriptList extends Vue {
 
     // 删除脚本
 
-    async deleteScript(id: number) {
-        this.loading = true;
-        await NaApi.script.remove(id);
-        await this.getScriptList();
+    async deleteScript(idx: number) {
+        const item = this.scriptList[idx];
+        await NaApi.script.remove(item.Id);
+        this.scriptList.splice(idx, 1);
     }
 
     // 表格定义
@@ -90,11 +90,11 @@ export default class ScriptList extends Vue {
                         <code max-height="500" class="language-bat">{{ row.Content }}</code>
                     </pre>
                 </template>
-                <template #Operation="{ row }">
+                <template #Operation="{ row, rowIndex }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改
                     </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="deleteScript(row.Id)">
+                    <t-popconfirm content="确定删除?" @confirm="deleteScript(rowIndex)">
                         <t-link theme="danger" hover="color">
                             删除
                         </t-link>

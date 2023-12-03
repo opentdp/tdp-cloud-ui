@@ -36,10 +36,10 @@ export default class UserList extends Vue {
 
     // 删除用户
 
-    async deleteUser(id: number) {
-        this.loading = true;
-        await NaApi.user.remove(id);
-        await this.getUserList();
+    async deleteUser(idx: number) {
+        const item = this.userList[idx];
+        await NaApi.vendor.remove(item.Id);
+        this.userList.splice(idx, 1);
     }
 
     // 表格定义
@@ -69,11 +69,11 @@ export default class UserList extends Vue {
                 记录总数: {{ userList?.length || 0 }}
             </template>
             <t-table :loading="loading" :data="userList" :columns="tableColumns" row-key="Id" cell-empty-content="--" hover>
-                <template #Operation="{ row }">
+                <template #Operation="{ row, rowIndex }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改
                     </t-link>
-                    <t-popconfirm content="用户资源不会同步删除，是否继续?" @confirm="deleteUser(row.Id)">
+                    <t-popconfirm content="用户资源不会同步删除，是否继续?" @confirm="deleteUser(rowIndex)">
                         <t-link theme="danger" hover="color">
                             删除
                         </t-link>
