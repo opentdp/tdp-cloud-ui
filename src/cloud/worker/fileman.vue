@@ -144,9 +144,12 @@ export default class WorkerFileman extends Vue {
         type: ''
     };
 
+    public textExpr = /\.(bat|cmd|css|conf|html?|ini|js|json|log|php|py|sh|sql|txt|xml)$/;
+    public imageExpr = /\.(bmp|gif|jpg|jpeg|png|webp)$/;
+
     async reviewFile(name: string) {
         const data = await this.getFileData(name);
-        if (/\.(bat|cmd|css|html?|ini|js|json|log|php|py|sh|sql|txt|xml)$/.test(name)) {
+        if (this.textExpr.test(name)) {
             return this.reviewData = {
                 visible: true,
                 name: name,
@@ -154,7 +157,7 @@ export default class WorkerFileman extends Vue {
                 type: 'text'
             };
         }
-        if (/\.(bmp|gif|jpg|jpeg|png|webp)$/.test(name)) {
+        if (this.imageExpr.test(name)) {
             return this.reviewData = {
                 visible: true,
                 name: name,
@@ -165,7 +168,7 @@ export default class WorkerFileman extends Vue {
         return this.reviewData = {
             visible: true,
             name: name,
-            data: '不支持的文件类型',
+            data: gobyte.base64ToText(data),
             type: 'unkown'
         };
     }
@@ -262,12 +265,25 @@ export default class WorkerFileman extends Vue {
         </t-space>
 
         <t-drawer v-model:visible="reviewData.visible" :header="reviewData.name" :footer="false" :close-btn="true" size="60%">
-            <template v-if="reviewData.type == 'text'">
+            <div v-if="reviewData.type == 'text'">
                 <t-textarea v-model="reviewData.data" autosize readonly />
-            </template>
-            <template v-else-if="reviewData.type == 'image'">
+            </div>
+            <div v-else-if="reviewData.type == 'image'">
                 <t-image :src="reviewData.data" />
-            </template>
+            </div>
+            <div v-else>
+                <h3>无法识别文件类型，可尝试如下操作：</h3>
+                <p class="open-as">
+                    <t-link @click="reviewData.type = 'text'">
+                        <b>-</b> &nbsp; 作为文本打开
+                    </t-link>
+                </p>
+                <p class="open-as">
+                    <t-link @click="reviewData.type = 'image'">
+                        <b>-</b> &nbsp; 作为图片打开
+                    </t-link>
+                </p>
+            </div>
         </t-drawer>
     </t-card>
 </template>
@@ -288,5 +304,9 @@ export default class WorkerFileman extends Vue {
 .breadcrumb {
     padding: 5px 10px;
     background-color: var(--td-gray-color-1);
+}
+
+.open-as {
+    margin: 10px 0 0 10px;
 }
 </style>
