@@ -95,7 +95,7 @@ export default class DnspodDomain extends Vue {
                 <template #icon>
                     <t-icon name="add" />
                 </template>
-                添加记录
+                添加
             </t-button>
         </template>
         <t-table :data="recordList" :columns="tableColumns" row-key="recordId" hover>

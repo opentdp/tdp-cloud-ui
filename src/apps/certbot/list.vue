@@ -74,7 +74,7 @@ export default class CertbotList extends Vue {
                     <template #icon>
                         <t-icon name="add" />
                     </template>
-                    申请证书
+                    添加
                 </t-button>
             </template>
             <t-table :data="certbotList" :columns="tableColumns" row-key="Id" hover>

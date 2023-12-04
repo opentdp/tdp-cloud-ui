@@ -73,7 +73,7 @@ export default class KeypairList extends Vue {
                     <template #icon>
                         <t-icon name="add" />
                     </template>
-                    添加密钥
+                    添加
                 </t-button>
             </template>
             <t-table :data="keylist" :columns="tableColumns" row-key="Id" hover>

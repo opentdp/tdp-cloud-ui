@@ -120,7 +120,7 @@ export default class CloudflareCustomHostnames extends Vue {
                 <template #icon>
                     <t-icon name="refresh" />
                 </template>
-                刷新状态
+                刷新
             </t-button>
         </template>
 

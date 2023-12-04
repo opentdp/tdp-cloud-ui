@@ -73,7 +73,7 @@ export default class VendorCloudflare extends Vue {
                     <template #icon>
                         <t-icon name="add" />
                     </template>
-                    绑定账号
+                    添加
                 </t-button>
             </template>
             <t-table :data="vendorList" :columns="tableColumns" row-key="Id" hover>

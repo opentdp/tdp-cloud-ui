@@ -85,7 +85,7 @@ export default class LighthouseFirewall extends Vue {
                 <template #icon>
                     <t-icon name="add" />
                 </template>
-                添加规则
+                添加
             </t-button>
         </template>
         <t-table :data="firewallRuleList" :columns="tableColumns" row-key="Id" hover>

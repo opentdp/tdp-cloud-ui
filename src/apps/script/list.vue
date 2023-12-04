@@ -75,7 +75,7 @@ export default class ScriptList extends Vue {
                     <template #icon>
                         <t-icon name="add" />
                     </template>
-                    新建脚本
+                    添加
                 </t-button>
             </template>
             <t-table :data="scriptList" :columns="tableColumns" row-key="Id" hover expand-on-row-click>
