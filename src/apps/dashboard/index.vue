@@ -90,13 +90,8 @@ export default class DashboardIndex extends Vue {
             </t-space>
         </t-card>
 
-        <t-card v-if="session.Level == 1" title="系统负载" hover-shadow header-bordered>
-            <SysLoad id="host" />
-        </t-card>
-
-        <t-card v-if="session.Level == 1" title="系统信息" hover-shadow header-bordered>
-            <SysInfo id="host" />
-        </t-card>
+        <SysLoad v-if="session.Level == 1" id="host" />
+        <SysInfo v-if="session.Level == 1" id="host" />
     </t-space>
 </template>
 

@@ -21,11 +21,9 @@ export default class WorkerInstance extends Vue {
 
 <template>
     <t-space fixed direction="vertical">
-        <t-card title="实例负载" hover-shadow header-bordered>
-            <SysLoad :id="machine.WorkerId" />
-        </t-card>
+        <SysLoad :id="machine.WorkerId" />
 
-        <t-card title="实例信息" hover-shadow header-bordered>
+        <t-card title="系统信息" hover-shadow header-bordered>
             <t-list v-if="machine.WorkerMeta" :split="true">
                 <t-list-item>
                     <b>实例ID</b>

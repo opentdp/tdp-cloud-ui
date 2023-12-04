@@ -26,7 +26,7 @@ export default class WorkerSysInfo extends Vue {
 
     async getDetailStat() {
         this.loading = true;
-        if (this.id === 'host') {
+        if (this.id == 'host') {
             const res = await NaApi.workhub.host();
             this.stat = res.Stat;
             const rs2 = await NaApi.workhub.hostIp();
@@ -41,52 +41,54 @@ export default class WorkerSysInfo extends Vue {
 </script>
 
 <template>
-    <t-list v-if="stat" :split="true">
-        <t-list-item>
-            <b>主机名</b>
-            <span>{{ stat.HostName }}</span>
-        </t-list-item>
-        <t-list-item>
-            <b>CPU 型号</b>
-            <span>{{ stat.CpuModel[0] }}</span>
-        </t-list-item>
-        <t-list-item>
-            <b>CPU 核心</b>
-            <span>内核：{{ stat.CpuCore }}，逻辑处理器：{{ stat.CpuCoreLogic }}</span>
-        </t-list-item>
-        <t-list-item>
-            <b>内存</b>
-            <span>{{ bytesToSize(stat.MemoryTotal) }}</span>
-        </t-list-item>
-        <t-list-item>
-            <b>虚拟内存</b>
-            <span>{{ bytesToSize(stat.SwapTotal) }}</span>
-        </t-list-item>
-        <t-list-item>
-            <b>硬盘容量</b>
-            <span>{{ bytesToSize(stat.DiskTotal) }}</span>
-        </t-list-item>
-        <t-list-item>
-            <b>操作系统</b>
-            <span>{{ stat.Platform }}（{{ stat.KernelArch }}）</span>
-        </t-list-item>
-        <t-list-item>
-            <b>运行时长</b>
-            <span>{{ (stat.Uptime / 86400).toFixed(1) }} 天</span>
-        </t-list-item>
-        <t-list-item v-if="ipsets">
-            <b>公网 IP</b>
-            <span class="text-right">
-                <div v-if="ipsets.Ipv4">
-                    {{ ipsets.Ipv4 }}
-                </div>
-                <div v-if="ipsets.Ipv6">
-                    {{ ipsets.Ipv6 }}
-                </div>
-            </span>
-        </t-list-item>
-    </t-list>
-    <t-space v-if="loading" fixed align="center">
-        <t-loading />
-    </t-space>
+    <t-card v-if="session.Level == 1" title="系统信息" hover-shadow header-bordered>
+        <template #actions>
+            <t-loading v-if="loading" size="small" />
+        </template>
+        <t-list v-if="stat" :split="true">
+            <t-list-item>
+                <b>主机名</b>
+                <span>{{ stat.HostName }}</span>
+            </t-list-item>
+            <t-list-item>
+                <b>CPU 型号</b>
+                <span>{{ stat.CpuModel[0] }}</span>
+            </t-list-item>
+            <t-list-item>
+                <b>CPU 核心</b>
+                <span>内核：{{ stat.CpuCore }}，逻辑处理器：{{ stat.CpuCoreLogic }}</span>
+            </t-list-item>
+            <t-list-item>
+                <b>内存</b>
+                <span>{{ bytesToSize(stat.MemoryTotal) }}</span>
+            </t-list-item>
+            <t-list-item>
+                <b>虚拟内存</b>
+                <span>{{ bytesToSize(stat.SwapTotal) }}</span>
+            </t-list-item>
+            <t-list-item>
+                <b>硬盘容量</b>
+                <span>{{ bytesToSize(stat.DiskTotal) }}</span>
+            </t-list-item>
+            <t-list-item>
+                <b>操作系统</b>
+                <span>{{ stat.Platform }}（{{ stat.KernelArch }}）</span>
+            </t-list-item>
+            <t-list-item>
+                <b>运行时长</b>
+                <span>{{ (stat.Uptime / 86400).toFixed(1) }} 天</span>
+            </t-list-item>
+            <t-list-item v-if="ipsets">
+                <b>公网 IP</b>
+                <span class="text-right">
+                    <div v-if="ipsets.Ipv4">
+                        {{ ipsets.Ipv4 }}
+                    </div>
+                    <div v-if="ipsets.Ipv6">
+                        {{ ipsets.Ipv6 }}
+                    </div>
+                </span>
+            </t-list-item>
+        </t-list>
+    </t-card>
 </template>

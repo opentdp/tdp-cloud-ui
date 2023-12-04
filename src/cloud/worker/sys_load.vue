@@ -30,7 +30,7 @@ export default class WorkerSysLoad extends Vue {
 
     async getDetailStat() {
         this.loading = true;
-        if (this.id === 'host') {
+        if (this.id == 'host') {
             const res = await NaApi.workhub.host();
             this.stat = res.Stat;
         } else if (this.id) {
@@ -95,29 +95,31 @@ export default class WorkerSysLoad extends Vue {
 </script>
 
 <template>
-    <t-space v-if="loading" fixed align="center">
-        <t-loading />
-    </t-space>
-    <t-space v-if="chart.memoryPercent" fixed break-line>
-        <t-progress theme="circle" size="135" :percentage="chart.cpuPercent" :color="chart.cpuColor">
-            <template #label>
-                <small>{{ chart.cpuPercent }}%<br>CPU</small>
-            </template>
-        </t-progress>
-        <t-progress theme="circle" size="135" :percentage="chart.memoryPercent" :color="chart.memoryColor">
-            <template #label>
-                <small>{{ chart.memoryPercent }}%<br>内存</small>
-            </template>
-        </t-progress>
-        <t-progress theme="circle" size="135" :percentage="chart.swapPercent" :color="chart.swapColor">
-            <template #label>
-                <small>{{ chart.swapPercent }}%<br>Swap</small>
-            </template>
-        </t-progress>
-        <t-progress theme="circle" size="135" :percentage="chart.diskPercent" :color="chart.diskColor">
-            <template #label>
-                <small>{{ chart.diskPercent }}%<br>硬盘</small>
-            </template>
-        </t-progress>
-    </t-space>
+    <t-card v-if="session.Level == 1" title="系统负载" hover-shadow header-bordered>
+        <template #actions>
+            <t-loading v-if="loading" size="small" />
+        </template>
+        <t-space v-if="chart.memoryPercent" fixed break-line>
+            <t-progress theme="circle" size="135" :percentage="chart.cpuPercent" :color="chart.cpuColor">
+                <template #label>
+                    <small>{{ chart.cpuPercent }}%<br>CPU</small>
+                </template>
+            </t-progress>
+            <t-progress theme="circle" size="135" :percentage="chart.memoryPercent" :color="chart.memoryColor">
+                <template #label>
+                    <small>{{ chart.memoryPercent }}%<br>内存</small>
+                </template>
+            </t-progress>
+            <t-progress theme="circle" size="135" :percentage="chart.swapPercent" :color="chart.swapColor">
+                <template #label>
+                    <small>{{ chart.swapPercent }}%<br>Swap</small>
+                </template>
+            </t-progress>
+            <t-progress theme="circle" size="135" :percentage="chart.diskPercent" :color="chart.diskColor">
+                <template #label>
+                    <small>{{ chart.diskPercent }}%<br>硬盘</small>
+                </template>
+            </t-progress>
+        </t-space>
+    </t-card>
 </template>
