@@ -31,7 +31,7 @@ export default class TasklineList extends Vue {
 
     async deleteHistory(idx: number) {
         const item = this.historyList[idx];
-        await NaApi.vendor.remove(item.Id);
+        await NaApi.taskline.remove(item.Id);
         this.historyList.splice(idx, 1);
     }
 
