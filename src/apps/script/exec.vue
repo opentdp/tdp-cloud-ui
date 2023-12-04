@@ -59,6 +59,7 @@ export default class ScriptExec extends Vue {
         // 循环获取状态
         if (taskIds.length > 1) {
             this.message = '批量提交成功，请在任务列表查看执行结果';
+            this.loading = false;
         } else {
             this.timer = setInterval(() => this.getOutput(taskIds[0]), 1500);
         }
