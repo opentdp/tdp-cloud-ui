@@ -10,17 +10,24 @@ import { FileInfo } from '@/api/native/typings';
 import { bytesToSize, dateFormat } from '@/helper/format';
 import * as gobyte from '@/helper/gobyte';
 
-@Component({})
+@Component
 export default class WorkerFileman extends Vue {
     public MachineModels = MachineModels;
 
     public bytesToSize = bytesToSize;
     public dateFormat = dateFormat;
 
+    public path = '/';
     public editing = false;
 
-    public path = '/';
     public fileList: FileInfo[] = [];
+    public fileInfo = {
+        Type: '',
+        Name: '',
+        Mode: 0,
+        ModTime: 0,
+        Data: '',
+    };
 
     @Prop
     public machine!: MachineItem;
@@ -41,15 +48,14 @@ export default class WorkerFileman extends Vue {
     // 获取路径列表
 
     public getPathCrumb() {
-        const res = [];
-        const list = this.path.split('/').filter(v => v);
-        for (let i = 0; i < list.length; i++) {
-            res.push({
-                name: list[i],
-                path: list.slice(0, i + 1).join('/')
+        const list = [];
+        const part = this.path.split('/').filter(v => v);
+        for (let i = 0; i < part.length; i++) {
+            list.push({
+                name: part[i], path: part.slice(0, i + 1).join('/')
             });
         }
-        return res;
+        return list;
     }
 
     // 获取文件列表
@@ -75,7 +81,7 @@ export default class WorkerFileman extends Vue {
         }
     }
 
-    // 获取文件数据
+    // 获取文件信息
 
     async getFileData(name: string) {
         this.loading = true;
@@ -83,32 +89,40 @@ export default class WorkerFileman extends Vue {
         const res = await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false;
         });
-        // 返回数据
-        return res.FileData || '';
+        // 缓存文件信息
+        if (res.FileList && res.FileList.length > 0) {
+            const file = { ...res.FileList[0], Type: '' };
+            if (/\.(bat|cmd|css|conf|html?|ini|js|json|log|php|py|sh|sql|txt|xml)$/.test(name)) {
+                file.Type = 'text';
+            } else if (/\.(bmp|gif|jpg|jpeg|png|webp)$/.test(name)) {
+                file.Type = 'image';
+            }
+            file.ModTime *= 1000;
+            this.fileInfo = file;
+        }
     }
 
     // 下载文件
 
     async downloadFile(name: string) {
-        const data = await this.getFileData(name);
-        gobyte.base64ToDownload(data, name);
+        await this.getFileData(name);
+        gobyte.base64ToDownload(this.fileInfo.Data, name);
     }
 
     // 上传文件
 
     async uploadFile(file: UploadFile) {
-        if (file.raw) {
-            gobyte.fileToBase64(file.raw, async res => {
-                await NaApi.workhub.filer(this.machine.WorkerId, {
-                    Action: 'write',
-                    Path: this.path + '/' + file.name,
-                    File: { Data: res }
-                });
-                await this.getFileList(this.path);
-            });
-        }
-        const data: RequestMethodResponse = { status: 'success', response: {} };
-        return Promise.resolve(data);
+        file.raw && gobyte.fileToBase64(file.raw, async res => {
+            const req = {
+                Action: 'write',
+                Path: this.path + '/' + file.name,
+                File: { Data: res }
+            };
+            await NaApi.workhub.filer(this.machine.WorkerId, req);
+            await this.getFileList(this.path);
+        });
+        const data = { status: 'success', response: {} };
+        return Promise.resolve(data as RequestMethodResponse);
     }
 
     // 删除文件
@@ -122,11 +136,39 @@ export default class WorkerFileman extends Vue {
         await this.getFileList(this.path);
     }
 
+    // 保存文件
+
+    async saveFile() {
+        this.loading = true;
+        const file: Partial<FileInfo> = {
+            Data: gobyte.textToBase64(this.fileInfo.Data),
+            ModTime: Math.floor(this.fileInfo.ModTime / 1000),
+        };
+        const path = this.path + '/' + this.fileInfo.Name;
+        const req = { Action: 'write', Path: path, File: file };
+        await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
+            this.loading = false;
+        });
+    }
+
+    // 打开文件
+
+    async openFileAs(type: string) {
+        const data = this.fileInfo.Data;
+        if (type == 'text') {
+            this.fileInfo.Type = type;
+            this.fileInfo.Data = gobyte.base64ToText(data);
+        } else if (type == 'image') {
+            this.fileInfo.Type = type;
+            this.fileInfo.Data = gobyte.base64ToImage(data);
+        }
+    }
+
     // 权限转换
 
-    public octalPermissionsToText(permissions: number): string {
+    public octalPermissionsToText(perm: number): string {
         let result = '';
-        const octalString = permissions.toString(8);
+        const octalString = perm.toString(8);
         const permissionMap = ['---', '--x', '-w-', '-wx', 'r--', 'r-x', 'rw-', 'rwx'];
         for (let i = 0; i < octalString.length; i++) {
             result += permissionMap[parseInt(octalString[i], 10)];
@@ -134,42 +176,14 @@ export default class WorkerFileman extends Vue {
         return result;
     }
 
-    // 预览文件
+    // 打开抽屉
 
-    public reviewData = {
-        visible: false,
-        name: '',
-        data: '',
-        type: ''
-    };
-
-    public textExpr = /\.(bat|cmd|css|conf|html?|ini|js|json|log|php|py|sh|sql|txt|xml)$/;
-    public imageExpr = /\.(bmp|gif|jpg|jpeg|png|webp)$/;
+    public visible = false;
 
     async reviewFile(name: string) {
-        const data = await this.getFileData(name);
-        if (this.textExpr.test(name)) {
-            return this.reviewData = {
-                visible: true,
-                name: name,
-                data: gobyte.base64ToText(data),
-                type: 'text'
-            };
-        }
-        if (this.imageExpr.test(name)) {
-            return this.reviewData = {
-                visible: true,
-                name: name,
-                data: gobyte.base64ToImage(data),
-                type: 'image'
-            };
-        }
-        return this.reviewData = {
-            visible: true,
-            name: name,
-            data: gobyte.base64ToText(data),
-            type: 'unkown'
-        };
+        await this.getFileData(name);
+        this.openFileAs(this.fileInfo.Type);
+        this.visible = true;
     }
 
     // 表格定义
@@ -193,7 +207,7 @@ export default class WorkerFileman extends Vue {
             <t-upload theme="custom" :request-method="uploadFile" />
         </template>
         <t-space fixed direction="vertical">
-            <t-row>
+            <t-row class="navbar">
                 <t-col class="col-btn">
                     <t-button shape="circle" variant="text" @click="getFileList('')">
                         <t-icon name="home" />
@@ -263,46 +277,58 @@ export default class WorkerFileman extends Vue {
             </t-table>
         </t-space>
 
-        <t-drawer v-model:visible="reviewData.visible" :header="reviewData.name" :footer="false" :close-btn="true" size="60%">
-            <div v-if="reviewData.type == 'text'">
-                <t-textarea v-model="reviewData.data" autosize readonly />
+        <t-drawer v-model:visible="visible" :header="fileInfo.Name" :footer="fileInfo.Type == 'text'" :close-btn="true" size="60%">
+            <div v-if="fileInfo.Type == 'text'">
+                <t-form-item label="文件内容">
+                    <t-textarea v-model="fileInfo.Data" :autosize="{ minRows: 10 }" />
+                </t-form-item>
+                <t-form-item label="文件修改日期">
+                    <t-date-picker v-model="fileInfo.ModTime" value-type="time-stamp" size="large" allow-input enable-time-picker />
+                </t-form-item>
             </div>
-            <div v-else-if="reviewData.type == 'image'">
-                <t-image :src="reviewData.data" />
+            <div v-else-if="fileInfo.Type == 'image'">
+                <t-image :src="fileInfo.Data" />
             </div>
             <div v-else>
                 <h3>无法识别文件类型，可尝试如下操作：</h3>
                 <p class="open-as">
-                    <t-link @click="reviewData.type = 'text'">
+                    <t-link @click="openFileAs('text')">
                         <b>-</b> &nbsp; 作为文本打开
                     </t-link>
                 </p>
                 <p class="open-as">
-                    <t-link @click="reviewData.type = 'image'">
+                    <t-link @click="openFileAs('image')">
                         <b>-</b> &nbsp; 作为图片打开
                     </t-link>
                 </p>
             </div>
+            <template #footer>
+                <t-button theme="primary" :loading="loading" @click="saveFile()">
+                    提交
+                </t-button>
+            </template>
         </t-drawer>
     </t-card>
 </template>
 
 <style lang="scss" scoped>
-.pointer {
-    cursor: pointer;
-}
+.navbar {
+    .pointer {
+        cursor: pointer;
+    }
 
-.col-btn {
-    width: 50px;
-}
+    .col-btn {
+        width: 50px;
+    }
 
-.col-gray {
-    background-color: var(--td-gray-color-1);
-}
+    .col-gray {
+        background-color: var(--td-gray-color-1);
+    }
 
-.breadcrumb {
-    padding: 5px 10px;
-    background-color: var(--td-gray-color-1);
+    .breadcrumb {
+        padding: 5px 10px;
+        background-color: var(--td-gray-color-1);
+    }
 }
 
 .open-as {

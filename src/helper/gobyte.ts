@@ -30,6 +30,13 @@ export function fileToBase64(file: File, fn: (data: string) => void) {
     reader.readAsArrayBuffer(file);
 }
 
+// 将文本转为go的[]byte序列化值
+export function textToBase64(input: string) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    return bufferToBase64(data);
+}
+
 // 将go的[]byte序列化值转为文本
 export function base64ToText(input: string) {
     const data = base64ToBuffer(input);
