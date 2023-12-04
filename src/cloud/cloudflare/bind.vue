@@ -9,8 +9,6 @@ import { DomainItem } from '@/api/native/domain';
     emits: ['change']
 })
 export default class CloudflareBind extends Vue {
-    public loading = true;
-
     @Prop
     public vendorId = 0;
 
@@ -30,6 +28,7 @@ export default class CloudflareBind extends Vue {
     public domainCount = 0;
 
     async getDomainlist() {
+        this.loading = true;
         const res = await CfApi.zones.list();
         this.domainList = res.Datasets;
         this.loading = false;

@@ -12,8 +12,6 @@ import WorkerFileman from '@/cloud/worker/fileman.vue';
 export default class MachineFileman extends Vue {
     public MachineModels = MachineModels;
 
-    public loading = true;
-
     // 初始化
 
     async created() {
@@ -26,6 +24,7 @@ export default class MachineFileman extends Vue {
     public machine!: MachineItem;
 
     async getMachine(id: number) {
+        this.loading = true;
         const res = await NaApi.machine.detail(id);
         this.machine = res.Item;
         this.loading = false;

@@ -10,8 +10,6 @@ import { dateFormat } from '@/helper/format';
 export default class CloudflareCustomHostnames extends Vue {
     public dateFormat = dateFormat;
 
-    public loading = true;
-
     @Prop
     public domainInfo!: CF.ZoneItem;
 

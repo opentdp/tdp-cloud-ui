@@ -8,8 +8,6 @@ import { UserRegister } from '@/api/native/passport';
 
 @Component
 export default class PassportRegister extends Vue {
-    public loading = false;
-
     // 创建表单
 
     @Ref
@@ -31,6 +29,8 @@ export default class PassportRegister extends Vue {
         ],
         Email: [{ required: true }],
     };
+
+    // 提交表单
 
     async formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {

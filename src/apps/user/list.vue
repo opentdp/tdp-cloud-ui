@@ -12,8 +12,6 @@ import UserUpdate from './update.vue';
     components: { UserUpdate }
 })
 export default class UserList extends Vue {
-    public loading = true;
-
     @Ref
     public updateModal!: UserUpdate;
 
@@ -28,6 +26,7 @@ export default class UserList extends Vue {
     public userList: UserItem[] = [];
 
     async getUserList() {
+        this.loading = true;
         const res = await NaApi.user.list({}).finally(() => {
             this.loading = false;
         });

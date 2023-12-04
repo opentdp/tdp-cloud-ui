@@ -9,8 +9,6 @@ import { dateFormat } from '@/helper/format';
 export default class TasklineList extends Vue {
     public dateFormat = dateFormat;
 
-    public loading = true;
-
     // 初始化
 
     public created() {
@@ -22,6 +20,7 @@ export default class TasklineList extends Vue {
     public historyList: TasklineItem[] = [];
 
     async getHistory() {
+        this.loading = true;
         const res = await NaApi.taskline.list();
         this.historyList = res.Items;
         this.loading = false;
@@ -70,6 +69,14 @@ export default class TasklineList extends Vue {
         <t-card :loading="loading" title="任务记录" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ historyList.length }}
+            </template>
+            <template #actions>
+                <t-button theme="primary" @click="getHistory()">
+                    <template #icon>
+                        <t-icon name="refresh" />
+                    </template>
+                    刷新
+                </t-button>
             </template>
             <t-table :data="historyList" :columns="tableColumns" row-key="Id" hover expand-on-row-click @expand-change="expandChange">
                 <template #UpdatedAt="{ row }">

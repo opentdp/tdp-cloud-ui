@@ -14,7 +14,6 @@ import ScriptExec from './exec.vue';
 })
 export default class ScriptQuick extends Vue {
     public installWorker = installWorker;
-    public loading = true;
 
     public machines!: MachineItem[];
 
@@ -41,6 +40,7 @@ export default class ScriptQuick extends Vue {
     public scriptList: ScriptItem[] = [];
 
     async getScriptList() {
+        this.loading = true;
         const res = await NaApi.script.list();
         this.scriptList = res.Items;
         this.loading = false;

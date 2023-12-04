@@ -11,8 +11,6 @@ import KeypairUpdate from './update.vue';
     components: { KeypairCreate, KeypairUpdate }
 })
 export default class KeypairList extends Vue {
-    public loading = true;
-
     @Ref
     public createModal!: KeypairCreate;
 
@@ -30,6 +28,7 @@ export default class KeypairList extends Vue {
     public keylist: KeypairItem[] = [];
 
     async getKeypairList() {
+        this.loading = true;
         const res = await NaApi.keypair.list();
         this.keylist = res.Items;
         this.loading = false;

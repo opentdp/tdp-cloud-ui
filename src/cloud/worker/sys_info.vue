@@ -10,8 +10,6 @@ import { bytesToSize } from '@/helper/format';
 export default class WorkerSysInfo extends Vue {
     public bytesToSize = bytesToSize;
 
-    public loading = true;
-
     @Prop
     public id!: string;
 
@@ -27,6 +25,7 @@ export default class WorkerSysInfo extends Vue {
     public ipsets!: IpSets;
 
     async getDetailStat() {
+        this.loading = true;
         if (this.id === 'host') {
             const res = await NaApi.workhub.host();
             this.stat = res.Stat;

@@ -9,8 +9,6 @@ import { UserUpdate } from '@/api/native/passport';
 
 @Component
 export default class PassportProfile extends Vue {
-    public loading = true;
-
     // 初始化
 
     public created() {
@@ -20,6 +18,7 @@ export default class PassportProfile extends Vue {
     // 获取用户信息
 
     async getProfile() {
+        this.loading = true;
         const res = await NaApi.passport.profile();
         Object.assign(this.formModel, res);
         this.loading = false;
@@ -46,6 +45,8 @@ export default class PassportProfile extends Vue {
         Description: [{ required: true }],
         OldPassword: [{ required: true }],
     };
+
+    // 提交表单
 
     public formSubmit(ctx: SubmitContext<TData>) {
         if (ctx.validateResult !== true) {

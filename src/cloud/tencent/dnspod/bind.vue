@@ -12,8 +12,6 @@ import * as TC from '@/api/tencent/typings';
 export default class DnspodBind extends Vue {
     public DomainStatusMap = DomainStatusMap;
 
-    public loading = true;
-
     @Prop
     public vendorId = 0;
 
@@ -33,6 +31,7 @@ export default class DnspodBind extends Vue {
     public domainCount = 0;
 
     async getDomainList() {
+        this.loading = true;
         const res = await TcApi.dnspod.describeDomainList();
         if (res.DomainCountInfo) {
             this.domainList = res.DomainList || [];

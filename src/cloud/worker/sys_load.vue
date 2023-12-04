@@ -6,7 +6,6 @@ import { DetailStat } from '@/api/native/typings';
 
 @Component
 export default class WorkerSysLoad extends Vue {
-    public loading = true;
     public timer = 0;
 
     @Prop
@@ -30,6 +29,7 @@ export default class WorkerSysLoad extends Vue {
     public stat!: DetailStat;
 
     async getDetailStat() {
+        this.loading = true;
         if (this.id === 'host') {
             const res = await NaApi.workhub.host();
             this.stat = res.Stat;

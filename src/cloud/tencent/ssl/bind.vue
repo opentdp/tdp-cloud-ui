@@ -12,9 +12,6 @@ import CertUpload from './cert_upload.vue';
     components: { CertUpload },
 })
 export default class SslBind extends Vue {
-
-    public loading = true;
-
     @Ref
     public uploadModal!: CertUpload;
 
@@ -37,6 +34,7 @@ export default class SslBind extends Vue {
     public certCount = 0;
 
     async getCertList() {
+        this.loading = true;
         const res = await TcApi.ssl.describeCertificates({});
         if (res.TotalCount) {
             this.certList = res.Certificates || [];

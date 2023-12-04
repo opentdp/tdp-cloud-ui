@@ -17,7 +17,6 @@ export default class WorkerFileman extends Vue {
     public bytesToSize = bytesToSize;
     public dateFormat = dateFormat;
 
-    public loading = true;
     public editing = false;
 
     public path = '/';

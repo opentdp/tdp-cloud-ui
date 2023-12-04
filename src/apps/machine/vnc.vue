@@ -10,8 +10,6 @@ import LighthouseVNC from '@/cloud/tencent/lighthouse/vnc.vue';
     components: { LighthouseVNC }
 })
 export default class MachineVnc extends Vue {
-    public loading = true;
-
     // 初始化
 
     public created() {
@@ -24,6 +22,7 @@ export default class MachineVnc extends Vue {
     public machine!: MachineItem;
 
     async getMachine(id: number) {
+        this.loading = true;
         const res = await NaApi.machine.detail(id);
         this.machine = res.Item;
         this.loading = false;

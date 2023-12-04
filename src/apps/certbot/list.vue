@@ -13,8 +13,6 @@ export default class CertbotList extends Vue {
     public CaTypeList = CaTypeList;
     public JobStatus = JobStatus;
 
-    public loading = true;
-
     @Ref
     public createModal!: CertbotCreate;
 
@@ -29,6 +27,7 @@ export default class CertbotList extends Vue {
     public certbotList: CertbotItem[] = [];
 
     async getCertbotList() {
+        this.loading = true;
         const res = await NaApi.certbot.list();
         this.certbotList = res.Items;
         this.loading = false;

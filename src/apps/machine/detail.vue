@@ -18,8 +18,6 @@ import NativeWorker from '@/cloud/worker/instance.vue';
 export default class MachineDetail extends Vue {
     public MachineModels = MachineModels;
 
-    public loading = true;
-
     // 初始化
 
     public created() {
@@ -32,6 +30,7 @@ export default class MachineDetail extends Vue {
     public machine!: MachineItem;
 
     async getMachine(id: number) {
+        this.loading = true;
         const res = await NaApi.machine.detail(id);
         this.machine = res.Item;
         this.loading = false;

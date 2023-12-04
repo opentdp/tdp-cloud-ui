@@ -13,8 +13,6 @@ import { KeypairTypeList, KeypairOrig } from '@/api/native/keypair';
 export default class KeypairCreate extends Vue {
     public KeypairTypeList = KeypairTypeList;
 
-    public loading = false;
-
     async keygen() {
         this.loading = true;
         const res = await NaApi.keypair.keygen(this.formModel.KeyType);

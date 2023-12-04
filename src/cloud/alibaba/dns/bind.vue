@@ -12,7 +12,6 @@ import { dateFormat } from '@/helper/format';
 })
 export default class DnsBind extends Vue {
     public dateFormat = dateFormat;
-    public loading = true;
 
     @Prop
     public vendorId = 0;
@@ -33,6 +32,7 @@ export default class DnsBind extends Vue {
     public domainCount = 0;
 
     async getDomainList() {
+        this.loading = true;
         const res = await AcApi.alidns.describeDomains();
         if (res.TotalCount > 0) {
             this.domainList = res.Domains.Domain || [];

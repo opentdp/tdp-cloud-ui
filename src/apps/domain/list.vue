@@ -8,8 +8,6 @@ import { DomainModels, DomainItem } from '@/api/native/domain';
 export default class DomainList extends Vue {
     public DomainModels = DomainModels;
 
-    public loading = true;
-
     // 初始化
 
     public created() {
@@ -22,6 +20,7 @@ export default class DomainList extends Vue {
     public domainList: DomainItem[] = [];
 
     async getDomainList() {
+        this.loading = true;
         const res = await NaApi.domain.list();
         this.domainList = res.Items;
         this.loading = false;
@@ -60,6 +59,14 @@ export default class DomainList extends Vue {
         <t-card :loading="loading" title="域名列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ domainList.length }}
+            </template>
+            <template #actions>
+                <t-button theme="primary" @click="getDomainList()">
+                    <template #icon>
+                        <t-icon name="refresh" />
+                    </template>
+                    刷新
+                </t-button>
             </template>
             <t-table :data="domainList" :columns="tableColumns" row-key="Id" hover>
                 <template #Model="{ row }">

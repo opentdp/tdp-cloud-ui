@@ -11,8 +11,6 @@ import VendorUpdate from './tencent_update.vue';
     components: { VendorCreate, VendorUpdate }
 })
 export default class VendorTencent extends Vue {
-    public loading = true;
-
     @Ref
     public createModal!: VendorCreate;
 
@@ -30,6 +28,7 @@ export default class VendorTencent extends Vue {
     public vendorList: VendorItem[] = [];
 
     async getVendorList() {
+        this.loading = true;
         const res = await NaApi.vendor.list({ Provider: 'tencent' });
         this.vendorList = res.Items;
         this.loading = false;

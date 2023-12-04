@@ -15,7 +15,6 @@ import { TasklineItem } from '@/api/native/taskline';
 export default class ScriptExec extends Vue {
     public machines!: MachineItem[];
 
-    public loading = false;
     public timer = 0;
 
     public unmounted() {

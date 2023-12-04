@@ -6,8 +6,6 @@ import { CertbotItem, Certificate } from '@/api/native/certbot';
 
 @Component
 export default class CertbotDetail extends Vue {
-    public loading = true;
-
     // 初始化
 
     public created() {
@@ -25,6 +23,7 @@ export default class CertbotDetail extends Vue {
     public certbot!: CertbotItem;
 
     async getCertbot(id: number) {
+        this.loading = true;
         const res = await NaApi.certbot.detail(id);
         this.certbot = res.Item;
         this.cert = res.Cert;

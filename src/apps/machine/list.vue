@@ -16,8 +16,6 @@ import MachineUpdate from './update.vue';
 export default class MachineList extends Vue {
     public MachineModels = MachineModels;
 
-    public loading = true;
-
     @Ref
     public quickModal!: ScriptQuick;
 
@@ -40,6 +38,7 @@ export default class MachineList extends Vue {
     public machineList: MachineItem[] = [];
 
     async getMachineList() {
+        this.loading = true;
         const res = await NaApi.machine.list();
         this.machineList = res.Items;
         this.loading = false;

@@ -12,8 +12,6 @@ import RecordUpdate from './record_update.vue';
     components: { RecordCreate, RecordUpdate }
 })
 export default class DnsDomain extends Vue {
-    public loading = true;
-
     @Ref
     public createModal!: RecordCreate;
 
@@ -38,6 +36,7 @@ export default class DnsDomain extends Vue {
     public domainInfo!: AC.Dns.DescribeDomainInfoResponseBody;
 
     async getDomain() {
+        this.loading = true;
         const res = await AcApi.alidns.describeDomainInfo({
             DomainName: this.domain.Name
         });

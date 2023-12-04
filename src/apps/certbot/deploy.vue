@@ -10,8 +10,6 @@ import SslBind from '@/cloud/tencent/ssl/bind.vue';
     components: { SslBind }
 })
 export default class CertbotDeploy extends Vue {
-    public loading = true;
-
     // 初始化
 
     public created() {
@@ -23,6 +21,7 @@ export default class CertbotDeploy extends Vue {
     public vendorList: VendorItem[] = [];
 
     async getVendorList() {
+        this.loading = true;
         const res = await NaApi.vendor.list({ Provider: 'tencent' });
         if (res.Items.length == 0) {
             this.$router.push('/vendor/tencent');

@@ -12,8 +12,6 @@ import * as TC from '@/api/tencent/typings';
     expose: ['open'],
 })
 export default class SslCertUpload extends Vue {
-    public loading = false;
-
     // 创建表单
 
     @Ref

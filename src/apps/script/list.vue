@@ -11,8 +11,6 @@ import ScriptUpdate from './update.vue';
     components: { ScriptCreate, ScriptUpdate }
 })
 export default class ScriptList extends Vue {
-    public loading = true;
-
     @Ref
     public createModal!: ScriptCreate;
 
@@ -30,6 +28,7 @@ export default class ScriptList extends Vue {
     public scriptList: ScriptItem[] = [];
 
     async getScriptList() {
+        this.loading = true;
         const res = await NaApi.script.list();
         this.scriptList = res.Items;
         this.loading = false;

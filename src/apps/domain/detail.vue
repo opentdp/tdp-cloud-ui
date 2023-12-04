@@ -14,8 +14,6 @@ import TencentDnspod from '@/cloud/tencent/dnspod/domain.vue';
 export default class DomainDetail extends Vue {
     public DomainModels = DomainModels;
 
-    public loading = true;
-
     // 初始化
 
     public created() {
@@ -28,6 +26,7 @@ export default class DomainDetail extends Vue {
     public domain!: DomainItem;
 
     async getDomain(id: number) {
+        this.loading = true;
         const res = await NaApi.domain.detail(id);
         this.domain = res.Item;
         this.loading = false;

@@ -12,8 +12,6 @@ import ConfigUpdate from './update.vue';
     components: { ConfigUpdate }
 })
 export default class ConfigList extends Vue {
-    public loading = true;
-
     @Ref
     public updateModal!: ConfigUpdate;
 
@@ -28,6 +26,7 @@ export default class ConfigList extends Vue {
     public configList: ConfigItem[] = [];
 
     async getConfigList() {
+        this.loading = true;
         const res = await NaApi.config.list({}).finally(() => {
             this.loading = false;
         });

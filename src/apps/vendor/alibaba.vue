@@ -11,8 +11,6 @@ import VendorUpdate from './alibaba_update.vue';
     components: { VendorCreate, VendorUpdate }
 })
 export default class VendorAlibaba extends Vue {
-    public loading = true;
-
     @Ref
     public createModal!: VendorCreate;
 
@@ -30,6 +28,7 @@ export default class VendorAlibaba extends Vue {
     public vendorList: VendorItem[] = [];
 
     async getVendorList() {
+        this.loading = true;
         const res = await NaApi.vendor.list({ Provider: 'alibaba' });
         this.vendorList = res.Items;
         this.loading = false;
