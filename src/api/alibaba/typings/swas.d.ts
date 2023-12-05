@@ -1060,6 +1060,14 @@ export interface ListInstancesResponseBodyInstances {
     CreationTime: string
     DdosStatus: string
     ExpiredTime: string
+    Image: {
+        ImageContact: string,
+        ImageIconUrl: string
+        ImageName: string
+        ImageType: string
+        ImageVersion: string
+        OsType: string
+    }
     ImageId: string
     InnerIpAddress: string
     InstanceId: string
@@ -1067,6 +1075,14 @@ export interface ListInstancesResponseBodyInstances {
     PlanId: string
     PublicIpAddress: string
     RegionId: string
+    ResourceSpec: {
+        Bandwidth: number,
+        Cpu: number,
+        DiskCategory: string,
+        DiskSize: number,
+        Flow: number,
+        Memory: number
+    }
     Status: string
 }
 

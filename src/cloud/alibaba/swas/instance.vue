@@ -15,7 +15,7 @@ export default class SwasInstance extends Vue {
 
     @Prop
     public machine!: Omit<MachineItem, 'CloudMeta'> & {
-        CloudMeta: AC.SwasInstance
+        CloudMeta: AC.Swas.ListInstancesResponseBodyInstances
     };
 
     // 初始化
@@ -34,7 +34,7 @@ export default class SwasInstance extends Vue {
 
     // 实例信息
 
-    public instance!: AC.SwasInstance;
+    public instance!: AC.Swas.ListInstancesResponseBodyInstances;
 
     async getInstance() {
         const res = await AcApi.swas.listInstances(this.region, {
@@ -112,11 +112,11 @@ export default class SwasInstance extends Vue {
                 </t-list-item>
                 <t-list-item>
                     <b>规格</b>
-                    <span>CPU: {{ instance.Core }} 核 / 内存: {{ instance.Memory }} GB</span>
+                    <span>CPU: {{ instance.ResourceSpec.Cpu }} 核 / 内存: {{ instance.ResourceSpec.Memory }} GB</span>
                 </t-list-item>
                 <t-list-item>
                     <b>系统盘</b>
-                    <span>{{ instance.DiskSize }} GB</span>
+                    <span>{{ instance.ResourceSpec.DiskSize }} GB</span>
                 </t-list-item>
                 <t-list-item>
                     <b>公网 IP</b>
