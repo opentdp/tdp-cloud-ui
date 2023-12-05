@@ -117,6 +117,7 @@ export default class SwasBind extends Vue {
         { colKey: 'RegionId', title: '地域', ellipsis: true },
         { colKey: 'ResourceSpec.Cpu', title: 'CPU', ellipsis: true },
         { colKey: 'Memory', title: '内存', ellipsis: true },
+        { colKey: 'DiskSize', title: '系统盘', ellipsis: true },
         { colKey: 'PublicIpAddress', title: '外网 IP', ellipsis: true },
         { colKey: 'ExpiredTime', title: '到期时间', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: '110px' },
@@ -135,6 +136,9 @@ export default class SwasBind extends Vue {
             </template>
             <template #Memory="{ row }">
                 {{ row.ResourceSpec.Memory }} GB
+            </template>
+            <template #DiskSize="{ row }">
+                {{ row.ResourceSpec.DiskSize }} GB
             </template>
             <template #PublicIpAddress="{ row }">
                 {{ row?.PublicIpAddress || "--" }}
