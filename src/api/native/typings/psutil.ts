@@ -1,10 +1,14 @@
 export interface GoMemoryStat {
-    Alloc: number;
-    Sys: number;
-    HeapAlloc: number;
-    HeapSys: number;
-    LastGC: number;
-    NumGC: number;
+    Alloc: number
+    Sys: number
+    HeapAlloc: number
+    HeapInuse: number
+    HeapSys: number
+    StackInuse: number
+    StackSys: number
+    TotalAlloc: number
+    LastGC: number
+    NumGC: number
 }
 
 export interface SummaryStat {
@@ -23,7 +27,7 @@ export interface SummaryStat {
     PublicIpv4: string
     PublicIpv6: string
 }
- 
+
 export interface DetailStat extends SummaryStat {
     CpuModel: string[]
     NetInterface: NetInterface[]
