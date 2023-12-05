@@ -41,7 +41,7 @@ export default class WorkerSysInfo extends Vue {
 </script>
 
 <template>
-    <t-card v-if="session.Level == 1" title="系统信息" hover-shadow header-bordered>
+    <t-card title="系统信息" hover-shadow header-bordered>
         <template #actions>
             <t-loading v-if="loading" size="small" />
         </template>

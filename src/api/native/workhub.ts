@@ -1,6 +1,6 @@
 import { HttpClient } from '@/api/basic/http';
 
-import { SummaryStat, DetailStat, IpSets, FilerRequest, FilerResponse, ScriptPayload } from './typings';
+import { GoMemoryStat, SummaryStat, DetailStat, IpSets, FilerRequest, FilerResponse, ScriptPayload } from './typings';
 
 export class WorkhubModel extends HttpClient {
     public host(): Promise<NodeDetail> {
@@ -37,6 +37,8 @@ export class WorkhubModel extends HttpClient {
 
 export interface NodeDetail {
     Stat: DetailStat
+    MemStat: GoMemoryStat
+    NumGoroutine: number
 }
 
 export interface WorkerOrig {
