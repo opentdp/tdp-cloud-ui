@@ -102,11 +102,11 @@ export default class PassportRegister extends Vue {
                 <t-link :href="layout.Copylink" target="_blank">
                     {{ layout.Copytext }}
                 </t-link>
-                <t-link v-if="layout.IcpCode" href="https://beian.miit.gov.cn/" target="_blank">
-                    {{ layout.IcpCode }}
-                </t-link>
                 <t-link href="https://cloud.opentdp.org/" target="_blank">
                     Cloud {{ layout.Version ? "v" + layout.Version : "" }}
+                </t-link>
+                <t-link v-if="layout.IcpCode" href="https://beian.miit.gov.cn/" target="_blank">
+                    {{ layout.IcpCode }}
                 </t-link>
             </t-space>
         </t-footer>
@@ -145,9 +145,8 @@ export default class PassportRegister extends Vue {
 }
 
 .copyright {
+    font-size: 75%;
     user-select: none;
     text-align: center;
-    font-size: 75%;
-    color: var(--td-gray-color-1);
 }
 </style>
