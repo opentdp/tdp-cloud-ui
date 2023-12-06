@@ -20,7 +20,7 @@ export class SwasModel extends AlibabaClient {
         query = Object.assign({ Limit: 100 }, query);
         return this.bus({
             Action: 'ListInstances', RegionId: region,
-            Payload: { ...query, RegionId: region },
+            Query: { ...query, RegionId: region },
         });
     }
 

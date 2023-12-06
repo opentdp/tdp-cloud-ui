@@ -138,7 +138,7 @@ export default class LighthouseInstance extends Vue {
                 </t-list-item>
                 <t-list-item>
                     <b>规格</b>
-                    <span>CPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB</span>
+                    <span>vCPU: {{ instance.CPU }} 核 / 内存: {{ instance.Memory }} GB</span>
                 </t-list-item>
                 <t-list-item>
                     <b>系统盘</b>

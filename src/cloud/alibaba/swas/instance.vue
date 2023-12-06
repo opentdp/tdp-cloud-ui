@@ -38,7 +38,7 @@ export default class SwasInstance extends Vue {
 
     async getInstance() {
         const res = await AcApi.swas.listInstances(this.region, {
-            InstanceIds: this.instance.InstanceId,
+            InstanceIds: JSON.stringify([this.instance.InstanceId]),
         });
         if (res.Instances) {
             Object.assign(this.instance, res.Instances[0]);
@@ -112,19 +112,23 @@ export default class SwasInstance extends Vue {
                 </t-list-item>
                 <t-list-item>
                     <b>规格</b>
-                    <span>CPU: {{ instance.ResourceSpec.Cpu }} 核 / 内存: {{ instance.ResourceSpec.Memory }} GB</span>
+                    <span>vCPU: {{ instance.ResourceSpec.Cpu }} 核 / 内存: {{ instance.ResourceSpec.Memory }} GB</span>
                 </t-list-item>
                 <t-list-item>
                     <b>系统盘</b>
                     <span>{{ instance.ResourceSpec.DiskSize }} GB</span>
                 </t-list-item>
                 <t-list-item>
+                    <b>私网 IP</b>
+                    <span>{{ instance.InnerIpAddress }}</span>
+                </t-list-item>
+                <t-list-item>
                     <b>公网 IP</b>
                     <span>{{ instance.PublicIpAddress }}</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>镜像 Id</b>
-                    <span>{{ instance.ImageId }}</span>
+                    <b>镜像名称</b>
+                    <span>{{ instance.Image.ImageName }}</span>
                 </t-list-item>
                 <t-list-item>
                     <b>创建时间</b>
