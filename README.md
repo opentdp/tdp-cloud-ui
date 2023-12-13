@@ -63,6 +63,12 @@
 }
 ```
 
+## 微信交流群
+
+扫码添加开发者好友（请备注 `OpenTDP`，不备注可能无法通过好友申请）
+
+![扫码加群](https://docs.opentdp.org/static/weixin-qr.jpg)
+
 ## 其他
 
 License [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.txt)
