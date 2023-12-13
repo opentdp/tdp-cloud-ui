@@ -8,7 +8,7 @@ set -o noglob
 
 last_tag=`git tag | sort -V | tail -n 1`
 prev_tag=`git tag | sort -V | tail -n 2 | head -n 1`
-git log $last_tag..$prev_tag --pretty=format:"%s" | grep -v "^release" | sed 's/^/- /' | sort > RELEASE.md
+git log $prev_tag..$last_tag --pretty=format:"%s" | grep -v "^release" | sed 's/^/- /' | sort > RELEASE.md
 
 version=`echo $last_tag | sed 's/^v//'`
 sed -i "s/^const Version = \".*\"/const Version = \"$version\"/" src/helper/const.ts
