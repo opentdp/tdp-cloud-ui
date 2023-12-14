@@ -56,12 +56,12 @@ export default class DomainList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card :loading="loading" title="域名列表" hover-shadow header-bordered>
+        <t-card title="域名列表" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ domainList.length }}
             </template>
             <template #actions>
-                <t-button theme="primary" @click="getDomainList()">
+                <t-button :loading="loading" theme="primary" @click="getDomainList()">
                     <template #icon>
                         <t-icon name="refresh" />
                     </template>

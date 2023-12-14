@@ -66,12 +66,12 @@ export default class TasklineList extends Vue {
             </t-breadcrumb-item>
         </t-breadcrumb>
 
-        <t-card :loading="loading" title="任务记录" hover-shadow header-bordered>
+        <t-card title="任务记录" hover-shadow header-bordered>
             <template #subtitle>
                 记录总数: {{ historyList.length }}
             </template>
             <template #actions>
-                <t-button theme="primary" @click="getHistory()">
+                <t-button :loading="loading" theme="primary" @click="getHistory()">
                     <template #icon>
                         <t-icon name="refresh" />
                     </template>
