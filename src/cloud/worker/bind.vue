@@ -36,15 +36,18 @@ export default class WorkerBind extends Vue {
     public workerList: WorkerItem[] = [];
 
     async getWorkerList() {
-        const res = await NaApi.workhub.list();
+        this.loading = true;
+        const res = await NaApi.workhub.list().finally(() => {
+            this.loading = false;
+        });
         this.workerList = res.Items;
     }
 
     // 绑定主机
 
-    public bindMachine(item: WorkerItem) {
+    async bindMachine(item: WorkerItem) {
         const meta = item.WorkerMeta;
-        NaApi.machine.create({
+        await NaApi.machine.create({
             HostName: meta.HostName,
             IpAddress: meta.PublicIpv4 || meta.PublicIpv6,
             OSType: meta.OS,
@@ -57,6 +60,7 @@ export default class WorkerBind extends Vue {
             Status: '',
             Description: '',
         });
+        this.getWorkerList();
     }
 
     // 同步主机
@@ -94,6 +98,14 @@ export default class WorkerBind extends Vue {
     <t-card title="在线节点" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ workerList.length }}
+        </template>
+        <template #actions>
+            <t-button :loading="loading" theme="primary" @click="getWorkerList()">
+                <template #icon>
+                    <t-icon name="refresh" />
+                </template>
+                刷新
+            </t-button>
         </template>
         <t-table :data="workerList" :columns="tableColumns" row-key="Id" hover>
             <template #WorkerMeta_IpAddress="{ row }">
