@@ -22,6 +22,10 @@ export class CrontabModel extends HttpClient {
     }
 }
 
+export const CrontabTypeList: Record<string, string> = {
+    'script': '快捷命令',
+};
+
 export interface CrontabOrig {
     Name: string
     Type: string

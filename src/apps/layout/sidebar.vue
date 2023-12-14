@@ -79,7 +79,7 @@ const menuItems: MenuItem[] = [
         title: 'SSL 证书',
         subs: [
             {
-                icon: 'functions-1',
+                icon: 'certificate',
                 index: '/certbot/list',
                 title: '证书签发',
             },
@@ -108,7 +108,12 @@ const menuItems: MenuItem[] = [
         ]
     },
     {
-        icon: 'command',
+        icon: 'relativity',
+        index: '/crontab/list',
+        title: '计划任务',
+    },
+    {
+        icon: 'functions-1',
         index: '/task',
         title: '快捷命令',
         subs: [

@@ -86,6 +86,16 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
+                path: '/crontab/list',
+                name: 'crontab-list',
+                meta: {
+                    title: '计划任务',
+                    login: true,
+                },
+                component: () => import('./crontab/list.vue'),
+            },
+            //////
+            {
                 path: '/domain/list',
                 name: 'domain-list',
                 meta: {
