@@ -9,10 +9,14 @@ export default defineStore('layout', {
         Collapse: false,
         // 主题模式
         ThemeMode: '',
-        // 后端版本
-        Version: '',
         // 功能开关
         Registrable: false,
+        // 后端版本
+        Version: '',
+        BuildVersion: '',
+        // 前端版本
+        UIVersion: vars.Version,
+        UIBuildVersion: vars.BuildVersion,
         // 前端配置
         SiteName: vars.SiteName,
         SiteLogo: vars.SiteLogo,

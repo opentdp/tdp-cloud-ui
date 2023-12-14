@@ -92,6 +92,19 @@ export default class DashboardIndex extends Vue {
 
         <SysLoad v-if="session.Level == 1" id="host" />
         <SysInfo v-if="session.Level == 1" id="host" />
+
+        <t-card :loading="!summary" title="编译信息" hover-shadow header-bordered>
+            <t-list :split="true">
+                <t-list-item>
+                    <b>后端版本</b>
+                    <span>Version {{ layout.Version }}, Build {{ layout.BuildVersion }}</span>
+                </t-list-item>
+                <t-list-item>
+                    <b>前端版本</b>
+                    <span>Version {{ layout.UIVersion }}, Build {{ layout.UIBuildVersion }}</span>
+                </t-list-item>
+            </t-list>
+        </t-card>
     </t-space>
 </template>
 

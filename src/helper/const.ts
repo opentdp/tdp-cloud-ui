@@ -1,3 +1,6 @@
+export const Version = '0.15.2';
+export const BuildVersion = '231205';
+
 export const SiteName = 'TDP Cloud';
 export const SiteLogo = 'assets/image/logo.svg';
 export const SiteIcon = 'assets/image/icon.svg';
