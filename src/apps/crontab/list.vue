@@ -104,8 +104,11 @@ export default class CrontabList extends Vue {
                 </t-button>
             </template>
             <t-table :data="crontabList" :columns="tableColumns" row-key="Id" hover>
+                <template #Second="{ row }">
+                    {{ row.Second }} {{ row.Minute }} {{ row.Hour }} {{ row.DayofMonth }} {{ row.Month }} {{ row.DayofWeek }}
+                </template>
                 <template #Location="{ row }">
-                    {{ machineList[row.Id]?.HostName || "-" }}
+                    {{ machineList[row.Location]?.HostName || "-" }}
                 </template>
                 <template #Operation="{ row, rowIndex }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
