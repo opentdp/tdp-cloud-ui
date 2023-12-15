@@ -74,7 +74,8 @@ export default class CrontabList extends Vue {
         { colKey: 'Name', title: '名称', ellipsis: true },
         { colKey: 'Type', title: '类型', ellipsis: true },
         { colKey: 'Second', title: '排程', ellipsis: true },
-        { colKey: 'Location', title: '目标', ellipsis: true },
+        { colKey: 'Target', title: '目标实例', ellipsis: true },
+        { colKey: 'EntryId', title: '任务序号', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: '110px' },
     ];
 }
@@ -107,8 +108,8 @@ export default class CrontabList extends Vue {
                 <template #Second="{ row }">
                     {{ row.Second }} {{ row.Minute }} {{ row.Hour }} {{ row.DayofMonth }} {{ row.Month }} {{ row.DayofWeek }}
                 </template>
-                <template #Location="{ row }">
-                    {{ machineList[row.Location]?.HostName || "-" }}
+                <template #Target="{ row }">
+                    {{ machineList[row.Target]?.HostName || "-" }}
                 </template>
                 <template #Operation="{ row, rowIndex }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">

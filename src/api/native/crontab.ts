@@ -29,7 +29,9 @@ export const CrontabTypeList: Record<string, string> = {
 export interface CrontabOrig {
     Name: string
     Type: string
+    Target: string
     Content: string
+    EntryId: number
     Second: string
     Minute: string
     Hour: string
@@ -37,8 +39,6 @@ export interface CrontabOrig {
     Month: string
     DayofWeek: string
     Location: string
-    PrevTime: number
-    NextTime: number
 }
 
 export interface CrontabItem extends CrontabOrig {

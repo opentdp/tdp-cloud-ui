@@ -29,7 +29,9 @@ export default class CrontabCreate extends Vue {
     public formModel: CrontabOrig = {
         Name: '',
         Type: 'script',
+        Target: '',
         Content: '',
+        EntryId: 0,
         Second: '',
         Minute: '',
         Hour: '',
@@ -37,13 +39,12 @@ export default class CrontabCreate extends Vue {
         Month: '',
         DayofWeek: '',
         Location: '',
-        PrevTime: 1,
-        NextTime: 1,
     };
 
     public formRules: FormRules<CrontabOrig> = {
         Name: [{ required: true }],
         Type: [{ required: true }],
+        Target: [{ required: true }],
         Content: [{ required: true }],
         Second: [{ required: true }],
         Minute: [{ required: true }],
@@ -91,8 +92,8 @@ export default class CrontabCreate extends Vue {
             <t-form-item name="Name" label="名称">
                 <t-input v-model="formModel.Name" />
             </t-form-item>
-            <t-form-item name="Location" label="目标">
-                <t-select v-model="formModel.Location">
+            <t-form-item name="Target" label="目标">
+                <t-select v-model="formModel.Target">
                     <t-option v-for="v, k in machineList" :key="k" :value="k" :label="v.HostName" />
                 </t-select>
             </t-form-item>
