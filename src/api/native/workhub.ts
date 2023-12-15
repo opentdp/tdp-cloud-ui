@@ -20,7 +20,7 @@ export class WorkhubModel extends HttpClient {
     }
 
     public exec(id: string, rq: ScriptPayload): Promise<{ Id: number }> {
-        rq.Name = 'Exec: ' + rq.Name;
+        rq = { ...rq, Name: 'Exec: ' + rq.Name };
         return this.post('/workhub/exec/' + id, rq);
     }
 
