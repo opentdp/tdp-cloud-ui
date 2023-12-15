@@ -1,7 +1,7 @@
 @echo off
 ::
 
-::¼ÓÔØNode»·¾³
+::ï¿½ï¿½ï¿½ï¿½Nodeï¿½ï¿½ï¿½ï¿½
 
 IF EXIST D:\RunTime\node\runtime.bat (
     CALL D:\RunTime\node\runtime set "%~n0"
@@ -16,6 +16,7 @@ IF NOT EXIST node_modules (
     npm install
 )
 
+npm run lint
 npm run build
 
 IF "%1" == "" CMD /K
