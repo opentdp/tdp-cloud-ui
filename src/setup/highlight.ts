@@ -10,7 +10,10 @@ import 'highlight.js/styles/agate.css';
 
 const plugin: Plugin = {
     install: (app: App) => {
-        app.directive('highlight', (el) => {
+        app.directive('highlight', (el: HTMLElement) => {
+            if (el.classList.contains('highlight')) {
+                return; // 防止重复高亮
+            }
             el.classList.add('highlight');
             el.querySelectorAll('code').forEach((code: HTMLElement) => {
                 hljs.highlightElement(code);
