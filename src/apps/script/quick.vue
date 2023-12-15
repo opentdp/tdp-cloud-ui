@@ -91,7 +91,7 @@ export default class ScriptQuick extends Vue {
                     </t-button>
                 </template>
             </t-space>
-            <b>目标机器</b>
+            <b>目标主机</b>
             <t-tag-input v-model="hostnames" readonly />
         </t-space>
 

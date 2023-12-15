@@ -71,7 +71,7 @@ export default class CrontabUpdate extends Vue {
 
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close header="修改计划" :footer="false" width="50%">
-        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
             <t-form-item name="Type" label="类型">
                 <t-select v-model="formModel.Type">
                     <t-option v-for="v, k in CrontabTypeList" :key="k" :value="k" :label="v" />
@@ -80,7 +80,7 @@ export default class CrontabUpdate extends Vue {
             <t-form-item name="Name" label="名称">
                 <t-input v-model="formModel.Name" />
             </t-form-item>
-            <t-form-item name="Target" label="目标">
+            <t-form-item name="Target" label="目标主机">
                 <t-select v-model="formModel.Target">
                     <t-option v-for="v, k in machineList" :key="k" :value="k" :label="v.HostName" />
                 </t-select>

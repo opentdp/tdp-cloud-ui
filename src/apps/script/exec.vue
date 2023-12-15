@@ -117,7 +117,7 @@ export default class ScriptExec extends Vue {
                 <t-form-item name="WorkDirectory" label="执行路径">
                     <t-input v-model="formModel.WorkDirectory" :placeholder="formModel.CommandType == 'SHELL' ? '默认为 /root' : '默认为 C:\\'" />
                 </t-form-item>
-                <t-form-item name="Hostnames" label="目标机器">
+                <t-form-item name="Hostnames" label="目标主机">
                     <t-tag-input v-model="hostnames" readonly />
                 </t-form-item>
                 <t-form-item name="Description" label="脚本描述">

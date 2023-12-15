@@ -81,8 +81,8 @@ export default class CrontabList extends Vue {
     public tableColumns = [
         { colKey: 'Name', title: '名称', ellipsis: true },
         { colKey: 'Type', title: '类型', ellipsis: true },
+        { colKey: 'Target', title: '目标主机', ellipsis: true },
         { colKey: 'Second', title: '排程', ellipsis: true },
-        { colKey: 'Target', title: '目标实例', ellipsis: true },
         { colKey: 'NextTime', title: '下次执行', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: '110px' },
     ];
@@ -96,7 +96,7 @@ export default class CrontabList extends Vue {
                 首页
             </t-breadcrumb-item>
             <t-breadcrumb-item>
-                计划管理
+                计划任务
             </t-breadcrumb-item>
         </t-breadcrumb>
 
