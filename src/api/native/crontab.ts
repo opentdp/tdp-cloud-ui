@@ -52,6 +52,12 @@ export interface CrontabDetail {
     Item: CrontabItem
 }
 
+export interface CrontabEntry {
+    NextTime: number
+    PrevTime: number
+}
+
 export interface CrontabPaged {
     Items: CrontabItem[]
+    Entries: Record<number, CrontabEntry>
 }

@@ -2,9 +2,10 @@
 import { Ref, Component, Vue } from '@/apps/basic';
 
 import { NaApi } from '@/api';
-import { CrontabItem } from '@/api/native/crontab';
+import { CrontabItem, CrontabEntry } from '@/api/native/crontab';
 import { MachineItem } from '@/api/native/machine';
 import { ScriptItem } from '@/api/native/script';
+import { dateFormat } from '@/helper/format';
 
 import CrontabCreate from './create.vue';
 import CrontabUpdate from './update.vue';
@@ -13,6 +14,8 @@ import CrontabUpdate from './update.vue';
     components: { CrontabCreate, CrontabUpdate }
 })
 export default class CrontabList extends Vue {
+    public dateFormat = dateFormat;
+
     @Ref
     public createModal!: CrontabCreate;
 
@@ -30,6 +33,7 @@ export default class CrontabList extends Vue {
     // 计划列表
 
     public crontabList: CrontabItem[] = [];
+    public crontabEntries: Record<number, CrontabEntry> = {};
 
     async getCrontabList() {
         this.loading = true;
@@ -37,6 +41,7 @@ export default class CrontabList extends Vue {
             this.loading = false;
         });
         this.crontabList = res.Items;
+        this.crontabEntries = res.Entries;
     }
 
     // 删除计划
@@ -78,7 +83,7 @@ export default class CrontabList extends Vue {
         { colKey: 'Type', title: '类型', ellipsis: true },
         { colKey: 'Second', title: '排程', ellipsis: true },
         { colKey: 'Target', title: '目标实例', ellipsis: true },
-        { colKey: 'EntryId', title: '任务序号', ellipsis: true },
+        { colKey: 'NextTime', title: '下次执行', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: '110px' },
     ];
 }
@@ -113,6 +118,11 @@ export default class CrontabList extends Vue {
                 </template>
                 <template #Target="{ row }">
                     {{ machineList[row.Target]?.HostName || "-" }}
+                </template>
+                <template #NextTime="{ row }">
+                    <template v-if="crontabEntries[row.Id]">
+                        {{ dateFormat(crontabEntries[row.Id].NextTime * 1000, "yyyy-MM-dd hh:mm:ss") }}
+                    </template>
                 </template>
                 <template #Operation="{ row, rowIndex }">
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
