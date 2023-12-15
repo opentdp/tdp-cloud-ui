@@ -23,7 +23,7 @@ export default class ScriptList extends Vue {
         this.getScriptList();
     }
 
-    // 获取脚本列表
+    // 获取列表
 
     public scriptList: ScriptItem[] = [];
 

@@ -35,7 +35,7 @@ export default class ScriptQuick extends Vue {
         return [];
     }
 
-    // 获取脚本列表
+    // 脚本列表
 
     public scriptList: ScriptItem[] = [];
 

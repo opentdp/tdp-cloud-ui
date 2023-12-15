@@ -46,6 +46,7 @@ export default class CrontabList extends Vue {
         await NaApi.crontab.remove(item.Id);
         this.crontabList.splice(idx, 1);
     }
+ 
     // 主机列表
 
     public machineList: Record<string, MachineItem> = {};
@@ -57,7 +58,7 @@ export default class CrontabList extends Vue {
         });
     }
 
-    // 获取脚本列表
+    // 脚本列表
 
     public scriptList: Record<string, ScriptItem> = {};
 
