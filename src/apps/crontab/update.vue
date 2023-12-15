@@ -21,6 +21,29 @@ export default class CrontabUpdate extends Vue {
     @Prop
     public machineList: Record<string, MachineItem> = {};
 
+    // 过滤脚本
+
+    public osScriptList: Record<string, ScriptItem> = {};
+
+    public getOsScriptList() {
+        this.osScriptList = {};
+        const mid = this.formModel.Target;
+        if (!mid || !this.machineList[mid]) {
+            return;
+        }
+        Object.values(this.scriptList).forEach(item => {
+            if (this.machineList[mid].OSType == 'windows') {
+                if (item.CommandType != 'SHELL') {
+                    this.osScriptList[item.Id + ''] = item;
+                }
+            } else {
+                if (item.CommandType == 'SHELL') {
+                    this.osScriptList[item.Id + ''] = item;
+                }
+            }
+        });
+    }
+
     // 创建表单
 
     @Ref
@@ -65,6 +88,7 @@ export default class CrontabUpdate extends Vue {
     public open(data: CrontabItem) {
         this.visible = true;
         this.formModel = data;
+        this.getOsScriptList();
     }
 }
 </script>
@@ -81,7 +105,7 @@ export default class CrontabUpdate extends Vue {
                 <t-input v-model="formModel.Name" />
             </t-form-item>
             <t-form-item name="Target" label="目标主机">
-                <t-select v-model="formModel.Target">
+                <t-select v-model="formModel.Target" @change="getOsScriptList">
                     <t-option v-for="v, k in machineList" :key="k" :value="k" :label="v.HostName" />
                 </t-select>
             </t-form-item>
@@ -96,8 +120,8 @@ export default class CrontabUpdate extends Vue {
                 </t-input-group>
             </t-form-item>
             <t-form-item v-if="formModel.Type == 'script'" name="Content" label="脚本">
-                <t-select v-model="formModel.Content">
-                    <t-option v-for="v, k in scriptList" :key="k" :value="k" :label="v.Name" />
+                <t-select v-model="formModel.Content" :disabled="!formModel.Target">
+                    <t-option v-for="v, k in osScriptList" :key="k" :value="k" :label="v.Name" />
                 </t-select>
             </t-form-item>
             <t-form-item v-else name="Content" label="内容">
