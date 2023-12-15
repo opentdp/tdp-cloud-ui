@@ -20,12 +20,6 @@ export default class ScriptQuick extends Vue {
     @Ref
     public execModal!: ScriptExec;
 
-    // 初始化
-
-    public created() {
-        this.getScriptList();
-    }
-
     // 机器列表
 
     public get hostnames() {
@@ -42,7 +36,14 @@ export default class ScriptQuick extends Vue {
     async getScriptList() {
         this.loading = true;
         const res = await NaApi.script.list();
-        this.scriptList = res.Items;
+        this.scriptList = res.Items.filter(item => {
+            const osType = this.machines[0].OSType;
+            if (osType == 'windows') {
+                return item.CommandType != 'SHELL';
+            } else {
+                return item.CommandType == 'SHELL';
+            }
+        });
         this.loading = false;
     }
 
@@ -67,6 +68,7 @@ export default class ScriptQuick extends Vue {
         this.visible = true;
         this.loading = false;
         this.machines = machines;
+        this.getScriptList();
     }
 }
 </script>
