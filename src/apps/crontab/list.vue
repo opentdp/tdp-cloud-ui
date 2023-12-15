@@ -46,7 +46,7 @@ export default class CrontabList extends Vue {
         await NaApi.crontab.remove(item.Id);
         this.crontabList.splice(idx, 1);
     }
- 
+
     // 主机列表
 
     public machineList: Record<string, MachineItem> = {};
@@ -54,7 +54,9 @@ export default class CrontabList extends Vue {
     async getMachineList() {
         const res = await NaApi.machine.list();
         res.Items.forEach(item => {
-            this.machineList[item.Id + ''] = item;
+            if (item.WorkerId) {
+                this.machineList[item.Id + ''] = item;
+            }
         });
     }
 
