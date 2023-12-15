@@ -77,6 +77,21 @@ export default class MachineList extends Vue {
         }
     }
 
+    public disabledQuick() {
+        if (this.selectedRow.length == 0) {
+            return true;
+        }
+        let list = this.selectedRow.filter(item => {
+            return this.workerList[item.WorkerId];
+        });
+        if (list.length != this.selectedRow.length) {
+            return true;
+        }
+        return !!list.find(item => {
+            return item.OSType != list[0].OSType;
+        });
+    }
+
     // 表格定义
 
     public tableColumns = [
@@ -110,7 +125,7 @@ export default class MachineList extends Vue {
             </template>
             <template #actions>
                 <t-space>
-                    <t-button theme="warning" :disabled="selectedRow.length == 0" @click="quickModal.open(selectedRow)">
+                    <t-button theme="warning" :disabled="disabledQuick()" @click="quickModal.open(selectedRow)">
                         <template #icon>
                             <t-icon name="caret-right-small" />
                         </template>
