@@ -14,6 +14,7 @@ import setupTDesign from '@/setup/tdesign';
 
 import setupCropper from '@/setup/cropper';
 import setupEcharts from '@/setup/echarts';
+import setupEvent from '@/setup/event';
 import setupHighlight from '@/setup/highlight';
 
 const app = createApp(App);
@@ -27,6 +28,7 @@ setupTDesign(app);
 
 setupCropper(app);
 setupEcharts(app);
+setupEvent(app);
 setupHighlight(app);
 
 app.mount('#app');

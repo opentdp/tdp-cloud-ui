@@ -109,16 +109,16 @@ export default class LighthouseSnapshot extends Vue {
                 {{ dateFormat(row.CreatedTime, "yyyy-MM-dd hh:mm:ss") }}
             </template>
             <template #Operation="{ row }">
-                <t-popconfirm content="确定回滚?" @confirm="applySnapshot(row)">
-                    <t-link theme="warning" hover="color">
+                <t-link theme="warning" hover="color">
+                    <t-popconfirm content="确定回滚?" @confirm="applySnapshot(row)">
                         回滚
-                    </t-link>
-                </t-popconfirm>
-                <t-popconfirm content="确定删除?" @confirm="deleteSnapshot(row)">
-                    <t-link theme="danger" hover="color">
+                    </t-popconfirm>
+                </t-link>
+                <t-link theme="danger" hover="color">
+                    <t-popconfirm content="确定删除?" @confirm="deleteSnapshot(row)">
                         删除
-                    </t-link>
-                </t-popconfirm>
+                    </t-popconfirm>
+                </t-link>
             </template>
         </t-table>
     </t-card>

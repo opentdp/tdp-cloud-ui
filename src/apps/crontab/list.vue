@@ -128,11 +128,11 @@ export default class CrontabList extends Vue {
                     <t-link theme="primary" hover="color" @click="updateModal.open(row)">
                         修改
                     </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="deleteKey(rowIndex)">
-                        <t-link theme="danger" hover="color">
+                    <t-link theme="danger" hover="color">
+                        <t-popconfirm content="确定删除?" @confirm="deleteKey(rowIndex)">
                             删除
-                        </t-link>
-                    </t-popconfirm>
+                        </t-popconfirm>
+                    </t-link>
                 </template>
             </t-table>
         </t-card>

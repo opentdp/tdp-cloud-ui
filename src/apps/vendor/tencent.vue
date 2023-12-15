@@ -83,11 +83,11 @@ export default class VendorTencent extends Vue {
                     <t-link theme="warning" hover="color" @click="updateModal.open(row)">
                         修改
                     </t-link>
-                    <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
-                        <t-link theme="danger" hover="color">
+                    <t-link theme="danger" hover="color">
+                        <t-popconfirm content="删除账号不会解绑已导入的资源，是否继续？" @confirm="deleteVendor(rowIndex)">
                             删除
-                        </t-link>
-                    </t-popconfirm>
+                        </t-popconfirm>
+                    </t-link>
                 </template>
             </t-table>
         </t-card>

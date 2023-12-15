@@ -90,11 +90,11 @@ export default class CertbotList extends Vue {
                     <t-link v-else theme="default" hover="color" :disabled="true">
                         查看
                     </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="deleteCertbot(rowIndex)">
-                        <t-link theme="danger" hover="color">
+                    <t-link theme="danger" hover="color">
+                        <t-popconfirm content="确定删除?" @confirm="deleteCertbot(rowIndex)">
                             删除
-                        </t-link>
-                    </t-popconfirm>
+                        </t-popconfirm>
+                    </t-link>
                 </template>
             </t-table>
         </t-card>

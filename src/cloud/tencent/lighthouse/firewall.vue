@@ -99,11 +99,11 @@ export default class LighthouseFirewall extends Vue {
                 <t-link theme="primary" hover="color" @click="updateModal.open(instance, firewallRuleList, rowIndex)">
                     修改
                 </t-link>
-                <t-popconfirm content="确定删除?" @confirm="deleteFirewallRule(row)">
-                    <t-link theme="danger" hover="color">
+                <t-link theme="danger" hover="color">
+                    <t-popconfirm content="确定删除?" @confirm="deleteFirewallRule(row)">
                         删除
-                    </t-link>
-                </t-popconfirm>
+                    </t-popconfirm>
+                </t-link>
             </template>
         </t-table>
     </t-card>

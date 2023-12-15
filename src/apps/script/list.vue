@@ -90,14 +90,14 @@ export default class ScriptList extends Vue {
                     </pre>
                 </template>
                 <template #Operation="{ row, rowIndex }">
-                    <t-link theme="primary" hover="color" @click="updateModal.open(row)">
+                    <t-link v-click-stop theme="primary" hover="color" @click="updateModal.open(row)">
                         修改
                     </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="deleteScript(rowIndex)">
-                        <t-link theme="danger" hover="color">
+                    <t-link v-click-stop theme="danger" hover="color">
+                        <t-popconfirm content="确定删除?" @confirm="deleteScript(rowIndex)">
                             删除
-                        </t-link>
-                    </t-popconfirm>
+                        </t-popconfirm>
+                    </t-link>
                 </template>
             </t-table>
         </t-card>

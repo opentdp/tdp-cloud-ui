@@ -268,11 +268,11 @@ export default class WorkerFileman extends Vue {
                     <t-link v-else theme="success" hover="color" @click="downloadFile(row.Name)">
                         下载
                     </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="deleteFile(row.Name)">
-                        <t-link theme="danger" hover="color">
+                    <t-link theme="danger" hover="color">
+                        <t-popconfirm content="确定删除?" @confirm="deleteFile(row.Name)">
                             删除
-                        </t-link>
-                    </t-popconfirm>
+                        </t-popconfirm>
+                    </t-link>
                 </template>
             </t-table>
         </t-space>

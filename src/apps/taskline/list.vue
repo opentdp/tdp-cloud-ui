@@ -97,11 +97,11 @@ export default class TasklineList extends Vue {
                     </pre>
                 </template>
                 <template #Operation="{ rowIndex }">
-                    <t-popconfirm content="确定删除?" @confirm="deleteHistory(rowIndex)">
-                        <t-link theme="danger" hover="color">
+                    <t-link v-click-stop theme="danger" hover="color">
+                        <t-popconfirm content="确定删除?" @confirm="deleteHistory(rowIndex)">
                             删除
-                        </t-link>
-                    </t-popconfirm>
+                        </t-popconfirm>
+                    </t-link>
                 </template>
             </t-table>
         </t-card>

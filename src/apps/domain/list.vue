@@ -78,11 +78,11 @@ export default class DomainList extends Vue {
                     <t-link v-route="'/domain/detail/' + row.Id" theme="primary" hover="color">
                         管理
                     </t-link>
-                    <t-popconfirm content="确定删除?" @confirm="deleteDomain(rowIndex)">
-                        <t-link theme="danger" hover="color">
+                    <t-link theme="danger" hover="color">
+                        <t-popconfirm content="确定删除?" @confirm="deleteDomain(rowIndex)">
                             删除
-                        </t-link>
-                    </t-popconfirm>
+                        </t-popconfirm>
+                    </t-link>
                 </template>
             </t-table>
         </t-card>
