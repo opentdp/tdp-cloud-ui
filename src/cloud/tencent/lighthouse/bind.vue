@@ -119,7 +119,7 @@ export default class LighthouseBind extends Vue {
             Description: '',
         });
         if (res.Id > 0) {
-            this.installWorker(item, 44);
+            this.installWorker(item, res.Id);
         }
         this.$emit('change');
     }
