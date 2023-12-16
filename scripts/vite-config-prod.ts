@@ -16,7 +16,7 @@ export const config: UserConfig = {
         replace([
             {
                 file: /tdesign-.+\.js/,
-                source: /https:\/\/[^'']+\/fonts\/index\.js/g,
+                source: /https:\/\/[^"']+\/fonts\/index\.js/g,
                 target: 'assets/icon.js',
             },
         ])
