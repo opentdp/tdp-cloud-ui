@@ -14,7 +14,7 @@ import { installWorker } from '@/helper/script/shell';
 export default class CvmBind extends Vue {
     public dateFormat = dateFormat;
 
-    public loading = 1;
+    public loadnum = 1;
 
     @Prop
     public vendorId = 0;
@@ -35,7 +35,7 @@ export default class CvmBind extends Vue {
     public regionList: Record<string, TC.Cvm.RegionInfo> = {};
 
     async getRegionList() {
-        const res = await TcApi.cvm.describeRegions().finally(() => this.loading--);
+        const res = await TcApi.cvm.describeRegions().finally(() => this.loadnum--);
         res.RegionSet.forEach(async item => {
             this.regionList[item.Region] = item;
         });
@@ -52,8 +52,8 @@ export default class CvmBind extends Vue {
             if (item.TotalCount == 0) {
                 return;
             }
-            this.loading++;
-            const rs2 = await TcApi.cvm.describeInstances(item.Region).finally(() => this.loading--);
+            this.loadnum++;
+            const rs2 = await TcApi.cvm.describeInstances(item.Region).finally(() => this.loadnum--);
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet);
                 this.instanceCount += rs2.TotalCount;
@@ -180,7 +180,7 @@ export default class CvmBind extends Vue {
 </script>
 
 <template>
-    <t-card :loading="loading > 0" title="实例列表" hover-shadow header-bordered>
+    <t-card :loadnum="loadnum > 0" title="实例列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>

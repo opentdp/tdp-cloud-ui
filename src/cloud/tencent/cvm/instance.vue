@@ -28,7 +28,9 @@ export default class CvmInstance extends Vue {
     // 初始化
 
     public created() {
-        TcApi.vendor(this.machine.VendorId);
+        if (this.machine.VendorId) {
+            TcApi.vendor(this.machine.VendorId);
+        }
         this.instance = this.machine.CloudMeta;
         this.getInstance();
     }

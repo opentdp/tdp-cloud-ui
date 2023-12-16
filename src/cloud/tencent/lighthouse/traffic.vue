@@ -13,7 +13,7 @@ export default class LighthouseTraffic extends Vue {
     public bytesToSize = bytesToSize;
 
     @Prop
-    public instance!: TC.Lighthouse.Instance;
+    public instance!: Required<TC.Lighthouse.Instance>;
 
     // 初始化
 

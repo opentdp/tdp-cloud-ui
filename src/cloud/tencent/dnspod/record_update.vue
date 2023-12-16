@@ -11,7 +11,7 @@ import * as TC from '@/api/tencent/typings';
     expose: ['open'],
 })
 export default class DnspodRecordUpdate extends Vue {
-    public domainInfo!: TC.Dnspod.DomainInfo;
+    public domainInfo!: Required<TC.Dnspod.DomainInfo>;
 
     // 创建表单
 
@@ -83,7 +83,7 @@ export default class DnspodRecordUpdate extends Vue {
         this.$emit('submit');
     }
 
-    public open(info: TC.Dnspod.DomainInfo, record: TC.Dnspod.RecordListItem) {
+    public open(info: Required<TC.Dnspod.DomainInfo>, record: TC.Dnspod.RecordListItem) {
         this.visible = true;
         this.domainInfo = info;
         this.formModel = record;

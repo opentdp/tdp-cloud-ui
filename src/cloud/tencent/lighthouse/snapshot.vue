@@ -19,7 +19,7 @@ export default class LighthouseSnapshot extends Vue {
     public createModal!: SnapshotCreate;
 
     @Prop
-    public instance!: TC.Lighthouse.Instance;
+    public instance!: Required<TC.Lighthouse.Instance>;
 
     // 初始化
 

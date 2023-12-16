@@ -11,7 +11,7 @@ import * as TC from '@/api/tencent/typings';
     expose: ['open'],
 })
 export default class LighthouseFirewallUpdate extends Vue {
-    public instance!: TC.Lighthouse.Instance;
+    public instance!: Required<TC.Lighthouse.Instance>;
     public firewallRuleList!: TC.Lighthouse.FirewallRule[];
 
     public get region() {
@@ -59,7 +59,7 @@ export default class LighthouseFirewallUpdate extends Vue {
         this.$emit('submit');
     }
 
-    public open(instance: TC.Lighthouse.Instance, rules: TC.Lighthouse.FirewallRule[], idx: number) {
+    public open(instance: Required<TC.Lighthouse.Instance>, rules: TC.Lighthouse.FirewallRule[], idx: number) {
         this.instance = instance;
         this.firewallRuleList = rules;
         this.formModel = rules[idx];

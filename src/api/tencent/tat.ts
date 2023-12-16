@@ -21,7 +21,7 @@ export class TatModel extends TencentClient {
         return this.bus({ Action: 'DescribeInvocationTasks', Region: region, Payload: query });
     }
 
-    public describeAutomationAgentStatus(region: string, query: ITat.DescribeAutomationAgentStatusRequest): Promise<ITat.DescribeAutomationAgentStatusResponse> {
+    public describeAutomationAgentStatus(region: string, query: ITat.DescribeAutomationAgentStatusRequest): Promise<Required<ITat.DescribeAutomationAgentStatusResponse>> {
         return this.bus({ Action: 'DescribeAutomationAgentStatus', Region: region, Payload: query });
 
     }

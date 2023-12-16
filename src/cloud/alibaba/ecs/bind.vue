@@ -13,7 +13,7 @@ import { dateFormat } from '@/helper/format';
 export default class EcsBind extends Vue {
     public dateFormat = dateFormat;
 
-    public loading = 1;
+    public loadnum = 1;
 
     @Prop
     public vendorId = 0;
@@ -36,12 +36,12 @@ export default class EcsBind extends Vue {
     public instanceCount = 0;
 
     async getRegionInstanceList() {
-        const res = await AcApi.ecs.describeRegions().finally(() => this.loading--);
-        this.loading = res.Regions.Region.length;
+        const res = await AcApi.ecs.describeRegions().finally(() => this.loadnum--);
+        this.loadnum = res.Regions.Region.length;
         res.Regions.Region.forEach(async item => {
             this.regionList[item.RegionId] = item;
             // 获取当前大区实例
-            const rs2 = await AcApi.ecs.describeInstances(item.RegionId).finally(() => this.loading--);
+            const rs2 = await AcApi.ecs.describeInstances(item.RegionId).finally(() => this.loadnum--);
             if (rs2.TotalCount && rs2.Instances.Instance) {
                 this.instanceList.push(...rs2.Instances.Instance);
                 this.instanceCount += rs2.TotalCount;
@@ -118,7 +118,7 @@ export default class EcsBind extends Vue {
 </script>
 
 <template>
-    <t-card :loading="loading > 0" title="实例列表" hover-shadow header-bordered>
+    <t-card :loadnum="loadnum > 0" title="实例列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>

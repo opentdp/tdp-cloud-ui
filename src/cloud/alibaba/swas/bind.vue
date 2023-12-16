@@ -13,7 +13,7 @@ import { dateFormat } from '@/helper/format';
 export default class SwasBind extends Vue {
     public dateFormat = dateFormat;
 
-    public loading = 1;
+    public loadnum = 1;
 
     @Prop
     public vendorId = 0;
@@ -36,12 +36,12 @@ export default class SwasBind extends Vue {
     public instanceCount = 0;
 
     async getRegionInstanceList() {
-        const res = await AcApi.swas.listRegions().finally(() => this.loading--);
-        this.loading = res.Regions.length;
+        const res = await AcApi.swas.listRegions().finally(() => this.loadnum--);
+        this.loadnum = res.Regions.length;
         res.Regions.forEach(async region => {
             this.regionList[region.RegionId] = region;
             // 获取当前大区实例
-            const rs2 = await AcApi.swas.listInstances(region.RegionId).finally(() => this.loading--);
+            const rs2 = await AcApi.swas.listInstances(region.RegionId).finally(() => this.loadnum--);
             if (rs2 && rs2.TotalCount > 0 && rs2.Instances) {
                 this.instanceList.push(...rs2.Instances);
                 this.instanceCount += rs2.TotalCount;
@@ -126,7 +126,7 @@ export default class SwasBind extends Vue {
 </script>
 
 <template>
-    <t-card :loading="loading > 0" title="实例列表" hover-shadow header-bordered>
+    <t-card :loadnum="loadnum > 0" title="实例列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>

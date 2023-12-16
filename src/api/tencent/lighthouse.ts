@@ -9,7 +9,7 @@ export class LighthouseModel extends TencentClient {
         return this.bus({ Action: 'DescribeRegions' }, 600);
     }
 
-    public describeInstances(region: string, query?: ILighthouse.DescribeInstancesRequest): Promise<ILighthouse.DescribeInstancesResponse> {
+    public describeInstances(region: string, query?: ILighthouse.DescribeInstancesRequest): Promise<Required<ILighthouse.DescribeInstancesResponse>> {
         query = Object.assign({ Limit: 100 }, query);
         return this.bus({ Action: 'DescribeInstances', Region: region, Payload: query });
     }

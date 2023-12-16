@@ -31,8 +31,10 @@ export default class LighthouseInstance extends Vue {
     // 初始化
 
     public created() {
-        TcApi.vendor(this.machine.VendorId);
-        this.instance = this.machine.CloudMeta;
+        if (this.machine.VendorId) {
+            TcApi.vendor(this.machine.VendorId);
+        }
+        this.instance = this.machine.CloudMeta as Required<TC.Lighthouse.Instance>;
         this.getInstance();
     }
 
@@ -44,14 +46,14 @@ export default class LighthouseInstance extends Vue {
 
     // 实例信息
 
-    public instance!: TC.Lighthouse.Instance;
+    public instance!: Required<TC.Lighthouse.Instance>;
 
     async getInstance() {
         const res = await TcApi.lighthouse.describeInstances(this.region, {
             InstanceIds: [this.instance.InstanceId],
         });
         if (res.InstanceSet) {
-            this.instance = res.InstanceSet[0];
+            Object.assign(this.instance, res.InstanceSet[0]);
         }
     }
 

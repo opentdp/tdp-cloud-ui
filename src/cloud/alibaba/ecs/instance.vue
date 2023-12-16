@@ -21,7 +21,9 @@ export default class EcsInstance extends Vue {
     // 初始化
 
     public created() {
-        AcApi.vendor(this.machine.VendorId);
+        if (this.machine.VendorId) {
+            AcApi.vendor(this.machine.VendorId);
+        }
         this.instance = this.machine.CloudMeta;
         this.getInstance();
     }

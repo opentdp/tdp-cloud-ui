@@ -22,7 +22,7 @@ export default class LighthouseFirewall extends Vue {
     public remarkModal!: FirewallRemark;
 
     @Prop
-    public instance!: TC.Lighthouse.Instance;
+    public instance!: Required<TC.Lighthouse.Instance>;
 
     // 初始化
 

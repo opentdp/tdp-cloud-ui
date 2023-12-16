@@ -14,7 +14,7 @@ import { installWorker } from '@/helper/script/shell';
 export default class LighthouseBind extends Vue {
     public dateFormat = dateFormat;
 
-    public loading = 1;
+    public loadnum = 1;
 
     @Prop
     public vendorId = 0;
@@ -37,12 +37,12 @@ export default class LighthouseBind extends Vue {
     public instanceCount = 0;
 
     async getRegionInstanceList() {
-        const res = await TcApi.lighthouse.describeRegions().finally(() => this.loading--);
-        this.loading = res.TotalCount;
+        const res = await TcApi.lighthouse.describeRegions().finally(() => this.loadnum--);
+        this.loadnum = res.TotalCount;
         res.RegionSet.forEach(async item => {
             this.regionList[item.Region] = item;
             // 获取当前大区实例
-            const rs2 = await TcApi.lighthouse.describeInstances(item.Region).finally(() => this.loading--);
+            const rs2 = await TcApi.lighthouse.describeInstances(item.Region).finally(() => this.loadnum--);
             if (rs2.TotalCount && rs2.InstanceSet) {
                 this.instanceList.push(...rs2.InstanceSet);
                 this.instanceCount += rs2.TotalCount;
@@ -52,7 +52,7 @@ export default class LighthouseBind extends Vue {
 
     // 执行脚本
 
-    async runCommand(item: TC.Lighthouse.Instance, code: string) {
+    async runCommand(item: Required<TC.Lighthouse.Instance>, code: string) {
         const region = item.Zone.replace(/-(\d+)$/, '');
         const res = await TcApi.tat.runCommand(region, {
             InstanceIds: [item.InstanceId],
@@ -61,7 +61,7 @@ export default class LighthouseBind extends Vue {
         return res.InvocationId;
     }
 
-    async getInvocationStatus(item: TC.Lighthouse.Instance, id: string) {
+    async getInvocationStatus(item: Required<TC.Lighthouse.Instance>, id: string) {
         const region = item.Zone.replace(/-(\d+)$/, '');
         const res = await TcApi.tat.describeInvocations(region, {
             InvocationIds: [id]
@@ -79,7 +79,7 @@ export default class LighthouseBind extends Vue {
 
     public workerStatus: Record<string, string> = {};
 
-    async installWorker(item: TC.Lighthouse.Instance, id: number) {
+    async installWorker(item: Required<TC.Lighthouse.Instance>, id: number) {
         // 云助手状态
         const region = item.Zone.replace(/-(\d+)$/, '');
         const res = await TcApi.tat.describeAutomationAgentStatus(region, {
@@ -104,7 +104,7 @@ export default class LighthouseBind extends Vue {
 
     // 绑定主机
 
-    async bindMachine(item: TC.Lighthouse.Instance) {
+    async bindMachine(item: Required<TC.Lighthouse.Instance>) {
         const res = await NaApi.machine.create({
             VendorId: this.vendorId,
             HostName: item.InstanceName,
@@ -126,7 +126,7 @@ export default class LighthouseBind extends Vue {
 
     // 同步主机
 
-    public syncMachine(item: TC.Lighthouse.Instance) {
+    public syncMachine(item: Required<TC.Lighthouse.Instance>) {
         const bd = this.boundList[item.InstanceId];
         NaApi.machine.update({
             Id: bd ? bd.Id : 0,
@@ -169,7 +169,7 @@ export default class LighthouseBind extends Vue {
 </script>
 
 <template>
-    <t-card :loading="loading > 0" title="实例列表" hover-shadow header-bordered>
+    <t-card :loadnum="loadnum > 0" title="实例列表" hover-shadow header-bordered>
         <template #subtitle>
             记录总数: {{ instanceCount }}
         </template>

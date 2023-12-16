@@ -42,7 +42,7 @@ export default class DnspodBind extends Vue {
 
     // 绑定域名
 
-    async bindDomian(item: TC.Dnspod.DomainListItem) {
+    async bindDomian(item: Required<TC.Dnspod.DomainListItem>) {
         await NaApi.domain.create({
             VendorId: this.vendorId,
             Name: item.Name,
@@ -58,7 +58,7 @@ export default class DnspodBind extends Vue {
 
     // 同步域名
 
-    public syncDomian(item: TC.Dnspod.DomainListItem) {
+    public syncDomian(item: Required<TC.Dnspod.DomainListItem>) {
         const bd = this.boundList[item.DomainId];
         NaApi.domain.update({
             Id: bd ? bd.Id : 0,
