@@ -7,7 +7,7 @@
  * @param {ReplaceOptions} options
  */
 
-import type { PluginOption } from 'vite'
+import type { PluginOption } from 'vite';
 
 type ReplaceOptions = {
     file: RegExp
@@ -21,10 +21,10 @@ export default function (options: ReplaceOptions): PluginOption {
         transform(code, id) {
             for (const replaceConfig of options) {
                 if (!replaceConfig.file || replaceConfig.file?.test(id)) {
-                    code = code.replace(replaceConfig.source, `${replaceConfig.target}`)
+                    code = code.replace(replaceConfig.source, `${replaceConfig.target}`);
                 }
             }
-            return code
+            return code;
         },
-    }
+    };
 }

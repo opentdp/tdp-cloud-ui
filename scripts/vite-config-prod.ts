@@ -1,14 +1,14 @@
 // https://cn.vitejs.dev/config/
 
-import { UserConfig } from "vite"
+import { UserConfig } from 'vite';
 
-import vue from "@vitejs/plugin-vue"
-import replace from "./vite-plugin-replace"
+import vue from '@vitejs/plugin-vue';
+import replace from './vite-plugin-replace';
 
 export const config: UserConfig = {
-    base: "./",
+    base: './',
     build: {
-        outDir: "build",
+        outDir: 'build',
         manifest: false
     },
     plugins: [
@@ -16,15 +16,15 @@ export const config: UserConfig = {
         replace([
             {
                 file: /tdesign-.+\.js/,
-                source: /https:\/\/[^"']+\/fonts\/index\.js/g,
+                source: /https:\/\/[^'']+\/fonts\/index\.js/g,
                 target: 'assets/icon.js',
             },
         ])
     ],
     resolve: {
         alias: {
-            "@": "/src",
-            "~": "/node_modules",
+            '@': '/src',
+            '~': '/node_modules',
         },
     }
-}
+};
