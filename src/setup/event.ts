@@ -6,12 +6,12 @@ import type { App, Plugin } from 'vue';
 
 const plugin: Plugin = {
     install: (app: App) => {
-        app.directive('click-stop', (el: HTMLElement) => {
-            el.addEventListener('click', event => {
+        app.directive('event-stop', (el: HTMLElement, binding) => {
+            const value = binding.value || 'click';
+            el.addEventListener(value, event => {
                 event.stopPropagation();
             });
         });
-
     },
 };
 

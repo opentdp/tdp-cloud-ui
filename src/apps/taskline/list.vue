@@ -97,7 +97,7 @@ export default class TasklineList extends Vue {
                     </pre>
                 </template>
                 <template #Operation="{ rowIndex }">
-                    <t-link v-click-stop theme="danger" hover="color">
+                    <t-link v-event-stop theme="danger" hover="color">
                         <t-popconfirm content="确定删除?" @confirm="deleteHistory(rowIndex)">
                             删除
                         </t-popconfirm>
