@@ -12,6 +12,9 @@ import * as gobyte from '@/helper/gobyte';
 
 @Component
 export default class WorkerFileman extends Vue {
+    public textExpr = /\.(bat|cmd|css|conf|html?|ini|js|json|log|php|py|sh|sql|txt|xml)$/;
+    public imageExpr = /\.(bmp|gif|jpg|jpeg|png|webp)$/;
+
     public MachineModels = MachineModels;
 
     public bytesToSize = bytesToSize;
@@ -93,10 +96,11 @@ export default class WorkerFileman extends Vue {
         // 缓存文件信息
         if (res.FileList && res.FileList.length > 0) {
             const file = { ...res.FileList[0], Type: '' };
-            if (/\.(bat|cmd|css|conf|html?|ini|js|json|log|php|py|sh|sql|txt|xml)$/.test(name)) {
-                file.Type = 'text';
-            } else if (/\.(bmp|gif|jpg|jpeg|png|webp)$/.test(name)) {
+            if (this.imageExpr.test(name)) {
                 file.Type = 'image';
+            }
+            else if (this.textExpr.test(name)) {
+                file.Type = 'text';
             }
             file.ModTime *= 1000;
             this.fileInfo = file;
@@ -106,7 +110,9 @@ export default class WorkerFileman extends Vue {
     // 下载文件
 
     async downloadFile(name: string) {
-        await this.getFileData(name);
+        if (this.fileInfo.Name != name) {
+            await this.getFileData(name);
+        }
         gobyte.base64ToDownload(this.fileInfo.Data, name);
     }
 
@@ -269,7 +275,7 @@ export default class WorkerFileman extends Vue {
                     </t-button>
                 </t-col>
                 <t-col v-if="editing" flex="auto">
-                    <t-input v-model="path" @enter="getFileList(path)">
+                    <t-input v-model="path" :autofocus="true" @enter="getFileList(path)">
                         <template #suffixIcon>
                             <t-icon name="enter" class="pointer" @click="getFileList(path)" />
                         </template>
@@ -342,19 +348,18 @@ export default class WorkerFileman extends Vue {
             <t-space v-else fixed direction="vertical">
                 <p><b>名称：</b>{{ fileInfo.Name }}</p>
                 <p><b>大小：</b>{{ bytesToSize(fileInfo.Size) }}</p>
-                <div class="open-as">
-                    <h4>无法识别文件类型，可尝试如下操作：</h4>
-                    <p>
-                        <t-link @click="openFileAs('text')">
-                            <b>-</b> &nbsp; 作为文本打开
-                        </t-link>
-                    </p>
-                    <p>
-                        <t-link @click="openFileAs('image')">
-                            <b>-</b> &nbsp; 作为图片打开
-                        </t-link>
-                    </p>
-                </div>
+                <t-space fixed direction="vertical">
+                    <b>无法从扩展名推断文件类型，可尝试如下操作：</b>
+                    <t-link @click="openFileAs('text')">
+                        <b>-</b> &nbsp; 作为文本打开
+                    </t-link>
+                    <t-link @click="openFileAs('image')">
+                        <b>-</b> &nbsp; 作为图片打开
+                    </t-link>
+                    <t-link @click="downloadFile(fileInfo.Name)">
+                        <b>-</b> &nbsp; 下载此文件
+                    </t-link>
+                </t-space>
             </t-space>
             <template #footer>
                 <t-button theme="primary" :loading="loading" @click="saveFile()">
@@ -382,14 +387,6 @@ export default class WorkerFileman extends Vue {
     .breadcrumb {
         padding: 5px 10px;
         background-color: var(--td-gray-color-1);
-    }
-}
-
-.open-as {
-    margin-top: 10px;
-
-    p {
-        margin: 10px 0 0 10px;
     }
 }
 </style>
