@@ -224,18 +224,18 @@ export default class WorkerFileman extends Vue {
                     </t-button>
                 </t-col>
                 <t-col v-if="editing" flex="auto">
-                    <t-input v-model="path">
+                    <t-input v-model="path" @enter="getFileList(path)">
                         <template #suffixIcon>
                             <t-icon name="enter" class="pointer" @click="getFileList(path)" />
                         </template>
                     </t-input>
                 </t-col>
-                <t-col v-if="!editing" flex="auto">
+                <t-col v-if="!editing" flex="auto" @click="editing = true">
                     <t-breadcrumb class="breadcrumb">
-                        <t-breadcrumb-item v-if="machine?.OSType != 'windows'" @click="getFileList('')">
+                        <t-breadcrumb-item v-if="machine?.OSType != 'windows'" v-event-stop @click="getFileList('')">
                             <small>/</small>
                         </t-breadcrumb-item>
-                        <t-breadcrumb-item v-for="v, k in getPathCrumb()" :key="k" @click="getFileList(v.path)">
+                        <t-breadcrumb-item v-for="v, k in getPathCrumb()" :key="k" v-event-stop @click="getFileList(v.path)">
                             {{ v.name }}
                         </t-breadcrumb-item>
                     </t-breadcrumb>
