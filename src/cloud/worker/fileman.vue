@@ -140,21 +140,6 @@ export default class WorkerFileman extends Vue {
         await this.getFileList(this.path);
     }
 
-    // 文件改名
-
-    async renameFile(name: string, target: string) {
-        this.loading = true;
-        const path = this.path + '/' + name;
-        const file: Partial<FileInfo> = {
-            Name: this.path + '/' + target,
-        };
-        const req = { Action: 'mv', Path: path, File: file };
-        await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
-            this.loading = false;
-        });
-        await this.getFileList(this.path);
-    }
-
     // 保存文件
 
     async saveFile() {
@@ -196,6 +181,31 @@ export default class WorkerFileman extends Vue {
         return result;
     }
 
+    // 文件重命名
+
+    public renameShow = false;
+    public originName = '';
+
+    public rename(file: FileInfo) {
+        this.fileInfo = { ...file, Type: '' };
+        this.originName = file.Name;
+        this.renameShow = true;
+    }
+
+    async renamePath() {
+        this.loading = true;
+        const path = this.path + '/' + this.originName;
+        const file = {
+            Name: this.path + '/' + this.fileInfo.Name,
+        };
+        const req = { Action: 'mv', Path: path, File: file };
+        await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
+            this.loading = false;
+        });
+        await this.getFileList(this.path);
+        this.renameShow = false;
+    }
+
     // 文件编辑界面
 
     public editorShow = false;
@@ -229,7 +239,7 @@ export default class WorkerFileman extends Vue {
         { colKey: 'Mode', title: '权限', ellipsis: true },
         { colKey: 'Size', title: '大小', ellipsis: true },
         { colKey: 'ModTime', title: '修改时间', ellipsis: true },
-        { colKey: 'Operation', title: '操作', width: '110px' }
+        { colKey: 'Operation', title: '操作', width: '150px' }
     ];
 }
 </script>
@@ -316,8 +326,11 @@ export default class WorkerFileman extends Vue {
                     <t-link v-if="row.IsDir" theme="primary" hover="color" @click="getFileList(path + '/' + row.Name)">
                         浏览
                     </t-link>
-                    <t-link v-else theme="success" hover="color" @click="downloadFile(row.Name)">
+                    <t-link v-else theme="primary" hover="color" @click="downloadFile(row.Name)">
                         下载
+                    </t-link>
+                    <t-link theme="success" hover="color" @click="rename(row)">
+                        改名
                     </t-link>
                     <t-link theme="danger" hover="color">
                         <t-popconfirm content="确定删除?" @confirm="deleteFile(row.Name)">
@@ -327,6 +340,24 @@ export default class WorkerFileman extends Vue {
                 </template>
             </t-table>
         </t-space>
+
+        <t-dialog v-model:visible="renameShow" destroy-on-close header="文件改名" :footer="false" width="50%">
+            <t-form ref="formRef" label-width="60px" @submit="renamePath()">
+                <t-form-item label="文件名">
+                    <t-input v-model="fileInfo.Name" />
+                </t-form-item>
+                <t-form-item>
+                    <t-space size="small">
+                        <t-button theme="primary" type="submit">
+                            提交
+                        </t-button>
+                        <t-button theme="default" type="reset" @click="renameShow = false">
+                            取消
+                        </t-button>
+                    </t-space>
+                </t-form-item>
+            </t-form>
+        </t-dialog>
 
         <t-drawer v-model:visible="editorShow" :header="path + '/'" :footer="fileInfo.Type == 'text'" :close-btn="true" size="60%">
             <div v-if="fileInfo.Type == 'text'">
