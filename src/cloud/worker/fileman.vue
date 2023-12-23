@@ -24,6 +24,7 @@ export default class WorkerFileman extends Vue {
     public fileInfo = {
         Type: '',
         Name: '',
+        Size: 0,
         Mode: 0,
         ModTime: 0,
         Data: '',
@@ -113,15 +114,12 @@ export default class WorkerFileman extends Vue {
 
     async uploadFile(file: UploadFile) {
         file.raw && gobyte.fileToBase64(file.raw, async res => {
-            const req = {
-                Action: 'write',
-                Path: this.path + '/' + file.name,
-                File: { Data: res }
-            };
+            const path = this.path + '/' + file.name;
+            const req = { Action: 'write', Path: path, File: { Data: res } };
             await NaApi.workhub.filer(this.machine.WorkerId, req);
             await this.getFileList(this.path);
         });
-        const data = { status: 'success', response: {} };
+        const data = { status: 'success', response: { url: '/' } };
         return Promise.resolve(data as RequestMethodResponse);
     }
 
@@ -136,19 +134,35 @@ export default class WorkerFileman extends Vue {
         await this.getFileList(this.path);
     }
 
+    // 文件改名
+
+    async renameFile(name: string, target: string) {
+        this.loading = true;
+        const path = this.path + '/' + name;
+        const file: Partial<FileInfo> = {
+            Name: this.path + '/' + target,
+        };
+        const req = { Action: 'mv', Path: path, File: file };
+        await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
+            this.loading = false;
+        });
+        await this.getFileList(this.path);
+    }
+
     // 保存文件
 
     async saveFile() {
         this.loading = true;
+        const path = this.path + '/' + this.fileInfo.Name;
         const file: Partial<FileInfo> = {
             Data: gobyte.textToBase64(this.fileInfo.Data),
             ModTime: Math.floor(this.fileInfo.ModTime / 1000),
         };
-        const path = this.path + '/' + this.fileInfo.Name;
         const req = { Action: 'write', Path: path, File: file };
         await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false;
         });
+        await this.getFileList(this.path);
     }
 
     // 打开文件
@@ -176,14 +190,30 @@ export default class WorkerFileman extends Vue {
         return result;
     }
 
-    // 打开抽屉
+    // 文件编辑界面
 
-    public visible = false;
+    public editorShow = false;
+    public editorType = 'review';
+
+    async createFile() {
+        this.fileInfo = {
+            Type: 'text',
+            Name: 'newfile.txt',
+            Size: 0,
+            Mode: 0,
+            ModTime: Date.now(),
+            Data: '',
+        };
+        this.openFileAs(this.fileInfo.Type);
+        this.editorType = 'create';
+        this.editorShow = true;
+    }
 
     async reviewFile(name: string) {
         await this.getFileData(name);
         this.openFileAs(this.fileInfo.Type);
-        this.visible = true;
+        this.editorType = 'review';
+        this.editorShow = true;
     }
 
     // 表格定义
@@ -204,7 +234,22 @@ export default class WorkerFileman extends Vue {
             记录总数: {{ fileList.length }}
         </template>
         <template #actions>
-            <t-upload theme="custom" :request-method="uploadFile" />
+            <t-space>
+                <t-upload theme="custom" :request-method="uploadFile">
+                    <t-button variant="outline">
+                        <template #icon>
+                            <t-icon name="upload" />
+                        </template>
+                        上传
+                    </t-button>
+                </t-upload>
+                <t-button @click="createFile()">
+                    <template #icon>
+                        <t-icon name="add" />
+                    </template>
+                    新建
+                </t-button>
+            </t-space>
         </template>
         <t-space fixed direction="vertical">
             <t-row class="navbar">
@@ -277,31 +322,40 @@ export default class WorkerFileman extends Vue {
             </t-table>
         </t-space>
 
-        <t-drawer v-model:visible="visible" :header="fileInfo.Name" :footer="fileInfo.Type == 'text'" :close-btn="true" size="60%">
+        <t-drawer v-model:visible="editorShow" :header="path + '/'" :footer="fileInfo.Type == 'text'" :close-btn="true" size="60%">
             <div v-if="fileInfo.Type == 'text'">
+                <t-form-item label="文件名">
+                    <t-input v-model="fileInfo.Name" :disabled="editorType == 'review'" />
+                </t-form-item>
                 <t-form-item label="文件内容">
                     <t-textarea v-model="fileInfo.Data" :autosize="{ minRows: 10 }" />
                 </t-form-item>
-                <t-form-item label="文件修改日期">
+                <t-form-item label="修改日期">
                     <t-date-picker v-model="fileInfo.ModTime" value-type="time-stamp" size="large" allow-input enable-time-picker />
                 </t-form-item>
             </div>
-            <div v-else-if="fileInfo.Type == 'image'">
+            <t-space v-else-if="fileInfo.Type == 'image'" fixed direction="vertical">
+                <p><b>名称：</b>{{ fileInfo.Name }}</p>
+                <p><b>大小：</b>{{ bytesToSize(fileInfo.Size) }}</p>
                 <t-image :src="fileInfo.Data" />
-            </div>
-            <div v-else>
-                <h3>无法识别文件类型，可尝试如下操作：</h3>
-                <p class="open-as">
-                    <t-link @click="openFileAs('text')">
-                        <b>-</b> &nbsp; 作为文本打开
-                    </t-link>
-                </p>
-                <p class="open-as">
-                    <t-link @click="openFileAs('image')">
-                        <b>-</b> &nbsp; 作为图片打开
-                    </t-link>
-                </p>
-            </div>
+            </t-space>
+            <t-space v-else fixed direction="vertical">
+                <p><b>名称：</b>{{ fileInfo.Name }}</p>
+                <p><b>大小：</b>{{ bytesToSize(fileInfo.Size) }}</p>
+                <div class="open-as">
+                    <h4>无法识别文件类型，可尝试如下操作：</h4>
+                    <p>
+                        <t-link @click="openFileAs('text')">
+                            <b>-</b> &nbsp; 作为文本打开
+                        </t-link>
+                    </p>
+                    <p>
+                        <t-link @click="openFileAs('image')">
+                            <b>-</b> &nbsp; 作为图片打开
+                        </t-link>
+                    </p>
+                </div>
+            </t-space>
             <template #footer>
                 <t-button theme="primary" :loading="loading" @click="saveFile()">
                     提交
@@ -332,6 +386,10 @@ export default class WorkerFileman extends Vue {
 }
 
 .open-as {
-    margin: 10px 0 0 10px;
+    margin-top: 10px;
+
+    p {
+        margin: 10px 0 0 10px;
+    }
 }
 </style>
