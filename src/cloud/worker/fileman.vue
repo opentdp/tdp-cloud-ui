@@ -7,7 +7,7 @@ import { NaApi } from '@/api';
 import { MachineModels, MachineItem } from '@/api/native/machine';
 import { FileInfo } from '@/api/native/typings';
 
-import { bytesToSize, dateFormat } from '@/helper/format';
+import { bytesToSize, dateFormat, octalPermissionsToText } from '@/helper/format';
 import * as gobyte from '@/helper/gobyte';
 
 @Component
@@ -17,6 +17,7 @@ export default class WorkerFileman extends Vue {
 
     public MachineModels = MachineModels;
 
+    public octalPermissionsToText = octalPermissionsToText;
     public bytesToSize = bytesToSize;
     public dateFormat = dateFormat;
 
@@ -142,7 +143,7 @@ export default class WorkerFileman extends Vue {
 
     // 保存文件
 
-    async saveFile() {
+    async submitFile() {
         this.loading = true;
         const path = this.path + '/' + this.fileInfo.Name;
         const file: Partial<FileInfo> = {
@@ -154,6 +155,7 @@ export default class WorkerFileman extends Vue {
             this.loading = false;
         });
         await this.getFileList(this.path);
+        this.editorShow = false;
     }
 
     // 打开文件
@@ -169,32 +171,36 @@ export default class WorkerFileman extends Vue {
         }
     }
 
-    // 权限转换
+    // 新建文件夹
 
-    public octalPermissionsToText(perm: number): string {
-        let result = '';
-        const octalString = perm.toString(8);
-        const permissionMap = ['---', '--x', '-w-', '-wx', 'r--', 'r-x', 'rw-', 'rwx'];
-        for (let i = 0; i < octalString.length; i++) {
-            result += permissionMap[parseInt(octalString[i], 10)];
-        }
-        return result;
+    public mkdirShow = false;
+    public mkdirOrigin = '';
+
+    async mkdirRequest() {
+        this.loading = true;
+        const path = this.path + '/' + this.mkdirOrigin;
+        const req = { Action: 'mkdir', Path: path };
+        await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
+            this.loading = false;
+        });
+        await this.getFileList(this.path);
+        this.mkdirShow = false;
     }
 
     // 文件重命名
 
     public renameShow = false;
-    public originName = '';
+    public renameOrigin = '';
 
-    public rename(file: FileInfo) {
+    public renameFile(file: FileInfo) {
         this.fileInfo = { ...file, Type: '' };
-        this.originName = file.Name;
+        this.renameOrigin = file.Name;
         this.renameShow = true;
     }
 
-    async renamePath() {
+    async renameRequest() {
         this.loading = true;
-        const path = this.path + '/' + this.originName;
+        const path = this.path + '/' + this.renameOrigin;
         const file = {
             Name: this.path + '/' + this.fileInfo.Name,
         };
@@ -211,7 +217,7 @@ export default class WorkerFileman extends Vue {
     public editorShow = false;
     public editorType = 'review';
 
-    async createFile() {
+    public createFile() {
         this.fileInfo = {
             Type: 'text',
             Name: 'newfile.txt',
@@ -252,18 +258,24 @@ export default class WorkerFileman extends Vue {
         <template #actions>
             <t-space>
                 <t-upload theme="custom" :request-method="uploadFile">
-                    <t-button variant="outline">
+                    <t-button theme="warning" variant="outline">
                         <template #icon>
                             <t-icon name="upload" />
                         </template>
                         上传
                     </t-button>
                 </t-upload>
-                <t-button @click="createFile()">
+                <t-button theme="success" variant="outline" @click="createFile()">
                     <template #icon>
-                        <t-icon name="add" />
+                        <t-icon name="file-add" />
                     </template>
-                    新建
+                    新文件
+                </t-button>
+                <t-button theme="primary" variant="outline" @click="mkdirShow = true">
+                    <template #icon>
+                        <t-icon name="folder-add" />
+                    </template>
+                    新目录
                 </t-button>
             </t-space>
         </template>
@@ -329,7 +341,7 @@ export default class WorkerFileman extends Vue {
                     <t-link v-else theme="primary" hover="color" @click="downloadFile(row.Name)">
                         下载
                     </t-link>
-                    <t-link theme="success" hover="color" @click="rename(row)">
+                    <t-link theme="success" hover="color" @click="renameFile(row)">
                         改名
                     </t-link>
                     <t-link theme="danger" hover="color">
@@ -341,8 +353,26 @@ export default class WorkerFileman extends Vue {
             </t-table>
         </t-space>
 
+        <t-dialog v-model:visible="mkdirShow" destroy-on-close header="新建目录" :footer="false" width="50%">
+            <t-form ref="formRef" label-width="60px" @submit="mkdirRequest()">
+                <t-form-item label="目录名">
+                    <t-input v-model="mkdirOrigin" />
+                </t-form-item>
+                <t-form-item>
+                    <t-space size="small">
+                        <t-button theme="primary" type="submit">
+                            提交
+                        </t-button>
+                        <t-button theme="default" type="reset" @click="mkdirShow = false">
+                            取消
+                        </t-button>
+                    </t-space>
+                </t-form-item>
+            </t-form>
+        </t-dialog>
+
         <t-dialog v-model:visible="renameShow" destroy-on-close header="文件改名" :footer="false" width="50%">
-            <t-form ref="formRef" label-width="60px" @submit="renamePath()">
+            <t-form ref="formRef" label-width="60px" @submit="renameRequest()">
                 <t-form-item label="文件名">
                     <t-input v-model="fileInfo.Name" />
                 </t-form-item>
@@ -393,7 +423,7 @@ export default class WorkerFileman extends Vue {
                 </t-space>
             </t-space>
             <template #footer>
-                <t-button theme="primary" :loading="loading" @click="saveFile()">
+                <t-button theme="primary" :loading="loading" @click="submitFile()">
                     提交
                 </t-button>
             </template>

@@ -45,3 +45,12 @@ export function dateFormat(t: string | number, fmt: string) {
     return fmt;
 }
 
+export function octalPermissionsToText(perm: number): string {
+    let result = '';
+    const octalString = perm.toString(8);
+    const permissionMap = ['---', '--x', '-w-', '-wx', 'r--', 'r-x', 'rw-', 'rwx'];
+    for (let i = 0; i < octalString.length; i++) {
+        result += permissionMap[parseInt(octalString[i], 10)];
+    }
+    return result;
+}
