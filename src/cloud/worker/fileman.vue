@@ -367,7 +367,7 @@ export default class WorkerFileman extends Vue {
                 <t-form-item label="文件内容">
                     <t-textarea v-model="fileInfo.Data" :autosize="{ minRows: 10 }" />
                 </t-form-item>
-                <t-form-item label="修改日期">
+                <t-form-item label="修改时间">
                     <t-date-picker v-model="fileInfo.ModTime" value-type="time-stamp" size="large" allow-input enable-time-picker />
                 </t-form-item>
             </div>
