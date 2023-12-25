@@ -15,7 +15,9 @@ export default class DashboardIndex extends Vue {
 
     public created() {
         this.getUserSummary();
-        this.checkUpgrade();
+        if (this.session.Level == 1) {
+            this.checkUpgrade();
+        }
     }
 
     // 资源统计
