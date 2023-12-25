@@ -1,7 +1,7 @@
 import { HttpClient } from '@/api/basic/http';
 
 export class UpgradeModel extends HttpClient {
-    public check(): Promise<UpdateInfo> {
+    public check(): Promise<VersionInfo> {
         return this.post('/upgrade/check', {});
     }
 
@@ -10,7 +10,7 @@ export class UpgradeModel extends HttpClient {
     }
 }
 
-export interface UpdateInfo {
+export interface VersionInfo {
     Type: string // 更新方式
     Error: string // 错误信息
     Message: string // 提示信息

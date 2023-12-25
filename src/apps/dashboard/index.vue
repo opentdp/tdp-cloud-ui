@@ -2,6 +2,7 @@
 import { Component, Vue } from '@/apps/basic';
 
 import { NaApi } from '@/api';
+import { VersionInfo } from '@/api/native/upgrade';
 import { UserSummary } from '@/api/native/passport';
 
 import SysLoad from '@/cloud/worker/sys_load.vue';
@@ -31,13 +32,13 @@ export default class DashboardIndex extends Vue {
 
     // 在线更新
 
-    public newVersion = '';
     public upgrading = false;
+    public versionInfo!: VersionInfo;
 
     async checkUpgrade() {
         const res = await NaApi.upgrade.check();
         if (res.Package.startsWith('https://')) {
-            this.newVersion = res.Version;
+            this.versionInfo = res;
         }
     }
 
@@ -53,16 +54,6 @@ export default class DashboardIndex extends Vue {
 
 <template>
     <t-space fixed direction="vertical">
-        <t-alert v-if="newVersion" theme="info" close>
-            <template #message>
-                检测到新版本 v{{ newVersion }}，在线更新完成后将自动刷新页面。
-            </template>
-            <template #operation>
-                <t-loading v-if="upgrading" size="12px" />
-                <span v-else @click="applyUpgrade">立即更新</span>
-            </template>
-        </t-alert>
-
         <t-card :loading="!summary" title="资源统计" hover-shadow header-bordered>
             <t-space v-if="summary" fixed break-line>
                 <t-card v-route="'/vendor/tencent'" class="summary" hover-shadow>
@@ -106,6 +97,19 @@ export default class DashboardIndex extends Vue {
                     <span>Version {{ layout.UIVersion }}, Build {{ layout.UIBuildVersion }}</span>
                 </t-list-item>
             </t-list>
+            <t-collapse v-if="versionInfo" class="new-version">
+                <t-collapse-panel value="0">
+                    <template #header>
+                        检测到新版本 Version {{ versionInfo.Version }}
+                    </template>
+                    <template #headerRightContent>
+                        <t-button theme="primary" shape="round" variant="outline" :loading="upgrading" @click="applyUpgrade">
+                            立即更新
+                        </t-button>
+                    </template>
+                    <pre>{{ versionInfo.Release }}</pre>
+                </t-collapse-panel>
+            </t-collapse>
         </t-card>
     </t-space>
 </template>
@@ -125,5 +129,9 @@ export default class DashboardIndex extends Vue {
         color: var(--el-color-primary-dark-2);
         font-size: 2em;
     }
+}
+
+.new-version {
+    margin-top: 10px;
 }
 </style>
