@@ -134,31 +134,31 @@ export default class WorkerSysLoad extends Vue {
             </template>
             <t-list v-if="data?.MemStat" :split="true">
                 <t-list-item>
-                    <b>累计分配内存</b>
+                    <b>累计分配</b>
                     <span>{{ bytesToSize(data.MemStat.TotalAlloc) }}</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>申请内存总量</b>
+                    <b>申请总量</b>
                     <span>{{ bytesToSize(data.MemStat.Sys) }}</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>堆已使用内存</b>
+                    <b>堆已使用</b>
                     <span>{{ bytesToSize(data.MemStat.HeapInuse) }}</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>堆已申请内存</b>
+                    <b>堆已申请</b>
                     <span>{{ bytesToSize(data.MemStat.HeapSys) }}</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>栈已使用内存</b>
+                    <b>栈已使用</b>
                     <span>{{ bytesToSize(data.MemStat.StackInuse) }}</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>栈已申请内存</b>
+                    <b>栈已申请</b>
                     <span>{{ bytesToSize(data.MemStat.StackSys) }}</span>
                 </t-list-item>
                 <t-list-item>
-                    <b>GC 运行次数</b>
+                    <b>GC 次数</b>
                     <span>{{ data.MemStat.NumGC }}</span>
                 </t-list-item>
                 <t-list-item>
