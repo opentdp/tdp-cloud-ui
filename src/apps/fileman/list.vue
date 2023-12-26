@@ -65,7 +65,7 @@ export default class FilemanList extends Vue {
                 OSType: /windows/.test(res.Stat.OS) ? 'windows' : 'linux',
                 HostName: res.Stat.HostName,
                 WorkerId: 'host',
-                Model: 'native/host',
+                Model: 'native/workhub',
             } as MachineItem;
         }
         await this.getFileList('');
