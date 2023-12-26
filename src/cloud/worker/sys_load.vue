@@ -35,13 +35,8 @@ export default class WorkerSysLoad extends Vue {
 
     async getDetailStat() {
         this.loading = true;
-        if (this.id == 'host') {
-            const res = await NaApi.workhub.host();
-            this.data = res || {};
-        } else if (this.id) {
-            const res = await NaApi.workhub.detail(this.id);
-            this.data = res || {};
-        }
+        const res = await NaApi.workhub.detail(this.id);
+        this.data = res || {};
         this.updateConfig();
         this.loading = false;
     }

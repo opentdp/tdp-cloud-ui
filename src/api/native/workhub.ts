@@ -1,32 +1,27 @@
 import { HttpClient } from '@/api/basic/http';
 
-import { GoMemoryStat, SummaryStat, DetailStat, IpSets, FilerRequest, FilerResponse, ScriptPayload } from './typings';
+import { GoMemoryStat, SummaryStat, DetailStat, FilerRequest, FilerResponse, ScriptPayload } from './typings';
 
 export class WorkhubModel extends HttpClient {
-    public host(): Promise<NodeDetail> {
-        return this.post('/workhub/host', {});
-    }
-
-    public hostIp(): Promise<IpSets> {
-        return this.post('/workhub/host/ip', {});
-    }
-
     public list(): Promise<WorkerPaged> {
         return this.post('/workhub/list', {});
     }
 
     public detail(id: string): Promise<NodeDetail> {
-        return this.post('/workhub/detail/' + id, {});
+        id = id && id != 'host' ? '/' + id : '';
+        return this.post('/workhub/detail' + id, {});
     }
 
     public exec(id: string, rq: ScriptPayload): Promise<{ Id: number }> {
+        id = id && id != 'host' ? '/' + id : '';
         rq = { ...rq, Name: 'Exec: ' + rq.Name };
-        return this.post('/workhub/exec/' + id, rq);
+        return this.post('/workhub/exec' + id, rq);
     }
 
     public filer(id: string, rq: FilerRequest): Promise<FilerResponse> {
+        id = id && id != 'host' ? '/' + id : '';
         rq.Path = rq.Path.replace(/\\+/g, '/').replace(/\/+/g, '/');
-        return this.post('/workhub/filer/' + id, rq);
+        return this.post('/workhub/filer' + id, rq);
     }
 
     public getRegisterURL() {

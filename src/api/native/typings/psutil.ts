@@ -50,11 +50,6 @@ export interface NetInterface {
     Ipv6List: string[]
 }
 
-export interface IpSets {
-    Ipv4: string
-    Ipv6: string
-}
-
 export interface DiskPartition {
     Device: string
     Mountpoint: string

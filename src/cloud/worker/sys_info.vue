@@ -2,7 +2,7 @@
 import { Prop, Component, Vue } from '@/apps/basic';
 
 import { NaApi } from '@/api';
-import { DetailStat, IpSets } from '@/api/native/typings';
+import { DetailStat } from '@/api/native/typings';
 
 import { bytesToSize } from '@/helper/format';
 
@@ -22,19 +22,11 @@ export default class WorkerSysInfo extends Vue {
     // 获取系统信息
 
     public stat!: DetailStat;
-    public ipsets!: IpSets;
 
     async getDetailStat() {
         this.loading = true;
-        if (this.id == 'host') {
-            const res = await NaApi.workhub.host();
-            this.stat = res.Stat;
-            const rs2 = await NaApi.workhub.hostIp();
-            this.ipsets = rs2;
-        } else if (this.id) {
-            const res = await NaApi.workhub.detail(this.id);
-            this.stat = res.Stat;
-        }
+        const res = await NaApi.workhub.detail(this.id);
+        this.stat = res.Stat;
         this.loading = false;
     }
 }
@@ -78,14 +70,14 @@ export default class WorkerSysInfo extends Vue {
                 <b>运行时长</b>
                 <span>{{ (stat.Uptime / 86400).toFixed(1) }} 天</span>
             </t-list-item>
-            <t-list-item v-if="ipsets">
+            <t-list-item>
                 <b>公网 IP</b>
                 <span class="text-right">
-                    <div v-if="ipsets.Ipv4">
-                        {{ ipsets.Ipv4 }}
+                    <div v-if="stat.PublicIpv4">
+                        {{ stat.PublicIpv4 }}
                     </div>
-                    <div v-if="ipsets.Ipv6">
-                        {{ ipsets.Ipv6 }}
+                    <div v-if="stat.PublicIpv6">
+                        {{ stat.PublicIpv6 }}
                     </div>
                 </span>
             </t-list-item>
