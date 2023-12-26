@@ -108,11 +108,6 @@ const menuItems: MenuItem[] = [
         ]
     },
     {
-        icon: 'relativity',
-        index: '/crontab/list',
-        title: '计划任务',
-    },
-    {
         icon: 'functions-1',
         index: '/task',
         title: '快捷命令',
@@ -130,9 +125,19 @@ const menuItems: MenuItem[] = [
         ]
     },
     {
+        icon: 'task-checked',
+        index: '/crontab/list',
+        title: '计划任务',
+    },
+    {
+        icon: 'folder-export',
+        index: '/fileman/list',
+        title: '文件管理',
+    },
+    {
         icon: 'pantone',
-        index: '/vendor',
-        title: '厂商管理',
+        index: '/drawer',
+        title: '资源纳管',
         subs: [
             {
                 icon: 'letters-t',
@@ -149,12 +154,12 @@ const menuItems: MenuItem[] = [
                 index: '/vendor/cloudflare',
                 title: 'Cloudflare',
             },
+            {
+                icon: 'application',
+                index: '/workhub/worker',
+                title: 'TDP 子节点',
+            },
         ]
-    },
-    {
-        icon: 'radar',
-        index: '/workhub/worker',
-        title: '节点管理',
     },
     {
         icon: 'user-list',

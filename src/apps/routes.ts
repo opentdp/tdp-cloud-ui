@@ -115,6 +115,25 @@ export const routes: RouteRecordRaw[] = [
             },
             //////
             {
+                path: '/fileman/list',
+                name: 'fileman-list',
+                meta: {
+                    title: '文件管理',
+                    login: true,
+                },
+                component: () => import('./fileman/list.vue'),
+            },
+            {
+                path: '/fileman/list/:id',
+                name: 'fileman-list-id',
+                meta: {
+                    title: '文件管理',
+                    login: true,
+                },
+                component: () => import('./fileman/list.vue'),
+            },
+            //////
+            {
                 path: '/machine/list',
                 name: 'machine-list',
                 meta: {
@@ -131,15 +150,6 @@ export const routes: RouteRecordRaw[] = [
                     login: true,
                 },
                 component: () => import('./machine/detail.vue'),
-            },
-            {
-                path: '/machine/fileman/:id',
-                name: 'machine-fileman',
-                meta: {
-                    title: '文件管理',
-                    login: true,
-                },
-                component: () => import('./machine/fileman.vue'),
             },
             {
                 path: '/machine/vnc/:id',

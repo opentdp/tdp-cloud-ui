@@ -4,11 +4,6 @@ export interface FilerRequest {
     File?: Partial<FileInfo>
 }
 
-export interface FilerResponse {
-    Success: boolean
-    FileList: FileInfo[]
-}
-
 export interface FileInfo {
     Name: string
     Size: number

@@ -73,12 +73,8 @@ export default class WorkerSysInfo extends Vue {
             <t-list-item>
                 <b>公网 IP</b>
                 <span class="text-right">
-                    <div v-if="stat.PublicIpv4">
-                        {{ stat.PublicIpv4 }}
-                    </div>
-                    <div v-if="stat.PublicIpv6">
-                        {{ stat.PublicIpv6 }}
-                    </div>
+                    <div v-if="stat.PublicIpv4">{{ stat.PublicIpv4 }}</div>
+                    <div v-if="stat.PublicIpv6">{{ stat.PublicIpv6 }}</div>
                 </span>
             </t-list-item>
         </t-list>
