@@ -95,7 +95,7 @@ export default class CrontabUpdate extends Vue {
 
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close header="修改计划" :footer="false" width="50%">
-        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="Type" label="类型">
                 <t-select v-model="formModel.Type">
                     <t-option v-for="v, k in CrontabTypeList" :key="k" :value="k" :label="v" />
@@ -103,11 +103,6 @@ export default class CrontabUpdate extends Vue {
             </t-form-item>
             <t-form-item name="Name" label="名称">
                 <t-input v-model="formModel.Name" />
-            </t-form-item>
-            <t-form-item name="Target" label="目标主机">
-                <t-select v-model="formModel.Target" @change="getOsScriptList">
-                    <t-option v-for="v, k in machineList" :key="k" :value="k" :label="v.HostName" />
-                </t-select>
             </t-form-item>
             <t-form-item name="Name" label="排程">
                 <t-input-group class="schedule">
@@ -118,6 +113,11 @@ export default class CrontabUpdate extends Vue {
                     <t-input v-model="formModel.Month" placeholder="月" align="center" />
                     <t-input v-model="formModel.DayofWeek" placeholder="周" align="center" />
                 </t-input-group>
+            </t-form-item>
+            <t-form-item name="Target" label="主机">
+                <t-select v-model="formModel.Target" @change="getOsScriptList">
+                    <t-option v-for="v, k in machineList" :key="k" :value="k" :label="v.HostName" />
+                </t-select>
             </t-form-item>
             <t-form-item v-if="formModel.Type == 'script'" name="Content" label="脚本">
                 <t-select v-model="formModel.Content" :disabled="!formModel.Target">
