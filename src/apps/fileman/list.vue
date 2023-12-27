@@ -152,8 +152,9 @@ export default class FilemanList extends Vue {
 
     public tableColumns = [
         { colKey: 'Name', title: '名称', ellipsis: true },
-        { colKey: 'Mode', title: '权限', ellipsis: true },
         { colKey: 'Size', title: '大小', ellipsis: true },
+        { colKey: 'Mode', title: '权限', ellipsis: true },
+        { colKey: 'Owner', title: '属主/组', ellipsis: true },
         { colKey: 'ModTime', title: '修改时间', ellipsis: true },
         { colKey: 'Operation', title: '操作', width: '150px' }
     ];
@@ -248,11 +249,14 @@ export default class FilemanList extends Vue {
                             {{ row.Name }}{{ row.IsDir ? '/' : '' }}
                         </t-link>
                     </template>
+                    <template #Size="{ row }">
+                        {{ row.IsDir ? '-' : bytesToSize(row.Size) }}
+                    </template>
                     <template #Mode="{ row }">
                         {{ octalPermissionsToText(row.Mode) }}
                     </template>
-                    <template #Size="{ row }">
-                        {{ row.IsDir ? '-' : bytesToSize(row.Size) }}
+                    <template #Owner="{ row }">
+                        {{ row.Owner || '-' }}/{{ row.Group || '-' }}
                     </template>
                     <template #ModTime="{ row }">
                         {{ dateFormat(row.ModTime * 1000, "yyyy-MM-dd hh:mm:ss") }}
