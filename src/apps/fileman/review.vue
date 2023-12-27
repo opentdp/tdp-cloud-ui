@@ -76,8 +76,8 @@ export default class FilemanReview extends Vue {
         const res = await NaApi.workhub.filer(this.workerId, req).finally(() => {
             this.loading = false;
         });
-        if (res && res.length > 0) {
-            return res[0].Data;
+        if (res.Items && res.Items.length > 0) {
+            return res.Items[0].Data;
         }
         return '';
     }

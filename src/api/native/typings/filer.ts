@@ -4,6 +4,10 @@ export interface FilerRequest {
     File?: Partial<FileInfo>
 }
 
+export interface FilerResponse {
+    Items: FileInfo[]
+}
+
 export interface FileInfo {
     Name: string
     Size: number

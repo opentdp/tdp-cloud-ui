@@ -81,9 +81,7 @@ export default class WorkerFileman extends Vue {
         const res = await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false;
         });
-        if (res && res.length > 0) {
-            this.fileList = res;
-        }
+        this.fileList = res.Items;
     }
 
     // 获取文件信息
@@ -95,8 +93,8 @@ export default class WorkerFileman extends Vue {
             this.loading = false;
         });
         // 缓存文件信息
-        if (res && res.length > 0) {
-            const file = { ...res[0], Type: '' };
+        if (res.Items && res.Items.length > 0) {
+            const file = { Type: '', ...res.Items[0] };
             if (this.imageExpr.test(name)) {
                 file.Type = 'image';
             }

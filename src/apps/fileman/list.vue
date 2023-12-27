@@ -110,9 +110,7 @@ export default class FilemanList extends Vue {
         const res = await NaApi.workhub.filer(this.machine.WorkerId, req).finally(() => {
             this.loading = false;
         });
-        if (res && res.length > 0) {
-            this.fileList = res;
-        }
+        this.fileList = res.Items;
     }
 
     // 下载文件
