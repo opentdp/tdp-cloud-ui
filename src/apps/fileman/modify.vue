@@ -22,7 +22,7 @@ export default class FilemanModify extends Vue {
             Action: 'chmod',
             Path: this.path + '/' + this.fileInfo.Name,
             File: {
-                Mode: this.formModel.Mode,
+                Mode: parseInt(this.formModel.ModeStr, 8),
             }
         };
         return NaApi.workhub.filer(this.workerId, req);
@@ -56,11 +56,11 @@ export default class FilemanModify extends Vue {
     public formRef!: FormInstanceFunctions;
 
     public fileInfo!: FileInfo;
-    public formModel!: FileInfo;
+    public formModel!: FileInfo & { ModeStr: string; };
 
-    public formRules: FormRules<FileInfo> = {
+    public formRules: FormRules<FileInfo & { ModeStr: string; }> = {
         Name: [{ required: true }],
-        Mode: [{ required: true }],
+        ModeStr: [{ required: true }],
         ModTime: [{ required: true }],
     };
 
@@ -72,7 +72,7 @@ export default class FilemanModify extends Vue {
         this.loading = true;
         try {
             // 修改权限
-            if (this.fileInfo.Mode !== this.formModel.Mode) {
+            if (this.fileInfo.Mode.toString(8) !== this.formModel.ModeStr) {
                 await this.chmod();
             }
             // 修改时间
@@ -100,7 +100,11 @@ export default class FilemanModify extends Vue {
     }
 
     public open(file: FileInfo) {
-        this.formModel = { ...file, ModTime: file.ModTime * 1000 };
+        this.formModel = {
+            ...file,
+            ModeStr: file.Mode.toString(8),
+            ModTime: file.ModTime * 1000
+        };
         this.fileInfo = file;
         this.visible = true;
     }
@@ -113,8 +117,8 @@ export default class FilemanModify extends Vue {
             <t-form-item name="Name" label="名称">
                 <t-input v-model="formModel.Name" />
             </t-form-item>
-            <t-form-item name="Mode" label="权限">
-                <t-input v-model="formModel.Mode" />
+            <t-form-item name="ModeStr" label="权限">
+                <t-input v-model="formModel.ModeStr" />
             </t-form-item>
             <t-form-item name="ModTime" label="修改时间">
                 <t-date-picker v-model="formModel.ModTime" value-type="time-stamp" size="large" allow-input enable-time-picker />
