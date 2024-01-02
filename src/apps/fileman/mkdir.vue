@@ -62,7 +62,7 @@ export default class FilemanMkdir extends Vue {
 
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close header="新建目录" :footer="false" width="50%">
-        <t-form ref="formRef" label-width="60px" @submit="formSubmit">
+        <t-form ref="formRef" :rules="formRules" label-width="60px" @submit="formSubmit">
             <t-form-item name="Name" label="目录名">
                 <t-input v-model="formModel.Name" />
             </t-form-item>

@@ -82,7 +82,7 @@ export default class FilemanEditor extends Vue {
 
 <template>
     <t-drawer v-model:visible="visible" :header="path + '/'" :close-btn="true" size="60%">
-        <t-form ref="formRef" @submit="formSubmit">
+        <t-form ref="formRef" :rules="formRules" @submit="formSubmit">
             <t-form-item label="文件名">
                 <t-input v-model="formModel.Name" />
             </t-form-item>
