@@ -11,12 +11,12 @@ import { bytesToSize, dateFormat, octalPermissionsToText } from '@/helper/format
 import * as gobyte from '@/helper/gobyte';
 
 import FilemanMkdir from './mkdir.vue';
-import FilemanCreate from './create.vue';
-import FilemanRename from './rename.vue';
+import FilemanEditor from './editor.vue';
+import FilemanModify from './modify.vue';
 import FilemanReview from './review.vue';
 
 @Component({
-    components: { FilemanMkdir, FilemanCreate, FilemanRename, FilemanReview }
+    components: { FilemanMkdir, FilemanEditor, FilemanModify, FilemanReview }
 })
 export default class FilemanList extends Vue {
     public textExpr = /\.(bat|cmd|css|conf|html?|ini|js|json|log|php|py|sh|sql|txt|xml)$/;
@@ -32,10 +32,10 @@ export default class FilemanList extends Vue {
     public mkdirModal!: FilemanMkdir;
 
     @Ref
-    public createModal!: FilemanCreate;
+    public editorModal!: FilemanEditor;
 
     @Ref
-    public renameModal!: FilemanRename;
+    public modifyModal!: FilemanModify;
 
     @Ref
     public reviewModal!: FilemanReview;
@@ -187,7 +187,7 @@ export default class FilemanList extends Vue {
                             上传
                         </t-button>
                     </t-upload>
-                    <t-button theme="success" variant="outline" @click="createModal.open()">
+                    <t-button theme="success" variant="outline" @click="editorModal.open()">
                         <template #icon>
                             <t-icon name="file-add" />
                         </template>
@@ -266,8 +266,8 @@ export default class FilemanList extends Vue {
                         <t-link v-else theme="primary" hover="color" @click="downloadFile(row.Name)">
                             下载
                         </t-link>
-                        <t-link theme="success" hover="color" @click="renameModal.open(row)">
-                            改名
+                        <t-link theme="success" hover="color" @click="modifyModal.open(row)">
+                            修改
                         </t-link>
                         <t-link theme="danger" hover="color">
                             <t-popconfirm content="确定删除?" @confirm="deleteFile(row.Name)">
@@ -281,8 +281,8 @@ export default class FilemanList extends Vue {
 
         <template v-if="machine">
             <FilemanMkdir ref="mkdirModal" :worker-id="machine.WorkerId" :path="path" @submit="getFileList(path)" />
-            <FilemanCreate ref="createModal" :worker-id="machine.WorkerId" :path="path" @submit="getFileList(path)" />
-            <FilemanRename ref="renameModal" :worker-id="machine.WorkerId" :path="path" @submit="getFileList(path)" />
+            <FilemanEditor ref="editorModal" :worker-id="machine.WorkerId" :path="path" @submit="getFileList(path)" />
+            <FilemanModify ref="modifyModal" :worker-id="machine.WorkerId" :path="path" @submit="getFileList(path)" />
             <FilemanReview ref="reviewModal" :worker-id="machine.WorkerId" :path="path" />
         </template>
     </t-space>

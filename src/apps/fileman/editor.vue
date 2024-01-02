@@ -12,7 +12,7 @@ import * as gobyte from '@/helper/gobyte';
     emits: ['submit'],
     expose: ['open']
 })
-export default class FilemanReview extends Vue {
+export default class FilemanEditor extends Vue {
     @Prop
     public workerId = '';
 
