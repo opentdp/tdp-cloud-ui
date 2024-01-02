@@ -113,7 +113,7 @@ export default class FilemanModify extends Vue {
 
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close header="修改属性" :footer="false" width="50%">
-        <t-form ref="formRef" :rules="formRules" label-width="90px" @submit="formSubmit">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
             <t-form-item name="Name" label="名称">
                 <t-input v-model="formModel.Name" />
             </t-form-item>
