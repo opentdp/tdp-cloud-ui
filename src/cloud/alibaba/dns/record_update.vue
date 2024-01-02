@@ -72,7 +72,7 @@ export default class DnsRecordUpdate extends Vue {
 
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close header="更新记录" :footer="false" width="50%">
-        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
             <t-form-item name="RR" label="主机记录">
                 <t-input v-model="formModel.RR" />
             </t-form-item>

@@ -137,7 +137,7 @@ export default class PassportProfile extends Vue {
             </t-col>
             <t-col :span="7">
                 <t-card title="修改资料" hover-shadow header-bordered>
-                    <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="70px" @submit="formSubmit">
+                    <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
                         <t-form-item label="AppId">
                             {{ session.AppId }}
                         </t-form-item>

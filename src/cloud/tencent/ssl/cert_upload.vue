@@ -87,7 +87,7 @@ export default class SslCertUpload extends Vue {
 
 <template>
     <t-dialog v-model:visible="visible" destroy-on-close header="上传证书" :footer="false" width="50%">
-        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="80px" @submit="formSubmit">
+        <t-form ref="formRef" :data="formModel" :rules="formRules" label-width="90px" @submit="formSubmit">
             <t-form-item label="选择证书">
                 <t-select v-model="certbotId" @change="detailCertificate">
                     <template v-for="v in certbotList">
