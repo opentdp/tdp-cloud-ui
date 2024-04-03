@@ -38,17 +38,14 @@ export default class LighthouseFirewall extends Vue {
 
     // 规则列表
 
-    public firewallRuleList!: TC.Lighthouse.FirewallRule[];
+    public firewallRuleList!: TC.Lighthouse.FirewallRuleInfo[];
     public firewallRuleCount = 0;
 
     async getFirewallRuleList() {
         const res = await TcApi.lighthouse.describeFirewallRules(this.region, {
             InstanceId: this.instance.InstanceId,
         });
-        this.firewallRuleList = res.FirewallRuleSet.map(item => {
-            delete (item as Partial<TC.Lighthouse.FirewallRuleInfo>).AppType;
-            return item;
-        });
+        this.firewallRuleList = res.FirewallRuleSet;
         this.firewallRuleCount = res.TotalCount;
     }
 
@@ -89,6 +86,9 @@ export default class LighthouseFirewall extends Vue {
             </t-button>
         </template>
         <t-table :data="firewallRuleList" :columns="tableColumns" row-key="Id" hover>
+            <template #CidrBlock="{ row }">
+                {{ row.CidrBlock || row.Ipv6CidrBlock }}
+            </template>
             <template #FirewallRuleDescription="{ row }">
                 {{ row.FirewallRuleDescription }}
                 <t-button shape="circle" variant="text" @click="remarkModal.open(instance, row)">
